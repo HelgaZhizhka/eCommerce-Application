@@ -27,6 +27,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "prettier": "^2.5.1"
   },
   "scripts": {
@@ -36,8 +38,14 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
     "eslint:fix": "eslint --fix .",
-    "eslint": "eslint . --ext .ts"
+    "eslint": "eslint . --ext .ts",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.tsx": [
+      "eslint --cache --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
-
-
