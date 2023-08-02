@@ -38,7 +38,7 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
     "eslint:fix": "eslint --fix .",
-    "eslint": "eslint . --ext .ts",
+    "eslint": "eslint . --ext .ts,.tsx",
     "prepare": "husky install"
   },
   "lint-staged": {
