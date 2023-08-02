@@ -1,7 +1,7 @@
 ❗️ Notice
-2️⃣ add two team members as Reviewers 
-✅ check if the branch you gonna make PR and merge in is develop should be
-➕ merge only after Approve
+- 2️⃣ add two team members as Reviewers 
+- ✅ check if the branch you gonna make PR and merge in is develop should be
+- ➕ merge only after Approve
 
 1. Task: 
 2. Screenshot:
