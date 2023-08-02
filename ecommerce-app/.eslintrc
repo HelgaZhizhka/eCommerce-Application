@@ -1,0 +1,67 @@
+{
+  "plugins": [
+    "prettier", 
+    "import", 
+    "@typescript-eslint", 
+    "react", 
+    "react-hooks"
+  ],
+  "extends": [
+    "airbnb-base", 
+    "airbnb-typescript/base", 
+    "plugin:@typescript-eslint/recommended", 
+    "plugin:react/recommended", 
+    "plugin:react-hooks/recommended", 
+    "prettier"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "**/tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "react/require-default-props": "off",
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/array-type": ["error", { "default": "array" }],
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        "accessibility": "explicit",
+        "overrides": {
+          "constructors": "off",
+          "accessors": "explicit",
+          "methods": "explicit",
+          "properties": "explicit",
+          "parameterProperties": "explicit"
+        }
+      }
+    ],
+    "max-lines-per-function": ["error", 80],
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/no-unnecessary-type-assertion": "error",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "no-debugger": "off",
+    "class-methods-use-this": "off"
+  }
+}
