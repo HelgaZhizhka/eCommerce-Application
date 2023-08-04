@@ -2,7 +2,7 @@ import { API_AUTH_URL, API_SCOPE, API_URL, CLIENT_ID, CLIENT_SECRET, PROJECT_KEY
 
 function App(): JSX.Element {
   console.log(PROJECT_KEY, CLIENT_ID, CLIENT_SECRET, API_URL, API_AUTH_URL, API_SCOPE);
-  return <div className="App">Init</div>;
+  return <div className="App">Init1</div>;
 }
 
 export default App;

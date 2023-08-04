@@ -46,8 +46,7 @@
   "lint-staged": {
     "src/**/*.tsx": [
       "eslint --cache --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"      
     ]
   }
 }
