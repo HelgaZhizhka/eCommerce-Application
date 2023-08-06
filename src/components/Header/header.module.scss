@@ -1,4 +1,11 @@
 .root {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     background-color: #15056f;
     text-align: center;
+}
+
+.link {
+    color: #80adeb;
 }
