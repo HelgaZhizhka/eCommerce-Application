@@ -35,6 +35,12 @@
     "es2021": true
   },
   "rules": {
+    "no-restricted-exports": [
+      "error",
+      {
+        "restrictedNamedExports": ["default"]
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react/jsx-props-no-spreading": "off",
