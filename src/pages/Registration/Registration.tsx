@@ -1,4 +1,4 @@
-import Logo from '../../components/Logo/Logo';
+import { Logo } from '../../components/Logo';
 
 const Registration: React.FC = () => (
   <div>

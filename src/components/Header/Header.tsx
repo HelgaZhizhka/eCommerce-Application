@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import styles from './header.module.scss';
-import Logo from '../Logo/Logo';
+import { Logo } from '../Logo';
 
 const Header: React.FC = () => (
   <div className={classNames(styles.root)}>

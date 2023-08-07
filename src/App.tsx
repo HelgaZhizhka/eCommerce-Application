@@ -1,12 +1,11 @@
-import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
-import Main from './pages/Main/Main';
-import ErrorPage from './pages/ErrorPage/ErrorPage';
-import Login from './pages/Login/Login';
-import Registration from './pages/Registration/Registration';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { Main } from './pages/Main';
+import { ErrorPage } from './pages/ErrorPage';
+import { Login } from './pages/Login';
+import { Registration } from './pages/Registration';
 
 const App: React.FC = () => {
   const location = useLocation();
