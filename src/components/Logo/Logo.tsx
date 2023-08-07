@@ -4,7 +4,7 @@ import styles from './logo.module.scss';
 
 const Logo: React.FC = () => (
   <Link className={classNames(styles.link)} to="/">
-    <div className={classNames(styles.logo)}>Logo</div>
+    <span className={classNames(styles.logo)}>Logo</span>
   </Link>
 );
 
