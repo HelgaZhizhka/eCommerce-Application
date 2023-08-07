@@ -1,12 +1,12 @@
 import { useRouteError } from 'react-router-dom';
-import Logo from '../../components/Logo/Logo';
+import { Logo } from '../../components/Logo';
 
 interface ErrorData {
   statusText?: string;
   message?: string;
 }
 
-export default function ErrorPage(): JSX.Element {
+const ErrorPage: React.FC = () => {
   const error = useRouteError() as ErrorData;
   return (
     <div id="error-page">
@@ -18,4 +18,6 @@ export default function ErrorPage(): JSX.Element {
       </p>
     </div>
   );
-}
+};
+
+export default ErrorPage;
