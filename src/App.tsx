@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Header } from './components/Header';
@@ -6,13 +7,15 @@ import RoutesConfig from './routes';
 
 const App: React.FC = () => {
   const location = useLocation();
-
+  const nodeRef = React.useRef(null);
   return (
     <div className="App">
       <Header />
       <TransitionGroup>
-        <CSSTransition key={location.key} classNames="fade" timeout={300}>
-          <RoutesConfig />
+        <CSSTransition nodeRef={nodeRef} key={location.key} classNames="fade" timeout={300}>
+          <div ref={nodeRef}>
+            <RoutesConfig />
+          </div>
         </CSSTransition>
       </TransitionGroup>
       <Footer />

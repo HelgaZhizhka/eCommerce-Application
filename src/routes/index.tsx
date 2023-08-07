@@ -5,12 +5,17 @@ import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 
+const mainPath = '';
+const loginPath = 'login';
+const registrationPath = 'registration';
+const errorPath = '*';
+
 const RouterConfig: React.FC = () => (
   <Routes>
-    <Route path="/" element={<Main />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/registration" element={<Registration />} />
-    <Route path="*" element={<ErrorPage />} />
+    <Route path={mainPath} element={<Main />} />
+    <Route path={loginPath} element={<Login />} />
+    <Route path={registrationPath} element={<Registration />} />
+    <Route path={errorPath} element={<ErrorPage />} />
   </Routes>
 );
 
