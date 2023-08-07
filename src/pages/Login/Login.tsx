@@ -1,8 +1,5 @@
-import { Logo } from '../../components/Logo';
-
 const Login: React.FC = () => (
   <div>
-    <Logo />
     <h1>Login page</h1>
   </div>
 );
