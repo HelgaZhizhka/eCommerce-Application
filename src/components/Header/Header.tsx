@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import { IconName } from '../baseComponents/Icon/icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { LogoVariant } from '../Logo/logo.enum';
@@ -8,10 +8,10 @@ import { Logo } from '../Logo';
 import styles from './header.module.scss';
 
 const Header: React.FC = () => (
-  <Box component="header" className={classNames(styles.root)}>
+  <header className={classNames(styles.root)}>
     <Container maxWidth="lg">
       <Logo variant={LogoVariant.DEFAULT} />
-      <Icon name={IconName.PHONE} width={32} height={32} color="var(--color-text)" className="icon" />
+      <Icon name={IconName.PHONE} width={32} height={32} color="var(--color-orange)" className="icon" />
 
       <Link className={classNames(styles.link)} to="/12">
         Error page
@@ -23,7 +23,7 @@ const Header: React.FC = () => (
         Sign up
       </Link>
     </Container>
-  </Box>
+  </header>
 );
 
 export default Header;
