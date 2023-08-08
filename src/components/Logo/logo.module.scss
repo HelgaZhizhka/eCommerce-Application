@@ -1,16 +1,23 @@
-.logo {
-  display: inline-flex;
-  width: 100px;
-  height: 100px;
-  border-radius: 100%;
-  background-color: #fff;
-  color: #15056f;
-  cursor: pointer;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
+@import '../../style/abstract/variables';
+@import '../../style/abstract/mixins';
 
-.link {
-  color: #fff;
+.root {
+  display: inline-block;
+  width: 100px;
+  height: 22px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url('./images/logo-mob.svg');
+  @include create-mq($grid__bp-lg, 'min') {
+    width: 160px;
+    height: 94px;
+    background-image: url('./images/logo.svg');
+  }
+}
+.logoWhite {
+  background-image: url('./images/logo-white-mob.svg');
+  @include create-mq($grid__bp-lg, 'min') {
+    background-image: url('./images/logo-white.svg');
+  }
 }

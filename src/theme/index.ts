@@ -1,6 +1,48 @@
 import { createTheme } from '@mui/material/styles';
 
+const getCSSVariableValue = (name: string): string => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+const colorOrange = getCSSVariableValue('--color-orange');
+const colorOrangeLight = getCSSVariableValue('--color-orange-light');
+const colorWhite = getCSSVariableValue('--color-white');
+const colorBlack = getCSSVariableValue('--color-black');
+const colorGreen = getCSSVariableValue('--color-green');
+const colorBlue = getCSSVariableValue('--color-blue');
+const stateDanger = getCSSVariableValue('--state-danger');
+const stateSuccess = getCSSVariableValue('--state-success');
+
 const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'capitalize',
+        },
+      },
+      variants: [
+        {
+          props: { variant: 'contained', color: 'primary' },
+          style: {
+            color: colorWhite,
+            '&:hover': {
+              backgroundColor: colorOrangeLight,
+            },
+          },
+        },
+        {
+          props: { variant: 'outlined', color: 'primary' },
+          style: {
+            borderColor: colorBlack,
+            color: colorBlack,
+            '&:hover': {
+              borderColor: colorBlue,
+              color: colorWhite,
+              backgroundColor: colorBlue,
+            },
+          },
+        },
+      ],
+    },
+  },
   breakpoints: {
     values: {
       xs: 0,
@@ -11,20 +53,20 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Mukta, sans-serif',
+    fontFamily: 'var(--font-family)',
   },
   palette: {
     primary: {
-      main: '#F2760F',
+      main: colorOrange,
     },
     secondary: {
-      main: '#009444',
+      main: colorGreen,
     },
     error: {
-      main: '#F61717',
+      main: stateDanger,
     },
     success: {
-      main: '#009444',
+      main: stateSuccess,
     },
   },
 });

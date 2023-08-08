@@ -1,13 +1,18 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
+import { Box, Container } from '@mui/material';
+import { IconName } from '../baseComponents/Icon/icon.enum';
+import { Icon } from '../baseComponents/Icon';
+import { LogoVariant } from '../Logo/logo.enum';
 import { Logo } from '../Logo';
 import styles from './header.module.scss';
 
 const Header: React.FC = () => (
-  <div className={classNames(styles.root)}>
+  <Box component="header" className={classNames(styles.root)}>
     <Container maxWidth="lg">
-      <Logo />
+      <Logo variant={LogoVariant.DEFAULT} />
+      <Icon name={IconName.PHONE} width={32} height={32} color="var(--color-text)" className="icon" />
+
       <Link className={classNames(styles.link)} to="/12">
         Error page
       </Link>
@@ -18,7 +23,7 @@ const Header: React.FC = () => (
         Sign up
       </Link>
     </Container>
-  </div>
+  </Box>
 );
 
 export default Header;

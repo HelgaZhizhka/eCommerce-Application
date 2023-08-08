@@ -68,8 +68,11 @@ const Login: React.FC = () => (
           fullWidth
           disabled={isSubmitting}
           onClick={submitForm}
-          style={{ marginTop: '1rem' }}
+          style={{ marginBottom: '1rem' }}
         >
+          Login
+        </Button>
+        <Button variant="outlined" fullWidth color="primary">
           Login
         </Button>
       </Form>

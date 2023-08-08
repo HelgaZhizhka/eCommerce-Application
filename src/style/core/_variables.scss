@@ -1,0 +1,29 @@
+:root {
+  --app-height: 100vh;
+  --color-white: #fff;
+  --light-white: #f2f2f2;
+  --light-blue: #eef7ff;
+  --color-orange: #f2760f;
+  --color-orange-light: #ff9843;
+  --color-blue: #3e17ff;
+  --color-purple: #b62dd3;
+  --color-green: #009444;
+  --color-red: #f61717;
+  --color-pink: #ff00ff;
+  --color-violet: #70198f;
+  --color-black: #0b0a0a;
+
+  --state-success: var(--color-green);
+  --state-info: #4d8dec;
+  --state-warning: var(--color-orange);
+  --state-danger: var(--color-red);
+
+  --gray: #979999;
+
+  --body-bg: var(--color-white);
+  --color-text: var(--color-black);
+  --font-family: 'Mukta', sans-serif;
+
+  --transition-duration: 0.35s;
+  --transition-easing: cubic-bezier(0.5, 0, 0.5, 1);
+}
