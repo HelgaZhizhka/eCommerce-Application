@@ -3,3 +3,8 @@
   flex-direction: column;
   min-height: var(--app-height);
 }
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}

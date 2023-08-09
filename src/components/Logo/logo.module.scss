@@ -9,7 +9,7 @@
   background-size: contain;
   background-position: center;
   background-image: url('./images/logo-mob.svg');
-  @include create-mq($grid__bp-lg, 'min') {
+  @include create-mq($grid__bp-sm, 'min') {
     width: 160px;
     height: 94px;
     background-image: url('./images/logo.svg');
@@ -17,7 +17,7 @@
 }
 .logoWhite {
   background-image: url('./images/logo-white-mob.svg');
-  @include create-mq($grid__bp-lg, 'min') {
+  @include create-mq($grid__bp-sm, 'min') {
     background-image: url('./images/logo-white.svg');
   }
 }

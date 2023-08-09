@@ -11,7 +11,7 @@ const Header: React.FC = () => (
   <header className={classNames(styles.root)}>
     <Container maxWidth="lg">
       <Logo variant={LogoVariant.DEFAULT} />
-      <Icon name={IconName.PHONE} width={32} height={32} color="var(--color-orange)" className="icon" />
+      <Icon name={IconName.USER} width={32} height={32} color="var(--color-orange)" className="icon" />
 
       <Link className={classNames(styles.link)} to="/12">
         Error page
