@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
 
-const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+// const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 const getCSSVariableValue = (name: string): string => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 const colorOrange = getCSSVariableValue('--color-orange');
@@ -75,7 +75,7 @@ const theme = createTheme({
     fontFamily: 'var(--font-family)',
   },
   palette: {
-    mode: prefersDarkMode ? 'dark' : 'light',
+    // mode: prefersDarkMode ? 'dark' : 'light',
     primary: {
       main: colorOrange,
     },

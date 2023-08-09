@@ -1,0 +1,54 @@
+.root {  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 60px 0px 144px 0px;
+  gap: 5%;
+}
+
+.loginWrap {
+  flex: 2;
+}
+
+.posterWrap {
+  flex: 1.7;
+}
+
+.title {
+  color: var(--basic-black, #0b0a0a);
+  font-family: Mukta;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 48px */
+  letter-spacing: 0.64px;
+}
+
+.fontImg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.lineContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #979999; /* Цвет линии */
+  top: 50%;
+}
+
+.text {
+  background-color: white; /* Цвет фона текста */
+  padding: 0 20px;
+  z-index: 1;
+}
