@@ -1,24 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Typography, Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
+import { Icon } from '../baseComponents/Icon';
+import { IconName } from '../baseComponents/Icon/icon.enum';
 import { LogoVariant } from '../Logo/logo.enum';
 import { Logo } from '../Logo';
 import styles from './footer.module.scss';
 
-const Copyright: React.FC = () => (
-  <Typography variant="body2" align="center">
-    {'Copyright © '}
-    {new Date().getFullYear()}.
-  </Typography>
-);
-
 const Footer: React.FC = () => (
-  <Box component="footer" className={classNames(styles.root)}>
-    <Container maxWidth="lg">
+  <footer className={classNames(styles.root)}>
+    <Container maxWidth="lg" sx={{ pb: 2 }}>
       <Logo variant={LogoVariant.WHITE} />
-      <Copyright />
+      <Icon name={IconName.PHONE} />
     </Container>
-  </Box>
+    <p className={classNames(styles.copyright)}>
+      {'All rights reserved. © '} {new Date().getFullYear()}.
+    </p>
+  </footer>
 );
 
 export default Footer;
