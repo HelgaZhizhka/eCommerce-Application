@@ -2,31 +2,12 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Button } from '@mui/material';
 import { TextField as FormikTextField } from 'formik-material-ui';
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import { LoginFormValues } from './login.interface';
+import { validate } from '../../utils/validate';
 
 const initialValues: LoginFormValues = {
   email: '',
   password: '',
-};
-
-const validate = (values: LoginFormValues): Partial<LoginFormValues> => {
-  const errors: Partial<LoginFormValues> = {};
-
-  if (!values.email) {
-    errors.email = 'Email is required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-
-  if (!values.password) {
-    errors.password = 'Password is required';
-  }
-
-  return errors;
 };
 
 const Login: React.FC = () => (
@@ -34,7 +15,7 @@ const Login: React.FC = () => (
     initialValues={initialValues}
     validate={validate}
     onSubmit={(values, { setSubmitting }): void => {
-      console.log(values);
+      // console.log(values);
       setSubmitting(false);
     }}
   >
