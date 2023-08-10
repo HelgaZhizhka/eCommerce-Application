@@ -203,3 +203,7 @@ svg:not(:root) {
 [hidden] {
   display: none;
 }
+img, video {
+  max-width: 100%;
+  height: auto;
+}

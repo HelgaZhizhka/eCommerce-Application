@@ -4,7 +4,7 @@
 
 .root {
   margin-top: auto;
-  background-color: var(--color-violet);
+  background-color: var(--violet);
   color: var(--light-white);
   @include create-mq($grid__bp-sm, 'min') {
     padding-top: toRem(40px);
@@ -15,5 +15,5 @@
   font-size: 80%;
   text-align: center;
   margin: 0;
-  background-color: var(--color-black);
+  background-color: var(--black);
 }

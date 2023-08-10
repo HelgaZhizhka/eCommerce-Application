@@ -1,5 +1,4 @@
-import { LoginFormValues } from "../../pages/Login/login.interface";
-
+import { LoginFormValues } from '../../components/LoginForm/login.interface';
 
 export const validate = (values: LoginFormValues): Partial<LoginFormValues> => {
   const errors: Partial<LoginFormValues> = {};
@@ -20,6 +19,8 @@ export const validate = (values: LoginFormValues): Partial<LoginFormValues> => {
     errors.password = 'Password must contain at least one lowercase letter (a-z).';
   } else if (!/(?=.*[0-9])/.test(values.password)) {
     errors.password = 'Password must contain at least one digit (0-9).';
+  } else if (!/^\S.*\S$/.test(values.password)) {
+    errors.password = 'Password cannot start or end with a space.';
   }
   return errors;
 };

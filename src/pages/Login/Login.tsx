@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import LoginForm from './LoginForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 import styles from './login.module.scss';
 import { Poster } from '../../components/Poster';
 import poster1 from '../../assets/images/fon1.png';

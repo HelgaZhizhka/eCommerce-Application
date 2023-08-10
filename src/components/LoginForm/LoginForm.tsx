@@ -5,11 +5,10 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
-import { LoginFormValues } from './login.interface';
 import { validate } from '../../utils/validate';
+import { useTheme } from '../../contexts/ThemeContext';
+import { LoginFormValues } from './login.interface';
 import styles from './login.module.scss';
-import { Icon } from '../../components/baseComponents/Icon';
-import { IconName } from '../../components/baseComponents/Icon/icon.enum';
 
 const initialValues: LoginFormValues = {
   email: '',
@@ -22,6 +21,8 @@ const Login: React.FC = () => {
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
+
+  const { darkMode } = useTheme();
 
   return (
     <Formik
@@ -48,7 +49,6 @@ const Login: React.FC = () => {
           <Field
             component={FormikTextField}
             type={showPassword ? 'text' : 'password'}
-            endDecorator={<Icon name={IconName.USER} />}
             label="Password"
             name="password"
             variant="standard"
@@ -77,7 +77,7 @@ const Login: React.FC = () => {
           </Button>
           <div className={classNames(styles.lineContainer)}>
             <div className={classNames(styles.line)}></div>
-            <div className={classNames(styles.text)}>or</div>
+            <div className={classNames(styles.text, darkMode && styles.dark)}>or</div>
           </div>
           <Button variant="outlined" fullWidth color="primary">
             Sign up
