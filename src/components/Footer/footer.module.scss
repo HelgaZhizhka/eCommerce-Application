@@ -1,4 +1,21 @@
+@import '../../style/abstract/variables';
+@import '../../style/abstract/mixins';
+@import '../../style/abstract/functions';
+
 .root {
-    background-color: #15056f;
-    text-align: center;
+  margin-top: auto;
+  background-color: var(--violet);
+  color: var(--light-white);
+  
+  @include create-mq($grid__bp-sm, 'min') {
+    padding-top: toRem(40px);
+  }
+}
+
+.copyright {
+  padding: toRem(12px) 0;
+  font-size: 80%;
+  text-align: center;
+  margin: 0;
+  background-color: var(--black);
 }
