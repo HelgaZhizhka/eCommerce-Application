@@ -1,9 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { Container, CssBaseline, createTheme } from '@mui/material';
-import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
-import { useTheme } from './contexts/ThemeContext';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { observer } from 'mobx-react-lite';
+
+import { themeStore } from './stores';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { darkTheme, lightTheme } from './theme';
@@ -12,11 +15,11 @@ import RoutesConfig from './routes';
 const App: React.FC = () => {
   const location = useLocation();
   const nodeRef = React.useRef(null);
-  const { darkMode } = useTheme();
+  const { darkMode } = themeStore;
   const theme = createTheme(darkMode ? darkTheme : lightTheme);
 
   return (
-    <MUIThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="app">
         <Header />
@@ -29,8 +32,8 @@ const App: React.FC = () => {
         </TransitionGroup>
         <Footer />
       </div>
-    </MUIThemeProvider>
+    </ThemeProvider>
   );
 };
 
-export default App;
+export default observer(App);

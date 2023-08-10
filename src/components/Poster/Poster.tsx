@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import styles from './poster.module.scss';
+
+import styles from './Poster.module.scss';
 import poster1 from './images/poster1.png';
 import poster2 from './images/poster2.png';
 import poster3 from './images/poster3.png';

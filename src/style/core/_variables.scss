@@ -27,3 +27,9 @@
   --transition-duration: 0.35s;
   --transition-easing: cubic-bezier(0.5, 0, 0.5, 1);
 }
+
+
+body[data-theme="dark"] {
+  --body-bg: #121212;
+  --color-text: var(--light-white);
+}

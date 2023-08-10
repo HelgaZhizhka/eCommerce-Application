@@ -1,20 +1,26 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import styles from './logo.module.scss';
-import { LogoProps } from './logo.interface';
-import { LogoVariant } from './logo.enum';
-import { useTheme } from '../../contexts/ThemeContext';
+import { observer } from 'mobx-react-lite';
+
+// import { useTheme } from '../../contexts/ThemeContext';
+import { themeStore } from '../../stores/ThemeStore';
+import styles from './Logo.module.scss';
+import { LogoProps } from './Logo.interface';
+import { LogoVariant } from './Logo.enum';
 
 const Logo: React.FC<LogoProps> = ({ variant = LogoVariant.DEFAULT }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = themeStore;
+
+  const logoClasses = classNames(styles.root, {
+    [styles.logoWhite]: variant === LogoVariant.WHITE,
+    [styles.dark]: darkMode,
+  });
 
   return (
     <Link to="/">
-      <span
-        className={classNames(styles.root, variant === LogoVariant.WHITE && styles.logoWhite, darkMode && styles.dark)}
-      ></span>
+      <span className={classNames(styles.root, logoClasses)}></span>
     </Link>
   );
 };
 
-export default Logo;
+export default observer(Logo);
