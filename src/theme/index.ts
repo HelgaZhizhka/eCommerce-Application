@@ -1,20 +1,18 @@
 import { createTheme } from '@mui/material/styles';
 
-
-const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
 const getCSSVariableValue = (name: string): string => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-const colorOrange = getCSSVariableValue('--color-orange');
-const colorOrangeLight = getCSSVariableValue('--color-orange-light');
-const colorWhite = getCSSVariableValue('--color-white');
-const colorBlack = getCSSVariableValue('--color-black');
-const colorGreen = getCSSVariableValue('--color-green');
-const colorBlue = getCSSVariableValue('--color-blue');
+const colorOrange = getCSSVariableValue('--orange');
+const colorOrangeLight = getCSSVariableValue('--orange-light');
+const colorWhite = getCSSVariableValue('--white');
+const colorLightWhite  = getCSSVariableValue('--light-white');
+const colorBlack = getCSSVariableValue('--black');
+const colorGreen = getCSSVariableValue('--green');
+const colorBlue = getCSSVariableValue('--blue');
 const colorLightBlue = getCSSVariableValue('--light-blue');
 const stateDanger = getCSSVariableValue('--state-danger');
 const stateSuccess = getCSSVariableValue('--state-success');
 
-const theme = createTheme({
+const lightTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -75,7 +73,7 @@ const theme = createTheme({
     fontFamily: 'var(--font-family)',
   },
   palette: {
-    mode: prefersDarkMode ? 'dark' : 'light',
+    mode: 'light',
     primary: {
       main: colorOrange,
     },
@@ -91,4 +89,54 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+
+const darkTheme = createTheme({
+  ...lightTheme,
+  palette: {
+    mode: 'dark',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          textDecoration: 'none',
+          color: colorOrange,
+        },
+      },
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: 'contained', color: 'primary' },
+          style: {
+            color: colorWhite,
+            backgroundColor: colorOrange,
+            '&:hover': {
+              backgroundColor: colorOrangeLight,
+            },
+          },
+        },
+        {
+          props: { variant: 'outlined', color: 'primary' },
+          style: {
+            borderColor: colorLightWhite,
+            color: colorLightWhite,
+            '&:hover': {
+              backgroundColor: colorLightBlue,
+              borderColor: colorLightBlue,
+              color: colorBlack,
+            },
+            '&:active': {
+              borderColor: colorBlue,
+              color: colorWhite,
+              backgroundColor: colorBlue,
+            },
+          },
+        },
+      ],
+    },
+  },
+});
+
+
+export { lightTheme, darkTheme };

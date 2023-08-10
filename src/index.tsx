@@ -1,22 +1,19 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import ReactDOM from 'react-dom/client';
-import './index.scss';
-import theme from './theme';
 import { SvgSprite } from './components/baseComponents/SvgSprite';
+import { ThemeProvider } from './contexts/ThemeContext';
+import './index.scss';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <React.StrictMode>
-      <SvgSprite />
-      <BrowserRouter>
+  <React.StrictMode>
+    <SvgSprite />
+    <BrowserRouter>
+      <ThemeProvider>
         <App />
-      </BrowserRouter>
-    </React.StrictMode>
-  </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
