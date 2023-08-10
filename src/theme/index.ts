@@ -96,14 +96,6 @@ const darkTheme = createTheme({
     mode: 'dark',
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        a: {
-          textDecoration: 'none',
-          color: colorOrange,
-        },
-      },
-    },
     MuiButton: {
       variants: [
         {

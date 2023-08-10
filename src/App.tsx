@@ -3,8 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Container, CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from './contexts/ThemeContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
