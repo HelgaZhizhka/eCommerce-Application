@@ -97,6 +97,11 @@ const darkTheme = createTheme({
   },
   components: {
     MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'capitalize',
+        },
+      },
       variants: [
         {
           props: { variant: 'contained', color: 'primary' },

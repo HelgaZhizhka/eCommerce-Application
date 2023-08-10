@@ -15,6 +15,14 @@
     background-image: url('./images/logo.svg');
   }
 }
+
+.dark {
+  background-image: url('./images/logo-light-mob.svg');
+  @include create-mq($grid__bp-sm, 'min') {
+    background-image: url('./images/logo-light.svg');
+  }
+}
+
 .logoWhite {
   background-image: url('./images/logo-white-mob.svg');
   @include create-mq($grid__bp-sm, 'min') {
