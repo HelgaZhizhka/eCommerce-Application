@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Button } from '@mui/material';
 import { TextField as FormikTextField } from 'formik-material-ui';
+import loginStatus from '../../lib/customerLogin';
 
 interface LoginFormValues {
   email: string;
@@ -35,6 +36,7 @@ const Login: React.FC = () => (
     validate={validate}
     onSubmit={(values, { setSubmitting }): void => {
       console.log(values);
+      loginStatus(values.email, values.password);
       setSubmitting(false);
     }}
   >
