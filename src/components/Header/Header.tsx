@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
-import { IconName } from '../baseComponents/Icon/icon.enum';
+import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';

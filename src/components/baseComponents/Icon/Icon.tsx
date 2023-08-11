@@ -1,4 +1,4 @@
-import { IconName } from './icon.enum';
+import { IconName } from './Icon.enum';
 
 type IconProps = {
   name: IconName;
