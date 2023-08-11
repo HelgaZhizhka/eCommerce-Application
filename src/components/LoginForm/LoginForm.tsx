@@ -6,7 +6,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
 import { validate } from '../../utils/validate';
-import { useTheme } from '../../contexts/ThemeContext';
 import { LoginFormValues } from './login.interface';
 import styles from './login.module.scss';
 
@@ -28,8 +27,6 @@ const Login: React.FC = () => {
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
-
-  const { darkMode } = useTheme();
 
   // const updateMessage = (key: string): void => {
   //   setMessage(prevMessage => ({
@@ -87,7 +84,7 @@ const Login: React.FC = () => {
             </div>
             <div className={classNames(styles.lineContainer)}>
               <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text, darkMode && styles.dark)}>or</div>
+              <div className={classNames(styles.text)}>or</div>
             </div>
             <Button variant="outlined" fullWidth color="primary">
               Sign up
