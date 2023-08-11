@@ -15,8 +15,15 @@ const initialValues: LoginFormValues = {
   password: '',
 };
 
+// const showValidateMessage = {
+//   'Email is required': false,
+//   'Invalid email address':false,
+//   'Password is required': false
+// }
+
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  // const [message, setMessage] = useState(showValidateMessage);
 
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -24,67 +31,71 @@ const Login: React.FC = () => {
 
   const { darkMode } = useTheme();
 
-  return (
-    <Formik
-      initialValues={initialValues}
-      validate={validate}
-      onSubmit={(values, { setSubmitting }): void => {
-        // console.log(values);
-        setSubmitting(false);
-      }}
-    >
-      {({ submitForm, isSubmitting }): JSX.Element => (
-        <Form>
-          <Field
-            component={FormikTextField}
-            name="email"
-            type="email"
-            label="Email"
-            variant="standard"
-            fullWidth
-            margin="normal"
-            helperText={<ErrorMessage name="email" />}
-          />
+  // const updateMessage = (key: string): void => {
+  //   setMessage(prevMessage => ({
+  //     ...prevMessage,
+  //     [key]: true
+  //   }));
+  // };
 
-          <Field
-            component={FormikTextField}
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            name="password"
-            variant="standard"
-            fullWidth
-            margin="normal"
-            helperText={<ErrorMessage name="password" />}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClickShowPassword}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            disabled={isSubmitting}
-            onClick={submitForm}
-            style={{ marginBottom: '1rem', marginTop: '1rem' }}
-          >
-            Login
-          </Button>
-          <div className={classNames(styles.lineContainer)}>
-            <div className={classNames(styles.line)}></div>
-            <div className={classNames(styles.text, darkMode && styles.dark)}>or</div>
-          </div>
-          <Button variant="outlined" fullWidth color="primary">
-            Sign up
-          </Button>
-        </Form>
-      )}
-    </Formik>
+  return (
+    <>
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={(values, { setSubmitting }): void => {
+          // console.log(values);
+          setSubmitting(false);
+        }}
+      >
+        {({ submitForm, isSubmitting }): JSX.Element => (
+          <Form>
+            <Field
+              component={FormikTextField}
+              name="email"
+              type="email"
+              label="Email"
+              variant="standard"
+              fullWidth
+              margin="normal"
+              helperText={<ErrorMessage name="email" />}
+            />
+
+            <Field
+              component={FormikTextField}
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              name="password"
+              variant="standard"
+              fullWidth
+              margin="normal"
+              helperText={<ErrorMessage name="password" />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <div className={classNames(styles.btnLogin)}>
+              <Button variant="contained" color="primary" fullWidth disabled={isSubmitting} onClick={submitForm}>
+                Login
+              </Button>
+            </div>
+            <div className={classNames(styles.lineContainer)}>
+              <div className={classNames(styles.line)}></div>
+              <div className={classNames(styles.text, darkMode && styles.dark)}>or</div>
+            </div>
+            <Button variant="outlined" fullWidth color="primary">
+              Sign up
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 
