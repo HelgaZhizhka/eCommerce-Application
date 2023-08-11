@@ -47,7 +47,7 @@ const lightTheme = createTheme({
             borderColor: colorBlack,
             color: colorBlack,
             '&:hover': {
-              backgroundColor: colorLightBlue,
+              backgroundColor: 'rgba(240, 248, 255, .36)',
               borderColor: colorBlack,
             },
             '&:active': {
@@ -117,7 +117,7 @@ const darkTheme = createTheme({
             borderColor: colorLightWhite,
             color: colorLightWhite,
             '&:hover': {
-              backgroundColor: colorLightBlue,
+              backgroundColor: 'rgba(240, 248, 255, .36)',
               borderColor: colorLightBlue,
               color: colorBlack,
             },
