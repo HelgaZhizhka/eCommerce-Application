@@ -12,7 +12,7 @@ const clientID = envConfig.CLIENT_ID
 const encodedCredentials = btoa(`${clientID}:${clientSecret}`);
 const authHeader = `Basic ${encodedCredentials}`;
 
-const customerLogin = (email: string, password: string): Promise<LoginResponse> => apiRoot
+const customerLogin = (email: string, password: string): Promise<any> => apiRoot
   .login()
   .post(
     {
@@ -23,6 +23,7 @@ const customerLogin = (email: string, password: string): Promise<LoginResponse> 
     })
   .execute()
   .then((response) => {
+    
     // Access the response status
     const status = response.statusCode;
 
@@ -30,7 +31,7 @@ const customerLogin = (email: string, password: string): Promise<LoginResponse> 
     const responseData = response.body;
 
     // Return the response status and data
-    return { status, data: responseData };
+    return { status, data: responseData};
   })
   .catch((err: Error) => {
     throw err;
@@ -55,13 +56,15 @@ const getCustomerToken = async (email: string, password: string): Promise<any> =
 
 const loginStatus = async (email: string, password: string):Promise<any> => {
   const response = await customerLogin(email, password);
+  console.log(response);
 
-  if (response.statusCode === 200) {
+  if (response.status === 200) {
     await getCustomerToken(email, password)
     alert('Login successful');
-  } else if (response.statusCode === 400) {
+  } else if (response.status === 400) {
     alert('statusCode": 400, Customer account with the given credentials not found.');
   } else {
+    console.log(response.status)
     alert(`Unexpected response status: ${response.statusCode}`);
   }
 }
