@@ -1,5 +1,5 @@
-@import '../../style/abstract/variables';
-@import '../../style/abstract/mixins';
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
 
 .root {
   display: inline-block;
@@ -9,14 +9,25 @@
   background-size: contain;
   background-position: center;
   background-image: url('./images/logo-mob.svg');
+  
   @include create-mq($grid__bp-sm, 'min') {
     width: 160px;
     height: 94px;
     background-image: url('./images/logo.svg');
   }
 }
+
+.dark {
+  background-image: url('./images/logo-light-mob.svg');
+
+  @include create-mq($grid__bp-sm, 'min') {
+    background-image: url('./images/logo-light.svg');
+  }
+}
+
 .logoWhite {
   background-image: url('./images/logo-white-mob.svg');
+
   @include create-mq($grid__bp-sm, 'min') {
     background-image: url('./images/logo-white.svg');
   }

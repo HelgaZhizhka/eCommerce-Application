@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Container } from '@mui/material';
+import Container from '@mui/material/Container';
+
 import { Icon } from '../baseComponents/Icon';
-import { IconName } from '../baseComponents/Icon/icon.enum';
-import { LogoVariant } from '../Logo/logo.enum';
+import { IconName } from '../baseComponents/Icon/Icon.enum';
+import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
-import styles from './footer.module.scss';
+import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => (
   <footer className={classNames(styles.root)}>

@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const getCSSVariableValue = (name: string): string => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 const colorOrange = getCSSVariableValue('--orange');
-const colorOrangeLight = getCSSVariableValue('--orange-light');
+const colorLightOrange = getCSSVariableValue('--orange-light');
 const colorWhite = getCSSVariableValue('--white');
 const colorLightWhite  = getCSSVariableValue('--light-white');
 const colorBlack = getCSSVariableValue('--black');
@@ -37,7 +37,7 @@ const lightTheme = createTheme({
           style: {
             color: colorWhite,
             '&:hover': {
-              backgroundColor: colorOrangeLight,
+              backgroundColor: colorLightOrange,
             },
           },
         },
@@ -76,6 +76,7 @@ const lightTheme = createTheme({
     mode: 'light',
     primary: {
       main: colorOrange,
+      light: colorLightOrange,
     },
     secondary: {
       main: colorGreen,
@@ -96,15 +97,9 @@ const darkTheme = createTheme({
     mode: 'dark',
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        a: {
-          textDecoration: 'none',
-          color: colorOrange,
-        },
-      },
-    },
+    ...lightTheme.components,
     MuiButton: {
+      ...lightTheme.components?.MuiButton,
       variants: [
         {
           props: { variant: 'contained', color: 'primary' },
@@ -112,7 +107,7 @@ const darkTheme = createTheme({
             color: colorWhite,
             backgroundColor: colorOrange,
             '&:hover': {
-              backgroundColor: colorOrangeLight,
+              backgroundColor: colorLightOrange,
             },
           },
         },

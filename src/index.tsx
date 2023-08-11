@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
+
 import { SvgSprite } from './components/baseComponents/SvgSprite';
-import { ThemeProvider } from './contexts/ThemeContext';
 import './index.scss';
 import App from './App';
 
@@ -11,9 +11,7 @@ root.render(
   <React.StrictMode>
     <SvgSprite />
     <BrowserRouter>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );
