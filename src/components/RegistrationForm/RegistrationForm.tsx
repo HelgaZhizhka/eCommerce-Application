@@ -7,15 +7,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
 import { validate } from '../../utils/validate';
-import { LoginFormValues } from './login.interface';
-import styles from './login.module.scss';
-import ShowValidate from './ShowValidate';
+import { RegistrationFormValues } from './registration.interface';
+import styles from './registration.module.scss';
+import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 export type Message = {
   [key: string]: boolean;
 };
 
-const initialValues: LoginFormValues = {
+const initialValues: RegistrationFormValues = {
   email: '',
   password: '',
 };
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
     <>
       <Formik
         initialValues={initialValues}
-        validate={(values): Partial<LoginFormValues> => validate(values, updateMessage, updateMessagePassword)}
+        validate={(values): Partial<RegistrationFormValues> => validate(values, updateMessage, updateMessagePassword)}
         onSubmit={(values, { setSubmitting }): void => {
           // console.log(values);
           setSubmitting(false);
@@ -70,14 +70,14 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedEmail(true)}
               />
 
-              {inputStartedEmail && <ShowValidate validEmail={message} />}
+              {inputStartedEmail && <ShowRegistrationValidate validEmail={message} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
                 type={showPassword ? 'text' : 'password'}
-                label="Password"
+                label="Repeat password"
                 name="password"
                 variant="standard"
                 fullWidth
@@ -95,21 +95,46 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowValidate validEmail={messagePassword} />}
+              {inputStartedPassword && <ShowRegistrationValidate validEmail={messagePassword} />}
+            </div>
+
+            <div className={classNames(styles.inputContainer)}>
+              <Field
+                component={FormikTextField}
+                type={showPassword ? 'text' : 'password'}
+                label="Repeat password"
+                name="password"
+                variant="standard"
+                fullWidth
+                margin="normal"
+                helperText={<ErrorMessage name="password" />}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword}>
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onFocus={(): void => setInputStartedPassword(true)}
+              />
+
+              {inputStartedPassword && <ShowRegistrationValidate validEmail={messagePassword} />}
             </div>
 
             <div className={classNames(styles.btnLogin)}>
               <Button variant="contained" color="primary" fullWidth disabled={isSubmitting} onClick={submitForm}>
-                Login
+                Continue
               </Button>
             </div>
             <div className={classNames(styles.lineContainer)}>
               <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>or</div>
+              <div className={classNames(styles.text)}>Or already have an account?</div>
             </div>
-            <Link to="/registration">
+            <Link to="/login">
               <Button variant="outlined" fullWidth color="primary">
-                Sign up
+                Login
               </Button>
             </Link>
           </Form>
