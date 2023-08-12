@@ -6,11 +6,11 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
-import { validate } from '../../utils/validate';
+import { validate } from '../../utils/validate/sigIn';
 import { LoginFormValues } from './login.interface';
 import styles from './login.module.scss';
 import ShowValidate from './ShowValidate';
-import { fieldInput } from '../RegistrationForm/registration.interface';
+import { FieldInput } from '../RegistrationForm/registration.interface';
 
 export type Message = {
   [key: string]: boolean;
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
-  const updateMessage = (type: fieldInput, key: string, value: boolean): void => {
+  const updateMessage = (type: FieldInput, key: string, value: boolean): void => {
     let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
 
     switch (type) {

@@ -1,6 +1,11 @@
 export interface RegistrationFormValues {
   email: string;
   password: string;
+  checkPassword: string,
 }
 
-export type fieldInput = 'email' | 'password' | 'checkPassword' | 'address'
+export type Message = {
+  [key: string]: boolean;
+};
+
+export type FieldInput = 'email' | 'password' | 'checkPassword' | 'address';

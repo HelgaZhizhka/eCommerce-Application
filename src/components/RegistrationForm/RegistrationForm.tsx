@@ -6,32 +6,31 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
-import { validate } from '../../utils/validate';
-import { RegistrationFormValues, fieldInput } from './registration.interface';
+import { Message, RegistrationFormValues, FieldInput } from './registration.interface';
 import styles from './registration.module.scss';
 import ShowRegistrationValidate from './ShowRegistrationValidate';
-
-export type Message = {
-  [key: string]: boolean;
-};
+import { validate } from '../../utils/validate/signUp';
 
 const initialValues: RegistrationFormValues = {
   email: '',
   password: '',
+  checkPassword: '',
 };
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
+  const [messagePasswordCheck, setMessagePasswordCheck] = useState<Message>({});
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
+  const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
 
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
 
-  const updateMessage = (type: fieldInput, key: string, value: boolean): void => {
+  const updateMessage = (type: FieldInput, key: string, value: boolean): void => {
     let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
 
     switch (type) {
@@ -40,6 +39,9 @@ const Login: React.FC = () => {
         break;
       case 'password':
         setter = setMessagePassword;
+        break;
+      case 'checkPassword':
+        setter = setMessagePasswordCheck;
         break;
 
       default:
@@ -52,20 +54,6 @@ const Login: React.FC = () => {
       }));
     }
   };
-
-  // const updateMessage = (key: string, value: boolean): void => {
-  //   setMessage((prevMessage) => ({
-  //     ...prevMessage,
-  //     [key]: value,
-  //   }));
-  // };
-
-  // const updateMessagePassword = (key: string, value: boolean): void => {
-  //   setMessagePassword((prevMessage) => ({
-  //     ...prevMessage,
-  //     [key]: value,
-  //   }));
-  // };
 
   return (
     <>
@@ -92,14 +80,14 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedEmail(true)}
               />
 
-              {inputStartedEmail && <ShowRegistrationValidate validEmail={message} />}
+              {inputStartedEmail && <ShowRegistrationValidate validate={message} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
                 type={showPassword ? 'text' : 'password'}
-                label="Repeat password"
+                label="Your password"
                 name="password"
                 variant="standard"
                 fullWidth
@@ -117,7 +105,7 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowRegistrationValidate validEmail={messagePassword} />}
+              {inputStartedPassword && <ShowRegistrationValidate validate={messagePassword} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -125,7 +113,7 @@ const Login: React.FC = () => {
                 component={FormikTextField}
                 type={showPassword ? 'text' : 'password'}
                 label="Repeat password"
-                name="password"
+                name="checkPassword"
                 variant="standard"
                 fullWidth
                 margin="normal"
@@ -139,10 +127,10 @@ const Login: React.FC = () => {
                     </InputAdornment>
                   ),
                 }}
-                onFocus={(): void => setInputStartedPassword(true)}
+                onFocus={(): void => setInputStartedCheckPassword(true)}
               />
 
-              {inputStartedPassword && <ShowRegistrationValidate validEmail={messagePassword} />}
+              {inputStartedCheckPassword && <ShowRegistrationValidate validate={messagePasswordCheck} />}
             </div>
 
             <div className={classNames(styles.btnLogin)}>
@@ -155,7 +143,7 @@ const Login: React.FC = () => {
               <div className={classNames(styles.text)}>Or already have an account?</div>
             </div>
             <Link to="/login">
-              <Button variant="outlined" fullWidth color="primary">
+              <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
                 Login
               </Button>
             </Link>
