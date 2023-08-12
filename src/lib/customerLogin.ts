@@ -2,7 +2,7 @@ import {apiRoot} from './Client'
 import envConfig from '../constants/index';
 
 interface LoginResponse {
-  statusCode?: number;
+  status?: number;
   data: object;
   error?: Error;
 }
@@ -12,7 +12,7 @@ const clientID = envConfig.CLIENT_ID
 const encodedCredentials = btoa(`${clientID}:${clientSecret}`);
 const authHeader = `Basic ${encodedCredentials}`;
 
-const customerLogin = (email: string, password: string): Promise<any> => apiRoot
+const customerLogin = (email: string, password: string): Promise<LoginResponse> => apiRoot
   .login()
   .post(
     {
@@ -23,21 +23,15 @@ const customerLogin = (email: string, password: string): Promise<any> => apiRoot
     })
   .execute()
   .then((response) => {
-    
-    // Access the response status
     const status = response.statusCode;
-
-    // You can also access other response data if needed
     const responseData = response.body;
-
-    // Return the response status and data
     return { status, data: responseData};
   })
   .catch((err: Error) => {
     throw err;
   });
 
-const getCustomerToken = async (email: string, password: string): Promise<any> => {
+const getCustomerToken = async (email: string, password: string): Promise<JSON> => {
   const endpoint = `https://auth.europe-west1.gcp.commercetools.com/oauth/ecommerce-project-final-task/customers/token?grant_type=password&username=${email}&password=${password}`;
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -54,7 +48,7 @@ const getCustomerToken = async (email: string, password: string): Promise<any> =
   return data;
 };
 
-const loginStatus = async (email: string, password: string):Promise<any> => {
+const loginStatus = async (email: string, password: string):Promise<void> => {
   const response = await customerLogin(email, password);
   console.log(response);
 
@@ -65,7 +59,7 @@ const loginStatus = async (email: string, password: string):Promise<any> => {
     alert('statusCode": 400, Customer account with the given credentials not found.');
   } else {
     console.log(response.status)
-    alert(`Unexpected response status: ${response.statusCode}`);
+    alert(`Unexpected response status: ${response.status}`);
   }
 }
 
