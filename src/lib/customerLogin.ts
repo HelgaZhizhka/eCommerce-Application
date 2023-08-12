@@ -7,29 +7,49 @@ interface LoginResponse {
   error?: Error;
 }
 
-const clientSecret = envConfig.CLIENT_SECRET;
-const clientID = envConfig.CLIENT_ID
+const clientSecret = envConfig.CLIENT_SECRET_CLIENT;
+const clientID = envConfig.CLIENT_ID_CLIENT;
 const encodedCredentials = btoa(`${clientID}:${clientSecret}`);
 const authHeader = `Basic ${encodedCredentials}`;
 
-const customerLogin = (email: string, password: string): Promise<LoginResponse> => apiRoot
+// const customerLogin = (email: string, password: string): Promise<LoginResponse> => apiRoot
+//   .login()
+//   .post(
+//     {
+//       body: {
+//         email,
+//         password,
+//       },
+//     })
+//   .execute()
+//   .then((response) => {
+//     const status = response.statusCode;
+//     const responseData = response.body;
+//     return { status, data: responseData};
+//   })
+//   .catch((err: Error) => {
+//     throw err;
+//   });
+
+const customerLogin = (email: string, password: string) => apiRoot
+  .me()
   .login()
   .post(
     {
       body: {
         email,
         password,
-      },
-    })
+    }
+  }
+  )
   .execute()
   .then((response) => {
-    const status = response.statusCode;
-    const responseData = response.body;
-    return { status, data: responseData};
-  })
-  .catch((err: Error) => {
-    throw err;
-  });
+        const status = response.statusCode;
+        const responseData = response.body;
+        console.log(responseData)
+        return { status, data: responseData};
+      })
+
 
 const getCustomerToken = async (email: string, password: string): Promise<JSON> => {
   const endpoint = `https://auth.europe-west1.gcp.commercetools.com/oauth/ecommerce-project-final-task/customers/token?grant_type=password&username=${email}&password=${password}`;
@@ -54,6 +74,9 @@ const loginStatus = async (email: string, password: string):Promise<void> => {
 
   if (response.status === 200) {
     await getCustomerToken(email, password)
+
+    await apiRoot.me().get().execute()
+    console.log(apiRoot)
     alert('Login successful');
   } else if (response.status === 400) {
     alert('statusCode": 400, Customer account with the given credentials not found.');
