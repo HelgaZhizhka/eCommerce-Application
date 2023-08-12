@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
-import { Button, IconButton, InputAdornment } from '@mui/material';
+import { Button } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
-import { Link } from 'react-router-dom';
 import { TextField as FormikTextField } from 'formik-material-ui';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
-import { Message, RegistrationFormValues, FieldInput } from './registration.interface';
+import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './registration.interface';
 import styles from './registration.module.scss';
 import ShowRegistrationValidate from './ShowRegistrationValidate';
-import { validate } from '../../utils/validate/signUp';
+import { validate } from '../../utils/validate/secondWindow';
 import { Data } from '../../pages/Registration/reg.interface';
 
-const initialValues: RegistrationFormValues = {
-  email: '',
-  password: '',
-  checkPassword: '',
+const initialValues: RegistrationFormValuesSecond = {
+  firstName: '',
+  lastName: '',
+  date: '',
 };
 
 interface LoginProps {
@@ -25,33 +22,28 @@ interface LoginProps {
   };
 }
 
-const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
+const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
   const { setData, setWindowPge } = userData;
-  const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState<Message>({});
-  const [messagePassword, setMessagePassword] = useState<Message>({});
-  const [messagePasswordCheck, setMessagePasswordCheck] = useState<Message>({});
+  const [firstNameMessage, setFirstNameMessage] = useState<Message>({});
+  const [lastNameMessage, setLastNameMessage] = useState<Message>({});
+  const [dateMessage, setdateMessage] = useState<Message>({});
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
   const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
   const [allFieldsValid, setAllFieldsValid] = useState(false);
 
-  const handleClickShowPassword = (): void => {
-    setShowPassword(!showPassword);
-  };
-
-  const updateMessage = (type: FieldInput, key: string, value: boolean): void => {
+  const updateMessage = (type: FieldInputSecond, key: string, value: boolean): void => {
     let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
 
     switch (type) {
-      case 'email':
-        setter = setMessage;
+      case 'firstName':
+        setter = setFirstNameMessage;
         break;
-      case 'password':
-        setter = setMessagePassword;
+      case 'lastName':
+        setter = setLastNameMessage;
         break;
-      case 'checkPassword':
-        setter = setMessagePasswordCheck;
+      case 'date':
+        setter = setdateMessage;
         break;
 
       default:
@@ -76,10 +68,10 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
     <>
       <Formik
         initialValues={initialValues}
-        validate={(values): Partial<RegistrationFormValues> => {
+        validate={(values): Partial<RegistrationFormValuesSecond> => {
           const errors = validate(values, updateMessage);
           setAllFieldsValid(
-            areAllValuesFalse(message) && areAllValuesFalse(messagePassword) && areAllValuesFalse(messagePasswordCheck)
+            areAllValuesFalse(firstNameMessage) && areAllValuesFalse(lastNameMessage) && areAllValuesFalse(dateMessage)
           );
           // console.log(message, messagePassword, messagePasswordCheck);
           return errors;
@@ -97,62 +89,43 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
-                name="email"
-                type="email"
-                label="Email"
+                name="firstName"
+                type="text"
+                label="First name"
                 variant="standard"
                 fullWidth
                 onFocus={(): void => setInputStartedEmail(true)}
               />
-              {inputStartedEmail && <ShowRegistrationValidate validate={message} />}
+              {inputStartedEmail && <ShowRegistrationValidate validate={firstNameMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
-                type={showPassword ? 'text' : 'password'}
-                label="Your password"
-                name="password"
+                type="text"
+                label="Last name"
+                name="lastName"
                 variant="standard"
                 fullWidth
                 margin="normal"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowRegistrationValidate validate={messagePassword} />}
+              {inputStartedPassword && <ShowRegistrationValidate validate={lastNameMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
-                type={showPassword ? 'text' : 'password'}
-                label="Repeat password"
-                name="checkPassword"
+                type="date"
+                name="date"
                 variant="standard"
                 fullWidth
                 margin="normal"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
                 onFocus={(): void => setInputStartedCheckPassword(true)}
               />
 
-              {inputStartedCheckPassword && <ShowRegistrationValidate validate={messagePasswordCheck} />}
+              {inputStartedCheckPassword && <ShowRegistrationValidate validate={dateMessage} />}
             </div>
 
             <div className={classNames(styles.btnLogin)}>
@@ -169,15 +142,17 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 Continue
               </Button>
             </div>
-            <div className={classNames(styles.lineContainer)}>
-              <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>Or already have an account?</div>
-            </div>
-            <Link to="/login">
-              <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
-                Login
-              </Button>
-            </Link>
+            <Button
+              sx={{ fontSize: '1rem' }}
+              variant="outlined"
+              fullWidth
+              color="primary"
+              onClick={(): void => {
+                setWindowPge((prev) => prev - 1);
+              }}
+            >
+              Back
+            </Button>
           </Form>
         )}
       </Formik>
@@ -185,4 +160,4 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
   );
 };
 
-export default RegistrationForm;
+export default RegistrationFormSecondWindow;
