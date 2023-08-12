@@ -1,6 +1,7 @@
 import { LoginFormValues } from '../../components/LoginForm/login.interface';
+import { fieldInput } from '../../components/RegistrationForm/registration.interface';
 
-type UpdateMessageFunction = (key: string, value: boolean) => void;
+type UpdateMessageFunction = (type: fieldInput, key: string, value: boolean) => void;
 
 const emailRequired = 'Email is required';
 const emailInvalid = 'Invalid email address';
@@ -12,45 +13,45 @@ const passwordLowerCase = 'Password must contain at least one lowercase letter (
 const passwordNumber = 'Password must contain at least one digit (0-9).';
 const passwordSpace = 'Password cannot start or end with a space.';
 
-export const validate = (values: LoginFormValues, updateMessage: UpdateMessageFunction, updateMessagePassword: UpdateMessageFunction): Partial<LoginFormValues> => {
+export const validate = (values: LoginFormValues, updateMessage: UpdateMessageFunction): Partial<LoginFormValues> => {
   const errors: Partial<LoginFormValues> = {};
 
   if (!values.email) {
-    updateMessage(emailRequired, true);
+    updateMessage('email', emailRequired, true);
   } else {
-    updateMessage(emailRequired, false);
+    updateMessage('email', emailRequired, false);
   }
 
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    updateMessage(emailInvalid, true);
+    updateMessage('email', emailInvalid, true);
   } else {
-    updateMessage(emailInvalid, false);
+    updateMessage('email', emailInvalid, false);
   }
 
   if (!values.password) {
-    updateMessagePassword(passwordRequired, true);
+    updateMessage('password', passwordRequired, true);
   } else {
-    updateMessagePassword(passwordRequired, false);
+    updateMessage('password', passwordRequired, false);
   } if (values.password.length < 8) {
-    updateMessagePassword(passwordLong, true);
+    updateMessage('password', passwordLong, true);
   } else {
-    updateMessagePassword(passwordLong, false);
+    updateMessage('password', passwordLong, false);
   } if (!/(?=.*[A-Z])/.test(values.password)) {
-    updateMessagePassword(passwordUpperCase, true);
+    updateMessage('password', passwordUpperCase, true);
   } else {
-    updateMessagePassword(passwordUpperCase, false);
+    updateMessage('password', passwordUpperCase, false);
   } if (!/(?=.*[a-z])/.test(values.password)) {
-    updateMessagePassword(passwordLowerCase, true);
+    updateMessage('password', passwordLowerCase, true);
   } else {
-    updateMessagePassword(passwordLowerCase, false);
+    updateMessage('password', passwordLowerCase, false);
   } if (!/(?=.*[0-9])/.test(values.password)) {
-    updateMessagePassword(passwordNumber, true);
+    updateMessage('password', passwordNumber, true);
   } else {
-    updateMessagePassword(passwordNumber, false);
+    updateMessage('password', passwordNumber, false);
   } if (!/^\S.*\S$/.test(values.password)) {
-    updateMessagePassword(passwordSpace, true);
+    updateMessage('password', passwordSpace, true);
   } else {
-    updateMessagePassword(passwordSpace, false);
+    updateMessage('password', passwordSpace, false);
   }
 
   return errors;

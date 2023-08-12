@@ -10,6 +10,7 @@ import { validate } from '../../utils/validate';
 import { LoginFormValues } from './login.interface';
 import styles from './login.module.scss';
 import ShowValidate from './ShowValidate';
+import { fieldInput } from '../RegistrationForm/registration.interface';
 
 export type Message = {
   [key: string]: boolean;
@@ -31,25 +32,33 @@ const Login: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
-  const updateMessage = (key: string, value: boolean): void => {
-    setMessage((prevMessage) => ({
-      ...prevMessage,
-      [key]: value,
-    }));
-  };
+  const updateMessage = (type: fieldInput, key: string, value: boolean): void => {
+    let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
 
-  const updateMessagePassword = (key: string, value: boolean): void => {
-    setMessagePassword((prevMessage) => ({
-      ...prevMessage,
-      [key]: value,
-    }));
+    switch (type) {
+      case 'email':
+        setter = setMessage;
+        break;
+      case 'password':
+        setter = setMessagePassword;
+        break;
+
+      default:
+        break;
+    }
+    if (setter) {
+      setter((prevMessage) => ({
+        ...prevMessage,
+        [key]: value,
+      }));
+    }
   };
 
   return (
     <>
       <Formik
         initialValues={initialValues}
-        validate={(values): Partial<LoginFormValues> => validate(values, updateMessage, updateMessagePassword)}
+        validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
         onSubmit={(values, { setSubmitting }): void => {
           // console.log(values);
           setSubmitting(false);
