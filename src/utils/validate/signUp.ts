@@ -16,63 +16,82 @@ const differentCheckPassword = 'Passwords must match';
 
 export const validate = (
   values: RegistrationFormValues,
-  updateMessage: UpdateMessageFunction
+  updateMessage: UpdateMessageFunction,
 ): Partial<RegistrationFormValues> => {
-  const errors: Partial<RegistrationFormValues> = {};
+  let errors: Partial<RegistrationFormValues> = {};
 
   if (!values.email) {
     updateMessage('email', emailRequired, true);
   } else {
     updateMessage('email', emailRequired, false);
+    delete errors.email;
   }
 
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
     updateMessage('email', emailInvalid, true);
+    errors.email = emailInvalid;
   } else {
     updateMessage('email', emailInvalid, false);
+    delete errors.email;
   }
 
   if (!values.password) {
     updateMessage('password', passwordRequired, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordRequired, false);
+    delete errors.password;
   }
   if (values.password.length < 8) {
     updateMessage('password', passwordLong, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordLong, false);
+    delete errors.password;
   }
   if (!/(?=.*[A-Z])/.test(values.password)) {
     updateMessage('password', passwordUpperCase, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordUpperCase, false);
+    delete errors.password;
   }
   if (!/(?=.*[a-z])/.test(values.password)) {
     updateMessage('password', passwordLowerCase, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordLowerCase, false);
+    delete errors.password;
   }
   if (!/(?=.*[0-9])/.test(values.password)) {
     updateMessage('password', passwordNumber, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordNumber, false);
+    delete errors.password;
   }
   if (!/^\S.*\S$/.test(values.password)) {
     updateMessage('password', passwordSpace, true);
+    errors.password = passwordRequired;
   } else {
     updateMessage('password', passwordSpace, false);
+    delete errors.password;
   }
 
   if (!values.checkPassword) {
     updateMessage('checkPassword', passwordRequired, true);
+    errors.checkPassword = passwordRequired;
   } else {
     updateMessage('checkPassword', passwordRequired, false);
+    delete errors.checkPassword;
   }
   if (values.checkPassword !== values.password) {
     updateMessage('checkPassword', differentCheckPassword, true);
+    errors.checkPassword = differentCheckPassword;
   } else {
     updateMessage('checkPassword', differentCheckPassword, false);
+    delete errors.checkPassword;
   }
-
+  errors = {}
   return errors;
 };

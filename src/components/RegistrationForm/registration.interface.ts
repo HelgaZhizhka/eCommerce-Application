@@ -8,4 +8,5 @@ export type Message = {
   [key: string]: boolean;
 };
 
+
 export type FieldInput = 'email' | 'password' | 'checkPassword' | 'address';

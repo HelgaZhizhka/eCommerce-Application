@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
@@ -10,6 +10,7 @@ import { Message, RegistrationFormValues, FieldInput } from './registration.inte
 import styles from './registration.module.scss';
 import ShowRegistrationValidate from './ShowRegistrationValidate';
 import { validate } from '../../utils/validate/signUp';
+import { Data } from '../../pages/Registration/reg.interface';
 
 const initialValues: RegistrationFormValues = {
   email: '',
@@ -17,7 +18,15 @@ const initialValues: RegistrationFormValues = {
   checkPassword: '',
 };
 
-const Login: React.FC = () => {
+interface LoginProps {
+  userData: {
+    data: Data;
+    setData: React.Dispatch<React.SetStateAction<Data>>;
+  };
+}
+
+const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
+  const { setData } = userData;
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
@@ -25,6 +34,7 @@ const Login: React.FC = () => {
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
   const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
+  const [allFieldsValid, setAllFieldsValid] = useState(false);
 
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -55,13 +65,30 @@ const Login: React.FC = () => {
     }
   };
 
+  function areAllValuesFalse(obj: Record<string, boolean>): boolean {
+    if (Object.keys(obj).length === 0) {
+      return false;
+    }
+    return Object.values(obj).every((value) => value === false);
+  }
+
   return (
     <>
       <Formik
         initialValues={initialValues}
-        validate={(values): Partial<RegistrationFormValues> => validate(values, updateMessage)}
+        validate={(values): Partial<RegistrationFormValues> => {
+          const errors = validate(values, updateMessage);
+          setAllFieldsValid(
+            areAllValuesFalse(message) && areAllValuesFalse(messagePassword) && areAllValuesFalse(messagePasswordCheck)
+          );
+          console.log(message, messagePassword, messagePasswordCheck);
+          return errors;
+        }}
         onSubmit={(values, { setSubmitting }): void => {
-          // console.log(values);
+          setData((prevData) => ({
+            ...prevData,
+            ...values,
+          }));
           setSubmitting(false);
         }}
       >
@@ -75,11 +102,8 @@ const Login: React.FC = () => {
                 label="Email"
                 variant="standard"
                 fullWidth
-                margin="normal"
-                helperText={<ErrorMessage name="email" />}
                 onFocus={(): void => setInputStartedEmail(true)}
               />
-
               {inputStartedEmail && <ShowRegistrationValidate validate={message} />}
             </div>
 
@@ -92,7 +116,6 @@ const Login: React.FC = () => {
                 variant="standard"
                 fullWidth
                 margin="normal"
-                helperText={<ErrorMessage name="password" />}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -117,7 +140,6 @@ const Login: React.FC = () => {
                 variant="standard"
                 fullWidth
                 margin="normal"
-                helperText={<ErrorMessage name="password" />}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -134,7 +156,13 @@ const Login: React.FC = () => {
             </div>
 
             <div className={classNames(styles.btnLogin)}>
-              <Button variant="contained" color="primary" fullWidth disabled={isSubmitting} onClick={submitForm}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={isSubmitting || !allFieldsValid}
+                onClick={submitForm}
+              >
                 Continue
               </Button>
             </div>
@@ -154,4 +182,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default RegistrationForm;
