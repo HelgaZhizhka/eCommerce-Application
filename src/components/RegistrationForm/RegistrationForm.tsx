@@ -154,7 +154,11 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
 
               {inputStartedCheckPassword && <ShowRegistrationValidate validate={messagePasswordCheck} />}
             </div>
-
+            <div className={classNames(styles.progressContainer)}>
+              <div className={classNames(styles.progress, styles.progressActive)}></div>
+              <div className={classNames(styles.progress)}></div>
+              <div className={classNames(styles.progress)}></div>
+            </div>
             <div className={classNames(styles.btnLogin)}>
               <Button
                 variant="contained"

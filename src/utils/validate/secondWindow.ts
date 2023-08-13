@@ -11,6 +11,7 @@ const lastNameRequired = 'Last name is required';
 const lastNameValid = 'The last name must not contain special characters or numbers.';
 const dateYoung = 'You are too young.';
 const dateOld = 'You are too old.';
+const dateBorn = "You weren't born yet.";
 
 export const validate = (
   values: RegistrationFormValuesSecond,
@@ -54,23 +55,27 @@ export const validate = (
 
     return age;
   };
-
+  
   if (values.date) {
     const age = calculateAge(values.date);
-
-    if (age < 13) {
+  
+    if (age < 0) {
+      updateMessage('date', dateBorn, true);
       updateMessage('date', dateYoung, false);
-      updateMessage('date', dateOld, true);
-    } else if (age > 150) {
+      updateMessage('date', dateOld, false);
+    } else if (age < 13) {
       updateMessage('date', dateYoung, true);
       updateMessage('date', dateOld, false);
+      updateMessage('date', dateBorn, false);
+    } else if (age > 150) {
+      updateMessage('date', dateOld, true);
+      updateMessage('date', dateYoung, false);
+      updateMessage('date', dateBorn, false);
     } else {
+      updateMessage('date', dateBorn, false);
       updateMessage('date', dateYoung, false);
       updateMessage('date', dateOld, false);
     }
-  } else {
-    updateMessage('date', dateYoung, false);
-    updateMessage('date', dateOld, false);
   }
 
   return errors;

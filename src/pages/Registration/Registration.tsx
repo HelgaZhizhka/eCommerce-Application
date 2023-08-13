@@ -9,7 +9,7 @@ import RegistrationFormSecondWindow from '../../components/RegistrationForm/Regi
 const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});
   const [windowPage, setWindowPge] = useState(2);
-  // console.log(data);
+  console.log(data);
   return (
     <div className={classNames(styles.root)}>
       <div className={classNames(styles.loginWrap)}>

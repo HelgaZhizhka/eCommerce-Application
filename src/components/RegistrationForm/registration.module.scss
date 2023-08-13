@@ -37,3 +37,20 @@
 .none {
   display: none;
 }
+
+.progressContainer {
+  display: flex;
+  gap: 12px;
+  margin-top: 44px;
+  margin-bottom: 14px;
+}
+
+.progress {
+  height: 12px;
+  width: 100%;
+  background: var(--spicy-orange);
+}
+
+.progressActive {
+  background: var(--spicy-orange-active);
+}

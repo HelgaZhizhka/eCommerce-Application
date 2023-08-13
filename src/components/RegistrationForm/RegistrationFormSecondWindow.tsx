@@ -73,7 +73,6 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
           setAllFieldsValid(
             areAllValuesFalse(firstNameMessage) && areAllValuesFalse(lastNameMessage) && areAllValuesFalse(dateMessage)
           );
-          // console.log(message, messagePassword, messagePasswordCheck);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }): void => {
@@ -123,9 +122,18 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
                 fullWidth
                 margin="normal"
                 onFocus={(): void => setInputStartedCheckPassword(true)}
+                inputProps={{
+                  maxLength: 4,
+                }}
               />
 
               {inputStartedCheckPassword && <ShowRegistrationValidate validate={dateMessage} />}
+            </div>
+
+            <div className={classNames(styles.progressContainer)}>
+              <div className={classNames(styles.progress)}></div>
+              <div className={classNames(styles.progress, styles.progressActive)}></div>
+              <div className={classNames(styles.progress)}></div>
             </div>
 
             <div className={classNames(styles.btnLogin)}>
