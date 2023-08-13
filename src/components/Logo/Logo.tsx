@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
-import { themeStore } from '../../stores/ThemeStore';
+import { themeStore } from '../../stores';
 import styles from './Logo.module.scss';
 import { LogoProps } from './Logo.interface';
 import { LogoVariant } from './Logo.enum';

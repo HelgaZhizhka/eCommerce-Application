@@ -1,4 +1,4 @@
-import { LoginFormValues } from '../../components/LoginForm/login.interface';
+import { LoginFormValues } from '../../components/LoginForm/Login.interface';
 
 export const validate = (values: LoginFormValues): Partial<LoginFormValues> => {
   const errors: Partial<LoginFormValues> = {};

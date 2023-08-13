@@ -5,6 +5,7 @@
 .root {
   margin-top: auto;
   background-color: var(--violet);
+  font-size: toRem(20px);
   color: var(--light-white);
   
   @include create-mq($grid__bp-sm, 'min') {
@@ -18,4 +19,47 @@
   text-align: center;
   margin: 0;
   background-color: var(--black);
+}
+
+.divider {
+  margin: 0 10px;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 36px;
+}
+
+.link {
+  color: var(--light-white);
+  transition: transform 0.3s ease-in-out;
+
+  &::after {
+    background-color: var(--white);
+  }
+
+  &:hover {
+    color: var(--white);
+    
+  }
+}
+
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerColumn {
+  padding: 0 10px;
+}
+
+.footerMenu {
+  li {
+    display: block;
+  }
+}
+
+.links {
+  display: flex;
+  margin-top: 1rem;
 }

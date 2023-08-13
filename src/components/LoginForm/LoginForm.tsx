@@ -1,13 +1,14 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import classNames from 'classnames';
+
 import { validate } from '../../utils/validate';
-import { LoginFormValues } from './login.interface';
-import styles from './login.module.scss';
+import { LoginFormValues } from './Login.interface';
+import styles from './Login.module.scss';
 
 const initialValues: LoginFormValues = {
   email: '',

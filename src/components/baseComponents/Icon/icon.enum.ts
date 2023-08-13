@@ -5,7 +5,7 @@ export enum IconName {
   UNVISIBLE = 'unvisible',
   VISIBLE = 'visible',
   SEARCH = 'search',
-  MAIL = 'mail',
+  EMAIL = 'mail',
   WHATSUP = 'whatsup',
   EXIT = 'exit',
   FAVORITE = 'favorite',

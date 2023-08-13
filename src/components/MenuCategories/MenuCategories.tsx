@@ -1,0 +1,52 @@
+import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+
+import { generateCatalogPath } from '../../routes/route.utils';
+import { SIZE, VARIANT } from './MenuCategories.types';
+import styles from './MenuCategories.module.scss';
+
+type MenuProps = {
+  size?: SIZE;
+  variant?: VARIANT;
+  className?: string;
+};
+
+const MenuCategories: React.FC<MenuProps> = ({ className, size = 'm', variant = 'vertical' }) => {
+  const categoryPathSales = generateCatalogPath('sales');
+  const categoryPathCloses = generateCatalogPath('closes');
+  const categoryPathDrinkWare = generateCatalogPath('drinkware');
+  const categoryPathOffice = generateCatalogPath('office');
+  const categoryPathBags = generateCatalogPath('bags');
+
+  return (
+    <ul className={classNames('ls-2', styles.root, styles[size], styles[variant], className)}>
+      <li className={styles.menuItem}>
+        <Link className={classNames('link', styles.menuLink, styles.brand)} to={categoryPathSales}>
+          Sales
+        </Link>
+      </li>
+      <li className={styles.menuItem}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathCloses}>
+          Closes
+        </Link>
+      </li>
+      <li className={styles.menuItem}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathDrinkWare}>
+          DrinkWare
+        </Link>
+      </li>
+      <li className={styles.menuItem}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathOffice}>
+          Office
+        </Link>
+      </li>
+      <li className={styles.menuItem}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathBags}>
+          Bags
+        </Link>
+      </li>
+    </ul>
+  );
+};
+
+export default MenuCategories;
