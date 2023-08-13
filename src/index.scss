@@ -1,3 +1,4 @@
-@use './styles/abstract';
-@use './styles/core';
-@use './styles/layout';
+@import './styles/abstract';
+@import './styles/core';
+@import './styles/layout';
+@import './styles/components';

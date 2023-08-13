@@ -1,8 +1,9 @@
 import classNames from 'classnames';
-import LoginForm from '../../components/LoginForm/LoginForm';
-import styles from './login.module.scss';
-import { Poster } from '../../components/Poster';
+
 import poster1 from '../../assets/images/fon1.png';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import { Poster } from '../../components/Poster';
+import styles from './Login.module.scss';
 
 const Login: React.FC = () => (
   <div className={classNames(styles.root)}>

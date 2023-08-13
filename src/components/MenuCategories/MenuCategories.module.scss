@@ -1,0 +1,72 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.s {
+
+  .menuLink {
+    font-size: toRem(16px);
+  }
+}
+
+.m {
+
+  .menuLink {
+    font-size: toRem(20px);
+  }
+}
+
+.l {
+
+  .menuLink {
+    font-size: toRem(24px);
+  }
+}
+
+.horizontal {
+  display: flex;
+  align-items: center;
+
+  .menuItem {
+    margin-right: 60px;
+  }
+}
+
+.vertical {
+
+  .menuItem {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
+
+.menuLink {
+  font-weight: 300;
+  color: var(--nav-color);
+
+  &::after {
+    background-color: var(--nav-color-hover);
+  }
+
+  &:hover {
+    color: var(--nav-color-hover);
+  }
+}
+
+.brand {
+  color: var(--state-danger);
+
+  &:hover {
+    color: var(--state-danger);
+  }
+
+  &::after {
+    background-color: var(--state-danger);
+  }
+}
