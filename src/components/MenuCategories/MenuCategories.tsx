@@ -5,13 +5,13 @@ import { generateCatalogPath } from '../../routes/route.utils';
 import { SIZE, VARIANT } from './MenuCategories.types';
 import styles from './MenuCategories.module.scss';
 
-type MenuProps = {
+type Props = {
   size?: SIZE;
   variant?: VARIANT;
   className?: string;
 };
 
-const MenuCategories: React.FC<MenuProps> = ({ className, size = 'm', variant = 'vertical' }) => {
+const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical' }) => {
   const categoryPathSales = generateCatalogPath('sales');
   const categoryPathCloses = generateCatalogPath('closes');
   const categoryPathDrinkWare = generateCatalogPath('drinkware');

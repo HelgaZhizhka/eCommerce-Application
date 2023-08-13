@@ -2,14 +2,14 @@ import classNames from 'classnames';
 
 import styles from './Button.module.scss';
 
-type BtnProps = {
+type Props = {
   children?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   className?: string;
 };
 
-const Button: React.FC<BtnProps> = ({ children, onClick, disabled, className }) => (
+const Button: React.FC<Props> = ({ children, onClick, disabled, className }) => (
   <button
     className={classNames(styles.root, className, {
       [styles.disabled]: disabled,

@@ -7,8 +7,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { validate } from '../../utils/validate';
-import { LoginFormValues } from './Login.interface';
-import styles from './Login.module.scss';
+import { LoginFormValues } from './LoginForm.interface';
+import styles from './LoginForm.module.scss';
 
 const initialValues: LoginFormValues = {
   email: '',
