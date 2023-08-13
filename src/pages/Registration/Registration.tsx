@@ -11,7 +11,7 @@ import { Data } from './reg.interface';
 
 const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});
-  const [windowPage, setWindowPge] = useState(3);
+  const [windowPage, setWindowPge] = useState(1);
   console.log(data);
   return (
     <div className={classNames(styles.root)}>

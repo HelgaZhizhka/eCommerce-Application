@@ -15,10 +15,13 @@ export interface RegistrationFormValuesThird {
   cityShipping: string;
   postalCodeShipping: string;
   countryShipping: string;
-  streetBilling?: string;
-  cityBilling?: string;
-  postalCodeBilling?: string;
-  countryBilling?: string;
+  streetBilling: string;
+  cityBilling: string;
+  postalCodeBilling: string;
+  countryBilling: string;
+  checkedShippingDefault: boolean;
+  checkedAddBillingForm: boolean;
+  checkedBillingDefault: boolean;
 }
 
 export type Message = {
@@ -27,5 +30,10 @@ export type Message = {
 
 export type FieldInput = 'email' | 'password' | 'checkPassword';
 export type FieldInputSecond = 'firstName' | 'lastName' | 'date';
-export type FieldInputthird = 'streetShipping' | 'cityShipping' | 'postalCodeShipping' |
-'countryShipping' | 'streetBilling' | 'cityBilling' | 'postalCodeBilling' | 'countryBilling';
+export type FieldInputthird =
+  | 'streetShipping'
+  | 'cityShipping'
+  | 'postalCodeShipping'
+  | 'streetBilling'
+  | 'cityBilling'
+  | 'postalCodeBilling';

@@ -109,7 +109,7 @@ const Login: React.FC = () => {
 
             <div className={classNames(styles.btnLogin)}>
               <Button variant="contained" color="primary" fullWidth disabled={isSubmitting} onClick={submitForm}>
-                Login
+                Sign in
               </Button>
             </div>
             <div className={classNames(styles.lineContainer)}>

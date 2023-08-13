@@ -9,7 +9,7 @@ import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
-const Header: React.FC = () => (
+const Header: React.FC = (): JSX.Element => (
   <header className={classNames(styles.root)}>
     <Container maxWidth="lg">
       <ThemeToggle />

@@ -18,6 +18,9 @@ const initialValues: RegistrationFormValuesThird = {
   cityBilling: '',
   postalCodeBilling: '',
   countryBilling: '',
+  checkedShippingDefault: false,
+  checkedAddBillingForm: false,
+  checkedBillingDefault: false,
 };
 
 interface LoginProps {
@@ -37,13 +40,19 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
-  const [countryShippingMessage, setCountryShippingMessage] = useState<Message>({});
+
+  const [streetBillingMessage, setStreetBillingMessage] = useState<Message>({});
+  const [cityBillingMessage, setCityBillingMessage] = useState<Message>({});
+  const [postalCodeBillingMessage, setPostalCodeBillingMessage] = useState<Message>({});
 
   const [inputStartedStreetShipping, setInputStartedStreetShipping] = useState(false);
   const [inputStartedCityShipping, setInputStartedCityShipping] = useState(false);
   const [inputStartedPostalCodeShipping, setInputStartedPostalCodeShipping] = useState(false);
 
-  const [inputStartedPostalCountryShipping, setInputStartedPostalCountryShipping] = useState(false);
+  const [inputStartedStreetBilling, setInputStartedStreetBilling] = useState(false);
+  const [inputStartedCityBilling, setInputStartedCityBilling] = useState(false);
+  const [inputStartedPostalCodeBilling, setInputStartedPostalCodeBilling] = useState(false);
+
   const [allFieldsValid, setAllFieldsValid] = useState(false);
 
   const updateMessage = (type: FieldInputthird, key: string, value: boolean): void => {
@@ -59,8 +68,14 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
       case 'postalCodeShipping':
         setter = setPostalCodeShippingMessage;
         break;
-      case 'countryShipping':
-        setter = setCountryShippingMessage;
+      case 'streetBilling':
+        setter = setStreetBillingMessage;
+        break;
+      case 'cityBilling':
+        setter = setCityBillingMessage;
+        break;
+      case 'postalCodeBilling':
+        setter = setPostalCodeBillingMessage;
         break;
 
       default:
@@ -90,8 +105,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
           setAllFieldsValid(
             areAllValuesFalse(streetShippingMessage) &&
               areAllValuesFalse(cityShippingMessage) &&
-              areAllValuesFalse(postalCodeShippingMessage) &&
-              areAllValuesFalse(countryShippingMessage)
+              areAllValuesFalse(postalCodeShippingMessage)
           );
           return errors;
         }}
@@ -105,6 +119,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
       >
         {({ values, submitForm, isSubmitting }): JSX.Element => (
           <Form>
+            <h3>Shipping address:</h3>
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
@@ -143,7 +158,6 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 fullWidth
                 multiple
                 select
-                onFocus={(): void => setInputStartedPostalCodeShipping(true)}
               >
                 {options.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -151,8 +165,6 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                   </MenuItem>
                 ))}
               </Field>
-
-              {inputStartedPostalCodeShipping && <ShowRegistrationValidate validate={countryShippingMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -165,21 +177,92 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 margin="normal"
                 label="Postal code"
                 disabled={!values.countryShipping.length}
-                onFocus={(): void => setInputStartedPostalCountryShipping(true)}
+                onFocus={(): void => setInputStartedPostalCodeShipping(true)}
               />
 
-              {inputStartedPostalCountryShipping && <ShowRegistrationValidate validate={postalCodeShippingMessage} />}
+              {inputStartedPostalCodeShipping && <ShowRegistrationValidate validate={postalCodeShippingMessage} />}
             </div>
+            <div className={classNames(styles.checkboxWrap)}>
+              <label>
+                <Field type="checkbox" name="checkedShippingDefault" />
+                <span className={classNames(styles.inputTitle)}>Use default</span>
+              </label>
+              <label>
+                <Field type="checkbox" name="checkedAddBillingForm" />
+                <span className={classNames(styles.inputTitle)}>Use this address for billing </span>
+              </label>
 
-            <div>
-              <label>
-                <Field type="checkbox" name="checked" value="One" />
-                Use default
-              </label>
-              <label>
-                <Field type="checkbox" name="checked" value="Two" />
-                Use this address for billing
-              </label>
+              {values.checkedAddBillingForm && (
+                <div className={classNames(styles.billingWrap)}>
+                  <h3>Billing address:</h3>
+                  <div className={classNames(styles.inputContainer)}>
+                    <Field
+                      component={FormikTextField}
+                      name="streetBilling"
+                      type="text"
+                      label="Street"
+                      variant="standard"
+                      fullWidth
+                      onFocus={(): void => setInputStartedStreetBilling(true)}
+                    />
+                    {inputStartedStreetBilling && <ShowRegistrationValidate validate={streetBillingMessage} />}
+                  </div>
+
+                  <div className={classNames(styles.inputContainer)}>
+                    <Field
+                      component={FormikTextField}
+                      type="text"
+                      label="City"
+                      name="cityBilling"
+                      variant="standard"
+                      fullWidth
+                      margin="normal"
+                      onFocus={(): void => setInputStartedCityBilling(true)}
+                    />
+
+                    {inputStartedCityBilling && <ShowRegistrationValidate validate={cityBillingMessage} />}
+                  </div>
+
+                  <div className={classNames(styles.inputContainer)}>
+                    <Field
+                      component={FormikTextField}
+                      margin="normal"
+                      label="Country"
+                      name="countryBilling"
+                      variant="standard"
+                      fullWidth
+                      multiple
+                      select
+                    >
+                      {options.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                  </div>
+
+                  <div className={classNames(styles.inputContainer)}>
+                    <Field
+                      component={FormikTextField}
+                      type="number"
+                      name="postalCodeBilling"
+                      variant="standard"
+                      fullWidth
+                      margin="normal"
+                      label="Postal code"
+                      disabled={!values.countryBilling.length}
+                      onFocus={(): void => setInputStartedPostalCodeBilling(true)}
+                    />
+
+                    {inputStartedPostalCodeBilling && <ShowRegistrationValidate validate={postalCodeBillingMessage} />}
+                  </div>
+                  <label>
+                    <Field type="checkbox" name="checkedBillingDefault" />
+                    <span className={classNames(styles.inputTitle)}>Use default</span>
+                  </label>
+                </div>
+              )}
             </div>
             <div className={classNames(styles.progressContainer)}>
               <div className={classNames(styles.progress)}></div>

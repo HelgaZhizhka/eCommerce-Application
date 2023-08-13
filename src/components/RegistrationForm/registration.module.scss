@@ -54,3 +54,18 @@
 .progressActive {
   background: var(--spicy-orange-active);
 }
+.checkboxWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputTitle {
+  margin-left: 5px;
+  font-size: 1.2rem;
+}
+
+.billingWrap {
+  border-top: 3px solid #000;
+  margin-top: 10px;
+}
