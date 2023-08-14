@@ -1,4 +1,12 @@
-import { IconProps } from './icon.type';
+import { IconName } from './Icon.enum';
+
+type IconProps = {
+  name: IconName;
+  width?: number;
+  height?: number;
+  color?: string;
+  className?: string;
+};
 
 const Icon: React.FC<IconProps> = ({ name, width = 24, height = 24, className, color }) => (
   <svg width={width} height={height} className={className} color={color}>

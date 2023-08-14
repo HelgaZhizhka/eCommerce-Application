@@ -1,4 +1,4 @@
-import { LogoVariant } from './logo.enum';
+import { LogoVariant } from './Logo.enum';
 
 export interface LogoProps {
   variant?: LogoVariant;

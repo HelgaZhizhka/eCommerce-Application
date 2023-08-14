@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Typography, Container } from '@mui/material';
-import { LogoVariant } from '../Logo/logo.enum';
+import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
-import styles from './footer.module.scss';
+import styles from './Footer.module.scss';
 import { Icon } from '../baseComponents/Icon';
-import { IconName } from '../baseComponents/Icon/icon.enum';
+import { IconName } from '../baseComponents/Icon/Icon.enum';
 
 const Copyright: React.FC = () => (
   <Typography variant="body2" align="center">

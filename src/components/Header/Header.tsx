@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
-import { IconName } from '../baseComponents/Icon/icon.enum';
+import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
-import { LogoVariant } from '../Logo/logo.enum';
+import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
-import styles from './header.module.scss';
+import styles from './Header.module.scss';
 
 const Header: React.FC = () => (
   <header className={classNames(styles.root)}>
