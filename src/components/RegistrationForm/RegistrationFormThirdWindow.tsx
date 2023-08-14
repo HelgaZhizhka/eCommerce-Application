@@ -6,9 +6,9 @@ import classNames from 'classnames';
 
 import { validate } from '../../utils/validate/thirdWindow';
 import { Data } from '../../pages/Registration/Registration.interface';
+import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
 import styles from './Registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValuesThird = {
   streetShipping: '',
@@ -131,7 +131,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 fullWidth
                 onFocus={(): void => setInputStartedStreetShipping(true)}
               />
-              {inputStartedStreetShipping && <ShowRegistrationValidate validate={streetShippingMessage} />}
+              {inputStartedStreetShipping && <ShowValidate validate={streetShippingMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -146,7 +146,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 onFocus={(): void => setInputStartedCityShipping(true)}
               />
 
-              {inputStartedCityShipping && <ShowRegistrationValidate validate={cityShippingMessage} />}
+              {inputStartedCityShipping && <ShowValidate validate={cityShippingMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -181,7 +181,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 onFocus={(): void => setInputStartedPostalCodeShipping(true)}
               />
 
-              {inputStartedPostalCodeShipping && <ShowRegistrationValidate validate={postalCodeShippingMessage} />}
+              {inputStartedPostalCodeShipping && <ShowValidate validate={postalCodeShippingMessage} />}
             </div>
             <div className={classNames(styles.checkboxWrap)}>
               <label>
@@ -206,7 +206,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                       fullWidth
                       onFocus={(): void => setInputStartedStreetBilling(true)}
                     />
-                    {inputStartedStreetBilling && <ShowRegistrationValidate validate={streetBillingMessage} />}
+                    {inputStartedStreetBilling && <ShowValidate validate={streetBillingMessage} />}
                   </div>
 
                   <div className={classNames(styles.inputContainer)}>
@@ -221,7 +221,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                       onFocus={(): void => setInputStartedCityBilling(true)}
                     />
 
-                    {inputStartedCityBilling && <ShowRegistrationValidate validate={cityBillingMessage} />}
+                    {inputStartedCityBilling && <ShowValidate validate={cityBillingMessage} />}
                   </div>
 
                   <div className={classNames(styles.inputContainer)}>
@@ -256,7 +256,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                       onFocus={(): void => setInputStartedPostalCodeBilling(true)}
                     />
 
-                    {inputStartedPostalCodeBilling && <ShowRegistrationValidate validate={postalCodeBillingMessage} />}
+                    {inputStartedPostalCodeBilling && <ShowValidate validate={postalCodeBillingMessage} />}
                   </div>
                   <label>
                     <Field type="checkbox" name="checkedBillingDefault" />

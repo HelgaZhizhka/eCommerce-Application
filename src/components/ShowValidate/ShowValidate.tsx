@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 
 import { Message } from '../LoginForm/LoginForm';
-import styles from './Login.module.scss';
+import styles from './ShowValidate.module.scss';
 
-const ShowValidate = ({ validEmail }: { validEmail: Message }): JSX.Element => {
-  const conditions = Object.keys(validEmail);
+const ShowValidate = ({ validate }: { validate: Message }): JSX.Element => {
+  const conditions = Object.keys(validate);
   return (
     <>
       {conditions.map((condition, index) => (
         <div
-          className={validEmail[condition] ? classNames(styles.error) : classNames(styles.none)}
+          className={validate[condition] ? classNames(styles.error) : classNames(styles.none)}
           key={condition + index}
         >
           {condition}

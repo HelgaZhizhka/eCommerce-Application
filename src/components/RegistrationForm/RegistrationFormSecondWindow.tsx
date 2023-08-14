@@ -6,9 +6,9 @@ import classNames from 'classnames';
 
 import { validate } from '../../utils/validate/secondWindow';
 import { Data } from '../../pages/Registration/Registration.interface';
+import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './Registration.interface';
 import styles from './Registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValuesSecond = {
   firstName: '',
@@ -96,7 +96,7 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
                 fullWidth
                 onFocus={(): void => setInputStartedEmail(true)}
               />
-              {inputStartedEmail && <ShowRegistrationValidate validate={firstNameMessage} />}
+              {inputStartedEmail && <ShowValidate validate={firstNameMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -111,7 +111,7 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowRegistrationValidate validate={lastNameMessage} />}
+              {inputStartedPassword && <ShowValidate validate={lastNameMessage} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -128,7 +128,7 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
                 }}
               />
 
-              {inputStartedCheckPassword && <ShowRegistrationValidate validate={dateMessage} />}
+              {inputStartedCheckPassword && <ShowValidate validate={dateMessage} />}
             </div>
 
             <div className={classNames(styles.progressContainer)}>

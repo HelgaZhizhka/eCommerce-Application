@@ -9,9 +9,9 @@ import classNames from 'classnames';
 
 import { validate } from '../../utils/validate/signUp';
 import { Data } from '../../pages/Registration/Registration.interface';
+import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValues, FieldInput } from './Registration.interface';
 import styles from './Registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValues = {
   email: '',
@@ -105,7 +105,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 fullWidth
                 onFocus={(): void => setInputStartedEmail(true)}
               />
-              {inputStartedEmail && <ShowRegistrationValidate validate={message} />}
+              {inputStartedEmail && <ShowValidate validate={message} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -129,7 +129,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowRegistrationValidate validate={messagePassword} />}
+              {inputStartedPassword && <ShowValidate validate={messagePassword} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -153,7 +153,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 onFocus={(): void => setInputStartedCheckPassword(true)}
               />
 
-              {inputStartedCheckPassword && <ShowRegistrationValidate validate={messagePasswordCheck} />}
+              {inputStartedCheckPassword && <ShowValidate validate={messagePasswordCheck} />}
             </div>
             <div className={classNames(styles.progressContainer)}>
               <div className={classNames(styles.progress, styles.progressActive)}></div>

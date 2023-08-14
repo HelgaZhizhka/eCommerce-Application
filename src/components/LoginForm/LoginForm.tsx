@@ -80,7 +80,7 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedEmail(true)}
               />
 
-              {inputStartedEmail && <ShowValidate validEmail={message} />}
+              {inputStartedEmail && <ShowValidate validate={message} />}
             </div>
 
             <div className={classNames(styles.inputContainer)}>
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
                 onFocus={(): void => setInputStartedPassword(true)}
               />
 
-              {inputStartedPassword && <ShowValidate validEmail={messagePassword} />}
+              {inputStartedPassword && <ShowValidate validate={messagePassword} />}
             </div>
 
             <div className={classNames(styles.btnLogin)}>
