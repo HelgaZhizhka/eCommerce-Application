@@ -1,0 +1,10 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--app-height);
+}
+
+.app > div:nth-of-type(1) {
+  position: relative;
+  flex: 1;
+}

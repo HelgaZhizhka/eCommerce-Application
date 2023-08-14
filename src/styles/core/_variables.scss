@@ -1,0 +1,43 @@
+:root {
+  --app-height: 100vh;
+  --white: #fff;
+  --light-white: #f2f2f2;
+  --light-blue: #eef7ff;
+  --orange: #f2760f;
+  --orange-light: #ff9843;
+  --blue: #3e17ff;
+  --purple: #b62dd3;
+  --green: #009444;
+  --red: #f61717;
+  --pink: #F7527E;
+  --violet: #70198f;
+  --black: #0b0a0a;
+  --dark: #121212;
+
+
+  --state-primary: var(--orange);
+  --state-primary-hover: var(--orange-light);
+  --state-secondary: var(--green);
+  --state-success: var(--green);
+  --state-info: var(--blue);
+  --state-warning: var(--orange);
+  --state-danger: var(--red);
+
+  --gray: #979999;
+
+  --body-bg: var(--white);
+  --nav-bg: var(--black);
+  --nav-color: var(--light-white);
+  --nav-color-hover: var(--white);
+  --color-text: var(--black);
+  --font-family: 'Mukta', sans-serif;
+
+  --transition-duration: 0.35s;
+  --transition-easing: cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+
+body[data-theme="dark"] {
+  --body-bg: var(--dark);
+  --color-text: var(--light-white);
+}

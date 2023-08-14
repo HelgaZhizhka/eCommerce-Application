@@ -4,18 +4,14 @@ import Main from '../pages/Main/Main';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
-
-const mainPath = '';
-const loginPath = 'login';
-const registrationPath = 'registration';
-const errorPath = '*';
+import { RoutePaths } from './routes.enum';
 
 const RouterConfig: React.FC = () => (
   <Routes>
-    <Route path={mainPath} element={<Main />} />
-    <Route path={loginPath} element={<Login />} />
-    <Route path={registrationPath} element={<Registration />} />
-    <Route path={errorPath} element={<ErrorPage />} />
+    <Route path={RoutePaths.MAIN} element={<Main />} />
+    <Route path={RoutePaths.LOGIN} element={<Login />} />
+    <Route path={RoutePaths.REGISTRATION} element={<Registration />} />
+    <Route path={RoutePaths.ERROR} element={<ErrorPage />} />
   </Routes>
 );
 
