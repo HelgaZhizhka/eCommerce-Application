@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
+
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { LogoVariant } from '../Logo/Logo.enum';
