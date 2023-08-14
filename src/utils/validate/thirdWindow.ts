@@ -1,4 +1,4 @@
-import { FieldInputthird, RegistrationFormValuesThird } from '../../components/RegistrationForm/registration.interface';
+import { FieldInputthird, RegistrationFormValuesThird } from '../../components/RegistrationForm/Registration.interface';
 
 type UpdateMessageFunction = (type: FieldInputthird, key: string, value: boolean) => void;
 

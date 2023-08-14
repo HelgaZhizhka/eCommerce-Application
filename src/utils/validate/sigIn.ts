@@ -1,5 +1,5 @@
-import { LoginFormValues } from '../../components/LoginForm/login.interface';
-import { FieldInput } from '../../components/RegistrationForm/registration.interface';
+import { LoginFormValues } from '../../components/LoginForm/Login.interface';
+import { FieldInput } from '../../components/RegistrationForm/Registration.interface';
 
 type UpdateMessageFunction = (type: FieldInput, key: string, value: boolean) => void;
 
@@ -32,23 +32,28 @@ export const validate = (values: LoginFormValues, updateMessage: UpdateMessageFu
     updateMessage('password', passwordRequired, true);
   } else {
     updateMessage('password', passwordRequired, false);
-  } if (values.password.length < 8) {
+  }
+  if (values.password.length < 8) {
     updateMessage('password', passwordLong, true);
   } else {
     updateMessage('password', passwordLong, false);
-  } if (!/(?=.*[A-Z])/.test(values.password)) {
+  }
+  if (!/(?=.*[A-Z])/.test(values.password)) {
     updateMessage('password', passwordUpperCase, true);
   } else {
     updateMessage('password', passwordUpperCase, false);
-  } if (!/(?=.*[a-z])/.test(values.password)) {
+  }
+  if (!/(?=.*[a-z])/.test(values.password)) {
     updateMessage('password', passwordLowerCase, true);
   } else {
     updateMessage('password', passwordLowerCase, false);
-  } if (!/(?=.*[0-9])/.test(values.password)) {
+  }
+  if (!/(?=.*[0-9])/.test(values.password)) {
     updateMessage('password', passwordNumber, true);
   } else {
     updateMessage('password', passwordNumber, false);
-  } if (!/^\S.*\S$/.test(values.password)) {
+  }
+  if (!/^\S.*\S$/.test(values.password)) {
     updateMessage('password', passwordSpace, true);
   } else {
     updateMessage('password', passwordSpace, false);

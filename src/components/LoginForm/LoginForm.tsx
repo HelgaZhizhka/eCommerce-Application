@@ -7,10 +7,10 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
 import { validate } from '../../utils/validate/sigIn';
-import { LoginFormValues } from './login.interface';
-import styles from './login.module.scss';
-import ShowValidate from './ShowValidate';
-import { FieldInput } from '../RegistrationForm/registration.interface';
+import ShowValidate from '../ShowValidate/ShowValidate';
+import { FieldInput } from '../RegistrationForm/Registration.interface';
+import { LoginFormValues } from './Login.interface';
+import styles from './Login.module.scss';
 
 export type Message = {
   [key: string]: boolean;

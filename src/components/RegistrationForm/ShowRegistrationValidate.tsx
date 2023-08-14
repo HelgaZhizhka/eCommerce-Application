@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import styles from './registration.module.scss';
-import { Message } from './registration.interface';
+
+import styles from './Registration.module.scss';
+import { Message } from './Registration.interface';
 
 const ShowValidate = ({ validate }: { validate: Message }): JSX.Element => {
   const conditions = Object.keys(validate);

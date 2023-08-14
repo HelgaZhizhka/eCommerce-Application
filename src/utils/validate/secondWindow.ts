@@ -1,7 +1,7 @@
 import {
   RegistrationFormValuesSecond,
   FieldInputSecond,
-} from '../../components/RegistrationForm/registration.interface';
+} from '../../components/RegistrationForm/Registration.interface';
 
 type UpdateMessageFunction = (type: FieldInputSecond, key: string, value: boolean) => void;
 
@@ -55,10 +55,10 @@ export const validate = (
 
     return age;
   };
-  
+
   if (values.date) {
     const age = calculateAge(values.date);
-  
+
     if (age < 0) {
       updateMessage('date', dateBorn, true);
       updateMessage('date', dateYoung, false);

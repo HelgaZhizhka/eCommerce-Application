@@ -3,11 +3,12 @@ import { Button, MenuItem } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import classNames from 'classnames';
-import { Message, RegistrationFormValuesThird, FieldInputthird } from './registration.interface';
-import styles from './registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
+
 import { validate } from '../../utils/validate/thirdWindow';
-import { Data } from '../../pages/Registration/reg.interface';
+import { Data } from '../../pages/Registration/Registration.interface';
+import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
+import styles from './Registration.module.scss';
+import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValuesThird = {
   streetShipping: '',

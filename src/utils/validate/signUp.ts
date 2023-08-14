@@ -1,4 +1,4 @@
-import { RegistrationFormValues, FieldInput } from '../../components/RegistrationForm/registration.interface';
+import { RegistrationFormValues, FieldInput } from '../../components/RegistrationForm/Registration.interface';
 
 type UpdateMessageFunction = (type: FieldInput, key: string, value: boolean) => void;
 
@@ -16,7 +16,7 @@ const differentCheckPassword = 'Passwords must match';
 
 export const validate = (
   values: RegistrationFormValues,
-  updateMessage: UpdateMessageFunction,
+  updateMessage: UpdateMessageFunction
 ): Partial<RegistrationFormValues> => {
   let errors: Partial<RegistrationFormValues> = {};
 
@@ -92,6 +92,6 @@ export const validate = (
     updateMessage('checkPassword', differentCheckPassword, false);
     delete errors.checkPassword;
   }
-  errors = {}
+  errors = {};
   return errors;
 };

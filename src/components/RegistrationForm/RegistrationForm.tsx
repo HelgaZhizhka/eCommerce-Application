@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
@@ -6,11 +6,12 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
-import { Message, RegistrationFormValues, FieldInput } from './registration.interface';
-import styles from './registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
+
 import { validate } from '../../utils/validate/signUp';
-import { Data } from '../../pages/Registration/reg.interface';
+import { Data } from '../../pages/Registration/Registration.interface';
+import { Message, RegistrationFormValues, FieldInput } from './Registration.interface';
+import styles from './Registration.module.scss';
+import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValues = {
   email: '',

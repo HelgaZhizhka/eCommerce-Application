@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import styles from './registration.module.scss';
+
 import {
   RegistrationForm,
   RegistrationFormSecondWindow,
   RegistrationFormThirdWindow,
 } from '../../components/RegistrationForm';
 import { Poster } from '../../components/Poster';
-import { Data } from './reg.interface';
+import styles from './Registration.module.scss';
+import { Data } from './Registration.interface';
 
 const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});

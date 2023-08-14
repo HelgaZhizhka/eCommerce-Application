@@ -3,11 +3,12 @@ import { Button } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import classNames from 'classnames';
-import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './registration.interface';
-import styles from './registration.module.scss';
-import ShowRegistrationValidate from './ShowRegistrationValidate';
+
 import { validate } from '../../utils/validate/secondWindow';
-import { Data } from '../../pages/Registration/reg.interface';
+import { Data } from '../../pages/Registration/Registration.interface';
+import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './Registration.interface';
+import styles from './Registration.module.scss';
+import ShowRegistrationValidate from './ShowRegistrationValidate';
 
 const initialValues: RegistrationFormValuesSecond = {
   firstName: '',

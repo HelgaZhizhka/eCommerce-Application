@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import { Message } from './LoginForm';
-import styles from './login.module.scss';
+
+import { Message } from '../LoginForm/LoginForm';
+import styles from './Login.module.scss';
 
 const ShowValidate = ({ validEmail }: { validEmail: Message }): JSX.Element => {
   const conditions = Object.keys(validEmail);
