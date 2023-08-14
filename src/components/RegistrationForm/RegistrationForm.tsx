@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
@@ -29,16 +29,23 @@ interface LoginProps {
 const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
   const { setData, setWindowPge } = userData;
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
+
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
   const [messagePasswordCheck, setMessagePasswordCheck] = useState<Message>({});
+
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
   const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
+
   const [allFieldsValid, setAllFieldsValid] = useState(false);
 
-  const handleClickShowPassword = (): void => {
-    setShowPassword(!showPassword);
+  const handleClickShowPassword = (
+    isShow: boolean,
+    setPasswordState: React.Dispatch<React.SetStateAction<boolean>>
+  ): void => {
+    setPasswordState(!isShow);
   };
 
   const updateMessage = (type: FieldInput, key: string, value: boolean): void => {
@@ -73,16 +80,20 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
     return Object.values(obj).every((value) => value === false);
   };
 
+  useEffect(() => {
+    if (areAllValuesFalse(message) && areAllValuesFalse(messagePassword) && areAllValuesFalse(messagePasswordCheck)) {
+      setAllFieldsValid(true);
+    } else setAllFieldsValid(false);
+  }, [message, messagePassword, messagePasswordCheck]);
+
+  console.log(allFieldsValid);
+
   return (
     <>
       <Formik
         initialValues={initialValues}
         validate={(values): Partial<RegistrationFormValues> => {
           const errors = validate(values, updateMessage);
-          setAllFieldsValid(
-            areAllValuesFalse(message) && areAllValuesFalse(messagePassword) && areAllValuesFalse(messagePasswordCheck)
-          );
-          // console.log(message, messagePassword, messagePasswordCheck);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }): void => {
@@ -120,7 +131,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
+                      <IconButton onClick={(): void => handleClickShowPassword(showPassword, setShowPassword)}>
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
@@ -135,7 +146,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
-                type={showPassword ? 'text' : 'password'}
+                type={showPasswordCheck ? 'text' : 'password'}
                 label="Repeat password"
                 name="checkPassword"
                 variant="standard"
@@ -144,8 +155,10 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      <IconButton
+                        onClick={(): void => handleClickShowPassword(showPasswordCheck, setShowPasswordCheck)}
+                      >
+                        {showPasswordCheck ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),

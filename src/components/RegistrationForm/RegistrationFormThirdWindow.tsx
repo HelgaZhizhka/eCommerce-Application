@@ -90,12 +90,26 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
     }
   };
 
-  const areAllValuesFalse = (obj: Record<string, boolean>): boolean => {
+  type StateMessage = Record<string, boolean>;
+
+  const areAllValuesFalse = (obj: StateMessage): boolean => {
     if (Object.keys(obj).length === 0) {
       return false;
     }
     return Object.values(obj).every((value) => value === false);
   };
+
+  // function checkBillingForm(billingChecked: boolean, streetBilling: StateMessage, cityBilling: StateMessage, codeBilling: StateMessage): boolean {
+  //   if (billingChecked) {
+  //     return false;
+  //   }
+
+  //   return (
+  //     areAllValuesFalse(streetBilling) &&
+  //     areAllValuesFalse(cityBilling) &&
+  //     areAllValuesFalse(codeBilling)
+  //   );
+  // }
 
   return (
     <>
@@ -107,6 +121,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
             areAllValuesFalse(streetShippingMessage) &&
               areAllValuesFalse(cityShippingMessage) &&
               areAllValuesFalse(postalCodeShippingMessage)
+            // checkBillingForm(values.checkedAddBillingForm, streetBillingMessage, cityBillingMessage, postalCodeBillingMessage)
           );
           return errors;
         }}
@@ -193,7 +208,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 <span className={classNames(styles.inputTitle)}>Use this address for billing </span>
               </label>
 
-              {values.checkedAddBillingForm && (
+              {!values.checkedAddBillingForm && (
                 <div className={classNames(styles.billingWrap)}>
                   <h3>Billing address:</h3>
                   <div className={classNames(styles.inputContainer)}>
