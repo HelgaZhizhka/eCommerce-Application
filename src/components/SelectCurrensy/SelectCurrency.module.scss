@@ -1,0 +1,11 @@
+@import '../../styles/abstract/functions';
+
+.root {
+  display: flex;
+  align-items: flex-end;
+}
+
+.value {
+  margin-right: 10px;
+  font-size: toRem(20px);
+}

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -5,12 +6,12 @@ import { Link } from 'react-router-dom';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import classNames from 'classnames';
+
 import { validate } from '../../utils/validate/sigIn';
 import ShowValidate from '../ShowValidate/ShowValidate';
 import { FieldInput } from '../RegistrationForm/Registration.interface';
-import { LoginFormValues } from './Login.interface';
-import styles from './Login.module.scss';
+import { LoginFormValues } from './LoginForm.interface';
+import styles from './LoginForm.module.scss';
 
 export type Message = {
   [key: string]: boolean;

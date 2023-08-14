@@ -1,4 +1,5 @@
-@use './variables';
-@use './normalize';
-@use './typography';
-@use './_animations';
+@import './variables';
+@import './normalize';
+@import './typography';
+@import './_animations';
+@import './_states';

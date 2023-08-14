@@ -1,4 +1,4 @@
-import { LoginFormValues } from '../../components/LoginForm/Login.interface';
+import { LoginFormValues } from '../../components/LoginForm/LoginForm.interface';
 import { FieldInput } from '../../components/RegistrationForm/Registration.interface';
 
 type UpdateMessageFunction = (type: FieldInput, key: string, value: boolean) => void;

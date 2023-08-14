@@ -119,7 +119,7 @@ const darkTheme = createTheme({
             '&:hover': {
               backgroundColor: 'rgba(240, 248, 255, .36)',
               borderColor: colorLightBlue,
-              color: colorBlack,
+              color: colorLightBlue,
             },
             '&:active': {
               borderColor: colorBlue,

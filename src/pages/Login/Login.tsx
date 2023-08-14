@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 
+import poster1 from '../../assets/images/fon1.png';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { Poster } from '../../components/Poster';
-import poster1 from '../../assets/images/fon1.png';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => (

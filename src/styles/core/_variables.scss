@@ -16,6 +16,10 @@
   --spicy-orange: #faba86;
   --spicy-orange-active: #cf5f04;
 
+
+  --state-primary: var(--orange);
+  --state-primary-hover: var(--orange-light);
+  --state-secondary: var(--green);
   --state-success: var(--green);
   --state-info: var(--blue);
   --state-warning: var(--orange);
@@ -24,6 +28,9 @@
   --gray: #979999;
 
   --body-bg: var(--white);
+  --nav-bg: var(--black);
+  --nav-color: var(--light-white);
+  --nav-color-hover: var(--white);
   --color-text: var(--black);
   --font-family: 'Mukta', sans-serif;
 
@@ -33,6 +40,6 @@
 
 
 body[data-theme="dark"] {
-  --body-bg: #121212;
+  --body-bg: var(--dark);
   --color-text: var(--light-white);
 }
