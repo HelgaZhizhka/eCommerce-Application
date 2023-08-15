@@ -7,8 +7,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { validate } from '../../utils/validate';
+import { userStore } from '../../stores';
 import { LoginFormValues } from './LoginForm.interface';
 import styles from './LoginForm.module.scss';
+
+import { SnackBar } from '../SnackBar';
 
 const initialValues: LoginFormValues = {
   email: '',
@@ -42,6 +45,8 @@ const Login: React.FC = () => {
         initialValues={initialValues}
         validate={validate}
         onSubmit={(values, { setSubmitting }): void => {
+          //! loginStatus(values.email, values.password);
+          userStore.login(values.email, values.password);
           // console.log(values);
           setSubmitting(false);
         }}
@@ -93,6 +98,7 @@ const Login: React.FC = () => {
           </Form>
         )}
       </Formik>
+      <SnackBar />
     </>
   );
 };
