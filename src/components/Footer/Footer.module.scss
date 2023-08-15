@@ -7,7 +7,7 @@
   background-color: var(--violet);
   font-size: toRem(20px);
   color: var(--light-white);
-  
+
   @include create-mq($grid__bp-sm, 'min') {
     padding-top: toRem(40px);
   }
@@ -40,7 +40,7 @@
 
   &:hover {
     color: var(--white);
-    
+
   }
 }
 
