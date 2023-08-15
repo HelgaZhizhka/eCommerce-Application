@@ -12,6 +12,7 @@ const lastNameValid = 'The last name must not contain special characters or numb
 const dateYoung = 'You are too young.';
 const dateOld = 'You are too old.';
 const dateBorn = "You weren't born yet.";
+const dateFill = 'Fill in all fields of the form';
 
 export const validate = (
   values: RegistrationFormValuesSecond,
@@ -58,7 +59,6 @@ export const validate = (
 
   if (values.date) {
     const age = calculateAge(values.date);
-
     if (age < 0) {
       updateMessage('date', dateBorn, true);
       updateMessage('date', dateYoung, false);
@@ -76,6 +76,11 @@ export const validate = (
       updateMessage('date', dateYoung, false);
       updateMessage('date', dateOld, false);
     }
+  }
+  if (!values.date) {
+    updateMessage('date', dateFill, true);
+  } else {
+    updateMessage('date', dateFill, false);
   }
 
   return errors;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, MenuItem } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
@@ -56,6 +56,8 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
 
   const [allFieldsValid, setAllFieldsValid] = useState(false);
 
+  const [checkDefaulBilling, setCheckDefaulBilling] = useState(false);
+
   const updateMessage = (type: FieldInputthird, key: string, value: boolean): void => {
     let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
 
@@ -99,17 +101,35 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
     return Object.values(obj).every((value) => value === false);
   };
 
-  // function checkBillingForm(billingChecked: boolean, streetBilling: StateMessage, cityBilling: StateMessage, codeBilling: StateMessage): boolean {
-  //   if (billingChecked) {
-  //     return false;
-  //   }
+  useEffect(() => {
+    const isShippingFieldsValid =
+      areAllValuesFalse(streetShippingMessage) &&
+      areAllValuesFalse(cityShippingMessage) &&
+      areAllValuesFalse(postalCodeShippingMessage);
 
-  //   return (
-  //     areAllValuesFalse(streetBilling) &&
-  //     areAllValuesFalse(cityBilling) &&
-  //     areAllValuesFalse(codeBilling)
-  //   );
-  // }
+    const isBillingFieldsValid =
+      areAllValuesFalse(streetBillingMessage) &&
+      areAllValuesFalse(cityBillingMessage) &&
+      areAllValuesFalse(postalCodeBillingMessage);
+
+    if (isShippingFieldsValid && checkDefaulBilling) {
+      setAllFieldsValid(true);
+    } else if (isShippingFieldsValid && !checkDefaulBilling && !isBillingFieldsValid) {
+      setAllFieldsValid(false);
+    } else if (isShippingFieldsValid && isBillingFieldsValid) {
+      setAllFieldsValid(true);
+    } else {
+      setAllFieldsValid(false);
+    }
+  }, [
+    streetShippingMessage,
+    cityShippingMessage,
+    postalCodeShippingMessage,
+    checkDefaulBilling,
+    streetBillingMessage,
+    cityBillingMessage,
+    postalCodeBillingMessage,
+  ]);
 
   return (
     <>
@@ -117,12 +137,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
         initialValues={initialValues}
         validate={(values): Partial<RegistrationFormValuesThird> => {
           const errors = validate(values, updateMessage);
-          setAllFieldsValid(
-            areAllValuesFalse(streetShippingMessage) &&
-              areAllValuesFalse(cityShippingMessage) &&
-              areAllValuesFalse(postalCodeShippingMessage)
-            // checkBillingForm(values.checkedAddBillingForm, streetBillingMessage, cityBillingMessage, postalCodeBillingMessage)
-          );
+          setCheckDefaulBilling(values.checkedAddBillingForm);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }): void => {

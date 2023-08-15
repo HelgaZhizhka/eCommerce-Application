@@ -86,8 +86,6 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
     } else setAllFieldsValid(false);
   }, [message, messagePassword, messagePasswordCheck]);
 
-  console.log(allFieldsValid);
-
   return (
     <>
       <Formik

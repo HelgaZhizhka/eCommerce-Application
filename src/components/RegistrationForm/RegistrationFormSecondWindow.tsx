@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
@@ -25,9 +25,11 @@ interface LoginProps {
 
 const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
   const { setData, setWindowPge } = userData;
+
   const [firstNameMessage, setFirstNameMessage] = useState<Message>({});
   const [lastNameMessage, setLastNameMessage] = useState<Message>({});
   const [dateMessage, setdateMessage] = useState<Message>({});
+
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
   const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
@@ -65,15 +67,18 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
     return Object.values(obj).every((value) => value === false);
   };
 
+  useEffect(() => {
+    if (areAllValuesFalse(firstNameMessage) && areAllValuesFalse(lastNameMessage) && areAllValuesFalse(dateMessage)) {
+      setAllFieldsValid(true);
+    } else setAllFieldsValid(false);
+  }, [firstNameMessage, lastNameMessage, dateMessage]);
+
   return (
     <>
       <Formik
         initialValues={initialValues}
         validate={(values): Partial<RegistrationFormValuesSecond> => {
           const errors = validate(values, updateMessage);
-          setAllFieldsValid(
-            areAllValuesFalse(firstNameMessage) && areAllValuesFalse(lastNameMessage) && areAllValuesFalse(dateMessage)
-          );
           return errors;
         }}
         onSubmit={(values, { setSubmitting }): void => {
