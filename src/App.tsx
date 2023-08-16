@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { observer } from 'mobx-react-lite';
 
 import { themeStore } from './stores';
+import { SnackBar } from './components/SnackBar';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { darkTheme, lightTheme } from './theme';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <SnackBar />
       <div className="app">
         <Header />
         <TransitionGroup>
