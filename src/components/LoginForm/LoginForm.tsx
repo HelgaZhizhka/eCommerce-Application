@@ -7,9 +7,12 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+
 import { validate } from '../../utils/validate/sigIn';
 import ShowValidate from '../ShowValidate/ShowValidate';
 import { FieldInput } from '../RegistrationForm/Registration.interface';
+import { userStore } from '../../stores';
+
 import { LoginFormValues } from './LoginForm.interface';
 import styles from './LoginForm.module.scss';
 
@@ -61,6 +64,8 @@ const LoginForm: React.FC = () => {
         initialValues={initialValues}
         validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
         onSubmit={(values, { setSubmitting }): void => {
+          // loginStatus(values.email, values.password);
+          userStore.login(values.email, values.password);
           // console.log(values);
           setSubmitting(false);
         }}
