@@ -28,7 +28,7 @@ interface LoginProps {
   userData: {
     setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
-    setShowSplash: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   };
 }
 
@@ -38,7 +38,7 @@ const options = [
 ];
 
 const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPage, setShowSplash } = userData;
+  const { setData, setWindowPage, setIsLogin } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -310,7 +310,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  setShowSplash((prev) => !prev);
+                  setIsLogin((prev) => !prev);
                 }}
               >
                 Sing in!
