@@ -20,7 +20,7 @@ const SnackBar: React.FC = () => {
       autoHideDuration={4000}
     >
       <Alert severity="error" sx={{ fontSize: '24px', fontWeight: '600' }}>
-        This is an error message!
+        {error}
       </Alert>
     </Snackbar>
   );

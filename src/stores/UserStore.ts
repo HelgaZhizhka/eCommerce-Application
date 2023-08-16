@@ -1,8 +1,16 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-// import { customerLogin } from '../services/CustomerService'; //! запросы
+import customerLogin from '../services/authService';
+
+interface UserData {
+  firstName: string,
+  lastName: string
+}
 
 class UserStore {
-  private userData = {}; // info about user: login, password (probably info from userdraft?)
+  public userData: UserData = {
+    firstName: '',
+    lastName: ''
+  }; // info about user (probably info from userdraft?)
 
   public loggedIn = false;
 
@@ -12,42 +20,40 @@ class UserStore {
     makeAutoObservable(this);  // component to observe data from mobx
   }
 
-  public login(email: string, password: string):void {
-    const data = {
-      email,
-      password
+  public async login(email: string, password: string): Promise<void> {
+    try {
+      const response = await customerLogin(email, password);
+      runInAction(() => {
+        this.error = null;
+        if (response.statusCode === 200) {
+          if (response.body.customer.firstName && response.body.customer.lastName) {
+            this.userData.firstName = response.body.customer.firstName;
+            this.userData.lastName = response.body.customer.lastName;
+          }
+
+          this.loggedIn = true;
+          console.log('this.userData', this.userData)
+        }
+        if (response.statusCode === 400) {
+          console.log('this.error', this.error)
+          throw new Error('Unexpected error');
+        }
+      })
+    } catch (err) {
+      runInAction(() => {
+        this.error = 'Customer account with the given credentials not found'
+      })
     }
-
-    this.userData = data;
-    // this.loggedIn = true;
-    this.error = 'some error'
-
-    console.log('this.userData, this.loggedIn', this.userData, this.loggedIn);
   }
 
-    // async login(email: string, password: string) {
-
-    // !old code
-    // const response = await loginStatus(email, password);
-
-    // runInAction(() => {
-    //   if (response.status === 200) {
-    //     this.loggedIn = true;
-    //     this.userData = response.data; // предположим, что response.data содержит нужные данные пользователя
-    //   } else {
-    //     this.loggedIn = false;
-    //     this.userData = null;
-    //   }
-    // });
-
-    //!
-  // }
-
-  public logout():void {
+  public logout(): void {
     this.loggedIn = false;
-    this.userData = {}; // прверить что приходит в userdata
+    this.userData = {
+      firstName: '',
+      lastName: ''
+    };  // проверить что приходит в userdata
+    this.error = null;
   }
-
 }
 
 export const userStore = new UserStore();
