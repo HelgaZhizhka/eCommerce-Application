@@ -15,7 +15,7 @@ import { SelectCurrency } from '../SelectCurrensy';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
-const Header: React.FC = () => (
+const Header: React.FC = (): JSX.Element => (
   <header className={classNames(styles.root)}>
     <Container sx={{ display: 'grid' }} className={styles.container} maxWidth="lg">
       <div className={classNames(styles.logo)}>
