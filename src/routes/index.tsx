@@ -23,7 +23,10 @@ const RouterConfig: React.FC = () => {
           <Routes location={location}>
             <Route path={RoutePaths.MAIN} element={<Main />} />
             <Route path={RoutePaths.LOGIN} element={loggedIn ? <Navigate to={RoutePaths.MAIN} replace /> : <Login />} />
-            <Route path={RoutePaths.REGISTRATION} element={<Registration />} />
+            <Route
+              path={RoutePaths.REGISTRATION}
+              element={loggedIn ? <Navigate to={RoutePaths.MAIN} replace /> : <Registration />}
+            />
             <Route path={RoutePaths.ERROR} element={<ErrorPage />} />
           </Routes>
         </div>
