@@ -65,8 +65,8 @@ const lightTheme = createTheme({
       xs: 0,
       sm: 600,
       md: 1024,
-      lg: 1400,
-      xl: 1680,
+      lg: 1280,
+      xl: 1440,
     },
   },
   typography: {

@@ -207,3 +207,8 @@ img, video {
   max-width: 100%;
   height: auto;
 }
+
+::selection {
+  background: var(--state-primary-hover);
+  color: #fff;
+}

@@ -4,12 +4,13 @@
 
 .root {
   margin-top: auto;
+  padding-top: 20px;
   background-color: var(--violet);
   font-size: toRem(20px);
   color: var(--light-white);
-  
-  @include create-mq($grid__bp-sm, 'min') {
-    padding-top: toRem(40px);
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding-top: 40px;
   }
 }
 
@@ -40,13 +41,14 @@
 
   &:hover {
     color: var(--white);
-    
   }
 }
 
 .footerRow {
-  display: flex;
-  justify-content: space-between;
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .footerColumn {
