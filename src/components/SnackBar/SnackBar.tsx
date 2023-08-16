@@ -8,7 +8,7 @@ const SnackBar: React.FC = () => {
   const { error } = userStore;
 
   const handleClose = (): void => {
-    console.log('closed');
+    userStore.clearError();
   };
 
   return (
