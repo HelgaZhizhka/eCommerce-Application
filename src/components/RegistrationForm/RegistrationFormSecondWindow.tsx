@@ -18,13 +18,13 @@ const initialValues: RegistrationFormValuesSecond = {
 
 interface LoginProps {
   userData: {
-    setWindowPge: React.Dispatch<React.SetStateAction<number>>;
+    setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
   };
 }
 
 const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPge } = userData;
+  const { setData, setWindowPage } = userData;
 
   const [firstNameMessage, setFirstNameMessage] = useState<Message>({});
   const [lastNameMessage, setLastNameMessage] = useState<Message>({});
@@ -150,7 +150,7 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  setWindowPge((prev) => prev + 1);
+                  setWindowPage((prev) => prev + 1);
                 }}
               >
                 Continue
@@ -162,7 +162,7 @@ const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
               fullWidth
               color="primary"
               onClick={(): void => {
-                setWindowPge((prev) => prev - 1);
+                setWindowPage((prev) => prev - 1);
               }}
             >
               Back

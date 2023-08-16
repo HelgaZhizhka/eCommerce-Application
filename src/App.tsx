@@ -23,13 +23,13 @@ const App: React.FC = () => {
       <CssBaseline />
       <div className="app">
         <Header />
-        <TransitionGroup>
-          <CSSTransition nodeRef={nodeRef} key={location.key} classNames="fade" timeout={300}>
-            <Container component="main" ref={nodeRef} maxWidth="lg">
-              <RoutesConfig />
-            </Container>
-          </CSSTransition>
-        </TransitionGroup>
+        {/* <TransitionGroup>
+          <CSSTransition nodeRef={nodeRef} key={location.key} classNames="fade" timeout={300}> */}
+        <Container component="main" ref={nodeRef} maxWidth="lg">
+          <RoutesConfig />
+        </Container>
+        {/* </CSSTransition>
+        </TransitionGroup> */}
         <Footer />
       </div>
     </ThemeProvider>

@@ -22,7 +22,7 @@ const initialValues: LoginFormValues = {
   password: '',
 };
 
-const Login: React.FC = () => {
+const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
@@ -129,4 +129,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginForm;

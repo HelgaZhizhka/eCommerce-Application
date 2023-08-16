@@ -21,13 +21,13 @@ const initialValues: RegistrationFormValues = {
 
 interface LoginProps {
   userData: {
-    setWindowPge: React.Dispatch<React.SetStateAction<number>>;
+    setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
   };
 }
 
 const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPge } = userData;
+  const { setData, setWindowPage } = userData;
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
 
@@ -179,7 +179,7 @@ const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  setWindowPge((prev) => prev + 1);
+                  setWindowPage((prev) => prev + 1);
                 }}
               >
                 Continue
