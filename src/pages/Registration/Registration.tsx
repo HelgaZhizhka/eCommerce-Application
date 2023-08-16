@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
 import {
@@ -17,38 +17,35 @@ import { RegistrationSuccessful } from '../../components/RegistrationSuccessful'
 const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});
   const [showSplash, setShowSplash] = useState(false);
-  const [windowPage, setWindowPage] = useState(1);
-  console.log(data);
+  const [isLogin, setIsLogin] = useState(false);
+  const [windowPage, setWindowPage] = useState(3);
+  console.log(showSplash);
 
   //! Попробовать редиректить
-  // const redirectToHome = (): void => {
-  //   window.location.href = '/';
-  // };
 
-  // useEffect(() => {
-  //   if (showSplash) {
-  //     setTimeout(() => {
-  //       setShowSplash(false);
-  //       redirectToHome();
-  //     }, 2000);
-  //   }
-  // }, [showSplash]);
+  useEffect(() => {
+    if (isLogin) {
+      setTimeout(() => {
+        setShowSplash(true);
+      }, 2000);
+    }
+  }, [isLogin]);
 
   if (showSplash) {
-    redirect('');
-    return null;
+    console.log('1');
+    return <Navigate to={'/'} />;
   }
 
   return (
     <Container maxWidth="xl">
-      {showSplash && <RegistrationSuccessful />}
-      {!showSplash && (
+      {isLogin && <RegistrationSuccessful />}
+      {!isLogin && (
         <div className={classNames(styles.root)}>
           <div className={classNames(styles.loginWrap)}>
             <span className={classNames(styles.title)}>Welcome to YesCode!</span>
             {windowPage === 1 && <RegistrationForm userData={{ setWindowPage, setData }} />}
             {windowPage === 2 && <RegistrationFormSecondWindow userData={{ setWindowPage, setData }} />}
-            {windowPage === 3 && <RegistrationFormThirdWindow userData={{ setWindowPage, setData, setShowSplash }} />}
+            {windowPage === 3 && <RegistrationFormThirdWindow userData={{ setWindowPage, setData, setIsLogin }} />}
           </div>
           <div className={classNames(styles.posterWrap)}>
             <Poster />
