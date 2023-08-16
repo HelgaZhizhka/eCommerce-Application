@@ -60,7 +60,8 @@
     "eslint:fix": "eslint --fix .",
     "eslint": "eslint . --ext .ts,.tsx",
     "prepare": "husky install",
-    "postinstall": "chmod +x .husky/*"
+    "postinstall": "chmod +x .husky/*",
+    "ignorecase": "git config core.ignorecase false"
   },
   "lint-staged": {
     "src/**/*.tsx": [
