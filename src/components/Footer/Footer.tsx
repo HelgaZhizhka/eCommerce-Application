@@ -16,7 +16,7 @@ import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => (
   <footer className={classNames('ls-2', styles.root)}>
-    <Container maxWidth="lg" sx={{ pb: 4 }}>
+    <Container maxWidth="xl" sx={{ pb: 4 }}>
       <div className={classNames(styles.footerRow)}>
         <div className={classNames(styles.footerColumn)}>
           <div className={classNames(styles.logo)}>

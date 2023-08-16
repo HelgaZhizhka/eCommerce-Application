@@ -1,18 +1,31 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import Main from '../pages/Main/Main';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import { RoutePaths } from './routes.enum';
 
-const RouterConfig: React.FC = () => (
-  <Routes>
-    <Route path={RoutePaths.MAIN} element={<Main />} />
-    <Route path={RoutePaths.LOGIN} element={<Login />} />
-    <Route path={RoutePaths.REGISTRATION} element={<Registration />} />
-    <Route path={RoutePaths.ERROR} element={<ErrorPage />} />
-  </Routes>
-);
+const RouterConfig: React.FC = () => {
+  const location = useLocation();
+  const nodeRef = useRef(null);
+
+  return (
+    <TransitionGroup>
+      <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
+        <div ref={nodeRef}>
+          <Routes location={location}>
+            <Route path={RoutePaths.MAIN} element={<Main />} />
+            <Route path={RoutePaths.LOGIN} element={<Login />} />
+            <Route path={RoutePaths.REGISTRATION} element={<Registration />} />
+            <Route path={RoutePaths.ERROR} element={<ErrorPage />} />
+          </Routes>
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
+  );
+};
 
 export default RouterConfig;

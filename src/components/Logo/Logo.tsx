@@ -4,10 +4,13 @@ import { observer } from 'mobx-react-lite';
 
 import { themeStore } from '../../stores';
 import styles from './Logo.module.scss';
-import { LogoProps } from './Logo.interface';
 import { LogoVariant } from './Logo.enum';
 
-const Logo: React.FC<LogoProps> = ({ variant = LogoVariant.DEFAULT }) => {
+type Props = {
+  variant?: LogoVariant;
+};
+
+const Logo: React.FC<Props> = ({ variant = LogoVariant.DEFAULT }) => {
   const { darkMode } = themeStore;
 
   const logoClasses = classNames(styles.root, {
@@ -17,7 +20,7 @@ const Logo: React.FC<LogoProps> = ({ variant = LogoVariant.DEFAULT }) => {
 
   return (
     <Link to="/">
-      <span className={classNames(styles.root, logoClasses)}></span>
+      <span className={classNames(logoClasses)}></span>
     </Link>
   );
 };

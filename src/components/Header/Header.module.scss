@@ -8,26 +8,33 @@
 }
 
 .container {
+  display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
   gap: 10px;
   align-items: start;
-  padding: 20px 24px;
 
-  @include create-mq($grid__bp-sm, 'min') {
-    padding: 20px 44px;
+  @include create-mq($grid__bp-md, 'min') {
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 }
 
-.wrapper {
-  display: flex;
-  align-items: center;
+.top {
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 }
 
 .logo {
   grid-row: span 2;
 
-  @include create-mq($grid__bp-sm, 'min') {
+  @include create-mq($grid__bp-md, 'min') {
+    margin-right: 20px;
+  }
+
+  @include create-mq($grid__bp-lg, 'min') {
     margin-right: 100px;
   }
 }
@@ -35,33 +42,17 @@
 .flex {
   display: flex;
   align-items: center;
-
-  .badge,
-  .icon {
-    margin-right: 10px;
-  }
 }
 
-.badge {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--state-primary);
-  font-size: 1.25rem;
-  line-height: 1;
-  font-weight: 500;
-  color: var(--light-white);
-}
-
-.iconLogout {
-  margin-left: 10px;
+.info .badge {
+  margin-right: 10px;
 }
 
 .search {
+  @include create-mq($grid__bp-md, 'min') {
+    width: 320px;
+  }
+
   @include create-mq($grid__bp-lg, 'min') {
     width: 560px;
   }

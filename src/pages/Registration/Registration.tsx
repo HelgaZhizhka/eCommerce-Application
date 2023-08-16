@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { redirect } from 'react-router-dom';
+import Container from '@mui/material/Container';
 
 import {
   RegistrationForm,
@@ -39,7 +40,7 @@ const Registration: React.FC = () => {
   }
 
   return (
-    <>
+    <Container maxWidth="xl">
       {showSplash && <RegistrationSuccessful />}
       {!showSplash && (
         <div className={classNames(styles.root)}>
@@ -54,7 +55,7 @@ const Registration: React.FC = () => {
           </div>
         </div>
       )}
-    </>
+    </Container>
   );
 };
 

@@ -2,16 +2,17 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { generateCatalogPath } from '../../routes/route.utils';
-import { SIZE, VARIANT } from './MenuCategories.types';
+import { SIZE, THEME, VARIANT } from './MenuCategories.types';
 import styles from './MenuCategories.module.scss';
 
 type Props = {
   size?: SIZE;
   variant?: VARIANT;
+  theme?: THEME;
   className?: string;
 };
 
-const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical' }) => {
+const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light' }) => {
   const categoryPathSales = generateCatalogPath('sales');
   const categoryPathCloses = generateCatalogPath('closes');
   const categoryPathDrinkWare = generateCatalogPath('drinkware');
@@ -19,7 +20,7 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
   const categoryPathBags = generateCatalogPath('bags');
 
   return (
-    <ul className={classNames('ls-2', styles.root, styles[size], styles[variant], className)}>
+    <ul className={classNames('ls-2', styles.root, styles[size], styles[variant], styles[theme], className)}>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink, styles.brand)} to={categoryPathSales}>
           Sales

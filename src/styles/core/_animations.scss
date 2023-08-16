@@ -1,15 +1,41 @@
+.page-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity .56s, transform .56s;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity .35s, transform .35s;
+}
 
 .fade-enter {
   opacity: 0;
-  &-active {
-    opacity: 1;
-    transition: opacity 300ms ease-in-out;
-  }
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity .56s;
+  transition-delay: 0.56s;
 }
 .fade-exit {
   opacity: 1;
-  &-active {
-    opacity: 0;
-    transition: opacity 300ms ease-in-out;
-  }
+  transition: opacity 0s; 
+}
+
+.fade-exit-active {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0s;
 }

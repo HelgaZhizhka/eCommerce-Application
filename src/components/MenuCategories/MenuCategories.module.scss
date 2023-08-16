@@ -46,17 +46,36 @@
   }
 }
 
-.menuLink {
-  font-weight: 300;
-  color: var(--nav-color);
+.light {
 
-  &::after {
-    background-color: var(--nav-color-hover);
+  .menuLink {
+    color: var(--nav-color-light);
+
+    &::after {
+      background-color: var(--nav-color-light-hover);
+    }
+
+    &:hover {
+      color: var(--nav-color-light-hover);
+    }
   }
 
-  &:hover {
-    color: var(--nav-color-hover);
+}
+
+.dark {
+
+  .menuLink {
+    color: var(--nav-color-dark);
+
+    &::after {
+      background-color: var(--nav-color-dark-hover);
+    }
+
+    &:hover {
+      color: var(--nav-color-dark-hover);
+    }
   }
+
 }
 
 .brand {

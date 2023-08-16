@@ -17,3 +17,9 @@
 .text-inherit {
    color: inherit;
 }
+
+.text-brand {
+   margin: 0 5px;
+   color: var(--state-primary);
+   border-bottom: 1px solid var(--state-primary);
+}
