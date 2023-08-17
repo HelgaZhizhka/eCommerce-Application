@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -19,10 +20,12 @@ import { MenuCategories } from '../MenuCategories';
 import { SelectCurrency } from '../SelectCurrency';
 import { InfoPanel } from '../InfoPanel';
 import { NavBarMobile } from '../NavBarMobile';
+import { userStore } from '../../stores';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
+  const { loggedIn } = userStore;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
@@ -45,16 +48,32 @@ const Header: React.FC = () => {
             <div className={styles.flex}>
               <Search className={styles.search} />
               <div className={classNames('ml-auto', styles.flex)}>
-                <Link to={RoutePaths.LOGIN}>
-                  <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="outlined" color="primary">
-                    <span>Sign in</span>
+                {!loggedIn && (
+                  <>
+                    <Link to={RoutePaths.LOGIN}>
+                      <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="outlined" color="primary">
+                        <span>Sign in</span>
+                      </Button>
+                    </Link>
+                    <Link to={RoutePaths.REGISTRATION}>
+                      <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="contained" color="primary">
+                        Sign up
+                      </Button>
+                    </Link>
+                  </>
+                )}
+                {loggedIn && (
+                  <Button
+                    onClick={(): void => {
+                      userStore.logout();
+                    }}
+                    sx={{ fontSize: '1.25rem', mr: '10px' }}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Sign out
                   </Button>
-                </Link>
-                <Link to={RoutePaths.REGISTRATION}>
-                  <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="contained" color="primary">
-                    Sign up
-                  </Button>
-                </Link>
+                )}
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
@@ -118,4 +137,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default observer(Header);
