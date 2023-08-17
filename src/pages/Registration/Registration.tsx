@@ -9,6 +9,7 @@ import {
   RegistrationFormThirdWindow,
 } from '../../components/RegistrationForm';
 
+import { userStore } from '../../stores';
 import { Poster } from '../../components/Poster';
 import styles from './Registration.module.scss';
 import { Data } from './Registration.interface';
@@ -18,10 +19,14 @@ const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});
   const [showSplash, setShowSplash] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [windowPage, setWindowPage] = useState(3);
-  console.log(showSplash);
+  const [windowPage, setWindowPage] = useState(1);
 
-  //* *customerSighUp(data)
+  useEffect(() => {
+    if (Object.keys(data).length > 7) {
+      userStore.updateUserData(data);
+    }
+  }, [data]);
+
   //! Попробовать редиректить
 
   useEffect(() => {
