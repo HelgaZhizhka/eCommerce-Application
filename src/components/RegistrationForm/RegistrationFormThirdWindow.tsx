@@ -9,6 +9,7 @@ import { Data } from '../../pages/Registration/Registration.interface';
 import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
 import styles from './Registration.module.scss';
+import { customerSignUp } from '../../services/authService';
 
 const initialValues: RegistrationFormValuesThird = {
   streetShipping: '',
@@ -310,6 +311,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
+                  customerSignUp(); // values - объект с данными из формы
                   setShowSplash((prev) => !prev);
                 }}
               >

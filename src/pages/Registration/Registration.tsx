@@ -20,6 +20,7 @@ const Registration: React.FC = () => {
   const [windowPage, setWindowPage] = useState(1);
   console.log(data);
 
+  //* *customerSighUp(data)
   //! Попробовать редиректить
   // const redirectToHome = (): void => {
   //   window.location.href = '/';

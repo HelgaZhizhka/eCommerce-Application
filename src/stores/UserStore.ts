@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import customerLogin from '../services/authService';
+import { customerLogin } from '../services/authService';
 
 interface UserData {
   firstName: string,

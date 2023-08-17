@@ -1,8 +1,9 @@
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { apiWithPasswordFlow } from './BuildClient';
+// import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
+import { apiWithPasswordFlow, apiWithClientCredentialsFlow } from './BuildClient';
 
-const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
   const customer = apiWithPasswordFlow(email, password);
   return customer
   .me()
@@ -18,4 +19,23 @@ const customerLogin = (email: string, password: string): Promise<ClientResponse<
   .execute()
 }
 
-export default customerLogin;
+// export const customerSignUp = (body: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerSignUp = (): Promise<ClientResponse<CustomerSignInResult>> => {
+
+  const email = 'myNewCustomer123@example.com';
+  const password = 'Password123123';
+
+  const newCustomer = apiWithClientCredentialsFlow();
+  return newCustomer
+  .me()
+  .signup()
+  .post(
+    {
+      body: {
+        email,
+        password,
+      }
+    }
+  )
+  .execute()
+}
