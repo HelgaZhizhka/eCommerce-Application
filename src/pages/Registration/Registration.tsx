@@ -18,10 +18,7 @@ const Registration: React.FC = () => {
   const [data, setData] = useState<Data>({});
   const [showSplash, setShowSplash] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [windowPage, setWindowPage] = useState(3);
-  console.log(showSplash);
-
-  //! Попробовать редиректить
+  const [windowPage, setWindowPage] = useState(1);
 
   useEffect(() => {
     if (isLogin) {
@@ -32,7 +29,6 @@ const Registration: React.FC = () => {
   }, [isLogin]);
 
   if (showSplash) {
-    console.log('1');
     return <Navigate to={'/'} />;
   }
 

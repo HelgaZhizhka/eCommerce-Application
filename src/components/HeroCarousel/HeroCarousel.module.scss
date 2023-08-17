@@ -1,0 +1,28 @@
+.root {
+  height: 400px;  
+}
+
+.slide1 {
+  background-image: url(./images/slide1_web.png);
+  background-size: 100% 100%;
+  background-position: center center; 
+  background-repeat: no-repeat; 
+}
+
+.slide2 {
+  background-image: url(./images/slide2_web.png);
+  background-size: 100% 100%;
+  background-position: center center; 
+  background-repeat: no-repeat; 
+}
+
+.slide3 {
+  background-image: url(./images/slide3_web.png);
+  background-size: 100% 100%;
+  background-position: center center; 
+  background-repeat: no-repeat; 
+}
+
+.myNextButton, .myPrevButton {
+  background-color: #fff;
+}

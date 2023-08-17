@@ -1,3 +1,9 @@
-const Main: React.FC = () => <h2>Main page</h2>;
+import { HeroCarousel } from '../../components/HeroCarousel';
+
+const Main: React.FC = () => (
+  <main>
+    <HeroCarousel />
+  </main>
+);
 
 export default Main;
