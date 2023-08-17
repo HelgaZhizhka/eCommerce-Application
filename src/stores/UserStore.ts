@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction, reaction } from 'mobx';
 import customerLogin from '../services/authService';
 
 type UserStoreType = {
@@ -13,7 +13,7 @@ type UserStoreType = {
 interface UserData {
   firstName: string;
   lastName: string;
-}
+} // info about user (probably info from userdraft?)
 
 const createUserStore = (): UserStoreType => {
   const store = {
@@ -21,7 +21,7 @@ const createUserStore = (): UserStoreType => {
       firstName: '',
       lastName: '',
     },
-    loggedIn: false,
+    loggedIn: localStorage.getItem('loggedIn') === 'true',
     error: null as null | string,
 
     async login(email: string, password: string): Promise<void> {
@@ -52,16 +52,25 @@ const createUserStore = (): UserStoreType => {
     },
 
     logout(): void {
+      localStorage.removeItem('loggedIn');
       store.loggedIn = false;
       store.userData = {
         firstName: '',
         lastName: '',
-      };
+      }; // проверить что приходит в userdata
       store.error = null;
     },
   };
 
-  makeAutoObservable(store);
+  makeAutoObservable(store); // component to observe data from mobx
+
+  reaction(
+    () => store.loggedIn,
+    (loggedIn) => {
+      localStorage.setItem('loggedIn', String(loggedIn));
+    }
+  );
+
   return store;
 };
 
