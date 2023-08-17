@@ -28,10 +28,15 @@
 
 .logo {
   display: block;
-  margin-bottom: 36px;
+  margin-bottom: 10px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    margin-bottom: 36px;
+  }
 }
 
 .link {
+  padding: 0;
   color: var(--light-white);
   transition: transform 0.3s ease-in-out;
 
@@ -45,6 +50,7 @@
 }
 
 .footerRow {
+
   @include create-mq($grid__bp-md, 'min') {
     display: flex;
     justify-content: space-between;
@@ -52,7 +58,10 @@
 }
 
 .footerColumn {
-  padding: 0 10px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding: 0 10px;
+  }
 }
 
 .footerMenu {
@@ -64,4 +73,12 @@
 .links {
   display: flex;
   margin-top: 1rem;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    margin-bottom: 1rem;
+  }
+}
+
+.divider {
+  margin: 0 10px;
 }

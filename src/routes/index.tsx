@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite/dist/index';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,6 +7,8 @@ import Main from '../pages/Main/Main';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
+import Catalog from '../pages/Catalog/Catalog';
+import { About } from '../pages/About';
 import { userStore } from '../stores';
 import { RoutePaths } from './routes.enum';
 
@@ -20,9 +22,13 @@ const RouterConfig: React.FC = () => {
   const { loggedIn } = userStore;
   const location = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <AnimatePresence>
-      <Routes key={location.pathname}>
+      <Routes location={location} key={location.pathname}>
         <Route
           path={RoutePaths.MAIN}
           element={
@@ -60,6 +66,22 @@ const RouterConfig: React.FC = () => {
           element={
             <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
               <ErrorPage />
+            </motion.div>
+          }
+        />
+        <Route
+          path={RoutePaths.CATALOG}
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+              <Catalog />
+            </motion.div>
+          }
+        />
+        <Route
+          path={RoutePaths.ABOUT}
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+              <About />
             </motion.div>
           }
         />

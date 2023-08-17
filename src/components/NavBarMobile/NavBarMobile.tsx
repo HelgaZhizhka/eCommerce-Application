@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
@@ -39,31 +40,45 @@ const variants = {
   },
 };
 
-const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => (
-  <motion.nav
-    className={styles.root}
-    initial="initial"
-    animate={isOpen ? 'open' : 'closed'}
-    variants={variants}
-    transition={{ duration: 0.5 }}
-  >
-    <IconButton
-      className={styles.close}
-      sx={{ position: 'absolute' }}
-      size="large"
-      color="inherit"
-      aria-label="close"
-      onClick={onClose}
+const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.documentElement.classList.add('no-scroll');
+    } else {
+      document.documentElement.classList.remove('no-scroll');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isOpen]);
+
+  return (
+    <motion.nav
+      className={styles.root}
+      initial="initial"
+      animate={isOpen ? 'open' : 'closed'}
+      variants={variants}
+      transition={{ duration: 0.5 }}
     >
-      <CloseIcon />
-    </IconButton>
-    <MenuCategories size={'l'} theme={'dark'} />
-    <Link className={styles.link} to={RoutePaths.ABOUT}>
-      About Us
-    </Link>
-    <PhoneNumber className={styles.phone}>(+380) 68 018 45 67</PhoneNumber>
-    <InfoPanel className={styles.info} variant={'vertical'} />
-  </motion.nav>
-);
+      <IconButton
+        className={styles.close}
+        sx={{ position: 'absolute' }}
+        size="large"
+        color="inherit"
+        aria-label="close"
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </IconButton>
+      <MenuCategories size={'l'} theme={'dark'} onClose={onClose} />
+      <Link className={styles.link} to={RoutePaths.ABOUT} onClick={onClose}>
+        About Us
+      </Link>
+      <PhoneNumber className={styles.phone}>(+380) 68 018 45 67</PhoneNumber>
+      <InfoPanel className={styles.info} variant={'vertical'} />
+    </motion.nav>
+  );
+};
 
 export default NavBarMobile;

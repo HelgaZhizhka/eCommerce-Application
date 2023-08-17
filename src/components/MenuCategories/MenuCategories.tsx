@@ -10,9 +10,10 @@ type Props = {
   variant?: VARIANT;
   theme?: THEME;
   className?: string;
+  onClose?: () => void;
 };
 
-const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light' }) => {
+const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light', onClose }) => {
   const categoryPathSales = generateCatalogPath('sales');
   const categoryPathCloses = generateCatalogPath('closes');
   const categoryPathDrinkWare = generateCatalogPath('drinkware');
@@ -20,29 +21,29 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
   const categoryPathBags = generateCatalogPath('bags');
 
   return (
-    <ul className={classNames('ls-2', styles.root, styles[size], styles[variant], styles[theme], className)}>
+    <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
       <li className={styles.menuItem}>
-        <Link className={classNames('link', styles.menuLink, styles.brand)} to={categoryPathSales}>
+        <Link className={classNames('link', styles.menuLink, styles.brand)} to={categoryPathSales} onClick={onClose}>
           Sales
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link className={classNames('link', styles.menuLink)} to={categoryPathCloses}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathCloses} onClick={onClose}>
           Closes
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link className={classNames('link', styles.menuLink)} to={categoryPathDrinkWare}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathDrinkWare} onClick={onClose}>
           DrinkWare
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link className={classNames('link', styles.menuLink)} to={categoryPathOffice}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathOffice} onClick={onClose}>
           Office
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link className={classNames('link', styles.menuLink)} to={categoryPathBags}>
+        <Link className={classNames('link', styles.menuLink)} to={categoryPathBags} onClick={onClose}>
           Bags
         </Link>
       </li>
