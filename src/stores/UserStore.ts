@@ -7,7 +7,7 @@ type UserStoreType = {
   loggedIn: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
-  signup: (data: Record<string, string | number | boolean>) => Promise<void>;
+  signup: () => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
@@ -47,13 +47,13 @@ const createUserStore = (): UserStoreType => {
       }
     },
 
-    async signup(data: Record<string, string | number | boolean>): Promise<void> {
+    async signup(): Promise<void> {
       try {
-        console.log(data);
+        console.log(toJS(store.userData));
+
+        const data = toJS(store.userData);
         const response = await customerSignUp(data);
 
-        // console.log(this.userData);
-        // const response = await customerSignUp(this.userData as RegistrationFormValuesData);
         runInAction(() => {
           store.error = null;
           if (response.statusCode === 201) {
@@ -78,8 +78,8 @@ const createUserStore = (): UserStoreType => {
     updateUserData(data: Partial<RegistrationFormValuesData>): void {
       // runInAction(() => {
         // if (typeof this.userData === 'object') {
-          console.log(data)
-          this.userData = { ...data };
+          console.log(store.userData)
+          store.userData = { ...store.userData, ...data };
         // }
       // });
     },

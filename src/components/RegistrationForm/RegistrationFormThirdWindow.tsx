@@ -41,8 +41,8 @@ interface LoginProps {
 }
 
 const options = [
-  { value: 'Ukraine', label: 'Ukraine' },
-  { value: 'USA', label: 'USA' },
+  { value: 'UA', label: 'Ukraine' },
+  { value: 'US', label: 'USA' },
 ];
 
 const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
@@ -320,8 +320,7 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  console.log(data);
-                  userStore.signup(data);
+                  setTimeout(() => userStore.signup(), 0);
                   setIsLogin((prev) => !prev);
                 }}
               >
