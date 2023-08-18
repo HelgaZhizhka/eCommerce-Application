@@ -5,12 +5,14 @@ import { RegistrationFormValuesData } from '../components/RegistrationForm/Regis
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
   loggedIn: boolean;
+  isRegistration: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
   signup: (data: Record<string, string | number | boolean>) => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
+  resetRegistration: () => void;
 };
 
 // interface UserData {
@@ -22,6 +24,7 @@ const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
     loggedIn: localStorage.getItem('loggedIn') === 'true',
+    isRegistration: false,
     error: null as null | string,
 
     async login(email: string, password: string): Promise<void> {
@@ -58,6 +61,7 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
+            store.isRegistration = true;
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
@@ -69,6 +73,10 @@ const createUserStore = (): UserStoreType => {
         });
       }
 
+    },
+
+    resetRegistration(): void {
+      store.isRegistration = false;
     },
 
     clearError(): void {

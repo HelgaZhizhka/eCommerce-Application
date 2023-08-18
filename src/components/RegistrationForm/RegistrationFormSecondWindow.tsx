@@ -16,14 +16,14 @@ const initialValues: RegistrationFormValuesSecond = {
   date: '',
 };
 
-interface LoginProps {
+interface RegistrationProps {
   userData: {
     setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
   };
 }
 
-const RegistrationFormSecondWindow: React.FC<LoginProps> = ({ userData }) => {
+const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ userData }) => {
   const { setData, setWindowPage } = userData;
 
   const [firstNameMessage, setFirstNameMessage] = useState<Message>({});

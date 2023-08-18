@@ -19,14 +19,14 @@ const initialValues: RegistrationFormValues = {
   checkPassword: '',
 };
 
-interface LoginProps {
+interface RegistrationProps {
   userData: {
     setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
   };
 }
 
-const RegistrationForm: React.FC<LoginProps> = ({ userData }) => {
+const RegistrationForm: React.FC<RegistrationProps> = ({ userData }) => {
   const { setData, setWindowPage } = userData;
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
