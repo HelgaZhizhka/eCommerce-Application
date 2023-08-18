@@ -9,13 +9,6 @@
   height: var(--app-height);
   background-color: var(--body-bg);
   z-index: var(--z-index-navbar);
-  transform: translateX(-100%);
-  will-change: transform;
-  transition: transform var(--transition-duration) var(--transition-function);
-
-  &.open {
-    transform: translateX(0);
-  }
 }
 
 .link {
