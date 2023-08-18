@@ -9,6 +9,8 @@ import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import Catalog from '../pages/Catalog/Catalog';
 import { About } from '../pages/About';
+import { Profile } from '../pages/Profile';
+import { Cart } from '../pages/Cart';
 import { userStore } from '../stores';
 import { RoutePaths } from './routes.enum';
 
@@ -82,6 +84,22 @@ const RouterConfig: React.FC = () => {
           element={
             <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
               <About />
+            </motion.div>
+          }
+        />
+        <Route
+          path={RoutePaths.PROFILE}
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+              <Profile />
+            </motion.div>
+          }
+        />
+        <Route
+          path={RoutePaths.CART}
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+              <Cart />
             </motion.div>
           }
         />

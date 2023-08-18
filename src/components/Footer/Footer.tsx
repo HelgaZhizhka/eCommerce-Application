@@ -35,13 +35,13 @@ const Footer: React.FC = () => (
           </div>
         </div>
         <div className={styles.footerColumn}>
-          <Typography variant="h5" component="h5" sx={{ mb: '8px' }}>
+          <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
             Categories
           </Typography>
           <MenuCategories />
         </div>
         <div className={styles.footerColumn}>
-          <Typography variant="h5" component="h5" sx={{ mb: '8px' }}>
+          <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
             Contact Us
           </Typography>
           <List>
