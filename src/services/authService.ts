@@ -21,16 +21,16 @@ export const customerLogin = (email: string, password: string): Promise<ClientRe
 }
 
 // export const customerSignUp = (body: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
-export const customerSignUp = (values: RegistrationFormValuesData): Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerSignUp = (values: Record<string, string | number | boolean>): Promise<ClientResponse<CustomerSignInResult>> => {
 
   // const email = 'myNewCustomer123123@example.com';
   // const password = 'Password123123123';
 
   const body: MyCustomerDraft = {
-      email: values.email,
-      password: values.password,
-      firstName: values.firstName,
-      lastName: values.lastName,
+      email: `${values.email}`,
+      password: `${values.password}`,
+      firstName: `${values.firstName}`,
+      lastName: `${values.lastName}`,
   }
 
   const newCustomer = apiWithClientCredentialsFlow();

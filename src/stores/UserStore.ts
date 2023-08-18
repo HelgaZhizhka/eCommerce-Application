@@ -3,11 +3,11 @@ import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
 
 type UserStoreType = {
-  userData: object;
+  userData: Record<string, string | number | boolean>;
   loggedIn: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
-  signup: () => Promise<void>;
+  signup: (data: Record<string, string | number | boolean>) => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
@@ -47,11 +47,10 @@ const createUserStore = (): UserStoreType => {
       }
     },
 
-    async signup(): Promise<void> {
+    async signup(data: Record<string, string | number | boolean>): Promise<void> {
       try {
-        const rawUserData = toJS(store.userData);
-        console.log(rawUserData);
-        const response = await customerSignUp(rawUserData as RegistrationFormValuesData);
+        console.log(data);
+        const response = await customerSignUp(data);
 
         // console.log(this.userData);
         // const response = await customerSignUp(this.userData as RegistrationFormValuesData);
@@ -76,19 +75,19 @@ const createUserStore = (): UserStoreType => {
       store.error = null;
     },
 
-    updateUserData(data: object): void {
-      runInAction(() => {
-        store.userData = { ...store.userData, ...data };
-      });
+    updateUserData(data: Partial<RegistrationFormValuesData>): void {
+      // runInAction(() => {
+        // if (typeof this.userData === 'object') {
+          console.log(data)
+          this.userData = { ...data };
+        // }
+      // });
     },
 
     logout(): void {
       localStorage.removeItem('loggedIn');
       store.loggedIn = false;
-      store.userData = {
-        firstName: '',
-        lastName: '',
-      }; // проверить что приходит в userdata
+      store.userData = {}; // проверить что приходит в userdata
       store.error = null;
     },
   };
