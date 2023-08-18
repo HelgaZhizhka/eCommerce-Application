@@ -9,13 +9,12 @@
   --purple: #b62dd3;
   --green: #009444;
   --red: #f61717;
-  --pink: #F7527E;
+  --pink: #f7527e;
   --violet: #70198f;
   --black: #0b0a0a;
   --dark: #121212;
   --spicy-orange: #faba86;
   --spicy-orange-active: #cf5f04;
-
 
   --state-primary: var(--orange);
   --state-primary-hover: var(--orange-light);
@@ -23,7 +22,7 @@
   --state-success: var(--green);
   --state-info: var(--blue);
   --state-warning: var(--orange);
-  --state-danger: var(--red);
+  --state-error: var(--pink);
 
   --gray: #979999;
 
@@ -43,8 +42,9 @@
   --z-index-navbar: 999;
 }
 
-
-body[data-theme="dark"] {
+body[data-theme='dark'] {
   --body-bg: var(--dark);
   --color-text: var(--light-white);
+  --nav-color-dark: var(--light-white);
+  --nav-color-dark-hover: var(--light-white);
 }

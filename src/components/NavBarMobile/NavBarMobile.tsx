@@ -1,4 +1,5 @@
-import classNames from 'classnames';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
@@ -15,15 +16,53 @@ type Props = {
   isOpen: boolean;
 };
 
+const variants = {
+  initial: {
+    x: '-100%',
+    opacity: 0,
+  },
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 250,
+      damping: 20,
+    },
+  },
+  closed: {
+    x: '-100%',
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+};
+
 const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
-  const navClass = classNames(styles.root, {
-    [styles.open]: isOpen,
-  });
+  useEffect(() => {
+    if (isOpen) {
+      document.documentElement.classList.add('no-scroll');
+    } else {
+      document.documentElement.classList.remove('no-scroll');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isOpen]);
 
   return (
-    <nav className={(styles.root, navClass)}>
+    <motion.nav
+      className={styles.root}
+      initial="initial"
+      animate={isOpen ? 'open' : 'closed'}
+      variants={variants}
+      transition={{ duration: 0.5 }}
+    >
       <IconButton
-        className={classNames(styles.close)}
+        className={styles.close}
         sx={{ position: 'absolute' }}
         size="large"
         color="inherit"
@@ -32,13 +71,13 @@ const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
       >
         <CloseIcon />
       </IconButton>
-      <MenuCategories size={'l'} theme={'dark'} />
-      <Link className={classNames(styles.link)} to={RoutePaths.ABOUT}>
+      <MenuCategories size={'l'} theme={'dark'} onClose={onClose} />
+      <Link className={styles.link} to={RoutePaths.ABOUT} onClick={onClose}>
         About Us
       </Link>
       <PhoneNumber className={styles.phone}>(+380) 68 018 45 67</PhoneNumber>
       <InfoPanel className={styles.info} variant={'vertical'} />
-    </nav>
+    </motion.nav>
   );
 };
 

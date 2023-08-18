@@ -3,11 +3,11 @@
 
 .root {
   display: grid;
-  grid-template-columns: repeat(6, minmax(180px, auto));
+  grid-template-columns: repeat(6, minmax(120px, auto));
   gap: 16px;
   overflow-x: auto;
 
-  @include create-mq($grid__bp-sm, 'min') {
+  @include create-mq($grid__bp-md, 'min') {
     grid-template-columns: repeat(3, minmax(auto, 200px));
   }
 }

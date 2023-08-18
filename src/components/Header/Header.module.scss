@@ -21,9 +21,12 @@
 }
 
 .top {
+  display: flex;
+  align-items: center;
+
   @include create-mq($grid__bp-md - 1, 'max') {
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
 }
 
@@ -49,8 +52,11 @@
 }
 
 .search {
+  width: 100%;
+  margin-right: 10px;
+
   @include create-mq($grid__bp-md, 'min') {
-    width: 320px;
+    width: 400px;
   }
 
   @include create-mq($grid__bp-lg, 'min') {
