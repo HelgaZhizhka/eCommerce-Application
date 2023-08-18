@@ -46,16 +46,16 @@ const Header: React.FC = () => {
               <InfoPanel />
               <PhoneNumber className="ml-auto">(+380) 68 018 45 67</PhoneNumber>
               {loggedIn && (
-                <Button
+                <Link
+                  to={RoutePaths.MAIN}
                   onClick={(): void => {
                     userStore.logout();
                   }}
-                  sx={{ fontSize: '1.25rem', ml: '10px' }}
-                  variant="outlined"
-                  color="primary"
                 >
-                  Exit
-                </Button>
+                  <Button sx={{ fontSize: '1.25rem', ml: '10px' }} variant="outlined" color="primary">
+                    Exit
+                  </Button>
+                </Link>
               )}
             </div>
             <div className={styles.flex}>
@@ -118,17 +118,16 @@ const Header: React.FC = () => {
                   </Link>
                 )}
                 {loggedIn && (
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="link"
+                  <Link
+                    to={RoutePaths.MAIN}
                     onClick={(): void => {
                       userStore.logout();
                     }}
                   >
-                    <LogoutIcon fontSize="large" />
-                  </IconButton>
+                    <IconButton size="large" edge="start" color="inherit" aria-label="link">
+                      <LogoutIcon fontSize="large" />
+                    </IconButton>
+                  </Link>
                 )}
               </div>
             </div>
