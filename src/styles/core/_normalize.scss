@@ -20,12 +20,7 @@ body * {
     255,
     0
   ); //sets the color of the highlight that appears over a link while it's being tapped
-  -webkit-focus-ring-color: rgba(
-    255,
-    255,
-    255,
-    0
-  ); // styling outline effect for focused
+  -webkit-focus-ring-color: rgba(255, 255, 255, 0); // styling outline effect for focused
   outline: none;
 }
 * {
@@ -109,9 +104,9 @@ picture {
   vertical-align: bottom;
 }
 video {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 button,
 input,
@@ -202,10 +197,6 @@ svg:not(:root) {
 }
 [hidden] {
   display: none;
-}
-img, video {
-  max-width: 100%;
-  height: auto;
 }
 
 ::selection {

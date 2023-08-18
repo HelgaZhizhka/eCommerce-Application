@@ -24,6 +24,8 @@ export interface RegistrationFormValuesThird {
   checkedBillingDefault: boolean;
 }
 
+export type RegistrationFormValuesData = RegistrationFormValuesThird & RegistrationFormValuesSecond & RegistrationFormValues;
+
 export type Message = {
   [key: string]: boolean;
 };

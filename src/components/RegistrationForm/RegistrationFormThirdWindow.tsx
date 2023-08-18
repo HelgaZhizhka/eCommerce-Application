@@ -3,11 +3,18 @@ import { Button, MenuItem } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
+import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/thirdWindow';
 import { Data } from '../../pages/Registration/Registration.interface';
 import { ShowValidate } from '../ShowValidate';
-import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
+import {
+  Message,
+  RegistrationFormValuesThird,
+  FieldInputthird,
+  RegistrationFormValuesData,
+} from './Registration.interface';
 import styles from './Registration.module.scss';
 
 const initialValues: RegistrationFormValuesThird = {
@@ -29,6 +36,7 @@ interface LoginProps {
     setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    data: Record<string, string | number | boolean>;
   };
 }
 
@@ -38,7 +46,7 @@ const options = [
 ];
 
 const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPage, setIsLogin } = userData;
+  const { setData, setWindowPage, setIsLogin, data } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -131,6 +139,8 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
     cityBillingMessage,
     postalCodeBillingMessage,
   ]);
+
+  const userRegData = userStore.userData;
 
   return (
     <>
@@ -310,6 +320,8 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
+                  console.log(data);
+                  userStore.signup(data);
                   setIsLogin((prev) => !prev);
                 }}
               >
@@ -334,4 +346,4 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
   );
 };
 
-export default RegistrationFormThirdWindow;
+export default observer(RegistrationFormThirdWindow);

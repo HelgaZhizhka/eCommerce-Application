@@ -20,7 +20,7 @@ const Logo: React.FC<Props> = ({ variant = LogoVariant.DEFAULT }) => {
 
   return (
     <Link to="/">
-      <span className={classNames(logoClasses)}></span>
+      <span className={logoClasses}></span>
     </Link>
   );
 };

@@ -9,8 +9,11 @@ const colorBlack = getCSSVariableValue('--black');
 const colorGreen = getCSSVariableValue('--green');
 const colorBlue = getCSSVariableValue('--blue');
 const colorLightBlue = getCSSVariableValue('--light-blue');
-const stateDanger = getCSSVariableValue('--state-danger');
+const stateDanger = getCSSVariableValue('--state-error');
 const stateSuccess = getCSSVariableValue('--state-success');
+const commonHeadingStyles = {
+  letterSpacing: '0.64px', 
+};
 
 const lightTheme = createTheme({
   components: {
@@ -20,12 +23,30 @@ const lightTheme = createTheme({
           textDecoration: 'none',
           color: colorOrange,
         },
+        h1: {
+          ...commonHeadingStyles,
+        },
+        h2: {
+          ...commonHeadingStyles,
+        },
+        h3: {
+          ...commonHeadingStyles,
+        },
+        h4: {
+          ...commonHeadingStyles,
+        },
+        h5: {
+          ...commonHeadingStyles,
+        },
+        h6: {
+          ...commonHeadingStyles,
+        },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'capitalize',
+          textTransform: 'none',
         },
       },
       defaultProps: {

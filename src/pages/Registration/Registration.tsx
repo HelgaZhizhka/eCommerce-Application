@@ -9,6 +9,7 @@ import {
   RegistrationFormThirdWindow,
 } from '../../components/RegistrationForm';
 
+import { userStore } from '../../stores';
 import { Poster } from '../../components/Poster';
 import styles from './Registration.module.scss';
 import { Data } from './Registration.interface';
@@ -19,6 +20,14 @@ const Registration: React.FC = () => {
   const [showSplash, setShowSplash] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [windowPage, setWindowPage] = useState(1);
+
+  useEffect(() => {
+    if (Object.keys(data).length > 7) {
+      userStore.updateUserData(data);
+    }
+  }, [data]);
+
+  //! Попробовать редиректить
 
   useEffect(() => {
     if (isLogin) {
@@ -41,7 +50,9 @@ const Registration: React.FC = () => {
             <span className={classNames(styles.title)}>Welcome to YesCode!</span>
             {windowPage === 1 && <RegistrationForm userData={{ setWindowPage, setData }} />}
             {windowPage === 2 && <RegistrationFormSecondWindow userData={{ setWindowPage, setData }} />}
-            {windowPage === 3 && <RegistrationFormThirdWindow userData={{ setWindowPage, setData, setIsLogin }} />}
+            {windowPage === 3 && (
+              <RegistrationFormThirdWindow userData={{ setWindowPage, setData, setIsLogin, data }} />
+            )}
           </div>
           <div className={classNames(styles.posterWrap)}>
             <Poster />

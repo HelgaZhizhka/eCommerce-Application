@@ -6,14 +6,6 @@
    margin-right: 10px;
 }
 
-.ls-2 {
-   letter-spacing: 0.48px;
-}
-
-.ls-1 {
-   letter-spacing: 0.32px;
-}
-
 .text-inherit {
    color: inherit;
 }
@@ -22,4 +14,9 @@
    margin: 0 5px;
    color: var(--state-primary);
    border-bottom: 1px solid var(--state-primary);
+}
+
+.no-scroll {
+   overflow: hidden;
+   height: 100%; 
 }

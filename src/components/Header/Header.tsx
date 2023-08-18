@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -8,6 +7,8 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
@@ -34,20 +35,32 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={classNames(styles.root)}>
+    <header className={styles.root}>
       {!isMobile && (
         <>
           <Container sx={{ display: 'grid' }} className={styles.container} maxWidth="xl">
-            <div className={classNames(styles.logo)}>
+            <div className={styles.logo}>
               <Logo variant={LogoVariant.DEFAULT} />
             </div>
-            <div className={classNames(styles.flex, styles.top)}>
+            <div className={styles.top}>
               <InfoPanel />
               <PhoneNumber className="ml-auto">(+380) 68 018 45 67</PhoneNumber>
+              {loggedIn && (
+                <Link
+                  to={RoutePaths.MAIN}
+                  onClick={(): void => {
+                    userStore.logout();
+                  }}
+                >
+                  <Button sx={{ fontSize: '1.25rem', ml: '10px' }} variant="outlined" color="primary">
+                    Exit
+                  </Button>
+                </Link>
+              )}
             </div>
             <div className={styles.flex}>
               <Search className={styles.search} />
-              <div className={classNames('ml-auto', styles.flex)}>
+              <div className={`ml-auto ${styles.flex}`}>
                 {!loggedIn && (
                   <>
                     <Link to={RoutePaths.LOGIN}>
@@ -62,18 +75,6 @@ const Header: React.FC = () => {
                     </Link>
                   </>
                 )}
-                {loggedIn && (
-                  <Button
-                    onClick={(): void => {
-                      userStore.logout();
-                    }}
-                    sx={{ fontSize: '1.25rem', mr: '10px' }}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Sign out
-                  </Button>
-                )}
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
@@ -84,8 +85,8 @@ const Header: React.FC = () => {
           <nav className={styles.navbar}>
             <Container sx={{ display: 'flex', alignItems: 'center' }} maxWidth="xl">
               <MenuCategories size={'l'} variant={'horizontal'} />
-              <div className={classNames('ml-auto', styles.flex)}>
-                <Link className={classNames(styles.link)} to={RoutePaths.ABOUT}>
+              <div className={`ml-auto ${styles.flex}`}>
+                <Link className={styles.link} to={RoutePaths.ABOUT}>
                   About Us
                 </Link>
                 <ThemeToggle />
@@ -96,36 +97,38 @@ const Header: React.FC = () => {
       )}
       {isMobile && (
         <>
-          <Container maxWidth="xl">
-            <div className={classNames(styles.flex, styles.top)}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-                onClick={toggleNavBar}
-              >
+          <Container>
+            <div className={styles.top}>
+              <IconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={toggleNavBar}>
                 <MenuIcon />
               </IconButton>
-              <div className={classNames(styles.logo)}>
+              <div className={styles.logo}>
                 <Logo variant={LogoVariant.DEFAULT} />
               </div>
-              <div className={classNames('ml-auto', styles.flex)}>
-                <Link to={RoutePaths.LOGIN}>
-                  <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="outlined" color="primary">
-                    <span>Sign in</span>
-                  </Button>
-                </Link>
-                <Link to={RoutePaths.REGISTRATION}>
-                  <Button sx={{ fontSize: '1.25rem', mr: '10px' }} variant="contained" color="primary">
-                    Sign up
-                  </Button>
-                </Link>
+              <div className={`ml-auto ${styles.flex}`}>
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
                 <SelectCurrency />
+                {!loggedIn && (
+                  <Link to={RoutePaths.LOGIN}>
+                    <IconButton size="large" edge="start" color="inherit" aria-label="link">
+                      <LoginIcon fontSize="large" />
+                    </IconButton>
+                  </Link>
+                )}
+                {loggedIn && (
+                  <Link
+                    to={RoutePaths.MAIN}
+                    onClick={(): void => {
+                      userStore.logout();
+                    }}
+                  >
+                    <IconButton size="large" edge="start" color="inherit" aria-label="link">
+                      <LogoutIcon fontSize="large" />
+                    </IconButton>
+                  </Link>
+                )}
               </div>
             </div>
             <Search className={styles.search} />
