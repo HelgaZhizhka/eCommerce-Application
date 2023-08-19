@@ -1,0 +1,438 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  height: 280px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+
+  @include create-mq($grid__bp-md, 'min') {
+    height: 420px;
+  }
+}
+
+.content {
+  font-weight: 700;
+  color: var(--white);
+  text-align: center;
+
+  @include create-mq($grid__bp-md, 'min') {
+    font-size: toRem(24px);
+  }
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.description {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.title {
+  margin: 0;
+  line-height: 1;
+}
+
+.fon1,
+.fon2,
+.fon3,
+.fon4,
+.fon5,
+.fon6,
+.fon7,
+.fon8,
+.label1,
+.label2,
+.label3,
+.label4,
+.image1 {
+  position: absolute;
+}
+
+.slide1,
+.slide2,
+.slide3 {
+  .container {
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+.slide1,
+.slide2 {
+  .container {
+    background-image: url(./images/sale.png);
+  }
+}
+
+.slide1 {
+  background-image: url(./images/slide1/mob/slide1.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @include create-mq($grid__bp-md, 'min') {
+    background-image: url(./images/slide1/slide1.png);
+  }
+
+  .container {
+    background-position: 5% 0;
+
+    @include create-mq($grid__bp-lg, 'min') {
+      background-position: 25% 0;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background-image: url(./images/slide1/mob/girl.png);
+      background-size: auto 100%;
+      background-position: 3% 0;
+      background-repeat: no-repeat;
+      z-index: 1;
+
+      @include create-mq($grid__bp-md, 'min') {
+        background-position: -60% 0;
+        background-image: url(./images/slide1/girl.png);
+      }
+
+      @include create-mq($grid__bp-lg, 'min') {
+        background-position: 2% 0;
+      }
+    }
+  }
+
+  .fon2 {
+    top: 0;
+    right: 0;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 22%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      right: 18%;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 26%;
+    }
+  }
+
+  .fon1 {
+    bottom: -5%;
+    right: 0;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 22%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      right: 12%;
+      bottom: 0;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 22%;
+    }
+  }
+
+  .label1 {
+    top: 5%;
+    right: 5%;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 23%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      right: 15%;
+      top: 0;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 23%;
+    }
+  }
+
+  .bg1 {
+    top: 0;
+    left: 30%;
+    z-index: 12;
+  }
+
+  .content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    border-radius: 2px;
+    background: linear-gradient(359deg, #cb0985 0%, #fa811e 100%);
+    box-shadow: 0 4px 8px 0px rgba(0, 0, 0, 0.16);
+    z-index: 10;
+
+    @include create-mq($grid__bp-xs, 'min') {
+      width: 220px;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      width: 350px;
+      padding: 25px 35px;
+    }
+  }
+
+  .title {
+    font-size: toRem(56px);
+
+    @include create-mq($grid__bp-md, 'min') {
+      font-size: toRem(94px);
+    }
+  }
+}
+
+.slide2,
+.slide3 {
+  .content {
+    height: 100%;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+
+    @include create-mq($grid__bp-md, 'min') {
+      width: 470px;
+      padding: 0 45px;
+    }
+  }
+
+  .contentWrapper {
+    margin: auto 0;
+  }
+}
+
+.slide2 {
+  background-image: url(./images/slide2/mob/slide2.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @include create-mq($grid__bp-md, 'min') {
+    background-image: url(./images/slide2/slide2.png);
+  }
+
+  .container {
+    background-position: 94% 0;
+
+    @include create-mq($grid__bp-md, 'min') {
+      background-position: 75% 0;
+    }
+  }
+
+  .content {
+    margin-left: 15px;
+
+    @include create-mq($grid__bp-md, 'min') {
+      margin-left: 0;
+    }
+  }
+
+  .title {
+    font-size: toRem(72px);
+
+    @include create-mq($grid__bp-md, 'min') {
+      font-size: toRem(130px);
+    }
+  }
+
+  .button {
+    background-color: var(--black);
+
+    &:hover {
+      background-color: var(--dark);
+    }
+  }
+
+  .fon6 {
+    top: 20%;
+    right: 0;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 12%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      top: 0;
+      right: -80px;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: -140px;
+    }
+  }
+
+  .fon3 {
+    top: 0;
+    right: 20%;
+
+    @include create-mq($grid__bp-md, 'min') {
+      right: 25%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      right: 20%;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 10%;
+    }
+  }
+
+  .fon4 {
+    bottom: 0;
+    right: 24%;
+
+    @include create-mq($grid__bp-md - 1, 'max') {
+      display: none;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 14%;
+    }
+  }
+
+  .fon5 {
+    bottom: 0;
+    right: 20%;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 25%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      bottom: 0;
+      right: 32%;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 20%;
+    }
+  }
+
+  .fon7 {
+    bottom: 0;
+    display: none;
+
+    @include create-mq($grid__bp-xl, 'min') {
+      display: block;
+      right: -10%;
+    }
+  }
+
+  .label2 {
+    top: 10%;
+    right: 0;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      right: 10%;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      top: auto;
+      bottom: 0;
+      right: 20%;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      right: 10%;
+    }
+  }
+}
+
+.slide3 {
+  background-image: url(./images/slide3/mob/slide3.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @include create-mq($grid__bp-md, 'min') {
+    background-image: url(./images/slide3/slide3.png);
+  }
+
+  .container {
+    display: flex;
+    justify-content: flex-end;
+    background-image: url(./images/slide3/new.png);
+    background-position: 2% 0;
+  }
+
+  .content {
+    color: var(--blue);
+  }
+
+  .title {
+    background: linear-gradient(180deg, #3e17ff 0%, rgba(62, 23, 255, 0) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: toRem(56px);
+
+    @include create-mq($grid__bp-md, 'min') {
+      font-size: toRem(130px);
+    }
+  }
+
+  .button {
+    background-color: var(--blue);
+    &:hover {
+      background-color: var(--blue-hover);
+    }
+  }
+
+  .fon8 {
+    top: 0;
+    left: -10%;
+
+    @include create-mq($grid__bp-sm, 'min') {
+      top: 0;
+      left: 0;
+    }
+
+    @include create-mq($grid__bp-md, 'min') {
+      top: 0;
+      left: -28%;
+    }
+
+    @include create-mq($grid__bp-lg, 'min') {
+      left: -10%;
+    }
+  }
+
+  .label3 {
+    top: 10%;
+    left: 10%;
+
+    @include create-mq($grid__bp-md, 'min') {
+      top: auto;
+      bottom: 0;
+      left: 42%;
+    }
+  }
+}
+
+.button {
+  @include create-mq($grid__bp-md, 'min') {
+    width: 180px;
+    height: 66px;
+  }
+}

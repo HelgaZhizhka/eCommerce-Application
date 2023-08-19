@@ -15,7 +15,7 @@ const ErrorPage: React.FC = () => (
       <img className={styles.banner} src={image404} alt="404 page" />
 
       <h2 className={styles.title}>
-        <span className={styles.marked}>WHOOPS!</span> Page they are looking for could not be found.
+        <span className={styles.marked}>WHOOPS!</span> Page they&apos;re looking for could not be found.
       </h2>
       <Link to={RoutePaths.MAIN}>
         <Button sx={{ fontSize: '1.5rem' }} className={styles.button} variant="contained" color="primary">

@@ -35,12 +35,12 @@ interface RegistrationProps {
 }
 
 const options = [
-  { value: 'Ukraine', label: 'Ukraine' },
-  { value: 'USA', label: 'USA' },
+  { value: 'UA', label: 'Ukraine' },
+  { value: 'US', label: 'USA' },
 ];
 
 const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) => {
-  const { setData, setWindowPage, data } = userData;
+  const { setData, setWindowPage } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -311,7 +311,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  userStore.signup(data);
+                  setTimeout(() => userStore.signup(), 0);
                 }}
               >
                 Sing in!

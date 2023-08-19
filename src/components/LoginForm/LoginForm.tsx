@@ -1,12 +1,11 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Link } from 'react-router-dom';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 
 import { validate } from '../../utils/validate/sigIn';
 import ShowValidate from '../ShowValidate/ShowValidate';
@@ -27,10 +26,14 @@ const initialValues: LoginFormValues = {
 
 const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
+
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
+
+  const [allFieldsValid, setAllFieldsValid] = useState(false);
 
   const handleClickShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -57,6 +60,19 @@ const LoginForm: React.FC = () => {
       }));
     }
   };
+
+  const areAllValuesFalse = (obj: Record<string, boolean>): boolean => {
+    if (Object.keys(obj).length === 0) {
+      return false;
+    }
+    return Object.values(obj).every((value) => value === false);
+  };
+
+  useEffect(() => {
+    if (areAllValuesFalse(message) && areAllValuesFalse(messagePassword)) {
+      setAllFieldsValid(true);
+    } else setAllFieldsValid(false);
+  }, [message, messagePassword]);
 
   return (
     <>
@@ -114,7 +130,13 @@ const LoginForm: React.FC = () => {
             </div>
 
             <div className={classNames(styles.btnLogin)}>
-              <Button variant="contained" color="primary" fullWidth disabled={isSubmitting} onClick={submitForm}>
+              <Button
+                disabled={isSubmitting || !allFieldsValid}
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={submitForm}
+              >
                 Sign in
               </Button>
             </div>

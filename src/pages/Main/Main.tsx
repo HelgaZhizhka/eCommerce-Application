@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite/dist/index';
+
 import { userStore } from '../../stores';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
-import Card from '../../components/Card/Card';
+import { HeroCarousel } from '../../components/HeroCarousel';
 
 const Main: React.FC = () => {
   const { isRegistration, resetRegistration } = userStore;
@@ -25,17 +26,12 @@ const Main: React.FC = () => {
         clearTimeout(timeoutId);
       }
     };
-  }, [isRegistration]);
+  }, [isRegistration, resetRegistration]);
 
   return (
     <>
       {showSuccessful && <RegistrationSuccessful />}
-      {!showSuccessful && (
-        <>
-          <Card isDiscount></Card>
-          <h2>Main page</h2>
-        </>
-      )}
+      {!showSuccessful && <HeroCarousel />}
     </>
   );
 };
