@@ -75,6 +75,9 @@ const Header: React.FC = () => {
                     </Link>
                   </>
                 )}
+                <Link to={RoutePaths.PROFILE}>
+                  <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                </Link>
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
@@ -106,15 +109,16 @@ const Header: React.FC = () => {
                 <Logo variant={LogoVariant.DEFAULT} />
               </div>
               <div className={`ml-auto ${styles.flex}`}>
+                <Link to={RoutePaths.PROFILE}>
+                  <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                </Link>
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
                 <SelectCurrency />
                 {!loggedIn && (
                   <Link to={RoutePaths.LOGIN}>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="link">
-                      <LoginIcon fontSize="large" />
-                    </IconButton>
+                    <LoginIcon sx={{ ml: '10px' }} fontSize="large" />
                   </Link>
                 )}
                 {loggedIn && (
@@ -124,9 +128,7 @@ const Header: React.FC = () => {
                       userStore.logout();
                     }}
                   >
-                    <IconButton size="large" edge="start" color="inherit" aria-label="link">
-                      <LogoutIcon fontSize="large" />
-                    </IconButton>
+                    <LogoutIcon sx={{ ml: '10px' }} fontSize="large" />
                   </Link>
                 )}
               </div>
