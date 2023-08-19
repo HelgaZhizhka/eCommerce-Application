@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom/client';
 
 import { SvgSprite } from './components/baseComponents/SvgSprite';
 import './index.scss';
+import { RoutePaths } from './routes/routes.enum';
 import App from './App';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const baseName = isProduction ? '/eCommerce-Application' : '/';
+const baseName = isProduction ? process.env.REACT_APP_DEPLOY_HOMEPAGE : RoutePaths.MAIN;
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
