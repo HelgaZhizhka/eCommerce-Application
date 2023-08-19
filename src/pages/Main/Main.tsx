@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite/dist/index';
 import { userStore } from '../../stores';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
+import Card from '../../components/Card/Card';
 
 const Main: React.FC = () => {
   const { isRegistration, resetRegistration } = userStore;
@@ -29,7 +30,12 @@ const Main: React.FC = () => {
   return (
     <>
       {showSuccessful && <RegistrationSuccessful />}
-      {!showSuccessful && <h2>Main page</h2>}
+      {!showSuccessful && (
+        <>
+          <Card isDiscount></Card>
+          <h2>Main page</h2>
+        </>
+      )}
     </>
   );
 };
