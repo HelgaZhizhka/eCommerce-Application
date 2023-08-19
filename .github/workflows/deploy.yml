@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '18' 
+
     - name: Cache node_modules
       uses: actions/cache@v2
       with:
@@ -32,7 +33,14 @@ jobs:
       run: npm run eslint
 
     - name: Build React app
-      run: npm run build  
+      env:
+        REACT_APP_PROJECT_KEY_CLIENT: ${{ secrets.REACT_APP_PROJECT_KEY_CLIENT }}
+        REACT_APP_SCOPES_CLIENT: ${{ secrets.REACT_APP_SCOPES_CLIENT }}
+        REACT_APP_AUTH_URL_CLIENT: ${{ secrets.REACT_APP_AUTH_URL_CLIENT }}
+        REACT_APP_CLIENT_ID_CLIENT: ${{ secrets.REACT_APP_CLIENT_ID_CLIENT }}
+        REACT_APP_CLIENT_SECRET_CLIENT: ${{ secrets.REACT_APP_CLIENT_SECRET_CLIENT }}
+        GENERATE_SOURCEMAP: false
+      run: npm run build 
 
     - name: Install Netlify CLI
       run: npm install -g netlify-cli
