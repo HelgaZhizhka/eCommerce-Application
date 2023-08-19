@@ -9,12 +9,7 @@ import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/thirdWindow';
 import { Data } from '../../pages/Registration/Registration.interface';
 import { ShowValidate } from '../ShowValidate';
-import {
-  Message,
-  RegistrationFormValuesThird,
-  FieldInputthird,
-  RegistrationFormValuesData,
-} from './Registration.interface';
+import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
 import styles from './Registration.module.scss';
 
 const initialValues: RegistrationFormValuesThird = {
@@ -46,7 +41,7 @@ const options = [
 ];
 
 const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPage, setIsLogin, data } = userData;
+  const { setData, setWindowPage, setIsLogin } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -103,14 +98,13 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
 
   type StateMessage = Record<string, boolean>;
 
-  const areAllValuesFalse = (obj: StateMessage): boolean => {
-    if (Object.keys(obj).length === 0) {
-      return false;
-    }
-    return Object.values(obj).every((value) => value === false);
-  };
-
   useEffect(() => {
+    const areAllValuesFalse = (obj: StateMessage): boolean => {
+      if (Object.keys(obj).length === 0) {
+        return false;
+      }
+      return Object.values(obj).every((value) => value === false);
+    };
     const isShippingFieldsValid =
       areAllValuesFalse(streetShippingMessage) &&
       areAllValuesFalse(cityShippingMessage) &&
@@ -139,8 +133,6 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
     cityBillingMessage,
     postalCodeBillingMessage,
   ]);
-
-  const userRegData = userStore.userData;
 
   return (
     <>

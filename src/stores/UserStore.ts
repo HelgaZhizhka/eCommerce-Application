@@ -14,11 +14,6 @@ type UserStoreType = {
   clearError: () => void;
 };
 
-// interface UserData {
-//   firstName: string;
-//   lastName: string;
-// } // info about user (probably info from userdraft?)
-
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
@@ -31,10 +26,6 @@ const createUserStore = (): UserStoreType => {
         runInAction(() => {
           store.error = null;
           if (response.statusCode === 200) {
-            // if (response.body.customer.firstName && response.body.customer.lastName) {
-            //   store.userData.firstName = response.body.customer.firstName;
-            //   store.userData.lastName = response.body.customer.lastName;
-            // }
             store.loggedIn = true;
           }
           if (response.statusCode === 400) {
@@ -50,8 +41,6 @@ const createUserStore = (): UserStoreType => {
 
     async signup(): Promise<void> {
       try {
-        console.log(toJS(store.userData));
-
         const data: Partial<RegistrationFormValuesData> = toJS(store.userData);
         const response = await customerSignUp(data);
 
@@ -80,12 +69,7 @@ const createUserStore = (): UserStoreType => {
     },
 
     updateUserData(data: Partial<RegistrationFormValuesData>): void {
-      // runInAction(() => {
-        // if (typeof this.userData === 'object') {
-          console.log(store.userData)
           store.userData = { ...store.userData, ...data };
-        // }
-      // });
     },
 
     logout(): void {

@@ -43,7 +43,7 @@ const setAdress = async (email: string, password: string): Promise<void> => {
     const customerInfo = await getCustomerInfo(customer)
     await setAddressRequest(customer, customerInfo)
   } catch (error) {
-    console.error('Ошибка:', error);
+    throw new Error('Error')
   }
 };
 

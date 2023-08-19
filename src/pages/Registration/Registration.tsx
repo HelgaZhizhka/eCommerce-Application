@@ -38,7 +38,6 @@ const Registration: React.FC = () => {
   }, [isLogin]);
 
   if (showSplash) {
-    console.log('1');
     return <Navigate to={'/'} />;
   }
 
