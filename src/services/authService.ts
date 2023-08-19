@@ -1,5 +1,5 @@
-import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
+import { Customer, CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
+import { MyCustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
 
@@ -56,17 +56,16 @@ export const customerSignUp = (values: Record<string, string | number | boolean>
     addresses: [shippingAddress, billingAddress],
     defaultShippingAddress: values.checkedShippingDefault ? 0 : undefined,
     // shippingAddresses: [0],
-    defaultBillingAddress: (values.checkedBillingDefault || values.checkedAddBillingForm) ? 1 : undefined,
+    defaultBillingAddress: (values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault)) ? 1 : undefined,
     // billingAddresses: [1],
   }
 
   // if (values.checkedShippingDefault) requestbody.defaultShippingAddress = 0;
-
-
   // deafultbilling when Use this address for billing is checked
 
   const newCustomer = apiWithClientCredentialsFlow();
-  return newCustomer
+
+  const signUpCustomer = newCustomer
     .me()
     .signup()
     .post(
@@ -75,4 +74,6 @@ export const customerSignUp = (values: Record<string, string | number | boolean>
       }
     )
     .execute()
+
+  return signUpCustomer;
 }

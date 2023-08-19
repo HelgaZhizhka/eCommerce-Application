@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
+import setAdress from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -51,13 +52,16 @@ const createUserStore = (): UserStoreType => {
       try {
         console.log(toJS(store.userData));
 
-        const data = toJS(store.userData);
+        const data: Partial<RegistrationFormValuesData> = toJS(store.userData);
         const response = await customerSignUp(data);
 
         runInAction(() => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
+            if (data.email && data.password) {
+              setAdress(data.email, data.password)
+            }
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
