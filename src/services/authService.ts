@@ -1,5 +1,5 @@
-import { Customer, CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { MyCustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
+import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
+import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
 

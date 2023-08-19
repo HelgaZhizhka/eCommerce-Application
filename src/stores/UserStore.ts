@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, reaction } from 'mobx';
+import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
 import setAdress from '../services/setCustomersDetails';
@@ -16,11 +16,6 @@ type UserStoreType = {
   resetRegistration: () => void;
 };
 
-// interface UserData {
-//   firstName: string;
-//   lastName: string;
-// } // info about user (probably info from userdraft?)
-
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
@@ -34,10 +29,6 @@ const createUserStore = (): UserStoreType => {
         runInAction(() => {
           store.error = null;
           if (response.statusCode === 200) {
-            // if (response.body.customer.firstName && response.body.customer.lastName) {
-            //   store.userData.firstName = response.body.customer.firstName;
-            //   store.userData.lastName = response.body.customer.lastName;
-            // }
             store.loggedIn = true;
           }
           if (response.statusCode === 400) {

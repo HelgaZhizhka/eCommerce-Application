@@ -40,7 +40,7 @@ const options = [
 ];
 
 const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) => {
-  const { setData, setWindowPage, data } = userData;
+  const { setData, setWindowPage } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -312,7 +312,6 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
                 onClick={(): void => {
                   submitForm();
                   setTimeout(() => userStore.signup(), 0);
-                  setIsLogin((prev) => !prev);
                 }}
               >
                 Sing in!
