@@ -1,0 +1,38 @@
+name: eCommerce-Application
+
+on:
+  push:
+    branches:
+      - feat/sprint_2
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18' 
+
+    - name: Install dependencies
+      run: npm install  
+
+    - name: Build React app
+      env:
+        REACT_APP_PROJECT_KEY_CLIENT: ${{ secrets.PROJECT_KEY_CLIENT }}
+        REACT_APP_CLIENT_ID_CLIENT: ${{ secrets.CLIENT_ID_CLIENT }}
+        REACT_APP_CLIENT_SECRET_CLIENT: ${{ secrets.CLIENT_SECRET_CLIENT }}
+        REACT_APP_AUTH_URL_CLIENT: ${{ secrets.AUTH_URL_CLIENT }}
+        REACT_APP_API_URL_CLIENT: ${{ secrets.API_URL_CLIENT }}
+        REACT_APP_SCOPES_CLIENT: ${{ secrets.SCOPES_CLIENT }}
+      run: npm run build  
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.5
+      with:
+        branch: gh-pages
+        folder: build
