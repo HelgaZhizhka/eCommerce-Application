@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "https://helgazhizhka.github.io/eCommerce-Application/static/css/main.d04b8cfa.css",
-    "main.js": "https://helgazhizhka.github.io/eCommerce-Application/static/js/main.ae927f89.js",
+    "main.css": "https://helgazhizhka.github.io/eCommerce-Application/static/css/main.cd3bc7cd.css",
+    "main.js": "https://helgazhizhka.github.io/eCommerce-Application/static/js/main.76ac8777.js",
     "static/media/404.png": "https://helgazhizhka.github.io/eCommerce-Application/static/media/404.69d33ac0138481da19d0.png",
     "static/media/poster3.png": "https://helgazhizhka.github.io/eCommerce-Application/static/media/poster3.44413d35b14b9514e0e4.png",
     "static/media/poster4.png": "https://helgazhizhka.github.io/eCommerce-Application/static/media/poster4.2520932496e520cbbca7.png",
@@ -16,12 +16,10 @@
     "static/media/logo-white-mob.svg": "https://helgazhizhka.github.io/eCommerce-Application/static/media/logo-white-mob.9f6540bf4d1cfe6e715b.svg",
     "static/media/logo-light-mob.svg": "https://helgazhizhka.github.io/eCommerce-Application/static/media/logo-light-mob.2323c541420fda2bbe46.svg",
     "static/media/logoLight.svg": "https://helgazhizhka.github.io/eCommerce-Application/static/media/logoLight.a797c6464668c35d4e1f.svg",
-    "index.html": "https://helgazhizhka.github.io/eCommerce-Application/index.html",
-    "main.d04b8cfa.css.map": "https://helgazhizhka.github.io/eCommerce-Application/static/css/main.d04b8cfa.css.map",
-    "main.ae927f89.js.map": "https://helgazhizhka.github.io/eCommerce-Application/static/js/main.ae927f89.js.map"
+    "index.html": "https://helgazhizhka.github.io/eCommerce-Application/index.html"
   },
   "entrypoints": [
-    "static/css/main.d04b8cfa.css",
-    "static/js/main.ae927f89.js"
+    "static/css/main.cd3bc7cd.css",
+    "static/js/main.76ac8777.js"
   ]
 }
