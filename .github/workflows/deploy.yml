@@ -20,6 +20,9 @@ jobs:
 
     - name: Install dependencies
       run: npm install  
+    
+    - name: Set homepage for GitHub Pages
+      run: echo "PUBLIC_URL=https://helgazhizhka.github.io/eCommerce-Application" >> .env
 
     - name: Build React app
       env:
@@ -29,7 +32,7 @@ jobs:
         REACT_APP_AUTH_URL_CLIENT: ${{ secrets.AUTH_URL_CLIENT }}
         REACT_APP_API_URL_CLIENT: ${{ secrets.API_URL_CLIENT }}
         REACT_APP_SCOPES_CLIENT: ${{ secrets.SCOPES_CLIENT }}
-        
+
       run: npm run build  
 
     - name: Deploy to GitHub Pages
