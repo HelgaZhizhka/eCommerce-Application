@@ -50,7 +50,7 @@ export function apiWithPasswordFlow(email:string, password:string):ByProjectKeyR
   return apiRoot;
 }
 
-export function apiWithClientCredentialsFlow() {
+export function apiWithClientCredentialsFlow(): any {
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,

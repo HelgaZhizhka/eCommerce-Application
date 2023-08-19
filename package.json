@@ -48,6 +48,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "gh-pages": "^6.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "prettier": "^2.5.1"
@@ -62,7 +63,10 @@
     "eslint": "eslint . --ext .ts,.tsx",
     "prepare": "husky install",
     "postinstall": "chmod +x .husky/*",
-    "ignorecase": "git config core.ignorecase false"
+    "ignorecase": "git config core.ignorecase false",
+    "predeploy": "echo '{\"homepage\":\"https://HelgaZhizhka.github.io/eCommerce-Application\"}' > ./homepage.json && npm run build",
+    "deploy": "gh-pages -d build",
+    "postdeploy": "rm ./homepage.json"
   },
   "lint-staged": {
     "src/**/*.tsx": [
