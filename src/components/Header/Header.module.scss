@@ -5,6 +5,10 @@
 .root {
   position: relative;
   font-size: toRem(20px);
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-bottom: 20px;
+  }
 }
 
 .container {

@@ -1,22 +1,38 @@
 .ml-auto {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .mr-1 {
-   margin-right: 10px;
+  margin-right: 10px;
 }
 
 .text-inherit {
-   color: inherit;
+  color: inherit;
 }
 
 .text-brand {
-   margin: 0 5px;
-   color: var(--state-primary);
-   border-bottom: 1px solid var(--state-primary);
+  margin: 0 5px;
+  color: var(--state-primary);
+  border-bottom: 1px solid var(--state-primary);
 }
 
 .no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  &::after {
+    color: var(--light-white);
+    text-shadow: 1px 1px 1px var(--gray);
+  }
+}
+
+.swiper-wrapper {
    overflow: hidden;
-   height: 100%; 
+}
+
+.swiper-scrollbar-drag {
+  background: var(--state-primary) !important;
 }
