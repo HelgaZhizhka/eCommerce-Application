@@ -33,6 +33,7 @@ jobs:
         REACT_APP_API_URL_CLIENT: ${{ secrets.REACT_APP_API_URL_CLIENT }}
         REACT_APP_SCOPES_CLIENT: ${{ secrets.REACT_APP_SCOPES_CLIENT }}
         REACT_APP_DEPLOY_HOMEPAGE: ${{ secrets.REACT_APP_DEPLOY_HOMEPAGE }}
+        GENERATE_SOURCEMAP: false
 
       run: npm run build  
 
