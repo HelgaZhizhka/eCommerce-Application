@@ -10,18 +10,18 @@ import {
 import {
   ByProjectKeyRequestBuilder
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
-import envConfig from '../constants/index';
+// import envConfig from '../constants/index';
 
-const projectKey = `${envConfig.PROJECT_KEY_CLIENT}`;
-const scopes = [`${envConfig.API_SCOPE_CLIENT}`];
-const hostAUTH = `${envConfig.API_AUTH_URL_CLIENT}`;
-const clientId = `${envConfig.CLIENT_ID_CLIENT}`;
-const clientSecret = `${envConfig.CLIENT_SECRET_CLIENT}`;
-// const hostAPI = `${envConfig.API_URL_CLIENT}`
+const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
+const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];
+const hostAUTH = `${process.env.REACT_APP_AUTH_URL_CLIENT}`;
+const clientId = `${process.env.REACT_APP_CLIENT_ID_CLIENT}`;
+const clientSecret = `${process.env.REACT_APP_CLIENT_SECRET_CLIENT}`;
+// const hostAPI = `${process.env.REACT_APP_API_URL_CLIENT}`
 
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: `${envConfig.API_URL_CLIENT}`,
+  host: `${process.env.REACT_APP_API_URL_CLIENT}`,
   fetch,
 };
 

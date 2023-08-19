@@ -6,12 +6,15 @@ import { SvgSprite } from './components/baseComponents/SvgSprite';
 import './index.scss';
 import App from './App';
 
+const isProduction = process.env.NODE_ENV === 'production';
+const baseName = isProduction ? '/eCommerce-Application' : '/';
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <>
       <SvgSprite />
-      <BrowserRouter>
+      <BrowserRouter basename={baseName}>
         <App />
       </BrowserRouter>
     </>
