@@ -2,7 +2,7 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { apiWithPasswordFlow, apiWithClientCredentialsFlow } from './BuildClient';
-import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
+// import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
 
 export const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
   const customer = apiWithPasswordFlow(email, password);

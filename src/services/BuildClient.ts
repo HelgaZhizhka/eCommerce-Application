@@ -17,7 +17,7 @@ const scopes = [`${envConfig.API_SCOPE_CLIENT}`];
 const hostAUTH = `${envConfig.API_AUTH_URL_CLIENT}`;
 const clientId = `${envConfig.CLIENT_ID_CLIENT}`;
 const clientSecret = `${envConfig.CLIENT_SECRET_CLIENT}`;
-const hostAPI = `${envConfig.API_URL_CLIENT}`
+// const hostAPI = `${envConfig.API_URL_CLIENT}`
 
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
@@ -50,22 +50,22 @@ export function apiWithPasswordFlow(email:string, password:string):ByProjectKeyR
   return apiRoot;
 }
 
-export function apiWithClientCredentialsFlow(): any {
+export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
     credentials: {
       clientId,
-      clientSecret
+      clientSecret,
     },
     scopes,
-    fetch
-  }
+    fetch,
+  };
   const ctpClientCredentialsFlow = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({projectKey});
+  const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
   return apiRoot;
 }

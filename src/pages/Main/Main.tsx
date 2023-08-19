@@ -24,7 +24,7 @@ const Main: React.FC = () => {
         clearTimeout(timeoutId);
       }
     };
-  }, [isRegistration]);
+  }, [isRegistration, resetRegistration]);
 
   return (
     <>
