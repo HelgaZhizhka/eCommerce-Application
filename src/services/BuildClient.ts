@@ -23,7 +23,7 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
-export function apiWithPasswordFlow(email:string, password:string):ByProjectKeyRequestBuilder {
+export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -32,19 +32,19 @@ export function apiWithPasswordFlow(email:string, password:string):ByProjectKeyR
       clientSecret,
       user: {
         username: email,
-        password
-      }
+        password,
+      },
     },
     scopes,
     fetch,
-  }
+  };
 
   const ctpClientPassword = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withPasswordFlow(passwordAuthMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({projectKey});
+  const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
   return apiRoot;
 }
 
@@ -54,16 +54,16 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
     projectKey,
     credentials: {
       clientId,
-      clientSecret
+      clientSecret,
     },
     scopes,
-    fetch
-  }
+    fetch,
+  };
   const ctpClientCredentialsFlow = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({projectKey});
+  const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
   return apiRoot;
 }

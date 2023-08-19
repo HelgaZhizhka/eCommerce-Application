@@ -6,18 +6,21 @@ import setAdress from '../services/setCustomersDetails';
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
   loggedIn: boolean;
+  isRegistration: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
   signup: () => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
+  resetRegistration: () => void;
 };
 
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
     loggedIn: localStorage.getItem('loggedIn') === 'true',
+    isRegistration: false,
     error: null as null | string,
 
     async login(email: string, password: string): Promise<void> {
@@ -51,6 +54,7 @@ const createUserStore = (): UserStoreType => {
             if (data.email && data.password) {
               setAdress(data.email, data.password)
             }
+            store.isRegistration = true;
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
@@ -62,6 +66,10 @@ const createUserStore = (): UserStoreType => {
         });
       }
 
+    },
+
+    resetRegistration(): void {
+      store.isRegistration = false;
     },
 
     clearError(): void {

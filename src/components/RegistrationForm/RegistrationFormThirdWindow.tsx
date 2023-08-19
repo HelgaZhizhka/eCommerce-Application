@@ -26,11 +26,10 @@ const initialValues: RegistrationFormValuesThird = {
   checkedBillingDefault: false,
 };
 
-interface LoginProps {
+interface RegistrationProps {
   userData: {
     setWindowPage: React.Dispatch<React.SetStateAction<number>>;
     setData: React.Dispatch<React.SetStateAction<Data>>;
-    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     data: Record<string, string | number | boolean>;
   };
 }
@@ -40,8 +39,8 @@ const options = [
   { value: 'US', label: 'USA' },
 ];
 
-const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
-  const { setData, setWindowPage, setIsLogin } = userData;
+const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) => {
+  const { setData, setWindowPage } = userData;
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -313,7 +312,6 @@ const RegistrationFormThirdWindow: React.FC<LoginProps> = ({ userData }) => {
                 onClick={(): void => {
                   submitForm();
                   setTimeout(() => userStore.signup(), 0);
-                  setIsLogin((prev) => !prev);
                 }}
               >
                 Sing in!
