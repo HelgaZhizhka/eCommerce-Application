@@ -21,7 +21,6 @@ const pageTransition = {
 const RouterConfig: React.FC = () => {
   const { loggedIn } = userStore;
   const location = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
