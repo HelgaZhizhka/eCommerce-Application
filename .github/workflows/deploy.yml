@@ -26,12 +26,12 @@ jobs:
 
     - name: Build React app
       env:
-        REACT_APP_PROJECT_KEY_CLIENT: ${{ secrets.PROJECT_KEY_CLIENT }}
-        REACT_APP_CLIENT_ID_CLIENT: ${{ secrets.CLIENT_ID_CLIENT }}
-        REACT_APP_CLIENT_SECRET_CLIENT: ${{ secrets.CLIENT_SECRET_CLIENT }}
-        REACT_APP_AUTH_URL_CLIENT: ${{ secrets.AUTH_URL_CLIENT }}
-        REACT_APP_API_URL_CLIENT: ${{ secrets.API_URL_CLIENT }}
-        REACT_APP_SCOPES_CLIENT: ${{ secrets.SCOPES_CLIENT }}
+        REACT_APP_PROJECT_KEY_CLIENT: ${{ secrets.REACT_APP_PROJECT_KEY_CLIENT }}
+        REACT_APP_CLIENT_ID_CLIENT: ${{ secrets.REACT_APP_CLIENT_ID_CLIENT }}
+        REACT_APP_CLIENT_SECRET_CLIENT: ${{ secrets.REACT_APP_CLIENT_SECRET_CLIENT }}
+        REACT_APP_AUTH_URL_CLIENT: ${{ secrets.REACT_APP_AUTH_URL_CLIENT }}
+        REACT_APP_API_URL_CLIENT: ${{ secrets.REACT_APP_API_URL_CLIENT }}
+        REACT_APP_SCOPES_CLIENT: ${{ secrets.REACT_APP_SCOPES_CLIENT }}
 
       run: npm run build  
 
