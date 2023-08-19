@@ -23,6 +23,7 @@ const pageTransition = {
 const RouterConfig: React.FC = () => {
   const { loggedIn } = userStore;
   const location = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -89,9 +90,13 @@ const RouterConfig: React.FC = () => {
         <Route
           path={RoutePaths.PROFILE}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
-              <Profile />
-            </motion.div>
+            !loggedIn ? (
+              <Navigate to={RoutePaths.MAIN} replace />
+            ) : (
+              <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+                <Profile />
+              </motion.div>
+            )
           }
         />
         <Route

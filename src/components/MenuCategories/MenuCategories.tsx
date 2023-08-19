@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { generateCatalogPath } from '../../routes/route.utils';
+import { Categories } from '../../routes/routes.enum';
 import { SIZE, THEME, VARIANT } from './MenuCategories.types';
 import styles from './MenuCategories.module.scss';
 
@@ -14,11 +14,11 @@ type Props = {
 };
 
 const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light', onClose }) => {
-  const categoryPathSales = generateCatalogPath('sales');
-  const categoryPathCloses = generateCatalogPath('closes');
-  const categoryPathDrinkWare = generateCatalogPath('drinkware');
-  const categoryPathOffice = generateCatalogPath('office');
-  const categoryPathBags = generateCatalogPath('bags');
+  const categoryPathSales = `catalog/${Categories.SALES}`;
+  const categoryPathCloses = `catalog/${Categories.CLOTHES}`;
+  const categoryPathDrinkWare = `catalog/${Categories.DRINKWARE}`;
+  const categoryPathOffice = `catalog/${Categories.OFFICE}`;
+  const categoryPathBags = `catalog/${Categories.BAGS}`;
 
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
@@ -29,7 +29,7 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
       </li>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink)} to={categoryPathCloses} onClick={onClose}>
-          Closes
+          Clothes
         </Link>
       </li>
       <li className={styles.menuItem}>
