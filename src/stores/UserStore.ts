@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction, reaction } from 'mobx';
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
+import setAdress from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -8,7 +9,7 @@ type UserStoreType = {
   isRegistration: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
-  signup: (data: Record<string, string | number | boolean>) => Promise<void>;
+  signup: () => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
@@ -50,17 +51,18 @@ const createUserStore = (): UserStoreType => {
       }
     },
 
-    async signup(data: Record<string, string | number | boolean>): Promise<void> {
+    async signup(): Promise<void> {
       try {
-        // console.log(data);
+        const data: Partial<RegistrationFormValuesData> = toJS(store.userData);
         const response = await customerSignUp(data);
 
-        // console.log(this.userData);
-        // const response = await customerSignUp(this.userData as RegistrationFormValuesData);
         runInAction(() => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
+            if (data.email && data.password) {
+              setAdress(data.email, data.password)
+            }
             store.isRegistration = true;
           }
           if (response.statusCode === 400) {
@@ -84,12 +86,7 @@ const createUserStore = (): UserStoreType => {
     },
 
     updateUserData(data: Partial<RegistrationFormValuesData>): void {
-      // runInAction(() => {
-        // if (typeof this.userData === 'object') {
-          // console.log(data)
-          this.userData = { ...data };
-        // }
-      // });
+          store.userData = { ...store.userData, ...data };
     },
 
     logout(): void {
