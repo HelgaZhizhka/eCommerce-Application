@@ -18,9 +18,7 @@ const Registration: React.FC = () => {
   const [windowPage, setWindowPage] = useState(1);
 
   useEffect(() => {
-    if (Object.keys(data).length > 7) {
-      userStore.updateUserData(data);
-    }
+    userStore.updateUserData(data);
   }, [data]);
 
   return (

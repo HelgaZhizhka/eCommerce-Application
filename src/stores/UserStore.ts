@@ -14,6 +14,7 @@ type UserStoreType = {
   updateUserData: (data: object) => void;
   clearError: () => void;
   resetRegistration: () => void;
+  getUserData: () => Record<string, string | number | boolean>;
 };
 
 const createUserStore = (): UserStoreType => {
@@ -80,6 +81,13 @@ const createUserStore = (): UserStoreType => {
           store.userData = { ...store.userData, ...data };
     },
 
+    getUserData():Record<string, string | number | boolean> {
+      const data: Partial<RegistrationFormValuesData> = toJS(store.userData);
+      return data
+    },
+
+    
+
     logout(): void {
       localStorage.removeItem('loggedIn');
       store.loggedIn = false;
@@ -94,6 +102,13 @@ const createUserStore = (): UserStoreType => {
     () => store.loggedIn,
     (loggedIn) => {
       localStorage.setItem('loggedIn', String(loggedIn));
+    }
+  );
+
+  reaction(
+    () => store.userData,
+    (userData) => {
+      store.getUserData();
     }
   );
 
