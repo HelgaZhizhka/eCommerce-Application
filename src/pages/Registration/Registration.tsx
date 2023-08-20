@@ -26,9 +26,11 @@ const Registration: React.FC = () => {
       <div className={classNames(styles.root)}>
         <div className={classNames(styles.loginWrap)}>
           <span className={classNames(styles.title)}>Welcome to YesCode!</span>
-          {windowPage === 1 && <RegistrationForm userData={{ setWindowPage, setData }} />}
-          {windowPage === 2 && <RegistrationFormSecondWindow userData={{ setWindowPage, setData }} />}
-          {windowPage === 3 && <RegistrationFormThirdWindow userData={{ setWindowPage, setData, data }} />}
+          {windowPage === 1 && <RegistrationForm setWindowPage={setWindowPage} setData={setData} userData={data} />}
+          {windowPage === 2 && (
+            <RegistrationFormSecondWindow setWindowPage={setWindowPage} setData={setData} userData={data} />
+          )}
+          {windowPage === 3 && <RegistrationFormThirdWindow setWindowPage={setWindowPage} setData={setData} />}
         </div>
         <div className={classNames(styles.posterWrap)}>
           <Poster />
