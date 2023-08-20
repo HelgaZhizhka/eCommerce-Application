@@ -4,7 +4,7 @@ export enum RoutePaths {
   REGISTRATION = 'registration',
   ABOUT = 'about',
   PROFILE = 'profile',
-  CATALOG = 'catalog/:category',
+  CATEGORY = ':category',
   PRODUCT = 'product/:id',
   CART = 'cart',
   ERROR = '*',

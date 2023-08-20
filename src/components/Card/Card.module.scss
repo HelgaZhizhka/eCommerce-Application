@@ -1,4 +1,7 @@
+@import '../../styles/abstract/functions';
+
 .root {
+  position: relative;
   max-width: 160px;
 
   &:hover {
@@ -58,7 +61,43 @@
   }
 }
 
+.cardTitle {
+  margin: 0;
+  font-weight: 700;
+}
 
-.title {
+.cardDescription {
+  margin: 0;
+  font-size: toRem(12px);
+  color: var(--gray);
+}
+
+.cardPrice,
+.cardPriceNew,
+.cardPriceOld {
+  display: block;
   font-weight: 500;
+}
+
+.cardPriceNew {
+  font-size: toRem(24px);
+  color: var(--state-info);
+}
+
+.cardPriceOld {
+  font-size: toRem(12px);
+  color: var(--gray);
+  text-decoration: line-through;
+}
+
+.cardPrice {
+  font-size: toRem(20px);
+}
+
+.value {
+  margin-right: 2px;
+}
+
+.currency {
+  text-transform: uppercase;
 }

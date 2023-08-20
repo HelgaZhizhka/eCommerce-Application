@@ -14,11 +14,11 @@ type Props = {
 };
 
 const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light', onClose }) => {
-  const categoryPathSales = `catalog/${Categories.SALES}`;
-  const categoryPathCloses = `catalog/${Categories.CLOTHES}`;
-  const categoryPathDrinkWare = `catalog/${Categories.DRINKWARE}`;
-  const categoryPathOffice = `catalog/${Categories.OFFICE}`;
-  const categoryPathBags = `catalog/${Categories.BAGS}`;
+  const categoryPathSales = `${Categories.SALES}`;
+  const categoryPathCloses = `${Categories.CLOTHES}`;
+  const categoryPathDrinkWare = `${Categories.DRINKWARE}`;
+  const categoryPathOffice = `${Categories.OFFICE}`;
+  const categoryPathBags = `${Categories.BAGS}`;
 
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>

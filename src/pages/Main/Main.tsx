@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite/dist/index';
 import { userStore } from '../../stores';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
 import { HeroCarousel } from '../../components/HeroCarousel';
-import Card from '../../components/Card/Card';
 
 const Main: React.FC = () => {
   const { isRegistration, resetRegistration } = userStore;
@@ -35,7 +34,6 @@ const Main: React.FC = () => {
       {!showSuccessful && (
         <>
           <HeroCarousel />
-          {/* <Card /> */}
         </>
       )}
     </>

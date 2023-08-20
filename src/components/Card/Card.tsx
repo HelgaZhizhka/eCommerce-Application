@@ -12,14 +12,14 @@ type Props = {
   isDiscount?: boolean;
 };
 
-const Card: React.FC<Props> = ({ className, isDiscount = false }) => {
-  const logoClasses = classNames(styles.root, {
+const Card: React.FC<Props> = ({ className, isDiscount = true }) => {
+  const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
     className,
   });
 
   return (
-    <div className={logoClasses}>
+    <div className={classes}>
       {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
       <div className={styles.cardPoster}>
         <img className={styles.cardImage} src={cardImg} alt="TShirt with label" />
@@ -28,14 +28,16 @@ const Card: React.FC<Props> = ({ className, isDiscount = false }) => {
         </Link>
       </div>
       <div className={styles.cardBody}>
-        <h4 className={styles.cardTitle}>Standart raccoon t-shirt</h4>
-        <p>Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt</p>
+        <h4 className={`text-overflow ${styles.cardTitle}`}>Standart raccoon t-shirt</h4>
+        <p className={`text-overflow ${styles.cardDescription}`}>
+          Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt
+        </p>
         <span className={styles.cardPriceNew}>
           <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
         </span>
-        <span className={styles.cardPrice}>
+        {/* <span className={styles.cardPrice}>
           <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
-        </span>
+        </span> */}
         <span className={styles.cardPriceOld}>
           <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
         </span>

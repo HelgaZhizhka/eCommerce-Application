@@ -72,7 +72,7 @@ const RouterConfig: React.FC = () => {
           }
         />
         <Route
-          path={RoutePaths.CATALOG}
+          path={RoutePaths.CATEGORY}
           element={
             <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
               <Catalog />

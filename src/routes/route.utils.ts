@@ -1,3 +1,3 @@
-export const generateCatalogPath = (category: string) : string => `catalog/${category}`;
+import { Categories } from "./routes.enum";
 
-export const generateProductPath = (id: string | number) : string => `product/${id}`;
+export const isValidCategory = (category: string): boolean => Object.values(Categories).includes(category as Categories)
