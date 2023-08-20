@@ -5,6 +5,7 @@ type UpdateMessageFunction = (type: FieldInput, key: string, value: boolean) => 
 
 const emailRequired = 'Email is required';
 const emailInvalid = 'Invalid email address';
+const emailSpace = 'Email cannot start or end with a space.';
 
 const passwordRequired = 'Password is required';
 const passwordLong = 'Password must be at least 8 characters long.';
@@ -26,6 +27,12 @@ export const validate = (values: LoginFormValues, updateMessage: UpdateMessageFu
     updateMessage('email', emailInvalid, true);
   } else {
     updateMessage('email', emailInvalid, false);
+  }
+
+  if (!/^\S.*\S$/.test(values.email)) {
+    updateMessage('email', emailSpace, true);
+  } else {
+    updateMessage('email', emailSpace, false);
   }
 
   if (!values.password) {

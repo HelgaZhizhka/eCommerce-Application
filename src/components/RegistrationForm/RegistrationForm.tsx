@@ -6,18 +6,14 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
+import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/signUp';
 import { Data } from '../../pages/Registration/Registration.interface';
 import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValues, FieldInput } from './Registration.interface';
 import styles from './Registration.module.scss';
-
-const initialValues: RegistrationFormValues = {
-  email: '',
-  password: '',
-  checkPassword: '',
-};
 
 interface RegistrationProps {
   userData: {
@@ -27,8 +23,26 @@ interface RegistrationProps {
 }
 
 const RegistrationForm: React.FC<RegistrationProps> = ({ userData }) => {
+  const [initialValues, setInitialValues] = useState<RegistrationFormValues>({
+    email: '',
+    password: '',
+    checkPassword: '',
+  });
+
+  useEffect(() => {
+    const userObj = userStore.getUserData();
+    setInitialValues({
+      email: `${userObj.email}` !== undefined ? `${userObj.email}` : '',
+      password: `${userObj.password}` !== undefined ? `${userObj.password}` : '',
+      checkPassword: `${userObj.checkPassword}` !== undefined ? `${userObj.checkPassword}` : '',
+    });
+  }, []);
+
+  console.log(initialValues);
+
   const { setData, setWindowPage } = userData;
   const [showPassword, setShowPassword] = useState(false);
+
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
 
   const [message, setMessage] = useState<Message>({});
@@ -201,4 +215,4 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ userData }) => {
   );
 };
 
-export default RegistrationForm;
+export default observer(RegistrationForm);

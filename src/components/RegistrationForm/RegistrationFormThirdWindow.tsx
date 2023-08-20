@@ -203,7 +203,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
             <div className={classNames(styles.inputContainer)}>
               <Field
                 component={FormikTextField}
-                type="number"
+                type="text"
                 name="postalCodeShipping"
                 variant="standard"
                 fullWidth
@@ -278,7 +278,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
                   <div className={classNames(styles.inputContainer)}>
                     <Field
                       component={FormikTextField}
-                      type="number"
+                      type="text"
                       name="postalCodeBilling"
                       variant="standard"
                       fullWidth
