@@ -3,7 +3,6 @@ import { Button, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
-import classNames from 'classnames';
 
 import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/thirdWindow';
@@ -149,7 +148,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
         {({ values, submitForm, isSubmitting }): JSX.Element => (
           <Form>
             <h3>Shipping address:</h3>
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 name="streetShipping"
@@ -162,7 +161,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
               {inputStartedStreetShipping && <ShowValidate validate={streetShippingMessage} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type="text"
@@ -177,7 +176,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
               {inputStartedCityShipping && <ShowValidate validate={cityShippingMessage} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 margin="normal"
@@ -196,7 +195,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
               </Field>
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type="text"
@@ -211,20 +210,20 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
 
               {inputStartedPostalCodeShipping && <ShowValidate validate={postalCodeShippingMessage} />}
             </div>
-            <div className={classNames(styles.checkboxWrap)}>
+            <div className={styles.checkboxWrap}>
               <label>
                 <Field type="checkbox" name="checkedShippingDefault" />
-                <span className={classNames(styles.inputTitle)}>Use default</span>
+                <span className={styles.inputTitle}>Use default</span>
               </label>
               <label>
                 <Field type="checkbox" name="checkedAddBillingForm" />
-                <span className={classNames(styles.inputTitle)}>Use this address for billing </span>
+                <span className={styles.inputTitle}>Use this address for billing </span>
               </label>
 
               {!values.checkedAddBillingForm && (
-                <div className={classNames(styles.billingWrap)}>
+                <div className={styles.billingWrap}>
                   <h3>Billing address:</h3>
-                  <div className={classNames(styles.inputContainer)}>
+                  <div className={styles.inputContainer}>
                     <Field
                       component={FormikTextField}
                       name="streetBilling"
@@ -237,7 +236,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
                     {inputStartedStreetBilling && <ShowValidate validate={streetBillingMessage} />}
                   </div>
 
-                  <div className={classNames(styles.inputContainer)}>
+                  <div className={styles.inputContainer}>
                     <Field
                       component={FormikTextField}
                       type="text"
@@ -252,7 +251,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
                     {inputStartedCityBilling && <ShowValidate validate={cityBillingMessage} />}
                   </div>
 
-                  <div className={classNames(styles.inputContainer)}>
+                  <div className={styles.inputContainer}>
                     <Field
                       component={FormikTextField}
                       margin="normal"
@@ -271,7 +270,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
                     </Field>
                   </div>
 
-                  <div className={classNames(styles.inputContainer)}>
+                  <div className={styles.inputContainer}>
                     <Field
                       component={FormikTextField}
                       type="text"
@@ -288,18 +287,18 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
                   </div>
                   <label>
                     <Field type="checkbox" name="checkedBillingDefault" />
-                    <span className={classNames(styles.inputTitle)}>Use default</span>
+                    <span className={styles.inputTitle}>Use default</span>
                   </label>
                 </div>
               )}
             </div>
-            <div className={classNames(styles.progressContainer)}>
-              <div className={classNames(styles.progress)}></div>
-              <div className={classNames(styles.progress)}></div>
-              <div className={classNames(styles.progress, styles.progressActive)}></div>
+            <div className={styles.progressContainer}>
+              <div className={styles.progres}></div>
+              <div className={styles.progress}></div>
+              <div className={`${styles.progress} ${styles.progressActive} ${styles.progressEnd}`}></div>
             </div>
 
-            <div className={classNames(styles.btnLogin)}>
+            <div className={styles.btnLogin}>
               <Button
                 variant="contained"
                 color="primary"
@@ -324,9 +323,9 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
             >
               Back
             </Button>
-            <div className={classNames(styles.lineContainer)}>
-              <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>Or already have an account?</div>
+            <div className={styles.lineContainer}>
+              <div className={styles.line}></div>
+              <div className={styles.text}>Or already have an account?</div>
             </div>
             <Link to="/login">
               <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">

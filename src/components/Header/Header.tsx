@@ -137,7 +137,10 @@ const Header: React.FC = () => {
                 )}
               </div>
             </div>
-            <Search className={styles.search} />
+            <div className={styles.flex}>
+              <Search className={styles.search} />
+              <ThemeToggle />
+            </div>
           </Container>
           <NavBarMobile onClose={toggleNavBar} isOpen={isNavBarOpen} />
         </>

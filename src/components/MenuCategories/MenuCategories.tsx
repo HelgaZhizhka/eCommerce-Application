@@ -24,27 +24,27 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink, styles.brand)} to={categoryPathSales} onClick={onClose}>
-          Sales
+          <span>Sales</span>
         </Link>
       </li>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink)} to={categoryPathCloses} onClick={onClose}>
-          Clothes
+          <span>Clothes</span>
         </Link>
       </li>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink)} to={categoryPathDrinkWare} onClick={onClose}>
-          DrinkWare
+          <span>DrinkWare</span>
         </Link>
       </li>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink)} to={categoryPathOffice} onClick={onClose}>
-          Office
+          <span>Office</span>
         </Link>
       </li>
       <li className={styles.menuItem}>
         <Link className={classNames('link', styles.menuLink)} to={categoryPathBags} onClick={onClose}>
-          Bags
+          <span>Bags</span>
         </Link>
       </li>
     </ul>

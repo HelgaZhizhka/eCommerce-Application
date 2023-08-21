@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import classNames from 'classnames';
 
 import { validate } from '../../utils/validate/signUp';
 import { Data } from '../../pages/Registration/Registration.interface';
@@ -104,7 +103,7 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ setWindowPage, setData,
       >
         {({ submitForm, isSubmitting }): JSX.Element => (
           <Form>
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 name="email"
@@ -117,7 +116,7 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ setWindowPage, setData,
               {inputStartedEmail && <ShowValidate validate={message} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type={showPassword ? 'text' : 'password'}
@@ -141,7 +140,7 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ setWindowPage, setData,
               {inputStartedPassword && <ShowValidate validate={messagePassword} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type={showPasswordCheck ? 'text' : 'password'}
@@ -166,12 +165,12 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ setWindowPage, setData,
 
               {inputStartedCheckPassword && <ShowValidate validate={messagePasswordCheck} />}
             </div>
-            <div className={classNames(styles.progressContainer)}>
-              <div className={classNames(styles.progress, styles.progressActive)}></div>
-              <div className={classNames(styles.progress)}></div>
-              <div className={classNames(styles.progress)}></div>
+            <div className={styles.progressContainer}>
+              <div className={`${styles.progress} ${styles.progressActive}`}></div>
+              <div className={styles.progress}></div>
+              <div className={styles.progress}></div>
             </div>
-            <div className={classNames(styles.btnLogin)}>
+            <div className={styles.btnLogin}>
               <Button
                 variant="contained"
                 color="primary"
@@ -185,9 +184,9 @@ const RegistrationForm: React.FC<RegistrationProps> = ({ setWindowPage, setData,
                 Continue
               </Button>
             </div>
-            <div className={classNames(styles.lineContainer)}>
-              <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>Or already have an account?</div>
+            <div className={styles.lineContainer}>
+              <div className={styles.line}></div>
+              <div className={styles.text}>Or already have an account?</div>
             </div>
             <Link to="/login">
               <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
