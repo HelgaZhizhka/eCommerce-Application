@@ -22,7 +22,7 @@ const Features: React.FC = () => (
           Receipt of goods within 1-2 weeks. We will pack your package securely and ship it carefully. Want more
           information?
         </div>
-        <Link to={RoutePaths.MAIN}>
+        <Link to={{ pathname: RoutePaths.ABOUT, hash: '#delivery' }}>
           <Button
             className={styles.button}
             sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}
@@ -42,7 +42,7 @@ const Features: React.FC = () => (
         <div className={styles.cardDescription}>
           A large selection of quality goods. Funny gifts for you and your loved ones. Go to catalog to see more.
         </div>
-        <Link to={RoutePaths.MAIN}>
+        <Link to={{ pathname: RoutePaths.ABOUT, hash: '#range' }}>
           <Button
             className={styles.button}
             sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}
@@ -62,7 +62,7 @@ const Features: React.FC = () => (
         <div className={styles.cardDescription}>
           Our team will be happy to process your order quickly. If you have any questions - write or call us!
         </div>
-        <Link to={RoutePaths.MAIN}>
+        <Link to={{ pathname: RoutePaths.ABOUT, hash: '#order' }}>
           <Button
             className={styles.button}
             sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}

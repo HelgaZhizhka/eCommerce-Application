@@ -15,6 +15,10 @@
   font-size: toRem(32px);
   font-weight: 600;
   text-align: center;
+
+  span {
+    white-space: nowrap;
+  }
 }
 
 .section {

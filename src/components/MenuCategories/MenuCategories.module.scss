@@ -8,6 +8,10 @@
   list-style: none;
 }
 
+.menuItem {
+  user-select: none;
+}
+
 .s {
   .menuLink {
     font-size: toRem(16px);
@@ -43,6 +47,7 @@
 }
 
 .rounded {
+  margin-bottom: 50px;
 
   .menuItem {
 

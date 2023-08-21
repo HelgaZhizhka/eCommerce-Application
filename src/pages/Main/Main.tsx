@@ -40,7 +40,9 @@ const Main: React.FC = () => {
           <HeroCarousel />
           <Container maxWidth="xl">
             <section className={styles.section}>
-              <h2 className={styles.title}>Shopping easy with YES CODE!</h2>
+              <h2 className={styles.title}>
+                Shopping easy with <span>YES CODE!</span>
+              </h2>
               <Features />
             </section>
           </Container>
