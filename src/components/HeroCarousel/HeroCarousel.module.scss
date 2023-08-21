@@ -7,6 +7,7 @@
   padding-bottom: 20px;
   margin-bottom: 20px;
   overflow: hidden;
+  user-select: none;
 
   @include create-mq($grid__bp-md, 'min') {
     height: 420px;
@@ -25,6 +26,7 @@
 
 .container {
   position: relative;
+  padding: 0;
   height: 100%;
   padding-left: 0;
   padding-right: 0;
@@ -205,10 +207,12 @@
 .slide2,
 .slide3 {
   .content {
+    position: relative;
     height: 100%;
     width: 200px;
     display: flex;
     flex-direction: column;
+    z-index: 12;
 
     @include create-mq($grid__bp-md, 'min') {
       width: 470px;
@@ -240,7 +244,7 @@
   }
 
   .content {
-    margin-left: 15px;
+    margin-left: 8px;
 
     @include create-mq($grid__bp-md, 'min') {
       margin-left: 0;
@@ -377,7 +381,12 @@
   }
 
   .content {
+    margin-right: 8px;
     color: var(--blue);
+
+    @include create-mq($grid__bp-md, 'min') {
+      margin-right: 0;
+    }
   }
 
   .title {

@@ -1,0 +1,103 @@
+@import '../../styles/abstract/functions';
+
+.root {
+  position: relative;
+  max-width: 160px;
+
+  &:hover {
+    .cardImage {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.cardPoster {
+  position: relative;
+  padding-bottom: 140%;
+  border-radius: 2px;
+  background: var(--light-white);
+  box-shadow: 0 2px 10px 0px rgba(11, 10, 10, 0.08);
+  overflow: hidden;
+}
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transition: transform var(--transition-duration) var(--transition-function);
+}
+
+.isDiscount {
+  .badge {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    z-index: 1;
+  }
+}
+
+.cardBody {
+  padding: 8px 0;
+}
+
+.cardButton {
+  position: absolute;
+  display: block;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: var(--state-primary);
+  transition: background-color var(--transition-duration) var(--transition-function);
+  color: var(--light-white);
+
+  &:hover {
+    background-color: var(--state-primary-hover);
+  }
+}
+
+.cardTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: toRem(12px);
+  color: var(--gray);
+}
+
+.cardPrice,
+.cardPriceNew,
+.cardPriceOld {
+  display: block;
+  font-weight: 500;
+}
+
+.cardPriceNew {
+  font-size: toRem(24px);
+  color: var(--state-info);
+}
+
+.cardPriceOld {
+  font-size: toRem(12px);
+  color: var(--gray);
+  text-decoration: line-through;
+}
+
+.cardPrice {
+  font-size: toRem(20px);
+}
+
+.value {
+  margin-right: 2px;
+}
+
+.currency {
+  text-transform: uppercase;
+}

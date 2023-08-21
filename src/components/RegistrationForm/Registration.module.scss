@@ -53,8 +53,32 @@
 }
 
 .progressActive {
+  position: relative;
   background: var(--spicy-orange-active);
+
+  &::after {
+    content: '';
+    width: 80px;
+    height: 50px;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: url(./images/fon1.png) no-repeat;
+    background-size: contain;
+  }
 }
+
+.progressEnd {
+  &::after {
+    width: 60px;
+    height: 60px;
+    left: auto;
+    right: 0;
+    background: url(./images/fon3.png) no-repeat;
+    background-size: contain;
+  }
+}
+
 .checkboxWrap {
   display: flex;
   flex-direction: column;

@@ -75,9 +75,11 @@ const Header: React.FC = () => {
                     </Link>
                   </>
                 )}
-                <Link to={RoutePaths.PROFILE}>
-                  <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
-                </Link>
+                {loggedIn && (
+                  <Link to={RoutePaths.PROFILE}>
+                    <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                  </Link>
+                )}
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
@@ -109,9 +111,11 @@ const Header: React.FC = () => {
                 <Logo variant={LogoVariant.DEFAULT} />
               </div>
               <div className={`ml-auto ${styles.flex}`}>
-                <Link to={RoutePaths.PROFILE}>
-                  <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
-                </Link>
+                {loggedIn && (
+                  <Link to={RoutePaths.PROFILE}>
+                    <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                  </Link>
+                )}
                 <Link to={RoutePaths.CART}>
                   <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
                 </Link>
@@ -133,7 +137,10 @@ const Header: React.FC = () => {
                 )}
               </div>
             </div>
-            <Search className={styles.search} />
+            <div className={styles.flex}>
+              <Search className={styles.search} />
+              <ThemeToggle />
+            </div>
           </Container>
           <NavBarMobile onClose={toggleNavBar} isOpen={isNavBarOpen} />
         </>

@@ -1,0 +1,69 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+.card {
+  position: relative;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: var(--white);
+
+  @include create-mq($grid__bp-sm, 'min') {
+    padding: 20px 250px 20px 20px;
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 340px;
+    min-height: 360px;
+    margin-bottom: 0;
+    padding: 150px 20px 20px;
+  }
+
+  &:nth-child(1) {
+    background-color: var(--state-info);
+
+    .button {
+      color: var(--state-info);
+    }
+  }
+
+  &:nth-child(2) {
+    background-color: var(--state-success);
+
+    .button {
+      color: var(--state-success);
+    }
+  }
+
+  &:nth-child(3) {
+    background-color: var(--purple);
+
+    .button {
+      color: var(--purple);
+    }
+  }
+}
+
+.cardImg {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+
+   @include create-mq($grid__bp-sm - 1, 'max') {
+    display: none;
+   }
+}
+
+.cardTitle {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: toRem(28px);
+}

@@ -1,19 +1,20 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import styles from './RegistrationSuccessful.module.scss';
+
 import { themeStore } from '../../stores';
+import styles from './RegistrationSuccessful.module.scss';
 
 const RegistrationSuccessful: React.FC = () => {
   const { darkMode } = themeStore;
 
-  const logoClasses = classNames(styles.logo, {
+  const classes = classNames(styles.logo, {
     [styles.dark]: darkMode,
   });
 
   return (
-    <div className={classNames(styles.root)}>
+    <div className={styles.root}>
       <h2>Thank you! Registration was successful!</h2>
-      <span className={classNames(logoClasses)}></span>
+      <span className={classes}></span>
     </div>
   );
 };

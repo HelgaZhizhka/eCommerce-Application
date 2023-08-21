@@ -3,7 +3,6 @@ import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
-import classNames from 'classnames';
 
 import { validate } from '../../utils/validate/secondWindow';
 import { Data } from '../../pages/Registration/Registration.interface';
@@ -89,7 +88,7 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPa
       >
         {({ submitForm, isSubmitting }): JSX.Element => (
           <Form>
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 name="firstName"
@@ -102,7 +101,7 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPa
               {inputStartedEmail && <ShowValidate validate={firstNameMessage} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type="text"
@@ -117,7 +116,7 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPa
               {inputStartedPassword && <ShowValidate validate={lastNameMessage} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type="date"
@@ -134,13 +133,13 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPa
               {inputStartedCheckPassword && <ShowValidate validate={dateMessage} />}
             </div>
 
-            <div className={classNames(styles.progressContainer)}>
-              <div className={classNames(styles.progress)}></div>
-              <div className={classNames(styles.progress, styles.progressActive)}></div>
-              <div className={classNames(styles.progress)}></div>
+            <div className={styles.progressContainer}>
+              <div className={styles.progress}></div>
+              <div className={`${styles.progress} ${styles.progressActive}`}></div>
+              <div className={styles.progress}></div>
             </div>
 
-            <div className={classNames(styles.btnLogin)}>
+            <div className={styles.btnLogin}>
               <Button
                 variant="contained"
                 color="primary"
@@ -165,9 +164,9 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPa
             >
               Back
             </Button>
-            <div className={classNames(styles.lineContainer)}>
-              <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>Or already have an account?</div>
+            <div className={styles.lineContainer}>
+              <div className={styles.line}></div>
+              <div className={styles.text}>Or already have an account?</div>
             </div>
             <Link to="/login">
               <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">

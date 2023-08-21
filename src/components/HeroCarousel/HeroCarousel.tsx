@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { Navigation, Autoplay, EffectFade, Scrollbar } from 'swiper/modules';
@@ -6,7 +5,6 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import 'swiper/css/bundle';
 
-import { generateCatalogPath } from '../../routes/route.utils';
 import fon1 from './images/slide1/TShirt1.png';
 import fon1Mob from './images/slide1/mob/TShirt1.png';
 import fon2 from './images/slide1/TShirt2.png';
@@ -41,107 +39,98 @@ const swiperParams: SwiperOptions = {
   scrollbar: { draggable: true },
 };
 
-const HeroCarousel: React.FC = (): JSX.Element => {
-  const categoryPathSales = generateCatalogPath('sales');
+const HeroCarousel: React.FC = () => (
+  <Swiper className={styles.root} {...swiperParams}>
+    <SwiperSlide className={styles.slide1}>
+      <Container maxWidth="xl" className={styles.container}>
+        <div className={styles.content}>
+          <h2 className={styles.title}>-15%</h2>
+          <p className={styles.description}>Hot discounts on t-shirts this month!</p>
 
-  return (
-    <Swiper className={styles.root} {...swiperParams}>
-      <SwiperSlide className={styles.slide1}>
-        <Container maxWidth="xl" className={styles.container}>
-          <div className={styles.content}>
-            <h2 className={styles.title}>-15%</h2>
-            <p className={styles.description}>Hot discounts on t-shirts this month!</p>
-            <Link to={categoryPathSales}>
-              <Button
-                className={styles.button}
-                variant="contained"
-                color="primary"
-                sx={{ mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-              >
-                Want
-              </Button>
-            </Link>
+          <Button
+            className={styles.button}
+            variant="contained"
+            color="primary"
+            sx={{ mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+          >
+            Want
+          </Button>
+        </div>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon1Mob} />
+          <img className={styles.fon1} src={fon1} alt="T-Shirt with label" />
+        </picture>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon2Mob} />
+          <img className={styles.fon2} src={fon2} alt="T-Shirt with label" />
+        </picture>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={label1Mob} />
+          <img className={styles.label1} src={label1} alt="label for sale" />
+        </picture>
+      </Container>
+    </SwiperSlide>
+    <SwiperSlide className={styles.slide2}>
+      <Container maxWidth="xl" className={styles.container}>
+        <div className={styles.content}>
+          <div className={styles.contentWrapper}>
+            <h2 className={styles.title}>-30%</h2>
+            <p className={styles.description}>SuperHot discounts on DrinkWare this week!</p>
+            <Button
+              className={styles.button}
+              variant="contained"
+              sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+            >
+              Want
+            </Button>
           </div>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon1Mob} />
-            <img className={styles.fon1} src={fon1} alt="T-Shirt with label" />
-          </picture>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon2Mob} />
-            <img className={styles.fon2} src={fon2} alt="T-Shirt with label" />
-          </picture>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={label1Mob} />
-            <img className={styles.label1} src={label1} alt="label for sale" />
-          </picture>
-        </Container>
-      </SwiperSlide>
-      <SwiperSlide className={styles.slide2}>
-        <Container maxWidth="xl" className={styles.container}>
-          <div className={styles.content}>
-            <div className={styles.contentWrapper}>
-              <h2 className={styles.title}>-30%</h2>
-              <p className={styles.description}>SuperHot discounts on DrinkWare this week!</p>
-              <Link to={categoryPathSales}>
-                <Button
-                  className={styles.button}
-                  variant="contained"
-                  sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-                >
-                  Want
-                </Button>
-              </Link>
-            </div>
+        </div>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon3Mob} />
+          <img className={styles.fon3} src={fon3} alt="Cup with label" />
+        </picture>
+        <img className={styles.fon4} src={fon4} alt="Cup with label" />
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon5Mob} />
+          <img className={styles.fon5} src={fon5} alt="Cup with label" />
+        </picture>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon6Mob} />
+          <img className={styles.fon6} src={fon6} alt="Cup with label" />
+        </picture>
+        <img className={styles.fon7} src={fon7} alt="Cup with label" />
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={label2Mob} />
+          <img className={styles.label2} src={label2} alt="label for sale" />
+        </picture>
+      </Container>
+    </SwiperSlide>
+    <SwiperSlide className={styles.slide3}>
+      <Container maxWidth="xl" className={styles.container}>
+        <div className={styles.content}>
+          <div className={styles.contentWrapper}>
+            <h2 className={styles.title}>New</h2>
+            <p className={styles.description}>Don&apos;t miss the new stickers for your creativity!</p>
+            <Button
+              className={styles.button}
+              variant="contained"
+              sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+            >
+              Want
+            </Button>
           </div>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon3Mob} />
-            <img className={styles.fon3} src={fon3} alt="Cup with label" />
-          </picture>
-          <img className={styles.fon4} src={fon4} alt="Cup with label" />
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon5Mob} />
-            <img className={styles.fon5} src={fon5} alt="Cup with label" />
-          </picture>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon6Mob} />
-            <img className={styles.fon6} src={fon6} alt="Cup with label" />
-          </picture>
-          <img className={styles.fon7} src={fon7} alt="Cup with label" />
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={label2Mob} />
-            <img className={styles.label2} src={label2} alt="label for sale" />
-          </picture>
-        </Container>
-      </SwiperSlide>
-      <SwiperSlide className={styles.slide3}>
-        <Container maxWidth="xl" className={styles.container}>
-          <div className={styles.content}>
-            <div className={styles.contentWrapper}>
-              <h2 className={styles.title}>New</h2>
-              <p className={styles.description}>Don&apos;t miss the new stickers for your creativity!</p>
-              <Link to={categoryPathSales}>
-                <Button
-                  className={styles.button}
-                  variant="contained"
-                  sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-                >
-                  Want
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={fon8Mob} />
-            <img className={styles.fon8} src={fon8} alt="Cup with label" />
-          </picture>
-          <picture>
-            <source media="(max-width: 1023px)" srcSet={label3Mob} />
-            <img className={styles.label3} src={label3} alt="label for sale" />
-          </picture>
-        </Container>
-      </SwiperSlide>
-    </Swiper>
-  );
-};
+        </div>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={fon8Mob} />
+          <img className={styles.fon8} src={fon8} alt="Cup with label" />
+        </picture>
+        <picture>
+          <source media="(max-width: 1023px)" srcSet={label3Mob} />
+          <img className={styles.label3} src={label3} alt="label for sale" />
+        </picture>
+      </Container>
+    </SwiperSlide>
+  </Swiper>
+);
 
 export default HeroCarousel;

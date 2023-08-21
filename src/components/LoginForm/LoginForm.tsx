@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -88,7 +87,7 @@ const LoginForm: React.FC = () => {
       >
         {({ submitForm, isSubmitting }): JSX.Element => (
           <Form>
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 name="email"
@@ -104,7 +103,7 @@ const LoginForm: React.FC = () => {
               {inputStartedEmail && <ShowValidate validate={message} />}
             </div>
 
-            <div className={classNames(styles.inputContainer)}>
+            <div className={styles.inputContainer}>
               <Field
                 component={FormikTextField}
                 type={showPassword ? 'text' : 'password'}
@@ -129,7 +128,7 @@ const LoginForm: React.FC = () => {
               {inputStartedPassword && <ShowValidate validate={messagePassword} />}
             </div>
 
-            <div className={classNames(styles.btnLogin)}>
+            <div className={styles.btnLogin}>
               <Button
                 disabled={isSubmitting || !allFieldsValid}
                 variant="contained"
@@ -140,9 +139,9 @@ const LoginForm: React.FC = () => {
                 Sign in
               </Button>
             </div>
-            <div className={classNames(styles.lineContainer)}>
-              <div className={classNames(styles.line)}></div>
-              <div className={classNames(styles.text)}>or</div>
+            <div className={styles.lineContainer}>
+              <div className={styles.line}></div>
+              <div className={styles.text}>or</div>
             </div>
             <Link to="/registration">
               <Button variant="outlined" fullWidth color="primary">

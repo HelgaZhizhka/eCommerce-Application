@@ -1,6 +1,8 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
+
+import { Categories, RoutePaths } from '../../routes/routes.enum';
 
 type CatalogParams = {
   category: string;
@@ -8,6 +10,10 @@ type CatalogParams = {
 
 const Catalog: React.FC = () => {
   const { category } = useParams<CatalogParams>();
+
+  if (!category || !Object.values(Categories).includes(category as Categories)) {
+    return <Navigate to={RoutePaths.ERROR} replace />;
+  }
 
   return (
     <Container maxWidth="xl">

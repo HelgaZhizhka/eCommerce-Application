@@ -19,7 +19,7 @@
   text-align: center;
   padding: 1rem;
 
-  &:first-child {
+  &:nth-child(1){
     background-color: var(--blue);
   }
 
