@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Button, MenuItem } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 
 import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/thirdWindow';
@@ -27,11 +27,8 @@ const initialValues: RegistrationFormValuesThird = {
 };
 
 interface RegistrationProps {
-  userData: {
-    setWindowPage: React.Dispatch<React.SetStateAction<number>>;
-    setData: React.Dispatch<React.SetStateAction<Data>>;
-    data: Record<string, string | number | boolean>;
-  };
+  setWindowPage: React.Dispatch<React.SetStateAction<number>>;
+  setData: React.Dispatch<React.SetStateAction<Data>>;
 }
 
 const options = [
@@ -39,8 +36,7 @@ const options = [
   { value: 'US', label: 'USA' },
 ];
 
-const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) => {
-  const { setData, setWindowPage } = userData;
+const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPage, setData }) => {
   const [streetShippingMessage, setStreetShippingMessage] = useState<Message>({});
   const [cityShippingMessage, setCityShippingMessage] = useState<Message>({});
   const [postalCodeShippingMessage, setPostalCodeShippingMessage] = useState<Message>({});
@@ -314,7 +310,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
                   setTimeout(() => userStore.signup(), 0);
                 }}
               >
-                Sing in!
+                Sing up
               </Button>
             </div>
             <Button
@@ -328,6 +324,15 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
             >
               Back
             </Button>
+            <div className={classNames(styles.lineContainer)}>
+              <div className={classNames(styles.line)}></div>
+              <div className={classNames(styles.text)}>Or already have an account?</div>
+            </div>
+            <Link to="/login">
+              <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
+                Sign in
+              </Button>
+            </Link>
           </Form>
         )}
       </Formik>
@@ -335,4 +340,4 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ userData }) 
   );
 };
 
-export default observer(RegistrationFormThirdWindow);
+export default RegistrationFormThirdWindow;

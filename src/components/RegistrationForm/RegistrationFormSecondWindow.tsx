@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import classNames from 'classnames';
@@ -10,21 +11,18 @@ import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './Registration.interface';
 import styles from './Registration.module.scss';
 
-const initialValues: RegistrationFormValuesSecond = {
-  firstName: '',
-  lastName: '',
-  date: '',
-};
-
 interface RegistrationProps {
-  userData: {
-    setWindowPage: React.Dispatch<React.SetStateAction<number>>;
-    setData: React.Dispatch<React.SetStateAction<Data>>;
-  };
+  setWindowPage: React.Dispatch<React.SetStateAction<number>>;
+  setData: React.Dispatch<React.SetStateAction<Data>>;
+  userData: Record<string, string | number | boolean>;
 }
 
-const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ userData }) => {
-  const { setData, setWindowPage } = userData;
+const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPage, setData, userData }) => {
+  const initialValues: RegistrationFormValuesSecond = {
+    firstName: typeof userData.firstName === 'string' ? userData.firstName : '',
+    lastName: typeof userData.lastName === 'string' ? userData.lastName : '',
+    date: typeof userData.date === 'string' ? userData.date : '',
+  };
 
   const [firstNameMessage, setFirstNameMessage] = useState<Message>({});
   const [lastNameMessage, setLastNameMessage] = useState<Message>({});
@@ -167,6 +165,15 @@ const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ userData })
             >
               Back
             </Button>
+            <div className={classNames(styles.lineContainer)}>
+              <div className={classNames(styles.line)}></div>
+              <div className={classNames(styles.text)}>Or already have an account?</div>
+            </div>
+            <Link to="/login">
+              <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
+                Sign in
+              </Button>
+            </Link>
           </Form>
         )}
       </Formik>
