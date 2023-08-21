@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginForm from '../components/LoginForm/LoginForm';
 
-describe('SigIn', () => {
+describe('LoginForm', () => {
   it('should render without errors', () => {
     render(
       <Router>
