@@ -14,6 +14,7 @@
   position: relative;
   padding: 20px;
   margin-bottom: 20px;
+  border-radius: 5px;
   color: var(--white);
 
   @include create-mq($grid__bp-sm, 'min') {
@@ -22,7 +23,6 @@
 
   @include create-mq($grid__bp-md, 'min') {
     width: 340px;
-    min-height: 360px;
     margin-bottom: 0;
     padding: 150px 20px 20px;
   }
