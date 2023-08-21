@@ -25,8 +25,17 @@ const RouterConfig: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname, location.hash]);
 
   return (
     <AnimatePresence>

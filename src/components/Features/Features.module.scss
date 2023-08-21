@@ -14,15 +14,17 @@
   position: relative;
   padding: 20px;
   margin-bottom: 20px;
+  border-radius: 5px;
   color: var(--white);
 
   @include create-mq($grid__bp-sm, 'min') {
     padding: 20px 250px 20px 20px;
+    min-height: 200px;
   }
 
   @include create-mq($grid__bp-md, 'min') {
     width: 340px;
-    min-height: 360px;
+    min-height: auto;
     margin-bottom: 0;
     padding: 150px 20px 20px;
   }

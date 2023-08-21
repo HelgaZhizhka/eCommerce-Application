@@ -8,6 +8,10 @@
   list-style: none;
 }
 
+.menuItem {
+  user-select: none;
+}
+
 .s {
   .menuLink {
     font-size: toRem(16px);
@@ -43,6 +47,7 @@
 }
 
 .rounded {
+  margin-bottom: 50px;
 
   .menuItem {
 
@@ -52,7 +57,7 @@
       background-color: var(--red);
       transition: filter var(--transition-duration) var(--transition-function);
 
-      @include create-mq($grid__bp-md, 'min') {
+      @include create-mq($grid__bp-sm, 'min') {
         background-size: 160px 160px;
       }
 

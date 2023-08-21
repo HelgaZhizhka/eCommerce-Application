@@ -1,7 +1,3 @@
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-
-import { RoutePaths } from '../../routes/routes.enum';
 import cardImg1 from './images/card1.png';
 import cardImg2 from './images/card2.png';
 import cardImg3 from './images/card3.png';
@@ -22,15 +18,6 @@ const Features: React.FC = () => (
           Receipt of goods within 1-2 weeks. We will pack your package securely and ship it carefully. Want more
           information?
         </div>
-        <Link to={RoutePaths.MAIN}>
-          <Button
-            className={styles.button}
-            sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}
-            variant="contained"
-          >
-            More
-          </Button>
-        </Link>
       </div>
     </div>
     <div className={styles.card}>
@@ -42,15 +29,6 @@ const Features: React.FC = () => (
         <div className={styles.cardDescription}>
           A large selection of quality goods. Funny gifts for you and your loved ones. Go to catalog to see more.
         </div>
-        <Link to={RoutePaths.MAIN}>
-          <Button
-            className={styles.button}
-            sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}
-            variant="contained"
-          >
-            More
-          </Button>
-        </Link>
       </div>
     </div>
     <div className={styles.card}>
@@ -62,15 +40,6 @@ const Features: React.FC = () => (
         <div className={styles.cardDescription}>
           Our team will be happy to process your order quickly. If you have any questions - write or call us!
         </div>
-        <Link to={RoutePaths.MAIN}>
-          <Button
-            className={styles.button}
-            sx={{ mt: '8px', fontSize: '1.25rem', fontWeight: '600', background: 'var(--white)', width: '160px' }}
-            variant="contained"
-          >
-            More
-          </Button>
-        </Link>
       </div>
     </div>
   </div>

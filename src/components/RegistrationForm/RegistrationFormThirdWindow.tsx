@@ -293,7 +293,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
               )}
             </div>
             <div className={styles.progressContainer}>
-              <div className={styles.progres}></div>
+              <div className={styles.progress}></div>
               <div className={styles.progress}></div>
               <div className={`${styles.progress} ${styles.progressActive} ${styles.progressEnd}`}></div>
             </div>
