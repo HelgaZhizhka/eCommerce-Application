@@ -79,9 +79,7 @@ const LoginForm: React.FC = () => {
         initialValues={initialValues}
         validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
         onSubmit={(values, { setSubmitting }): void => {
-          // loginStatus(values.email, values.password);
           userStore.login(values.email, values.password);
-          // console.log(values);
           setSubmitting(false);
         }}
       >

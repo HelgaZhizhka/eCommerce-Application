@@ -10,7 +10,6 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
@@ -34,6 +33,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/react": "^14.0.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.39",
     "@types/react": "^18.2.17",
@@ -50,13 +50,16 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^8.0.3",
+    "jest": "^27.5.1",
+    "jest-mock": "^29.6.2",
+    "jsdom": "^22.1.0",
     "lint-staged": "^13.2.3",
     "prettier": "^2.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
     "eslint:fix": "eslint --fix .",
@@ -70,5 +73,5 @@
       "eslint --cache --fix",
       "prettier --write"
     ]
-  }
+  }  
 }
