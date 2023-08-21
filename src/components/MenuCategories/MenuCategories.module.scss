@@ -57,7 +57,7 @@
       background-color: var(--red);
       transition: filter var(--transition-duration) var(--transition-function);
 
-      @include create-mq($grid__bp-md, 'min') {
+      @include create-mq($grid__bp-sm, 'min') {
         background-size: 160px 160px;
       }
 
