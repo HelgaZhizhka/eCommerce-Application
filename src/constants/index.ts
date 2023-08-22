@@ -1,3 +1,5 @@
+import cardImg from '../components/Card/images/TShirt.png';
+
 const envConfig = {
   PROJECT_KEY: process.env.REACT_APP_PROJECT_KEY,
   CLIENT_ID: process.env.REACT_APP_CLIENT_ID,
@@ -27,5 +29,87 @@ export const currencies = [
   {
     value: 'UAH',
     label: '₴',
+  },
+];
+
+
+export const cards = [
+  {
+    id: 1,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
+  },
+  {
+    id: 2,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    price: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: false,
+  },
+  {
+    id: 3,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
+  },
+  {
+    id: 4,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
+  },
+  {
+    id: 5,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
+  },
+  {
+    id: 6,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    price: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: false,
+  },
+  {
+    id: 7,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
+  },
+  {
+    id: 8,
+    productName: 'Standart raccoon t-shirt',
+    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    priceOld: 20,
+    priceDiscount: 18,
+    currency: 'eur',
+    cardImage: cardImg,
+    isDiscount: true,
   },
 ];
