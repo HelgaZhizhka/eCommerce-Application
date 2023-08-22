@@ -1,0 +1,54 @@
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-1 {
+  margin-right: 10px;
+}
+
+.text-inherit {
+  color: inherit;
+}
+
+.text-brand {
+  margin: 0 5px;
+  color: var(--state-primary);
+  border-bottom: 1px solid var(--state-primary);
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  &::after {
+    color: var(--light-white);
+    text-shadow: 1px 1px 1px var(--gray);
+  }
+}
+
+.swiper-wrapper {
+   overflow: hidden;
+}
+
+.swiper-scrollbar-drag {
+  background: var(--state-primary) !important;
+}
+
+.swiper-slide {
+  cursor: grab;
+}
+
+.swiper-slide:active {
+  cursor: grabbing;
+}
+
+.text-overflow {
+  display: -webkit-box;       
+  -webkit-box-orient: vertical; 
+  overflow: hidden;          
+  -webkit-line-clamp: 2;     
+  max-height: (16 * 2)px; 
+}

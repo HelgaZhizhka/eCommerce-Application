@@ -1,0 +1,192 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  user-select: none;
+}
+
+.s {
+  .menuLink {
+    font-size: toRem(16px);
+  }
+}
+
+.m {
+  .menuLink {
+    font-size: toRem(20px);
+  }
+}
+
+.l {
+  .menuLink {
+    font-size: toRem(24px);
+  }
+}
+
+.horizontal {
+  display: flex;
+  align-items: center;
+
+  .menuItem {
+    margin-right: 60px;
+  }
+}
+
+.vertical {
+  .menuItem {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
+
+.rounded {
+  margin-bottom: 50px;
+
+  .menuItem {
+
+    &:nth-child(1) > .menuLink {
+      background-size: 95px 95px;
+      background-image: url(./images/sales.png);
+      background-color: var(--red);
+      transition: filter var(--transition-duration) var(--transition-function);
+
+      @include create-mq($grid__bp-sm, 'min') {
+        background-size: 160px 160px;
+      }
+
+      &:hover {
+        filter: drop-shadow(0px 0px 16px rgba(246, 23, 23, 0.8));
+      }
+    }
+
+    &:nth-child(2) > .menuLink {
+      background-image: url(./images/cloth.png);
+      background-color: var(--orange);
+      transition: filter var(--transition-duration) var(--transition-function);
+
+      &:hover {
+        filter: drop-shadow(0px 0px 16px rgba(255, 152, 67, 0.8));
+      }
+    }
+
+    &:nth-child(3) > .menuLink {
+      background-image: url(./images/drinkware.png);
+      background-color: var(--purple);
+      transition: filter var(--transition-duration) var(--transition-function);
+
+      &:hover {
+        filter: drop-shadow(0px 0px 16px rgba(182, 45, 211, 0.8));
+      }
+    }
+
+    &:nth-child(4) > .menuLink {
+      background-image: url(./images/office.png);
+      background-color: var(--green);
+      transition: filter var(--transition-duration) var(--transition-function);
+
+      &:hover {
+        filter: drop-shadow(0px 0px 16px rgba(0, 148, 68, 0.8));
+      }
+    }
+
+    &:nth-child(5) > .menuLink {
+      background-image: url(./images/bags.png);
+      background-color: var(--blue);
+      transition: filter var(--transition-duration) var(--transition-function);
+
+      &:hover {
+        filter: drop-shadow(0px 0px 16px rgba(62, 23, 255, 0.8));
+      }
+    }
+
+  }
+
+  .menuLink {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 95px;
+    height: 95px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background-position: 50% 50%;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    font-size: toRem(16px);
+    text-align: center;
+    cursor: pointer;
+
+    &::after {
+      content: none 
+    }
+
+    span {
+      margin-top: auto;
+      padding-top: 110%;
+    }
+
+    @include create-mq($grid__bp-sm, 'min') {
+      width: 160px;
+      height: 160px;
+      font-size: toRem(24px);
+      background-size: auto;
+    }
+  }
+
+  .menuLink span {
+    position: absolute;
+    bottom: -25%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.light {
+  .menuLink {
+    color: var(--nav-color-light);
+
+    &::after {
+      background-color: var(--nav-color-light-hover);
+    }
+
+    &:hover {
+      color: var(--nav-color-light-hover);
+    }
+  }
+}
+
+.dark {
+  .menuLink {
+    color: var(--nav-color-dark);
+
+    &::after {
+      background-color: var(--nav-color-dark-hover);
+    }
+
+    &:hover {
+      color: var(--nav-color-dark-hover);
+    }
+  }
+}
+
+.light,
+.dark {
+  .brand {
+    color: var(--red);
+
+    &:hover {
+      color: var(--red);
+    }
+
+    &::after {
+      background-color: var(--red);
+    }
+  }
+}
