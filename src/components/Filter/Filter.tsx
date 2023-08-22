@@ -1,6 +1,8 @@
+import { FilterNestedList } from '../baseComponents/FilterNestedList';
+
 const Filter: React.FC = () => {
   console.log('1');
-  return <div>Filter</div>;
+  return <FilterNestedList />;
 };
 
 export default Filter;
