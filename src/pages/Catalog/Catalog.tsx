@@ -3,6 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
 import { Categories, RoutePaths } from '../../routes/routes.enum';
+import { Filter } from '../../components/Filter';
 
 type CatalogParams = {
   category: string;
@@ -17,6 +18,7 @@ const Catalog: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
+      <Filter />
       <h2>Category {category}</h2>
     </Container>
   );
