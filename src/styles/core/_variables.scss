@@ -16,6 +16,7 @@
   --dark: #121212;
   --spicy-orange: #faba86;
   --spicy-orange-active: #cf5f04;
+  --light-gray: #F4F4F4;
 
   --state-primary: var(--orange);
   --state-primary-hover: var(--orange-light);
@@ -34,6 +35,7 @@
   --nav-color-dark: var(--black);
   --nav-color-dark-hover: var(--dark);
   --color-text: var(--black);
+  --component-bg: var(--light-gray);
   --font-family: 'Mukta', sans-serif;
 
   --transition-duration: 0.35s;
@@ -48,4 +50,5 @@ body[data-theme='dark'] {
   --color-text: var(--light-white);
   --nav-color-dark: var(--light-white);
   --nav-color-dark-hover: var(--light-white);
+  --component-bg: var(--dark);
 }
