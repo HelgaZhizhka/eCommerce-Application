@@ -18,11 +18,7 @@ const FilterNestedList: React.FC = () => {
   };
 
   return (
-    <List
-      sx={{ width: '100%', maxWidth: 350, bgcolor: 'var(--component-bg)' }}
-      component="nav"
-      aria-labelledby="nested-list"
-    >
+    <List sx={{ borderBottom: '1px solid black' }} component="nav" aria-labelledby="nested-list">
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
           <InboxIcon />
