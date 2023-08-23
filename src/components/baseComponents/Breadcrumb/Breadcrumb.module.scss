@@ -1,0 +1,18 @@
+.root {
+  position: relative;
+}
+
+.link {
+  color: inherit;
+  transition: var(--transition-duration) var(--transition-function);
+
+  &:hover {
+    color: var(--state-primary);
+    text-decoration: underline;
+  }
+
+  &[aria-current='page'] {
+    text-decoration: underline;
+    color: var(--state-primary);
+  }
+}
