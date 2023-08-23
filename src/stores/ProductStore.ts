@@ -8,9 +8,6 @@ import { ProductType } from '../pages/Product/Product.interface';
     error: null | string;
     fetchProducts?: () => Promise<void>;
     fetchProduct?: (id: string) => Promise<void>;
-    addProduct?: (product: ProductType) => Promise<void>;
-    updateProduct?: (product: ProductType) => Promise<void>;
-    deleteProduct?: (id: string) => Promise<void>;
   };
 
   const createProductStore = (): ProductStoreType => {
@@ -44,20 +41,8 @@ import { ProductType } from '../pages/Product/Product.interface';
           });
         }
       },
-
-      async addProduct(product: ProductType): Promise<void> {
-        try {
-          // const addedProduct = await productService.addProduct(product);
-          runInAction(() => {
-            // store.products.push(addedProduct);
-          });
-        } catch (err) {
-          runInAction(() => {
-            // store.error = 'Error adding product';
-          });
-        }
-      },
     };
+    
   makeAutoObservable(store);
 
   return store;
