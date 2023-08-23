@@ -8,6 +8,7 @@ import { Card } from '../../components/Card';
 import { Filter } from '../../components/Filter';
 import { cards } from '../../constants';
 import styles from './Catalog.module.scss';
+import { Sorting } from '../../components/Sorting';
 
 type CatalogParams = {
   category: string;
@@ -29,14 +30,14 @@ const Catalog: React.FC = () => {
       />
       <section className={styles.section}>
         <aside>
-          <div className={styles.filter}>
-            <Filter />
-          </div>
+          <Filter />
         </aside>
         <div className={styles.products}>
           <div className={styles.productsPanel}>
             <div className={styles.panelColLeft}>Display: {number} per page</div>
-            <div className={styles.panelColRight}>Sorting by: Default</div>
+            <div className={styles.panelColRight}>
+              <Sorting />
+            </div>
           </div>
           <ul className={`list ${styles.productsList}`}>
             {cards.map((card) => (
