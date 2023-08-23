@@ -9,6 +9,7 @@ const CustomChip = styled(Chip)({
   fontSize: '14px',
   fontWeight: 600,
   lineHeight: '1.2',
+  border: '1px solid grey',
 });
 
 const FilterChip: React.FC = () => {
@@ -25,7 +26,7 @@ const FilterChip: React.FC = () => {
   return (
     <>
       <h3>Size</h3>
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
         <CustomChip
           label="XS"
           color="primary"
@@ -55,6 +56,12 @@ const FilterChip: React.FC = () => {
           color="primary"
           variant={activeChips.includes('XL') ? 'filled' : 'outlined'}
           onClick={(): void => handleChipClick('XL')}
+        />
+        <CustomChip
+          label="One size"
+          color="primary"
+          variant={activeChips.includes('OneSize') ? 'filled' : 'outlined'}
+          onClick={(): void => handleChipClick('OneSize')}
         />
       </Box>
     </>

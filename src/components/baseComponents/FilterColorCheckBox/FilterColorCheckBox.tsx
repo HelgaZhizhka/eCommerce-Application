@@ -36,15 +36,15 @@ const FilterColorCheckBox: React.FC = () => {
             sx={{
               borderRadius: '50%',
               minWidth: 0,
-              width: '2.5rem',
-              height: '2.5rem',
+              width: '2.3rem',
+              height: '2.3rem',
               padding: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: color,
               '& .MuiSvgIcon-root': {
-                color: 'black',
+                color: color === 'var(--filter-black)' ? 'white' : 'black',
               },
               backgroundImage:
                 color === 'multicolor'
