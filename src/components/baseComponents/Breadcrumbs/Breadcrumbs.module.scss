@@ -4,6 +4,7 @@
 
 .link {
   color: inherit;
+  text-transform: capitalize;
   transition: var(--transition-duration) var(--transition-function);
 
   &:hover {

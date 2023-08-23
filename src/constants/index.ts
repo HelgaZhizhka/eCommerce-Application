@@ -35,7 +35,7 @@ export const currencies = [
 
 export const cards = [
   {
-    id: 1,
+    id: '1',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,
@@ -45,7 +45,7 @@ export const cards = [
     isDiscount: true,
   },
   {
-    id: 2,
+    id: '2',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     price: 18,
@@ -54,7 +54,7 @@ export const cards = [
     isDiscount: false,
   },
   {
-    id: 3,
+    id: '3',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,
@@ -64,7 +64,7 @@ export const cards = [
     isDiscount: true,
   },
   {
-    id: 4,
+    id: '4',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,
@@ -74,7 +74,7 @@ export const cards = [
     isDiscount: true,
   },
   {
-    id: 5,
+    id: '5',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,
@@ -84,7 +84,7 @@ export const cards = [
     isDiscount: true,
   },
   {
-    id: 6,
+    id: '6',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     price: 18,
@@ -93,7 +93,7 @@ export const cards = [
     isDiscount: false,
   },
   {
-    id: 7,
+    id: '7',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,
@@ -103,7 +103,7 @@ export const cards = [
     isDiscount: true,
   },
   {
-    id: 8,
+    id: '8',
     productName: 'Standart raccoon t-shirt',
     description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
     priceOld: 20,

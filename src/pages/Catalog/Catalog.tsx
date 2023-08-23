@@ -1,8 +1,8 @@
 import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, Link } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
-import { Breadcrumb } from '../../components/baseComponents/Breadcrumb';
+import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { Categories, RoutePaths } from '../../routes/routes.enum';
 import { Card } from '../../components/Card';
 import { Filter } from '../../components/Filter';
@@ -23,7 +23,10 @@ const Catalog: React.FC = () => {
 
   return (
     <Container className={styles.root} maxWidth="xl">
-      <Breadcrumb className={styles.breadcrumb} />
+      <Breadcrumbs
+        items={[{ text: 'Home', path: RoutePaths.MAIN }, { text: `${category}` }]}
+        className={styles.breadcrumb}
+      />
       <section className={styles.section}>
         <aside>
           <div className={styles.filter}>
@@ -38,16 +41,19 @@ const Catalog: React.FC = () => {
           <ul className={`list ${styles.productsList}`}>
             {cards.map((card) => (
               <li className={styles.productItem} key={card.id}>
-                <Card
-                  productName={card.productName}
-                  description={card.description}
-                  cardImage={card.cardImage}
-                  price={card.price}
-                  priceDiscount={card.priceDiscount}
-                  priceOld={card.priceOld}
-                  currency={card.currency}
-                  isDiscount={card.isDiscount}
-                />
+                <Link to={card.id}>
+                  <Card
+                    id={card.id}
+                    productName={card.productName}
+                    description={card.description}
+                    cardImage={card.cardImage}
+                    price={card.price}
+                    priceDiscount={card.priceDiscount}
+                    priceOld={card.priceOld}
+                    currency={card.currency}
+                    isDiscount={card.isDiscount}
+                  />
+                </Link>
               </li>
             ))}
           </ul>
