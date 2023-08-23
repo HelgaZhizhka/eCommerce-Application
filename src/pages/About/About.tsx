@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container';
+import { HeroCarousel } from '../../components/HeroCarousel';
 
 const About: React.FC = () => (
   <Container maxWidth="xl">

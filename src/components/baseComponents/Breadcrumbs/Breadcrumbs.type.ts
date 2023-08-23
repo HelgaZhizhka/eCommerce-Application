@@ -1,4 +1,4 @@
-export type BreadcrumbItem = {
+export type BreadcrumbsItem = {
   text: string;
   path?: string;
 };

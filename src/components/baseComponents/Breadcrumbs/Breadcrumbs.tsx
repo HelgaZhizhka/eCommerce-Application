@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '@mui/material';
 
-import { BreadcrumbItem } from './Breadcrumbs.type';
+import { BreadcrumbsItem } from './Breadcrumbs.type';
 import styles from './Breadcrumbs.module.scss';
 
 type Props = {
   className?: string;
-  items: BreadcrumbItem[];
+  items: BreadcrumbsItem[];
 };
 
 const Breadcrumb: React.FC<Props> = ({ items, className }) => (
