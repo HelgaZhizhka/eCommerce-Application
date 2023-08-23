@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -8,6 +9,7 @@ import CheckroomIcon from '@mui/icons-material/Checkroom';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 import { Categories } from '../../routes/routes.enum';
+import { productStore } from '../../stores';
 import { SIZE, THEME, VARIANT } from './MenuCategories.types';
 import styles from './MenuCategories.module.scss';
 
@@ -29,6 +31,10 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
   const categoriesClasses = classNames(styles.menuLink, {
     link: variant !== 'filter',
   });
+
+  // productStore.fetchCategories();
+  const { categories } = productStore;
+  console.log(categories);
 
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
@@ -106,4 +112,4 @@ const MenuCategories: React.FC<Props> = ({ className, size = 'm', variant = 'ver
   );
 };
 
-export default MenuCategories;
+export default observer(MenuCategories);

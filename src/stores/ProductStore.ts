@@ -1,12 +1,9 @@
+import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
 import { makeAutoObservable, runInAction } from 'mobx';
-// import { productService } from '../services/productService'; // Uncomment this line when you have the service ready
 
-type CategoryType = { //типизация категории ???? посмотреть в библиотеке
-  id: string;
-  name: string;
-};
+import { getCategories } from '../services/productService'; // Uncomment this line when you have the service ready
 
-type ProductType = { //типизация продукта ???? посмотреть в библиотеке
+type ProductType = { //  типизация продукта ???? посмотреть в библиотеке
   id: string;
   name: string;
   description: string;
@@ -17,7 +14,7 @@ type ProductType = { //типизация продукта ???? посмотре
 type ProductStoreType = { // типизация стора
   products: ProductType[];
   currentProduct: ProductType | null;
-  categories: CategoryType[];
+  categories: Category[];
   error: null | string;
   fetchProducts?: () => Promise<void>;
   fetchProduct?: (id: string) => Promise<void>;
@@ -27,15 +24,16 @@ type ProductStoreType = { // типизация стора
 const createProductStore = (): ProductStoreType => {
   const store = {
     products: [],
-    categories: [],
+    categories: [] as Category[],
     currentProduct: null,
     error: null as null | string,
 
     async fetchCategories(): Promise<void> {
       try {
-        // const fetchedCategories = await categoryService.getCategories(); // предполагаем, что у вас есть соответствующий сервис для получения категорий
+        const fetchedCategories = await getCategories(); // предполагаем, что у вас есть соответствующий сервис для получения категорий
+        const mainCategories = fetchedCategories.filter((item) => !item.parent)
         runInAction(() => {
-          // store.categories = fetchedCategories;
+          store.categories = mainCategories;
         });
       } catch (err) {
         runInAction(() => {
