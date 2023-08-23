@@ -11,13 +11,14 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { RoutePaths } from '../../routes/routes.enum';
+import { contacts } from '../../constants';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { Search } from '../baseComponents/Search';
 import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
-import { MenuCategories } from '../MenuCategories';
+import { Categories } from '../Categories';
 import { SelectCurrency } from '../SelectCurrency';
 import { InfoPanel } from '../InfoPanel';
 import { NavBarMobile } from '../NavBarMobile';
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
             </div>
             <div className={styles.top}>
               <InfoPanel />
-              <PhoneNumber className="ml-auto">(+380) 68 018 45 67</PhoneNumber>
+              <PhoneNumber className="ml-auto">{contacts.phone}</PhoneNumber>
               {loggedIn && (
                 <Link
                   to={RoutePaths.MAIN}
@@ -89,7 +90,7 @@ const Header: React.FC = () => {
           </Container>
           <nav className={styles.navbar}>
             <Container sx={{ display: 'flex', alignItems: 'center' }} maxWidth="xl">
-              <MenuCategories size={'l'} variant={'horizontal'} />
+              <Categories size={'l'} variant={'horizontal'} />
               <div className={`ml-auto ${styles.flex}`}>
                 <Link className={styles.link} to={RoutePaths.ABOUT}>
                   About Us

@@ -18,7 +18,7 @@ type ProductStoreType = { // типизация стора
   error: null | string;
   fetchProducts?: () => Promise<void>;
   fetchProduct?: (id: string) => Promise<void>;
-  fetchCategories?: () => Promise<void>;
+  fetchCategories: () => Promise<void>;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -31,7 +31,8 @@ const createProductStore = (): ProductStoreType => {
     async fetchCategories(): Promise<void> {
       try {
         const fetchedCategories = await getCategories(); // предполагаем, что у вас есть соответствующий сервис для получения категорий
-        const mainCategories = fetchedCategories.filter((item) => !item.parent)
+        const mainCategories = fetchedCategories.filter((item) => !item.parent).sort((a,b) => parseFloat(a.orderHint) - parseFloat(b.orderHint));
+
         runInAction(() => {
           store.categories = mainCategories;
         });
@@ -55,7 +56,7 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
-    async fetchProduct(id: string): Promise<void> {
+    async fetchProduct(): Promise<void> {
       try {
         // const fetchedProduct = await productService.getProduct(id);
         runInAction(() => {

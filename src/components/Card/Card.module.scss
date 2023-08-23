@@ -81,37 +81,6 @@
   color: var(--gray);
 }
 
-.cardPrice,
-.cardPriceDiscount,
-.cardPriceOld {
-  display: block;
-  font-weight: 500;
-}
-
-.cardPriceDiscount {
-  font-size: toRem(24px);
-  color: var(--state-info);
-}
-
-.cardPriceOld {
-  font-size: toRem(12px);
-  color: var(--gray);
-  text-decoration: line-through;
-}
-
-.cardPrice {
-  font-size: toRem(20px);
-  color: var(--color-text)
-}
-
-.value {
-  margin-right: 2px;
-}
-
-.currency {
-  text-transform: uppercase;
-}
-
 @media (hover: hover) {
   .root {
     &:hover {

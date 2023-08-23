@@ -1,6 +1,6 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
 
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow } from './BuildClient';
 
 export async function getCategories():Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow()

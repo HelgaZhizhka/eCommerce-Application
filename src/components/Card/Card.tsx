@@ -3,14 +3,14 @@ import classNames from 'classnames';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import styles from './Card.module.scss';
+import { Price } from '../baseComponents/Price';
 
 type Props = {
   id: string;
   productName?: string;
   description?: string;
-  price?: number;
-  priceOld?: number;
-  priceDiscount?: number;
+  price?: string;
+  priceDiscount?: string;
   currency?: string;
   cardImage?: string;
   isDiscount?: boolean;
@@ -18,11 +18,10 @@ type Props = {
 };
 
 const Card: React.FC<Props> = ({
-  id,
+  // id,
   productName,
   description,
   price,
-  priceOld,
   priceDiscount,
   currency,
   cardImage,
@@ -48,23 +47,17 @@ const Card: React.FC<Props> = ({
         <p className={`text-overflow ${styles.cardDescription}`}>{description}</p>
       </div>
       <div className={styles.cardFooter}>
-        {price && (
-          <span className={styles.cardPrice}>
-            <span className={styles.value}>{price}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
-        )}
-        {priceOld && (
-          <span className={styles.cardPriceOld}>
-            <span className={styles.value}>{priceOld}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
-        )}
-        {priceDiscount && (
-          <span className={styles.cardPriceDiscount}>
-            <span className={styles.value}>{priceDiscount}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
+        {priceDiscount ? (
+          <>
+            <Price variant="old" currency={currency}>
+              {price}
+            </Price>
+            <Price variant="new" currency={currency}>
+              {priceDiscount}
+            </Price>
+          </>
+        ) : (
+          <Price currency={currency}>{price}</Price>
         )}
       </div>
     </div>
