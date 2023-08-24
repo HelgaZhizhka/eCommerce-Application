@@ -41,7 +41,8 @@ export const cards = [
   {
     id: '1',
     productName: 'Standart raccoon t-shirt',
-    description: 'Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt',
+    description:
+      'Elevate your style with our white raccoon t-shirt. A touch of nature-inspired charm on a classic tee, perfect for adding a playful edge to your look.',
     price: '20',
     priceDiscount: '18',
     currency: 'eur',

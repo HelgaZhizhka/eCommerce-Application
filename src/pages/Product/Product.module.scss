@@ -30,6 +30,51 @@
   position: relative;
 }
 
+.title,
+.description,
+.priceInfo {
+  margin-bottom: 20px;
+}
+
 .title {
+  margin-top: 0;
+
+  font-size: toRem(32px);
+}
+
+.description {
+  margin-bottom: 20px;
+
+  @include create-mq($grid__bp-lg, 'min') {
+    width: 80%;
+  }
+}
+
+.facture,
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sale {
+  color: var(--state-danger);
+  font-weight: 500;
+}
+
+.priceInfo {
+  margin-top: 20px;
+}
+
+.priceOld,
+.sale {
+  font-size: toRem(30px);
+}
+
+.priceOld {
+  font-size: toRem(24px);
+}
+
+.priceNew {
   font-size: toRem(32px);
 }
