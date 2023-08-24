@@ -6,17 +6,14 @@ import { FilterPrice } from '../baseComponents/FilterPrice';
 import { FilterReset } from '../baseComponents/FilterReset';
 import styles from '../../pages/Catalog/Catalog.module.scss';
 
-const Filter: React.FC = () => {
-  console.log('1');
-  return (
-    <Box className={styles.filter} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
-      <FilterNestedList />
-      <FilterChip />
-      <FilterColorCheckBox />
-      <FilterPrice />
-      <FilterReset />
-    </Box>
-  );
-};
+const Filter: React.FC = () => (
+  <Box className={styles.filter} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
+    <FilterNestedList />
+    <FilterChip />
+    <FilterColorCheckBox />
+    <FilterPrice />
+    <FilterReset />
+  </Box>
+);
 
 export default Filter;

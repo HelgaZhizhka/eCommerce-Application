@@ -9,13 +9,14 @@ import { NumberInput } from '../../components/baseComponents/NumberInput';
 import { Price } from '../../components/baseComponents/Price';
 import { FilterChip } from '../../components/baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../../components/baseComponents/FilterColorCheckBox';
+import { ProductCarousel } from '../../components/ProductCarosel';
 import { cards } from '../../constants';
 import styles from './Product.module.scss';
 
 const Product: React.FC = () => {
   const { category, id } = useParams();
   const card = cards.find((item) => item.id === id);
-  const { productName, description, cardImage, price, priceDiscount, currency } = card || {};
+  const { productName, description, price, priceDiscount, currency } = card || {};
   const [count, setCount] = useState<number>(0);
 
   if (!card) {
@@ -35,7 +36,7 @@ const Product: React.FC = () => {
         />
         <div className={styles.container}>
           <div className={styles.column}>
-            <img src={cardImage} alt={productName} />
+            <ProductCarousel />
           </div>
           <div className={styles.column}>
             <h2 className={styles.title}>{productName}</h2>
