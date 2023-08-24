@@ -1,7 +1,9 @@
 import Container from '@mui/material/Container';
+import Slider from '../../components/ProductCarosel/Slider';
 
 const About: React.FC = () => (
   <Container maxWidth="xl">
+    <Slider />
     <div>
       <h2>About Us</h2>
     </div>

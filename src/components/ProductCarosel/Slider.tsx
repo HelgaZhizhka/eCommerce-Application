@@ -1,6 +1,7 @@
-import { useState, ReactElement } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import type { Swiper as SwiperType } from 'swiper';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -13,21 +14,28 @@ import './ProductCarousel.module.scss';
 // import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
+interface ExtendedSwiperOptions extends SwiperOptions {
+  watchSlidesVisibility?: boolean;
+}
+
 export default function Slider(): ReactElement {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const swiperParams: SwiperOptions = {
     spaceBetween: 10,
     navigation: true,
-    thumbs: { swiper: thumbsSwiper },
+    slidesPerView: 1,
+    thumbs: thumbsSwiper ? { swiper: thumbsSwiper } : undefined,
     modules: [FreeMode, Navigation, Thumbs],
+    slideToClickedSlide: true,
   };
 
-  const swiperParams1: SwiperOptions = {
+  const swiperParams1: ExtendedSwiperOptions = {
     spaceBetween: 10,
     slidesPerView: 4,
-    freeMode: true,
+    slideToClickedSlide: true,
     modules: [FreeMode, Navigation, Thumbs],
+    // watchSlidesVisibility: true,
     watchSlidesProgress: true,
   };
 
@@ -65,11 +73,8 @@ export default function Slider(): ReactElement {
           <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
         </SwiperSlide>
       </Swiper>
-      <Swiper
-        // onSwiper={setThumbsSwiper}
-        {...swiperParams1}
-        className="mySwiper"
-      >
+
+      <Swiper onSwiper={setThumbsSwiper} {...swiperParams1} className="mySwiper">
         <SwiperSlide>
           <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
         </SwiperSlide>
