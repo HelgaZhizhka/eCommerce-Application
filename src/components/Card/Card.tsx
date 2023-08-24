@@ -1,33 +1,32 @@
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 
-import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import styles from './Card.module.scss';
+import { Price } from '../baseComponents/Price';
 
 type Props = {
-  className?: string;
+  id: string;
   productName?: string;
   description?: string;
-  price?: number;
-  priceOld?: number;
-  priceDiscount?: number;
+  price?: string;
+  priceDiscount?: string;
   currency?: string;
   cardImage?: string;
   isDiscount?: boolean;
+  className?: string;
 };
 
 const Card: React.FC<Props> = ({
-  className,
+  // id,
   productName,
   description,
   price,
-  priceOld,
   priceDiscount,
   currency,
   cardImage,
   isDiscount = false,
+  className,
 }) => {
   const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
@@ -39,32 +38,26 @@ const Card: React.FC<Props> = ({
       {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
       <div className={styles.cardPoster}>
         <img className={styles.cardImage} src={cardImage} alt={productName} />
-        <Link className={styles.cardButton} to={RoutePaths.CART}>
+        <div className={styles.cardButton}>
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
-        </Link>
+        </div>
       </div>
       <div className={styles.cardBody}>
         <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>
         <p className={`text-overflow ${styles.cardDescription}`}>{description}</p>
       </div>
       <div className={styles.cardFooter}>
-        {price && (
-          <span className={styles.cardPrice}>
-            <span className={styles.value}>{price}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
-        )}
-        {priceOld && (
-          <span className={styles.cardPriceOld}>
-            <span className={styles.value}>{priceOld}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
-        )}
-        {priceDiscount && (
-          <span className={styles.cardPriceDiscount}>
-            <span className={styles.value}>{priceDiscount}</span>
-            <span className={styles.currency}>{currency}</span>
-          </span>
+        {priceDiscount ? (
+          <>
+            <Price variant="old" currency={currency}>
+              {price}
+            </Price>
+            <Price variant="new" currency={currency}>
+              {priceDiscount}
+            </Price>
+          </>
+        ) : (
+          <Price currency={currency}>{price}</Price>
         )}
       </div>
     </div>

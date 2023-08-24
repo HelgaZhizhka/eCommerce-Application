@@ -11,6 +11,7 @@ import Catalog from '../pages/Catalog/Catalog';
 import { About } from '../pages/About';
 import { Profile } from '../pages/Profile';
 import { Cart } from '../pages/Cart';
+import { Product } from '../pages/Product';
 import { userStore } from '../stores';
 import { RoutePaths } from './routes.enum';
 
@@ -85,6 +86,14 @@ const RouterConfig: React.FC = () => {
           element={
             <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
               <Catalog />
+            </motion.div>
+          }
+        />
+        <Route
+          path={RoutePaths.PRODUCT}
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+              <Product />
             </motion.div>
           }
         />

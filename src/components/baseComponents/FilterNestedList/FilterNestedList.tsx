@@ -8,7 +8,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import { MenuCategories } from '../../MenuCategories';
+import { Categories } from '../../Categories';
 
 const FilterNestedList: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -28,7 +28,7 @@ const FilterNestedList: React.FC = () => {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuCategories theme={'dark'} variant={'filter'} />
+          <Categories theme={'dark'} variant={'filter'} />
         </List>
       </Collapse>
     </List>

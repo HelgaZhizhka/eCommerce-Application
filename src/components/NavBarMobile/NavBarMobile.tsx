@@ -5,9 +5,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
 import { RoutePaths } from '../../routes/routes.enum';
+import { contacts } from '../../constants';
 import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { InfoPanel } from '../InfoPanel';
-import { MenuCategories } from '../MenuCategories';
+import { Categories } from '../Categories';
 import styles from './NavBarMobile.module.scss';
 
 type Props = {
@@ -71,11 +72,11 @@ const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
       >
         <CloseIcon />
       </IconButton>
-      <MenuCategories size={'l'} theme={'dark'} onClose={onClose} />
+      <Categories size={'l'} theme={'dark'} onClose={onClose} />
       <Link className={styles.link} to={RoutePaths.ABOUT} onClick={onClose}>
         About Us
       </Link>
-      <PhoneNumber className={styles.phone}>(+380) 68 018 45 67</PhoneNumber>
+      <PhoneNumber className={styles.phone}>{contacts.phone}</PhoneNumber>
       <InfoPanel className={styles.info} variant={'vertical'} />
     </motion.nav>
   );

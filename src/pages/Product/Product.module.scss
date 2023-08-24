@@ -5,17 +5,76 @@
 .root {
   padding-top: 50px;
   padding-bottom: 60px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
 }
 
-.section {
+.container {
+  margin-top: 40px;
 
   @include create-mq($grid__bp-md, 'min') {
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 80px;
+    grid-template-columns: 1fr 2fr;
+    gap: 120px;
   }
 }
 
 .breadcrumb {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.column {
+  position: relative;
+}
+
+.title,
+.description,
+.priceInfo {
+  margin-bottom: 20px;
+}
+
+.title {
+  margin-top: 0;
+
+  font-size: toRem(32px);
+}
+
+.description {
+  margin-bottom: 20px;
+
+  @include create-mq($grid__bp-lg, 'min') {
+    width: 80%;
+  }
+}
+
+.facture,
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sale {
+  color: var(--state-danger);
+  font-weight: 500;
+}
+
+.priceInfo {
+  margin-top: 20px;
+}
+
+.priceOld,
+.sale {
+  font-size: toRem(30px);
+}
+
+.priceOld {
+  font-size: toRem(24px);
+}
+
+.priceNew {
+  font-size: toRem(32px);
 }

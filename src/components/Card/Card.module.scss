@@ -12,6 +12,10 @@
       transform: scale(1.1);
       filter: drop-shadow(0px 0px 16px rgba(151, 153, 153, 0.8));
     }
+
+    .cardButton {
+      background-color: var(--state-primary-hover);
+    }
   }
 }
 
@@ -31,8 +35,7 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  transition: transform 1s cubic-bezier(0.215, 0.610, 0.355, 1),
-    filter .5s cubic-bezier(0.215, 0.610, 0.355, 1);
+  transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .isDiscount {
@@ -64,51 +67,18 @@
   background-color: var(--state-primary);
   transition: background-color var(--transition-duration) var(--transition-function);
   color: var(--light-white);
-
-  &:hover {
-    background-color: var(--state-primary-hover);
-  }
 }
 
 .cardTitle {
   margin: 0;
   font-weight: 700;
+  color: var(--color-text)
 }
 
 .cardDescription {
   margin: 0;
   font-size: toRem(12px);
   color: var(--gray);
-}
-
-.cardPrice,
-.cardPriceDiscount,
-.cardPriceOld {
-  display: block;
-  font-weight: 500;
-}
-
-.cardPriceDiscount {
-  font-size: toRem(24px);
-  color: var(--state-info);
-}
-
-.cardPriceOld {
-  font-size: toRem(12px);
-  color: var(--gray);
-  text-decoration: line-through;
-}
-
-.cardPrice {
-  font-size: toRem(20px);
-}
-
-.value {
-  margin-right: 2px;
-}
-
-.currency {
-  text-transform: uppercase;
 }
 
 @media (hover: hover) {

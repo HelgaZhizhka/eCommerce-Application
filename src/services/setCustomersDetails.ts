@@ -1,8 +1,9 @@
 import { ByProjectKeyRequestBuilder } from "@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder";
 import { Customer } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/customer";
-import { MyCustomerUpdateAction } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/me";
+import { MyCustomerUpdate } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/me";
 import { ClientResponse } from "@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types";
 import { apiWithPasswordFlow } from "./BuildClient";
+
 
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
@@ -12,12 +13,7 @@ const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Cu
 
 const setAddressRequest = async (customer: ByProjectKeyRequestBuilder, customerInfo: Customer): Promise<ClientResponse<Customer>> => {
 
-  type Body = {
-    version: number,
-    actions: MyCustomerUpdateAction[]
-  }
-
-  const body: Body = {
+  const body: MyCustomerUpdate = {
     "version": customerInfo.version,
     "actions": [{
       "action": "addShippingAddressId",
