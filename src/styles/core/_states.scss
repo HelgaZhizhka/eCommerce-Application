@@ -29,20 +29,8 @@
   }
 }
 
-// .swiper-wrapper {
-//    overflow: hidden;
-// }
-
 .swiper-scrollbar-drag {
   background: var(--state-primary) !important;
-}
-
-.swiper-slide {
-  cursor: grab;
-}
-
-.swiper-slide:active {
-  cursor: grabbing;
 }
 
 .text-overflow {

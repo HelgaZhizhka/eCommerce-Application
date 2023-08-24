@@ -12,8 +12,18 @@ import { FilterColorCheckBox } from '../../components/baseComponents/FilterColor
 import { ProductCarousel } from '../../components/ProductCarosel';
 import { cards } from '../../constants';
 import styles from './Product.module.scss';
+import { Modal } from '../../components/Modal';
 
 const Product: React.FC = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = (): void => {
+    setOpen(true);
+  };
+  const handleClose = (): void => {
+    setOpen(false);
+  };
+
   const { category, id } = useParams();
   const card = cards.find((item) => item.id === id);
   const { productName, description, price, priceDiscount, currency } = card || {};
@@ -25,6 +35,7 @@ const Product: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
+      <Modal isOpen={open} onClose={handleClose} />
       <section className={styles.root}>
         <Breadcrumbs
           items={[
@@ -36,7 +47,7 @@ const Product: React.FC = () => {
         />
         <div className={styles.container}>
           <div className={styles.column}>
-            <ProductCarousel />
+            <ProductCarousel openModal={handleClickOpen} isZoom />
           </div>
           <div className={styles.column}>
             <h2 className={styles.title}>{productName}</h2>

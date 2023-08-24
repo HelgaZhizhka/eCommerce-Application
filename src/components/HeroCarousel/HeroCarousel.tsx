@@ -31,6 +31,7 @@ const swiperParams: SwiperOptions = {
   modules: [Navigation, EffectFade, Scrollbar, Autoplay],
   effect: 'fade',
   slidesPerView: 1,
+  grabCursor: true,
   navigation: true,
   autoplay: {
     delay: 3500,
