@@ -48,7 +48,7 @@ const Product: React.FC = () => {
             <FilterChip />
             <FilterColorCheckBox />
             <div className={styles.priceInfo}>
-              {priceDiscount ? (
+              {/* {priceDiscount ? (
                 <>
                   <span className={styles.flex}>
                     <Price className={styles.priceOld} variant="old" currency={currency}>
@@ -65,7 +65,7 @@ const Product: React.FC = () => {
                 <Price className={styles.price} currency={currency}>
                   {price}
                 </Price>
-              )}
+              )} */}
             </div>
             <div className={styles.flex}>
               <NumberInput

@@ -9,8 +9,8 @@ type Props = {
   id: string;
   productName?: string;
   description?: string;
-  price?: string;
-  priceDiscount?: string;
+  price?: number;
+  priceDiscount?: number;
   currency?: string;
   cardImage?: string;
   isDiscount?: boolean;
