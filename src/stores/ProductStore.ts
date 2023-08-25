@@ -8,10 +8,10 @@ type ProductType = {
   id: string;
   productName: string;
   description: string;
-  price: number;
-  priceDiscount?: number;
+  price: string;
+  priceDiscount?: string;
   currency: string;
-  images?: Image[];
+  images: Image[];
   isDiscount: boolean;
 };
 
@@ -55,39 +55,40 @@ const createProductStore = (): ProductStoreType => {
           const obj = {} as ProductType
           const data = item.masterData.current;
           obj.id = `${data.masterVariant.sku}`;
-          obj.productName = `${data.name}`;
-          obj.description = `${data.description}`;
-          if (data.masterVariant.prices !== undefined){
-            obj.price = data.masterVariant.prices[0].value.centAmount
-            obj.currency = data.masterVariant.prices[0].value.currencyCode
-            obj.isDiscount = Boolean(data.masterVariant.prices[0].discounted)
+          obj.productName = `${data.name?.en}`;
+          obj.description = `${data.description?.en}`;
+          if (data.masterVariant.prices?.length) {
+            obj.price = `${data.masterVariant.prices[0]?.value?.centAmount}`;
+            obj.currency = data.masterVariant.prices[0]?.value.currencyCode;
+            obj.isDiscount = Boolean(data.masterVariant.prices[0]?.discounted);
+            if (obj.isDiscount) obj.priceDiscount = `${data.masterVariant.prices[0]?.discounted?.value.centAmount}`;
           }
-          if (data.masterVariant.images !== undefined) obj.images = [...data.masterVariant.images]
-          acc.push(obj)
+          if (data.masterVariant.images !== undefined) obj.images = [...data.masterVariant.images];
+          acc.push(obj);
           return acc;
         }, [] as ProductType[]);
         runInAction(() => {
-          store.products = productsList;
+          store.products = [...productsList];
         });
       } catch (err) {
         runInAction(() => {
-          // store.error = 'Error fetching products';
+          store.error = 'Error fetching products';
         });
       }
     },
 
-    async fetchProduct(): Promise<void> {
-      try {
-        // const fetchedProduct = await productService.getProduct(id);
-        runInAction(() => {
-          // store.currentProduct = fetchedProduct;
-        });
-      } catch (err) {
-        runInAction(() => {
-          // store.error = 'Error fetching product';
-        });
-      }
-    },
+    // async fetchProduct(): Promise<void> {
+    //   try {
+    //     // const fetchedProduct = await productService.getProduct(id);
+    //     runInAction(() => {
+    //       // store.currentProduct = fetchedProduct;
+    //     });
+    //   } catch (err) {
+    //     runInAction(() => {
+    //       // store.error = 'Error fetching product';
+    //     });
+    //   }
+    // },
   };
 
   makeAutoObservable(store);

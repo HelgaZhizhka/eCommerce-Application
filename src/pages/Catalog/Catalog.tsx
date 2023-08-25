@@ -19,9 +19,6 @@ type CatalogParams = {
 const Catalog: React.FC = () => {
   const { category } = useParams<CatalogParams>();
   const number = 8;
-  useEffect(() => {
-    productStore.fetchProducts();
-  }, []);
   const { products } = productStore;
 
   return (
@@ -51,7 +48,7 @@ const Catalog: React.FC = () => {
                       id={card.id}
                       productName={card.productName}
                       description={card.description}
-                      cardImage=""
+                      cardImages={card.images}
                       price={card.price}
                       priceDiscount={card.priceDiscount}
                       currency={card.currency}
