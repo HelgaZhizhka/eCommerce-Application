@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { NumberInput } from '../../components/baseComponents/NumberInput';
-import { Price } from '../../components/baseComponents/Price';
+// import { Price } from '../../components/baseComponents/Price';
 import { FilterChip } from '../../components/baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../../components/baseComponents/FilterColorCheckBox';
 import { ProductCarousel } from '../../components/ProductCarosel';
@@ -26,7 +26,7 @@ const Product: React.FC = () => {
 
   const { category, id } = useParams();
   const card = cards.find((item) => item.id === id);
-  const { productName, description, price, priceDiscount, currency } = card || {};
+  const { productName, description } = card || {};
   const [count, setCount] = useState<number>(0);
 
   if (!card) {
@@ -59,7 +59,7 @@ const Product: React.FC = () => {
             <FilterChip />
             <FilterColorCheckBox />
             <div className={styles.priceInfo}>
-              {priceDiscount ? (
+              {/* {priceDiscount ? (
                 <>
                   <span className={styles.flex}>
                     <Price className={styles.priceOld} variant="old" currency={currency}>
@@ -76,7 +76,7 @@ const Product: React.FC = () => {
                 <Price className={styles.price} currency={currency}>
                   {price}
                 </Price>
-              )}
+              )} */}
             </div>
             <div className={styles.flex}>
               <NumberInput
