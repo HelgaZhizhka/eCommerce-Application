@@ -46,7 +46,7 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
               className={classNames(categoriesClasses, {
                 [styles.brand]: category.slug.en === 'sale',
               })}
-              to={`/${category.slug.en}`}
+              to={`/category/${category.slug.en}`}
               onClick={onClose ? (): void => onClose() : undefined}
             >
               {variant === 'filter' ? (

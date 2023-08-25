@@ -4,7 +4,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  max-width: 160px;
+  width: 160px;
   height: 100%;
 
   &:hover {
@@ -34,6 +34,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  width: 85%;
   margin: auto;
   transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }

@@ -1,29 +1,41 @@
-import { useParams, Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
+import { useParams, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { RoutePaths } from '../../routes/routes.enum';
-import { Card } from '../../components/Card';
 import { Filter } from '../../components/Filter';
-import styles from './Catalog.module.scss';
 import { Sorting } from '../../components/Sorting';
+import { ProductList } from '../../components/ProductList';
 import { productStore } from '../../stores';
+import styles from './Catalog.module.scss';
 
-type CatalogParams = {
-  category: string;
+type Params = {
+  categoryId: string;
 };
 
 const Catalog: React.FC = () => {
-  const { category } = useParams<CatalogParams>();
+  const { categoryId } = useParams<Params>();
   const number = 8;
-  const { products } = productStore;
+
+  useEffect(() => {
+    productStore.fetchProducts();
+  }, []);
+
+  if (!categoryId) {
+    return <Navigate to={RoutePaths.ERROR} />;
+  }
+
+  const categoryPath = `${RoutePaths.CATEGORY.replace(':categoryId', categoryId)}`;
 
   return (
     <Container maxWidth="xl">
       <div className={styles.root}>
         <Breadcrumbs
-          items={[{ text: 'Home', path: RoutePaths.MAIN }, { text: `${category}` }]}
+          items={[
+            { text: 'Home', path: RoutePaths.MAIN },
+            { text: categoryId, path: categoryPath },
+          ]}
           className={styles.breadcrumb}
         />
         <div className={styles.container}>
@@ -37,25 +49,7 @@ const Catalog: React.FC = () => {
                 <Sorting />
               </div>
             </div>
-            <ul className={`list ${styles.productsList}`}>
-              {/* const { id, productName, description, price, priceDiscount, currency, images, isDiscount } = products; */}
-              {products.map((card) => (
-                <li className={styles.productItem} key={card.id}>
-                  <Link to={card.id}>
-                    <Card
-                      id={card.id}
-                      productName={card.productName}
-                      description={card.description}
-                      cardImages={card.images}
-                      price={card.price}
-                      priceDiscount={card.priceDiscount}
-                      currency={card.currency}
-                      isDiscount={card.isDiscount}
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <ProductList className={styles.productsList} categoryId={categoryId} />
           </div>
         </div>
       </div>
@@ -63,4 +57,4 @@ const Catalog: React.FC = () => {
   );
 };
 
-export default observer(Catalog);
+export default Catalog;
