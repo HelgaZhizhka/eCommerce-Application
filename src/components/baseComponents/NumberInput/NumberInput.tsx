@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
 import classNames from 'classnames';
+import TextField from '@mui/material/TextField';
 
 import styles from './NumberInput.module.scss';
 

@@ -3,10 +3,10 @@
 @import '../../styles/abstract/functions';
 
 .root {
-  padding-top: 50px;
   padding-bottom: 60px;
-
+  
   @include create-mq($grid__bp-lg, 'min') {
+    padding-top: 50px;
     padding-left: 80px;
     padding-right: 80px;
   }
@@ -20,23 +20,23 @@
   }
 }
 
-.breadcrumb {
-  margin-bottom: 20px;
-}
 
-.filter,
-.productsPanel {
+.sticky {
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
+.filter {
+
+    @include create-mq($grid__bp-md, 'min') {
+      top: 80px;
+      z-index: 9;
+    }
+}
+
 .products {
   padding-bottom: 20px;
-
-  @include create-mq($grid__bp-md, 'min') {
-    margin-top: -10px;
-  }
 }
 
 .productsPanel {
@@ -47,7 +47,8 @@
   justify-content: space-between;
   font-size: toRem(20px);
   background-color: var(--body-bg);
-  color: var(--gray);
+
+  
 }
 
 .productsList {

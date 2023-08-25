@@ -1,6 +1,11 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Container from '@mui/material/Container';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import { IconButton } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SortIcon from '@mui/icons-material/Sort';
 
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { RoutePaths } from '../../routes/routes.enum';
@@ -16,7 +21,8 @@ type Params = {
 
 const Catalog: React.FC = () => {
   const { categoryId } = useParams<Params>();
-  const number = 8;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     productStore.fetchProducts();
@@ -31,24 +37,34 @@ const Catalog: React.FC = () => {
   return (
     <Container maxWidth="xl">
       <div className={styles.root}>
-        <Breadcrumbs
-          items={[
-            { text: 'Home', path: RoutePaths.MAIN },
-            { text: categoryId, path: categoryPath },
-          ]}
-          className={styles.breadcrumb}
-        />
-        <div className={styles.container}>
-          <aside>
-            <Filter />
-          </aside>
-          <div className={styles.products}>
-            <div className={styles.productsPanel}>
-              <div className={styles.panelColLeft}>Display: {number} per page</div>
-              <div className={styles.panelColRight}>
-                <Sorting />
-              </div>
+        <div className={`${styles.sticky} ${styles.productsPanel}`}>
+          <Breadcrumbs
+            items={[
+              { text: 'Home', path: RoutePaths.MAIN },
+              { text: categoryId, path: categoryPath },
+            ]}
+            className={styles.breadcrumb}
+          />
+          {!isMobile ? (
+            <Sorting />
+          ) : (
+            <div className={styles.actions}>
+              <IconButton aria-label="sort">
+                <FilterListIcon />
+              </IconButton>
+              <IconButton aria-label="filter">
+                <SortIcon />
+              </IconButton>
             </div>
+          )}
+        </div>
+        <div className={styles.container}>
+          {!isMobile && (
+            <aside>
+              <Filter className={`${styles.sticky} ${styles.filter}`} />
+            </aside>
+          )}
+          <div className={styles.products}>
             <ProductList className={styles.productsList} categoryId={categoryId} />
           </div>
         </div>

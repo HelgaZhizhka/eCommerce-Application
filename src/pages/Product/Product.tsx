@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { NumberInput } from '../../components/baseComponents/NumberInput';
-// import { Price } from '../../components/baseComponents/Price';
 import { FilterChip } from '../../components/baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../../components/baseComponents/FilterColorCheckBox';
 import { ProductCarousel } from '../../components/ProductCarosel';
-import { cards } from '../../constants';
 import styles from './Product.module.scss';
 import { Modal } from '../../components/Modal';
 
@@ -24,9 +22,9 @@ const Product: React.FC = () => {
     setOpen(false);
   };
 
-  const { category, id } = useParams();
-  const card = cards.find((item) => item.id === id);
-  const { productName, description } = card || {};
+  // const { category, id } = useParams();
+  // const card = cards.find((item) => item.id === id);
+  // const { productName, description } = card || {};
   const [count, setCount] = useState<number>(0);
 
   return (
@@ -36,8 +34,8 @@ const Product: React.FC = () => {
         <Breadcrumbs
           items={[
             { text: 'Home', path: RoutePaths.MAIN },
-            { text: `${category}`, path: `${RoutePaths.MAIN}${category}` },
-            { text: `${productName}` },
+            // { text: `${category}`, path: `${RoutePaths.MAIN}${category}` },
+            // { text: `${productName}` },
           ]}
           className={styles.breadcrumb}
         />
@@ -46,8 +44,8 @@ const Product: React.FC = () => {
             <ProductCarousel openModal={handleClickOpen} isZoom />
           </div>
           <div className={styles.column}>
-            <h2 className={styles.title}>{productName}</h2>
-            <p className={styles.description}>{description}</p>
+            {/* <h2 className={styles.title}>{productName}</h2> */}
+            {/* <p className={styles.description}>{description}</p> */}
             <p className={styles.facture}>
               <strong>Material:</strong>
               <span>100% Organic Cotton</span>
