@@ -8,9 +8,14 @@ import 'swiper/css/bundle';
 import styles from './ProductCarousel.module.scss';
 import tShirt from '../Card/images/TShirt.png';
 
-const imgages = [tShirt, tShirt, tShirt, tShirt, tShirt, tShirt];
+const images = [tShirt, tShirt, tShirt, tShirt, tShirt, tShirt];
 
-const ProductCarousel: React.FC = () => {
+type Props = {
+  isZoom?: boolean;
+  openModal?: () => void;
+};
+
+const ProductCarousel: React.FC<Props> = ({ openModal, isZoom }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const swiperParamsFirst: SwiperOptions = {
@@ -24,33 +29,34 @@ const ProductCarousel: React.FC = () => {
   };
 
   const swiperParamsSecond: SwiperOptions = {
-    spaceBetween: 5,
+    spaceBetween: 60,
     slidesPerView: 4,
+    grabCursor: true,
     slideToClickedSlide: true,
     modules: [FreeMode, Navigation, Thumbs],
     watchSlidesProgress: true,
   };
   return (
-    <>
-      <Swiper className={styles.root} {...swiperParamsFirst}>
-        {imgages.map((img, index) => (
+    <div className={styles.root}>
+      <Swiper className={styles.rootFirstSwiper} {...swiperParamsFirst}>
+        {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <div className={styles.wrapImg}>
-              <img className={styles.wrapImg} src={img} alt="t-Shirt" />
+            <div className={`${styles.wrapImg} ${isZoom ? styles.zoom : styles.grab}`} onClick={openModal}>
+              <img className={styles.img} src={img} alt="t-Shirt" />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
       <Swiper onSwiper={setThumbsSwiper} className={styles.rootSecondSwiper} {...swiperParamsSecond}>
-        {imgages.map((img, index) => (
+        {images.map((img, index) => (
           <SwiperSlide key={index}>
             <div className={styles.wrapImgSecond}>
-              <img className={styles.wrapImg} src={img} alt="t-Shirt" />
+              <img className={styles.img} src={img} alt="t-Shirt" />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 };
 

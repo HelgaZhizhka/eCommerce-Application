@@ -42,7 +42,7 @@ const lightTheme = createTheme({
           ...commonHeadingStyles,
         },
       },
-    },
+    },   
     MuiButton: {
       styleOverrides: {
         root: {
