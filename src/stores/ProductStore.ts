@@ -35,7 +35,9 @@ const createProductStore = (): ProductStoreType => {
     async fetchCategories(): Promise<void> {
       try {
         const fetchedCategories = await getCategories();
-        const mainCategories = fetchedCategories.filter((item) => !item.parent).sort((a,b) => parseFloat(a.orderHint) - parseFloat(b.orderHint));
+        const mainCategories = fetchedCategories
+          .filter((item) => !item.parent)
+          .sort((a, b) => parseFloat(a.orderHint) - parseFloat(b.orderHint));
 
         runInAction(() => {
           store.categories = mainCategories;
@@ -48,11 +50,10 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchProducts(): Promise<void> {
-
       try {
         const fetchedProducts = await getProducts();
         const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
-          const obj = {} as ProductType
+          const obj = {} as ProductType;
           const data = item.masterData.current;
           obj.id = `${data.masterVariant.sku}`;
           obj.productName = `${data.name?.en}`;
@@ -77,18 +78,6 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
-    // async fetchProduct(): Promise<void> {
-    //   try {
-    //     // const fetchedProduct = await productService.getProduct(id);
-    //     runInAction(() => {
-    //       // store.currentProduct = fetchedProduct;
-    //     });
-    //   } catch (err) {
-    //     runInAction(() => {
-    //       // store.error = 'Error fetching product';
-    //     });
-    //   }
-    // },
   };
 
   makeAutoObservable(store);

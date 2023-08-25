@@ -18,9 +18,7 @@ const App: React.FC = () => {
   useEffect(() => {
     productStore.fetchCategories();
   }, []);
-  useEffect(() => {
-    productStore.fetchProducts();
-  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

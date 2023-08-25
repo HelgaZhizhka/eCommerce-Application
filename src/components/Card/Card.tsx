@@ -3,11 +3,10 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
-import styles from './Card.module.scss';
 import { Price } from '../baseComponents/Price';
+import styles from './Card.module.scss';
 
 type Props = {
-  id: string;
   productName: string;
   description: string;
   price: string;
@@ -19,7 +18,6 @@ type Props = {
 };
 
 const Card: React.FC<Props> = ({
-  // id,
   productName,
   description,
   price,

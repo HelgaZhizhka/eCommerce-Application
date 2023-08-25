@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
@@ -28,10 +28,6 @@ const Product: React.FC = () => {
   const card = cards.find((item) => item.id === id);
   const { productName, description } = card || {};
   const [count, setCount] = useState<number>(0);
-
-  if (!card) {
-    return <Navigate to={RoutePaths.ERROR} />;
-  }
 
   return (
     <Container maxWidth="xl">
