@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import Container from '@mui/material/Container';
@@ -7,7 +6,6 @@ import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Card } from '../../components/Card';
 import { Filter } from '../../components/Filter';
-import { cards } from '../../constants';
 import styles from './Catalog.module.scss';
 import { Sorting } from '../../components/Sorting';
 import { productStore } from '../../stores';
