@@ -12,7 +12,11 @@ const CustomButton = styled(Button)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-const Sorting: React.FC = () => {
+type Props = {
+  className?: string;
+};
+
+const Sorting: React.FC<Props> = ({ className }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedSort, setSelectedSort] = useState<string>('Default');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +37,7 @@ const Sorting: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box className={className}>
       <CustomButton
         sx={{ width: '100%' }}
         aria-controls="dropdown-menu"

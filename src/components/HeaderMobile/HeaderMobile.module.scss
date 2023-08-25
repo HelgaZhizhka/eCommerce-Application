@@ -1,0 +1,90 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  position: relative;
+  font-size: toRem(20px);
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-bottom: 20px;
+  }
+}
+
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px;
+  align-items: start;
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+}
+
+.logo {
+  grid-row: span 2;
+
+  @include create-mq($grid__bp-md, 'min') {
+    margin-right: 20px;
+  }
+
+  @include create-mq($grid__bp-lg, 'min') {
+    margin-right: 100px;
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.info .badge {
+  margin-right: 10px;
+}
+
+.search {
+  width: 100%;
+  margin-right: 10px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 400px;
+  }
+
+  @include create-mq($grid__bp-lg, 'min') {
+    width: 560px;
+  }
+}
+
+.link {
+  font-size: toRem(24px);
+  margin: 0 1rem;
+  transition: color var(--transition-duration) var(--transition-easing);
+
+  &:hover {
+    color: var(--state-primary-hover);
+  }
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  min-height: 68px;
+  background-color: var(--nav-bg);
+
+  .menu {
+    font-size: toRem(24px);
+  }
+}
