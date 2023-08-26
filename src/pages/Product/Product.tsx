@@ -29,6 +29,7 @@ const Product: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
+      {/*   //! модалка */}
       <Modal isOpen={open} onClose={handleClose} />
       <section className={styles.root}>
         <Breadcrumbs
@@ -41,6 +42,7 @@ const Product: React.FC = () => {
         />
         <div className={styles.container}>
           <div className={styles.column}>
+            {/*   //! карусель */}
             <ProductCarousel openModal={handleClickOpen} isZoom />
           </div>
           <div className={styles.column}>
