@@ -18,9 +18,17 @@ const Catalog: React.FC = () => {
   const { categoryId } = useParams<Params>();
   const number = 8;
 
+  // useEffect(() => {
+  //   productStore.fetchProducts();
+  // }, []);
+
   useEffect(() => {
-    productStore.fetchProducts();
-  }, []);
+    let id;
+    if (productStore.categoryIdByName && categoryId) {
+      id = productStore.categoryIdByName(categoryId);
+    }
+    productStore.fetchProductsByCategory(id);
+  }, [categoryId]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
