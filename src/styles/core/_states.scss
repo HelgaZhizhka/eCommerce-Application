@@ -29,26 +29,13 @@
   }
 }
 
-// .swiper-wrapper {
-//    overflow: hidden;
-// }
-
 .swiper-scrollbar-drag {
   background: var(--state-primary) !important;
-}
-
-.swiper-slide {
-  cursor: grab;
-}
-
-.swiper-slide:active {
-  cursor: grabbing;
 }
 
 .text-overflow {
   display: -webkit-box;       
   -webkit-box-orient: vertical; 
   overflow: hidden;          
-  -webkit-line-clamp: 2;     
-  max-height: (16 * 2)px; 
+  -webkit-line-clamp: 2;
 }

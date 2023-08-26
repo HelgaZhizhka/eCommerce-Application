@@ -1,3 +1,3 @@
 export type VARIANT = 'new' | 'old';
 
-export type currency = 'USD' | 'EUR' | 'UAH';
+export type Currency = 'USD' | 'EUR' | 'UAH';

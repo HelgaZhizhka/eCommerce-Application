@@ -1,46 +1,51 @@
 import React, { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { NumberInput } from '../../components/baseComponents/NumberInput';
-import { Price } from '../../components/baseComponents/Price';
 import { FilterChip } from '../../components/baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../../components/baseComponents/FilterColorCheckBox';
 import { ProductCarousel } from '../../components/ProductCarosel';
-import { cards } from '../../constants';
 import styles from './Product.module.scss';
+import { Modal } from '../../components/Modal';
 
 const Product: React.FC = () => {
-  const { category, id } = useParams();
-  const card = cards.find((item) => item.id === id);
-  const { productName, description, price, priceDiscount, currency } = card || {};
-  const [count, setCount] = useState<number>(0);
+  const [open, setOpen] = React.useState(false);
 
-  if (!card) {
-    return <Navigate to={RoutePaths.ERROR} />;
-  }
+  const handleClickOpen = (): void => {
+    setOpen(true);
+  };
+  const handleClose = (): void => {
+    setOpen(false);
+  };
+
+  // const { category, id } = useParams();
+  // const card = cards.find((item) => item.id === id);
+  // const { productName, description } = card || {};
+  const [count, setCount] = useState<number>(0);
 
   return (
     <Container maxWidth="xl">
+      <Modal isOpen={open} onClose={handleClose} />
       <section className={styles.root}>
         <Breadcrumbs
           items={[
             { text: 'Home', path: RoutePaths.MAIN },
-            { text: `${category}`, path: `${RoutePaths.MAIN}${category}` },
-            { text: `${productName}` },
+            // { text: `${category}`, path: `${RoutePaths.MAIN}${category}` },
+            // { text: `${productName}` },
           ]}
           className={styles.breadcrumb}
         />
         <div className={styles.container}>
           <div className={styles.column}>
-            <ProductCarousel />
+            <ProductCarousel openModal={handleClickOpen} isZoom />
           </div>
           <div className={styles.column}>
-            <h2 className={styles.title}>{productName}</h2>
-            <p className={styles.description}>{description}</p>
+            {/* <h2 className={styles.title}>{productName}</h2> */}
+            {/* <p className={styles.description}>{description}</p> */}
             <p className={styles.facture}>
               <strong>Material:</strong>
               <span>100% Organic Cotton</span>
@@ -48,7 +53,7 @@ const Product: React.FC = () => {
             <FilterChip />
             <FilterColorCheckBox />
             <div className={styles.priceInfo}>
-              {priceDiscount ? (
+              {/* {priceDiscount ? (
                 <>
                   <span className={styles.flex}>
                     <Price className={styles.priceOld} variant="old" currency={currency}>
@@ -65,7 +70,7 @@ const Product: React.FC = () => {
                 <Price className={styles.price} currency={currency}>
                   {price}
                 </Price>
-              )}
+              )} */}
             </div>
             <div className={styles.flex}>
               <NumberInput

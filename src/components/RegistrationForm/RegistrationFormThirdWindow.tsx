@@ -6,7 +6,7 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 
 import { userStore } from '../../stores';
 import { validate } from '../../utils/validate/thirdWindow';
-import { Data } from '../../pages/Registration/Registration.interface';
+import { Data } from '../../pages/Registration/Registration.types';
 import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesThird, FieldInputthird } from './Registration.interface';
 import styles from './Registration.module.scss';

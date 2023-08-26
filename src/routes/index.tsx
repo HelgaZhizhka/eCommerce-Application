@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite/dist/index';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
 import Main from '../pages/Main/Main';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
@@ -12,17 +12,11 @@ import { About } from '../pages/About';
 import { Profile } from '../pages/Profile';
 import { Cart } from '../pages/Cart';
 import { Product } from '../pages/Product';
-import { userStore } from '../stores';
 import { RoutePaths } from './routes.enum';
-
-const pageTransition = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.65, ease: 'easeIn' } },
-  exit: { opacity: 0, transition: { duration: 0 } },
-};
+import Secure from './Secure';
+import MotionWrapper from './MotionWrapper';
 
 const RouterConfig: React.FC = () => {
-  const { loggedIn } = userStore;
   const location = useLocation();
 
   useEffect(() => {
@@ -44,85 +38,80 @@ const RouterConfig: React.FC = () => {
         <Route
           path={RoutePaths.MAIN}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <MotionWrapper>
               <Main />
-            </motion.div>
+            </MotionWrapper>
           }
         />
         <Route
           path={RoutePaths.LOGIN}
           element={
-            loggedIn ? (
-              <Navigate to={RoutePaths.MAIN} replace />
-            ) : (
-              <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <Secure reverse>
+              <MotionWrapper>
                 <Login />
-              </motion.div>
-            )
+              </MotionWrapper>
+            </Secure>
           }
         />
         <Route
           path={RoutePaths.REGISTRATION}
           element={
-            loggedIn ? (
-              <Navigate to={RoutePaths.MAIN} replace />
-            ) : (
-              <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <Secure reverse>
+              <MotionWrapper>
                 <Registration />
-              </motion.div>
-            )
+              </MotionWrapper>
+            </Secure>
           }
         />
-        <Route
-          path={RoutePaths.ERROR}
-          element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
-              <ErrorPage />
-            </motion.div>
-          }
-        />
+
         <Route
           path={RoutePaths.CATEGORY}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <MotionWrapper>
               <Catalog />
-            </motion.div>
+            </MotionWrapper>
           }
         />
         <Route
           path={RoutePaths.PRODUCT}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <MotionWrapper>
               <Product />
-            </motion.div>
+            </MotionWrapper>
           }
         />
         <Route
           path={RoutePaths.ABOUT}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <MotionWrapper>
               <About />
-            </motion.div>
+            </MotionWrapper>
           }
         />
         <Route
           path={RoutePaths.PROFILE}
           element={
-            !loggedIn ? (
-              <Navigate to={RoutePaths.MAIN} replace />
-            ) : (
-              <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <Secure>
+              <MotionWrapper>
                 <Profile />
-              </motion.div>
-            )
+              </MotionWrapper>
+            </Secure>
           }
         />
         <Route
           path={RoutePaths.CART}
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageTransition}>
+            <MotionWrapper>
               <Cart />
-            </motion.div>
+            </MotionWrapper>
+          }
+        />
+        <Route
+          path={RoutePaths.ERROR}
+          element={
+            <MotionWrapper>
+              <ErrorPage />
+            </MotionWrapper>
           }
         />
       </Routes>

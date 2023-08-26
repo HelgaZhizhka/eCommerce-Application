@@ -7,7 +7,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { validate } from '../../utils/validate/signUp';
-import { Data } from '../../pages/Registration/Registration.interface';
+import { Data } from '../../pages/Registration/Registration.types';
 import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValues, FieldInput } from './Registration.interface';
 import styles from './Registration.module.scss';

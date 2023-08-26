@@ -5,7 +5,7 @@ import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 
 import { validate } from '../../utils/validate/secondWindow';
-import { Data } from '../../pages/Registration/Registration.interface';
+import { Data } from '../../pages/Registration/Registration.types';
 import { ShowValidate } from '../ShowValidate';
 import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './Registration.interface';
 import styles from './Registration.module.scss';
