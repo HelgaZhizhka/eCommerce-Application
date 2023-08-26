@@ -15,6 +15,7 @@ import { ProductList } from '../../components/ProductList';
 import { productStore } from '../../stores';
 import styles from './Catalog.module.scss';
 import { FilterMobile } from '../../components/FilterMobile';
+import { SortMobile } from '../../components/SortMobile';
 
 type Params = {
   categoryId: string;
@@ -22,13 +23,20 @@ type Params = {
 
 const Catalog: React.FC = () => {
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
+  const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
   const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
     setAnchorElFilter(event.currentTarget);
   };
-
   const handleCloseFilter = (): void => {
     setAnchorElFilter(null);
+  };
+
+  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
+    setAnchorElSort(event.currentTarget);
+  };
+  const handleCloseSort = (): void => {
+    setAnchorElSort(null);
   };
 
   const { categoryId } = useParams<Params>();
@@ -64,9 +72,10 @@ const Catalog: React.FC = () => {
                 <FilterListIcon />
               </IconButton>
               <FilterMobile anchorElFilter={anchorElFilter} handleCloseFilter={handleCloseFilter} />
-              <IconButton aria-label="filter">
+              <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
+              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} />
             </div>
           )}
         </div>

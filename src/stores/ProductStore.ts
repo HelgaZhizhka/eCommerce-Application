@@ -3,6 +3,7 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { getCategories, getProducts } from '../services/productService';
+import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 
 type ProductType = {
   id: string;
@@ -23,6 +24,8 @@ type ProductStoreType = {
   fetchProducts: () => Promise<void>;
   fetchProduct?: (id: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
+  sortState: SortOption;
+  setSortState: (value: SortOption) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -31,6 +34,11 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as Category[],
     currentProduct: null,
     error: null as null | string,
+    sortState: SortOption.Default,
+
+    setSortState(value: SortOption): void {
+      store.sortState = value
+    },
 
     async fetchCategories(): Promise<void> {
       try {
@@ -80,6 +88,7 @@ const createProductStore = (): ProductStoreType => {
 
   };
 
+  
   makeAutoObservable(store);
 
   return store;

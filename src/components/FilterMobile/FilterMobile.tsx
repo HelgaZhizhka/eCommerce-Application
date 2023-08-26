@@ -1,4 +1,3 @@
-import React from 'react';
 import Popover from '@mui/material/Popover';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
