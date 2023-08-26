@@ -2,11 +2,11 @@ import { Category } from '@commercetools/platform-sdk/dist/declarations/src/gene
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { getCategories, getProducts } from '../services/productService';
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
+import { getCategories, getProducts, getProductsByCategory } from '../services/productService';
 
 type ProductType = {
-  id: string;
+  slug: string;
   productName: string;
   description: string;
   price: string;
@@ -26,6 +26,8 @@ type ProductStoreType = {
   fetchCategories: () => Promise<void>;
   sortState: SortOption;
   setSortState: (value: SortOption) => void;
+  categoryIdByName: (name: string) => string | undefined;
+  fetchProductsByCategory: (id: string | undefined) => Promise<void>;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -57,13 +59,19 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
+    categoryIdByName(name: string): string | undefined {
+      const category = store.categories.find((cat) => cat.name.en.toLocaleLowerCase() === name);
+      console.log(category)
+      return category ? category.id : undefined;
+    },
+
     async fetchProducts(): Promise<void> {
       try {
         const fetchedProducts = await getProducts();
         const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
           const obj = {} as ProductType;
           const data = item.masterData.current;
-          obj.id = `${data.masterVariant.sku}`;
+          obj.slug = `${data.masterVariant.sku}`;
           obj.productName = `${data.name?.en}`;
           obj.description = `${data.description?.en}`;
           if (data.masterVariant.prices?.length) {
@@ -86,6 +94,35 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
+    async fetchProductsByCategory(id: string | undefined): Promise<void> {
+      try {
+        if (id === undefined) return;
+        const fetchedProductsByCategory = await getProductsByCategory(id);
+        const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
+          const obj = {} as ProductType;
+          // const data = item.masterData.current;
+          obj.slug = `${item.slug.en}`;
+          obj.productName = `${item.name?.en}`;
+          obj.description = `${item.description?.en}`;
+          if (item.masterVariant.prices?.length) {
+            obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
+            obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
+            obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
+            if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+          }
+          if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+          acc.push(obj);
+          return acc;
+        }, [] as ProductType[]);
+        runInAction(() => {
+          store.products = [...productsList];
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      }
+    }
   };
 
   

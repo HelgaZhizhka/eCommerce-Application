@@ -29,7 +29,6 @@ const Product: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
-      {/*   //! модалка */}
       <Modal isOpen={open} onClose={handleClose} />
       <section className={styles.root}>
         <Breadcrumbs
@@ -42,7 +41,6 @@ const Product: React.FC = () => {
         />
         <div className={styles.container}>
           <div className={styles.column}>
-            {/*   //! карусель */}
             <ProductCarousel openModal={handleClickOpen} isZoom />
           </div>
           <div className={styles.column}>
@@ -52,8 +50,9 @@ const Product: React.FC = () => {
               <strong>Material:</strong>
               <span>100% Organic Cotton</span>
             </p>
-            <FilterChip />
-            <FilterColorCheckBox />
+            {/*   //! Фильтр */}
+            <FilterChip radioButton />
+            <FilterColorCheckBox radioButton />
             <div className={styles.priceInfo}>
               {/* {priceDiscount ? (
                 <>
