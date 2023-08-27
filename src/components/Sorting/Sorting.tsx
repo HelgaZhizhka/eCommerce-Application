@@ -3,6 +3,7 @@ import { Button, Menu } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 import { SortingList } from '../baseComponents/SortingList';
 import { SortOption } from '../baseComponents/SortingList/SortList.enum';
 

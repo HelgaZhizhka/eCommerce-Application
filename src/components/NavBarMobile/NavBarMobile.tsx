@@ -72,12 +72,12 @@ const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
       >
         <CloseIcon />
       </IconButton>
-      <Categories size={'l'} theme={'dark'} onClose={onClose} />
+      <Categories size={'l'} theme={'dark'} variant={'mobile'} onClose={onClose} />
       <Link className={styles.link} to={RoutePaths.ABOUT} onClick={onClose}>
         About Us
       </Link>
       <PhoneNumber className={styles.phone}>{contacts.phone}</PhoneNumber>
-      <InfoPanel className={styles.info} variant={'vertical'} />
+      <InfoPanel className={styles.info} variant={'vertical'} onClose={onClose} />
     </motion.nav>
   );
 };

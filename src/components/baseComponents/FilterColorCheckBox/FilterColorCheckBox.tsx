@@ -54,6 +54,12 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton }) => {
               '& .MuiSvgIcon-root': {
                 color: color === 'var(--filter-black)' ? 'white' : 'black',
               },
+              '&.MuiButton-root:hover': {
+                backgroundColor: color,
+              },
+              '&.MuiButton-root:active': {
+                backgroundColor: color,
+              },
               backgroundImage:
                 color === 'multicolor'
                   ? 'linear-gradient(45deg, #D80B0B, #FF8009, #FFDD00, #5CCD3E, #6DC7F7, #0C5ED9, #2723FC)'

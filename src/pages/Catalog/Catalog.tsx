@@ -19,6 +19,7 @@ import { SortMobile } from '../../components/SortMobile';
 
 type Params = {
   categoryId: string;
+  subcategoryId?: string;
 };
 
 const Catalog: React.FC = () => {
@@ -39,39 +40,44 @@ const Catalog: React.FC = () => {
     setAnchorElSort(null);
   };
 
-  const { categoryId } = useParams<Params>();
+  const { categoryId, subcategoryId } = useParams<Params>();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // useEffect(() => {
-  //   productStore.fetchProducts();
-  // }, []);
-
   useEffect(() => {
-    let id;
-    if (productStore.categoryIdByName && categoryId) {
-      id = productStore.categoryIdByName(categoryId);
+    if (!categoryId) {
+      return;
     }
-    productStore.fetchProductsByCategory(id);
-  }, [categoryId]);
+
+    let id = productStore.categoryIdByName(categoryId);
+
+    if (subcategoryId) {
+      id = productStore.categoryIdByName(subcategoryId);
+    }
+
+    if (id) {
+      productStore.fetchProductsByCategory(id);
+    }
+  }, [categoryId, subcategoryId]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
   }
 
-  const categoryPath = `${RoutePaths.CATEGORY.replace(':categoryId', categoryId)}`;
+  const breadcrumbItems = [
+    { text: 'Home', path: RoutePaths.MAIN },
+    { text: categoryId, path: `${RoutePaths.MAIN}category/${categoryId}` },
+  ];
+
+  if (subcategoryId) {
+    breadcrumbItems.push({ text: subcategoryId, path: `${RoutePaths.MAIN}category/${categoryId}/${subcategoryId}` });
+  }
 
   return (
     <Container maxWidth="xl">
       <div className={styles.root}>
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
-          <Breadcrumbs
-            items={[
-              { text: 'Home', path: RoutePaths.MAIN },
-              { text: categoryId, path: categoryPath },
-            ]}
-            className={styles.breadcrumb}
-          />
+          <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
           {!isMobile ? (
             <Sorting />
           ) : (

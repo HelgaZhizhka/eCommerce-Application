@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { MenuItem } from '@mui/material';
 
-import { SortOption } from './SortList.enum';
 import { productStore } from '../../../stores';
+import { SortOption } from './SortList.enum';
 
 type Props = {
   handleMenuItemClick?: (sortOption: SortOption) => void;
