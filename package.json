@@ -20,6 +20,7 @@
     "formik": "^2.4.3",
     "formik-material-ui": "^4.0.0-alpha.2",
     "framer-motion": "^10.16.0",
+    "jsdom": "^22.1.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "mobx": "^6.10.0",

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button, Menu } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-const sortList = ['Default', 'Name, A-Z', 'Name, Z-A', 'Price, low to high', 'Price, high to low'];
+import { SortingList } from '../baseComponents/SortingList';
+import { SortOption } from '../baseComponents/SortingList/SortList.enum';
 
 const CustomButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
@@ -18,7 +18,7 @@ type Props = {
 
 const Sorting: React.FC<Props> = ({ className }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedSort, setSelectedSort] = useState<string>('Default');
+  const [selectedSort, setSelectedSort] = useState<SortOption>(SortOption.Default);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -31,7 +31,7 @@ const Sorting: React.FC<Props> = ({ className }) => {
     setIsMenuOpen(false);
   };
 
-  const handleMenuItemClick = (sortOption: string): void => {
+  const handleMenuItemClick = (sortOption: SortOption): void => {
     setSelectedSort(sortOption);
     handleClose();
   };
@@ -64,20 +64,7 @@ const Sorting: React.FC<Props> = ({ className }) => {
           horizontal: 'right',
         }}
       >
-        {sortList.map((sort, index) => (
-          <MenuItem
-            sx={{
-              width: '100%',
-              backgroundColor: sort === selectedSort ? 'var(--spicy-orange)' : 'transparent',
-            }}
-            key={index}
-            onClick={(): void => {
-              handleMenuItemClick(sort);
-            }}
-          >
-            {sort}
-          </MenuItem>
-        ))}
+        <SortingList handleMenuItemClick={handleMenuItemClick} />
       </Menu>
     </Box>
   );
