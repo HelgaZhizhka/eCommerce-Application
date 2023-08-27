@@ -12,10 +12,28 @@ const CustomChip = styled(Chip)({
   border: '1px solid grey',
 });
 
-const FilterChip: React.FC = () => {
+const sizes = ['XS', 'S', 'M', 'L', 'XL', 'OneSize'];
+
+type Props = {
+  radioButton?: boolean;
+  className?: string;
+};
+
+const FilterChip: React.FC<Props> = ({ radioButton }) => {
+  // проверка на странице продукта
+  const [activeChip, setActiveChip] = React.useState<string>('');
+  // проверка в категориях
   const [activeChips, setActiveChips] = React.useState<string[]>([]);
 
   const handleChipClick = (label: string): void => {
+    if (activeChip === label) {
+      setActiveChip('');
+    } else {
+      setActiveChip(label);
+    }
+  };
+
+  const handleChipsClick = (label: string): void => {
     if (activeChips.includes(label)) {
       setActiveChips(activeChips.filter((chip) => chip !== label));
     } else {
@@ -27,42 +45,25 @@ const FilterChip: React.FC = () => {
     <>
       <h3>Size</h3>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-        <CustomChip
-          label="XS"
-          color="primary"
-          variant={activeChips.includes('XS') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('XS')}
-        />
-        <CustomChip
-          label="S"
-          color="primary"
-          variant={activeChips.includes('S') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('S')}
-        />
-        <CustomChip
-          label="M"
-          color="primary"
-          variant={activeChips.includes('M') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('M')}
-        />
-        <CustomChip
-          label="L"
-          color="primary"
-          variant={activeChips.includes('L') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('L')}
-        />
-        <CustomChip
-          label="XL"
-          color="primary"
-          variant={activeChips.includes('XL') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('XL')}
-        />
-        <CustomChip
-          label="One size"
-          color="primary"
-          variant={activeChips.includes('OneSize') ? 'filled' : 'outlined'}
-          onClick={(): void => handleChipClick('OneSize')}
-        />
+        {sizes.map((size) =>
+          radioButton ? (
+            <CustomChip
+              key={size}
+              label={size}
+              color="primary"
+              variant={activeChip === size ? 'filled' : 'outlined'}
+              onClick={(): void => handleChipClick(size)}
+            />
+          ) : (
+            <CustomChip
+              key={size}
+              label={size}
+              color="primary"
+              variant={activeChips.includes(size) ? 'filled' : 'outlined'}
+              onClick={(): void => handleChipsClick(size)}
+            />
+          )
+        )}
       </Box>
     </>
   );

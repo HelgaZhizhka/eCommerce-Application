@@ -3,14 +3,22 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import CheckIcon from '@mui/icons-material/Check';
 
-const FilterColorCheckBox: React.FC = () => {
-  const [value, setValue] = useState<number[]>([]);
+type Props = {
+  radioButton?: boolean;
+  className?: string;
+};
 
-  const toggleOption = (index: number): void => {
-    if (value.includes(index)) {
-      setValue((val) => val.filter((i) => i !== index));
+const FilterColorCheckBox: React.FC<Props> = ({ radioButton }) => {
+  const [values, setValues] = useState<number[]>([]);
+
+  const toggleOptions = (index: number): void => {
+    if (values.includes(index)) {
+      setValues((val) => val.filter((i) => i !== index));
+    } else if (radioButton) {
+      setValues([]);
+      setValues([index]);
     } else {
-      setValue((val) => [...val, index]);
+      setValues((val) => [...val, index]);
     }
   };
 
@@ -31,8 +39,8 @@ const FilterColorCheckBox: React.FC = () => {
         {colorOptions.map((color, index) => (
           <Button
             key={index}
-            variant={value.includes(index) ? 'contained' : 'outlined'}
-            onClick={(): void => toggleOption(index)}
+            variant={values.includes(index) ? 'contained' : 'outlined'}
+            onClick={(): void => toggleOptions(index)}
             sx={{
               borderRadius: '50%',
               minWidth: 0,
@@ -54,7 +62,7 @@ const FilterColorCheckBox: React.FC = () => {
               border: '1px solid grey',
             }}
           >
-            {value.includes(index) && <CheckIcon />}
+            {values.includes(index) && <CheckIcon />}
           </Button>
         ))}
       </Box>

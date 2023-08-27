@@ -50,8 +50,9 @@ const Product: React.FC = () => {
               <strong>Material:</strong>
               <span>100% Organic Cotton</span>
             </p>
-            <FilterChip />
-            <FilterColorCheckBox />
+            {/*   //! Фильтр */}
+            <FilterChip radioButton />
+            <FilterColorCheckBox radioButton />
             <div className={styles.priceInfo}>
               {/* {priceDiscount ? (
                 <>

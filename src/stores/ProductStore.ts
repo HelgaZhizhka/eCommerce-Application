@@ -2,6 +2,7 @@ import { Category } from '@commercetools/platform-sdk/dist/declarations/src/gene
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction } from 'mobx';
 
+import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import { getCategories, getProducts, getProductsByCategory } from '../services/productService';
 
 type ProductType = {
@@ -23,6 +24,8 @@ type ProductStoreType = {
   fetchProducts: () => Promise<void>;
   fetchProduct?: (id: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
+  sortState: SortOption;
+  setSortState: (value: SortOption) => void;
   categoryIdByName: (name: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
 };
@@ -33,6 +36,11 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as Category[],
     currentProduct: null,
     error: null as null | string,
+    sortState: SortOption.Default,
+
+    setSortState(value: SortOption): void {
+      store.sortState = value
+    },
 
     async fetchCategories(): Promise<void> {
       try {
@@ -117,6 +125,7 @@ const createProductStore = (): ProductStoreType => {
     }
   };
 
+  
   makeAutoObservable(store);
 
   return store;
