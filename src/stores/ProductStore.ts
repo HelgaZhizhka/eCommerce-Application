@@ -16,6 +16,8 @@ type ProductType = {
 };
 
 type ProductStoreType = {
+  isAppLoading: boolean;
+  isProductsLoading: boolean;
   products: ProductType[];
   currentProduct: ProductType | null;
   categories: Category[];
@@ -29,12 +31,15 @@ type ProductStoreType = {
 
 const createProductStore = (): ProductStoreType => {
   const store = {
+    isAppLoading: false,
+    isProductsLoading: false,
     products: [] as ProductType[],
     categories: [] as Category[],
     currentProduct: null,
     error: null as null | string,
 
     async fetchCategories(): Promise<void> {
+      store.isAppLoading = true;
       try {
         const fetchedCategories = await getCategories();
         const mainCategories = fetchedCategories
@@ -48,12 +53,13 @@ const createProductStore = (): ProductStoreType => {
         runInAction(() => {
           store.error = 'Error fetching categories';
         });
+      } finally {
+        store.isAppLoading = false;
       }
     },
 
     categoryIdByName(name: string): string | undefined {
       const category = store.categories.find((cat) => cat.name.en.toLocaleLowerCase() === name);
-      console.log(category)
       return category ? category.id : undefined;
     },
 
@@ -87,12 +93,12 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
+      store.isProductsLoading = true;
       try {
         if (id === undefined) return;
         const fetchedProductsByCategory = await getProductsByCategory(id);
         const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
           const obj = {} as ProductType;
-          // const data = item.masterData.current;
           obj.slug = `${item.slug.en}`;
           obj.productName = `${item.name?.en}`;
           obj.description = `${item.description?.en}`;
@@ -113,8 +119,10 @@ const createProductStore = (): ProductStoreType => {
         runInAction(() => {
           store.error = 'Error fetching products';
         });
+      } finally {
+        store.isProductsLoading = false;
       }
-    }
+    },
   };
 
   makeAutoObservable(store);

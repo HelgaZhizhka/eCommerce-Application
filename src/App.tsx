@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { darkTheme, lightTheme } from './theme';
 import { themeStore, productStore } from './stores';
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const { darkMode } = themeStore;
   const theme = createTheme(darkMode ? darkTheme : lightTheme);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { isAppLoading } = productStore;
 
   useEffect(() => {
     productStore.fetchCategories();
@@ -27,11 +29,27 @@ const App: React.FC = () => {
       <CssBaseline />
       <SnackBar />
       <div className="app">
-        {!isMobile ? <Header /> : <HeaderMobile />}
-        <Box component="main" sx={{ position: 'relative', flex: '1' }}>
-          <RoutesConfig />
-        </Box>
-        <Footer />
+        {isAppLoading ? (
+          <Box
+            sx={{
+              width: '100%',
+              height: 'var(--app-height)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {!isMobile ? <Header /> : <HeaderMobile />}
+            <Box component="main" sx={{ position: 'relative', flex: '1' }}>
+              <RoutesConfig />
+            </Box>
+            <Footer />
+          </>
+        )}
       </div>
     </ThemeProvider>
   );

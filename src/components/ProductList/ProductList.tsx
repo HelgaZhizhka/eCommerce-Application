@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import Box from '@mui/system/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { productStore } from '../../stores';
 import { RoutePaths } from '../../routes/routes.enum';
@@ -12,12 +14,24 @@ type Props = {
 };
 
 const ProductList: React.FC<Props> = ({ className, categoryId }) => {
-  const { products } = productStore;
+  const { products, isProductsLoading } = productStore;
 
   const generateProductPath = (catId: string, productId: string): string =>
     RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', productId);
 
-  return (
+  return isProductsLoading ? (
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress color="secondary" />
+    </Box>
+  ) : (
     <ul className={`${className} ${styles.root}`}>
       {products.map((card) => {
         const { slug, productName, description, price, priceDiscount, currency, images, isDiscount } = card;
