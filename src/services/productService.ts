@@ -1,5 +1,5 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
@@ -27,4 +27,16 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
 
   return response.body.results
 
+}
+
+export async function getProductByKey(key: string): Promise<Product>  {
+  const visitor = apiWithClientCredentialsFlow();
+
+  const response = await visitor
+    .products()
+    .withKey({ key: `${key}` })
+    .get()
+    .execute()
+
+  return response.body
 }

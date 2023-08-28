@@ -2,7 +2,7 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
-import { getCategories, getProducts, getProductsByCategory } from '../services/productService';
+import { getCategories, getProductByKey, getProducts, getProductsByCategory } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 
 type ProductType = {
@@ -24,9 +24,8 @@ type ProductStoreType = {
   categories: ExtendedCategory[];
   error: null | string;
   fetchProducts: () => Promise<void>;
-  fetchProduct?: (id: string) => Promise<void>;
+  fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
-  getSubcategories: (id: string) => ExtendedCategory[];
   sortState: SortOption;
   setSortState: (value: SortOption) => void;
   categoryIdByName: (nameCategory: string) => string | undefined;
@@ -139,7 +138,7 @@ const createProductStore = (): ProductStoreType => {
         const fetchedProductsByCategory = await getProductsByCategory(id);
         const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
           const obj = {} as ProductType;
-          obj.slug = `${item.slug.en}`;
+          obj.slug = `${item.key}`;
           obj.productName = `${item.name?.en}`;
           obj.description = `${item.description?.en}`;
           if (item.masterVariant.prices?.length) {
@@ -167,9 +166,16 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
-    getSubcategories(id: string): ExtendedCategory[] {
-      const subcategories = store.categories.filter((item) => item.parent?.id === id);
-      return subcategories;
+    async fetchProduct(key: string): Promise<void> {
+      try {
+        if (key === undefined) return;
+        const fetchedProductByKey = await getProductByKey(key);
+        console.log(fetchedProductByKey);
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      }
     },
   };
 
