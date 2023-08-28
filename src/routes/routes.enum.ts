@@ -4,8 +4,8 @@ export enum RoutePaths {
   REGISTRATION = 'registration',
   ABOUT = 'about',
   PROFILE = 'profile',
-  CATEGORY = '/category/:categoryId',
-  PRODUCT = '/category/:categoryId/:productId',
+  CATEGORY = '/category/:categoryId/:subcategoryId?',
+  PRODUCT = '/product/:categoryId/:productId',
   CART = 'cart',
   ERROR = '*',
 }

@@ -9,6 +9,7 @@ import CheckroomIcon from '@mui/icons-material/Checkroom';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 import { productStore } from '../../stores';
+import { SubCategories } from '../SubCategories';
 import { SIZE, THEME, VARIANT, CategorySlug } from './Categories.types';
 import styles from './Categories.module.scss';
 
@@ -42,22 +43,42 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
 
         return (
           <li key={category.id} className={styles.menuItem}>
-            <Link
-              className={classNames(categoriesClasses, {
-                [styles.brand]: category.slug.en === 'sale',
-              })}
-              to={`/category/${category.slug.en}`}
-              onClick={onClose ? (): void => onClose() : undefined}
-            >
-              {variant === 'filter' ? (
-                <ListItemButton sx={{ pl: 4 }}>
+            {variant === 'filter' ? (
+              <>
+                <ListItemButton sx={{ pl: 4 }} component={Link} to={`/category/${category.slug.en}`} onClick={onClose}>
                   <ListItemIcon>{IconComponent && <IconComponent />}</ListItemIcon>
                   <ListItemText primary={category.name.en} />
                 </ListItemButton>
-              ) : (
-                <span>{category.name.en}</span>
-              )}
-            </Link>
+
+                {category.subcategories && category.subcategories.length > 0 && (
+                  <SubCategories
+                    className={styles.subCategories}
+                    subcategories={category.subcategories}
+                    categoryId={category.slug.en}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                <Link
+                  className={classNames(categoriesClasses, {
+                    [styles.brand]: category.slug.en === 'sale',
+                  })}
+                  to={`/category/${category.slug.en}`}
+                  onClick={onClose ? (): void => onClose() : undefined}
+                >
+                  <span>{category.name.en}</span>
+                </Link>
+
+                {variant === 'mobile' && category.subcategories && category.subcategories.length > 0 && (
+                  <SubCategories
+                    subcategories={category.subcategories}
+                    categoryId={category.slug.en}
+                    onClose={onClose ? (): void => onClose() : undefined}
+                  />
+                )}
+              </>
+            )}
           </li>
         );
       })}

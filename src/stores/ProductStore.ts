@@ -1,9 +1,9 @@
-import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import { getCategories, getProducts, getProductsByCategory } from '../services/productService';
+import { ExtendedCategory } from './ProductStore.interfaces';
 
 type ProductType = {
   slug: string;
@@ -17,52 +17,87 @@ type ProductType = {
 };
 
 type ProductStoreType = {
+  isAppLoading: boolean;
+  isProductsLoading: boolean;
   products: ProductType[];
   currentProduct: ProductType | null;
-  categories: Category[];
+  categories: ExtendedCategory[];
   error: null | string;
   fetchProducts: () => Promise<void>;
   fetchProduct?: (id: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
+  getSubcategories: (id: string) => ExtendedCategory[];
   sortState: SortOption;
   setSortState: (value: SortOption) => void;
-  categoryIdByName: (name: string) => string | undefined;
+  categoryIdByName: (nameCategory: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
 };
 
 const createProductStore = (): ProductStoreType => {
   const store = {
+    isAppLoading: false,
+    isProductsLoading: false,
     products: [] as ProductType[],
-    categories: [] as Category[],
+    categories: [] as ExtendedCategory[],
     currentProduct: null,
     error: null as null | string,
     sortState: SortOption.Default,
 
     setSortState(value: SortOption): void {
-      store.sortState = value
+      store.sortState = value;
     },
 
     async fetchCategories(): Promise<void> {
+      runInAction(() => {
+        store.isAppLoading = true;
+      });
+
       try {
         const fetchedCategories = await getCategories();
         const mainCategories = fetchedCategories
           .filter((item) => !item.parent)
           .sort((a, b) => parseFloat(a.orderHint) - parseFloat(b.orderHint));
 
+        const subCategories = fetchedCategories
+          .filter((item) => item.parent)
+          .sort((a, b) => parseFloat(a.orderHint) - parseFloat(b.orderHint));
+
+        const extendedMainCategories = mainCategories.map((mainCategory) => ({
+          ...mainCategory,
+          subcategories: subCategories.filter((sub) => sub.parent?.id === mainCategory.id),
+        }));
+
         runInAction(() => {
-          store.categories = mainCategories;
+          store.categories = [...extendedMainCategories];
         });
       } catch (err) {
         runInAction(() => {
           store.error = 'Error fetching categories';
         });
+      } finally {
+        runInAction(() => {
+          store.isAppLoading = false;
+        });
       }
     },
 
-    categoryIdByName(name: string): string | undefined {
-      const category = store.categories.find((cat) => cat.name.en.toLocaleLowerCase() === name);
-      console.log(category)
-      return category ? category.id : undefined;
+    categoryIdByName(nameCategory: string): string | undefined {
+      const mainCategory = store.categories.find((cat) => cat.name.en.toLowerCase() === nameCategory);
+
+      if (mainCategory) {
+        return mainCategory.id;
+      }
+
+      const subCategory = store.categories
+        .map((mainCat) => mainCat.subcategories)
+        .flat()
+        .find((subCat) => subCat?.name.en.toLowerCase() === nameCategory);
+
+      if (subCategory) {
+        return subCategory.id;
+      }
+
+      return undefined;
     },
 
     async fetchProducts(): Promise<void> {
@@ -95,12 +130,15 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
+      runInAction(() => {
+        store.isProductsLoading = true;
+      });
+
       try {
         if (id === undefined) return;
         const fetchedProductsByCategory = await getProductsByCategory(id);
         const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
           const obj = {} as ProductType;
-          // const data = item.masterData.current;
           obj.slug = `${item.slug.en}`;
           obj.productName = `${item.name?.en}`;
           obj.description = `${item.description?.en}`;
@@ -114,6 +152,7 @@ const createProductStore = (): ProductStoreType => {
           acc.push(obj);
           return acc;
         }, [] as ProductType[]);
+
         runInAction(() => {
           store.products = [...productsList];
         });
@@ -121,11 +160,19 @@ const createProductStore = (): ProductStoreType => {
         runInAction(() => {
           store.error = 'Error fetching products';
         });
+      } finally {
+        runInAction(() => {
+          store.isProductsLoading = false;
+        });
       }
-    }
+    },
+
+    getSubcategories(id: string): ExtendedCategory[] {
+      const subcategories = store.categories.filter((item) => item.parent?.id === id);
+      return subcategories;
+    },
   };
 
-  
   makeAutoObservable(store);
 
   return store;

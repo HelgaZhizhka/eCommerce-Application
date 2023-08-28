@@ -8,9 +8,17 @@ import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { NumberInput } from '../../components/baseComponents/NumberInput';
 import { FilterChip } from '../../components/baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../../components/baseComponents/FilterColorCheckBox';
-import { ProductCarousel } from '../../components/ProductCarosel';
-import styles from './Product.module.scss';
+import { ProductCarousel } from '../../components/ProductCarousel';
 import { Modal } from '../../components/Modal';
+
+import tShirt from '../../components/Card/images/TShirt.png';
+import tShirtSmall from '../../components/Card/images/TShirtSmall.png';
+import tShirtBig from '../../components/Card/images/TShirtBig.png';
+import styles from './Product.module.scss';
+
+const images = [tShirt, tShirt, tShirt];
+const imagesBig = [tShirtBig, tShirtBig];
+const thumbs = [tShirtSmall, tShirtSmall, tShirtSmall];
 
 const Product: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -29,7 +37,7 @@ const Product: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
-      <Modal isOpen={open} onClose={handleClose} />
+      <Modal images={imagesBig} isOpen={open} onClose={handleClose} />
       <section className={styles.root}>
         <Breadcrumbs
           items={[
@@ -41,7 +49,13 @@ const Product: React.FC = () => {
         />
         <div className={styles.container}>
           <div className={styles.column}>
-            <ProductCarousel openModal={handleClickOpen} isZoom />
+            <ProductCarousel
+              images={images}
+              thumbs={thumbs}
+              variant={'thumbnails'}
+              openModal={handleClickOpen}
+              isZoom
+            />
           </div>
           <div className={styles.column}>
             {/* <h2 className={styles.title}>{productName}</h2> */}

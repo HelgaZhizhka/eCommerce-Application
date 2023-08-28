@@ -11,7 +11,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Categories } from '../../Categories';
 
 const FilterNestedList: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleClick = (): void => {
     setOpen(!open);

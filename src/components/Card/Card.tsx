@@ -33,9 +33,25 @@ const Card: React.FC<Props> = ({
   });
 
   const image = cardImages.length ? cardImages[0].url : '';
-  const priceValue = (+price / 100).toFixed(2);
-  let discountPriceValue;
-  if (priceDiscount) discountPriceValue = (+priceDiscount / 100).toFixed(2);
+  const priceValue = price ? (+price / 100).toFixed(2) : undefined;
+  const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
+
+  let priceComponent = null;
+
+  if (priceDiscount && discountPriceValue) {
+    priceComponent = (
+      <>
+        <Price variant="old" currency={currency}>
+          {priceValue}
+        </Price>
+        <Price variant="new" currency={currency}>
+          {discountPriceValue}
+        </Price>
+      </>
+    );
+  } else if (priceValue) {
+    priceComponent = <Price currency={currency}>{priceValue}</Price>;
+  }
 
   return (
     <div className={classes}>
@@ -47,23 +63,12 @@ const Card: React.FC<Props> = ({
         </div>
       </div>
       <div className={styles.cardBody}>
-        <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>
-        <p className={`text-overflow ${styles.cardDescription}`}>{description}</p>
-      </div>
-      <div className={styles.cardFooter}>
-        {priceDiscount ? (
-          <>
-            <Price variant="old" currency={currency}>
-              {priceValue}
-            </Price>
-            <Price variant="new" currency={currency}>
-              {discountPriceValue}
-            </Price>
-          </>
-        ) : (
-          <Price currency={currency}>{priceValue}</Price>
+        {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
+        {description && description !== 'undefined' && (
+          <p className={`text-overflow ${styles.cardDescription}`}>{description}</p>
         )}
       </div>
+      <div className={styles.cardFooter}>{priceComponent}</div>
     </div>
   );
 };
