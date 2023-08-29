@@ -65,7 +65,10 @@ const Card: React.FC<Props> = ({
       <div className={styles.cardBody}>
         {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
         {description && description !== 'undefined' && (
-          <p className={`text-overflow ${styles.cardDescription}`}>{description}</p>
+          <p
+            className={`text-overflow ${styles.cardDescription}`}
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></p>
         )}
       </div>
       <div className={styles.cardFooter}>{priceComponent}</div>

@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import { productStore } from '../../stores';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
-import { ProductCard } from '../../components/ProductCard ';
+import { CurrentProduct } from '../../components/CurrentProduct';
 import styles from './Product.module.scss';
 
 type Params = {
@@ -34,7 +34,7 @@ const Product: React.FC = () => {
       <section className={styles.root}>
         <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
 
-        <ProductCard />
+        <CurrentProduct />
       </section>
     </Container>
   );

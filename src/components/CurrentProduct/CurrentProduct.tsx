@@ -11,13 +11,13 @@ import { FilterColorCheckBox } from '../baseComponents/FilterColorCheckBox';
 import { NumberInput } from '../baseComponents/NumberInput';
 // import { ProductCarousel } from '../ProductCarousel';
 // import { Modal } from '../Modal';
-import styles from './ProductCard.module.scss';
+import styles from './CurrentProduct.module.scss';
 
 type Props = {
   className?: string;
 };
 
-const ProductCard: React.FC<Props> = () => {
+const CurrentProduct: React.FC<Props> = () => {
   const { currentProduct, isProductLoading } = productStore;
 
   // const [open, setOpen] = useState(false);
@@ -89,7 +89,7 @@ const ProductCard: React.FC<Props> = () => {
         </div>
         <div className={styles.column}>
           <h2 className={styles.title}>{productName}</h2>
-          <p className={styles.description}>{description}</p>
+          <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
           <FilterChip radioButton />
           <FilterColorCheckBox radioButton />
           <div className={styles.footer}>
@@ -118,4 +118,4 @@ const ProductCard: React.FC<Props> = () => {
   );
 };
 
-export default observer(ProductCard);
+export default observer(CurrentProduct);
