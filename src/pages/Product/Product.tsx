@@ -17,7 +17,7 @@ const Product: React.FC = () => {
   const { category, productId } = useParams<Params>();
 
   useEffect(() => {
-    if (!category || !productId) {
+    if (!productId) {
       return;
     }
     productStore.fetchProduct(productId);
