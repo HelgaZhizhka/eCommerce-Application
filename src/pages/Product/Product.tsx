@@ -15,25 +15,25 @@ type Params = {
 
 const Product: React.FC = () => {
   const { category, productId } = useParams<Params>();
+
   useEffect(() => {
-    if (!productId) {
+    if (!category || !productId) {
       return;
     }
     productStore.fetchProduct(productId);
-    console.log(productId);
   }, [category, productId]);
+
+  const breadcrumbItems = [
+    { text: 'Home', path: RoutePaths.MAIN },
+    // { text: category, path: `${RoutePaths.MAIN}category/${category}` },
+    // { text: productId, path: `${RoutePaths.MAIN}product/${productId}` },
+  ];
 
   return (
     <Container maxWidth="xl">
       <section className={styles.root}>
-        <Breadcrumbs
-          items={[
-            { text: 'Home', path: RoutePaths.MAIN },
-            // { text: `${category}`, path: `${RoutePaths.MAIN}${category}` },
-            // { text: `${productName}` },
-          ]}
-          className={styles.breadcrumb}
-        />
+        <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
+
         <ProductCard />
       </section>
     </Container>

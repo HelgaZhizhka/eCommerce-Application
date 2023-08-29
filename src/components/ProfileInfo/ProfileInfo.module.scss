@@ -1,0 +1,13 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  padding: 20px;
+  background: var(--page-bg);
+  border-radius: 2px;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding: 50px 80px 60px;
+  }
+}
