@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
@@ -15,10 +15,16 @@ import tShirt from '../../components/Card/images/TShirt.png';
 import tShirtSmall from '../../components/Card/images/TShirtSmall.png';
 import tShirtBig from '../../components/Card/images/TShirtBig.png';
 import styles from './Product.module.scss';
+import { productStore } from '../../stores';
 
 const images = [tShirt, tShirt, tShirt];
 const imagesBig = [tShirtBig, tShirtBig];
 const thumbs = [tShirtSmall, tShirtSmall, tShirtSmall];
+
+type Params = {
+  category: string;
+  productId: string;
+};
 
 const Product: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,7 +36,14 @@ const Product: React.FC = () => {
     setOpen(false);
   };
 
-  // const { category, id } = useParams();
+  const { category, productId } = useParams<Params>();
+  useEffect(() => {
+    if (!productId) {
+      return;
+    }
+    productStore.fetchProduct(productId);
+    // console.log(productId);
+  }, [category, productId]);
   // const card = cards.find((item) => item.id === id);
   // const { productName, description } = card || {};
   const [count, setCount] = useState<number>(0);
