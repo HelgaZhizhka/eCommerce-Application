@@ -24,6 +24,7 @@ const FilterChip: React.FC<Props> = ({ radioButton }) => {
   const [activeChip, setActiveChip] = React.useState<string>('');
   // проверка в категориях
   const [activeChips, setActiveChips] = React.useState<string[]>([]);
+  console.log(activeChips);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {

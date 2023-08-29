@@ -31,6 +31,8 @@ type ProductStoreType = {
   setSortState: (value: SortOption) => void;
   categoryIdByName: (nameCategory: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
+  isFilterSize: boolean;
+  isFilterColor: boolean;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -43,6 +45,8 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
+    isFilterSize: false,
+    isFilterColor: false,
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -104,10 +108,11 @@ const createProductStore = (): ProductStoreType => {
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
         store.isProductsLoading = true;
+        store.isFilterColor = false;
+        store.isFilterSize = false;
       });
 
       try {
-
         if (id === undefined) return;
 
         const fetchedProductsByCategory = await getProductsByCategory(id);
@@ -126,7 +131,29 @@ const createProductStore = (): ProductStoreType => {
           }
 
           if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+          if (item.variants.length > 0) {
+            if (item.variants[0].attributes?.length) {
+              const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
 
+              //! Найти один элемент
+              const colorAttributes = item.variants.map((attr) =>
+                attr.attributes?.filter((atr) => atr.name.includes('color'))
+              );
+              const colorNames = colorAttributes.map((attrs) => attrs?.map((atr) => atr.name));
+
+              const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
+              const sizeAttributes = item.variants.map((attr) =>
+                attr.attributes?.filter((atr) => atr.name.includes('size'))
+              );
+              const sizeNames = sizeAttributes.map((attrs) => attrs?.map((atr) => atr.name));
+
+              runInAction(() => {
+                console.log(colorNames[0]?.join(), sizeNames[0]?.join());
+                store.isFilterColor = isColor;
+                store.isFilterSize = isSize;
+              });
+            }
+          }
           acc.push(obj);
 
           return acc;
@@ -147,10 +174,10 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchProduct(key: string): Promise<void> {
-       runInAction(() => {
-         store.isProductLoading = true;
-       });
-    
+      runInAction(() => {
+        store.isProductLoading = true;
+      });
+
       try {
         if (key === undefined) return;
         const fetchedProductByKey = await getProductByKey(key);

@@ -10,6 +10,7 @@ type Props = {
 
 const FilterColorCheckBox: React.FC<Props> = ({ radioButton }) => {
   const [values, setValues] = useState<number[]>([]);
+  console.log(values);
 
   const toggleOptions = (index: number): void => {
     if (values.includes(index)) {
