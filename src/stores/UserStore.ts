@@ -7,6 +7,7 @@ type UserStoreType = {
   userData: Record<string, string | number | boolean>;
   loggedIn: boolean;
   isRegistration: boolean;
+  isEditMode: boolean;
   error: null | string;
   login: (email: string, password: string) => Promise<void>;
   signup: () => Promise<void>;
@@ -14,11 +15,14 @@ type UserStoreType = {
   updateUserData: (data: object) => void;
   clearError: () => void;
   resetRegistration: () => void;
+  setEditMode: (isEditMode: boolean) => void;
+  saveUserData: (data: object) => void;
 };
 
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
+    isEditMode: false,
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
@@ -52,7 +56,7 @@ const createUserStore = (): UserStoreType => {
           if (response.statusCode === 201) {
             store.loggedIn = true;
             if (data.email && data.password) {
-              setAdress(data.email, data.password)
+              setAdress(data.email, data.password);
             }
             store.isRegistration = true;
           }
@@ -65,7 +69,6 @@ const createUserStore = (): UserStoreType => {
           store.error = 'There is already an existing customer with the provided email.';
         });
       }
-
     },
 
     resetRegistration(): void {
@@ -77,16 +80,23 @@ const createUserStore = (): UserStoreType => {
     },
 
     updateUserData(data: Partial<RegistrationFormValuesData>): void {
-          store.userData = { ...store.userData, ...data };
+      store.userData = { ...store.userData, ...data };
     },
-
 
     logout(): void {
       localStorage.removeItem('loggedIn');
       store.loggedIn = false;
-      store.userData = {}; 
+      store.userData = {};
       store.error = null;
     },
+
+    setEditMode(isEditMode: boolean): void {
+      store.isEditMode = isEditMode;
+    },
+
+    saveUserData(data: object): void {
+      store.userData = { ...store.userData, ...data };
+    }
   };
 
   makeAutoObservable(store); 
