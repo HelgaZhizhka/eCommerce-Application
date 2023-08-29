@@ -11,18 +11,3 @@
     padding-right: 80px;
   }
 }
-
-.container {
-  margin-top: 40px;
-
-  @include create-mq($grid__bp-md, 'min') {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 120px;
-  }
-}
-
-.breadcrumb {
-  margin-bottom: 20px;
-}
-

@@ -1,4 +1,6 @@
+import { observer } from 'mobx-react-lite';
 import { Navigate } from 'react-router-dom';
+
 import { userStore } from '../stores';
 import { RoutePaths } from './routes.enum';
 
@@ -24,4 +26,4 @@ const Secure: React.FC<Props> = ({ children, reverse }) => {
   return <>{children}</>;
 };
 
-export default Secure;
+export default observer(Secure);

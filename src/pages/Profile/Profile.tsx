@@ -1,9 +1,29 @@
+import { observer } from 'mobx-react-lite';
 import Container from '@mui/material/Container';
 
-const Profile: React.FC = () => (
-  <Container maxWidth="xl">
-    <h2>User Profile</h2>
-  </Container>
-);
+import { ProfileBox } from '../../components/ProfileBox';
+import { userStore } from '../../stores';
+import styles from './Profile.module.scss';
 
-export default Profile;
+const Profile: React.FC = () => {
+  const { isEditMode } = userStore;
+
+  const handleModeChange = (mode: boolean): void => {
+    userStore.setEditMode(mode);
+  };
+
+  const handleSaveChange = (data: object): void => {
+    userStore.setEditMode(false);
+    userStore.saveUserData(data);
+  };
+
+  return (
+    <Container maxWidth="xl">
+      <section className={styles.root}>
+        <ProfileBox editMode={isEditMode} onModeChange={handleModeChange} onSaveChange={handleSaveChange} />
+      </section>
+    </Container>
+  );
+};
+
+export default observer(Profile);

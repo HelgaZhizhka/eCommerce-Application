@@ -45,6 +45,7 @@
   --color-text: var(--black);
   --component-bg: var(--light-gray);
   --panel-bg: var(--white);
+  --page-bg: var(--light-white);
   --font-family: 'Mukta', sans-serif;
 
   --transition-duration: 0.35s;
@@ -58,6 +59,7 @@
 body[data-theme='dark'] {
   --body-bg: var(--dark);
   --panel-bg: rgba(255, 255, 255, .08);
+  --page-bg: var(--black);
   --color-text: var(--light-white);
   --nav-color-dark: var(--light-white);
   --nav-color-dark-hover: var(--light-white);
