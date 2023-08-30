@@ -4,6 +4,7 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { Price } from '../baseComponents/Price';
+import holder from './images/holder.png';
 import styles from './Card.module.scss';
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
   price: string;
   priceDiscount?: string;
   currency: string;
-  cardImages: Image[];
+  images: Image[];
   isDiscount?: boolean;
   className?: string;
 };
@@ -23,7 +24,7 @@ const Card: React.FC<Props> = ({
   price,
   priceDiscount,
   currency,
-  cardImages,
+  images,
   isDiscount = false,
   className,
 }) => {
@@ -32,11 +33,11 @@ const Card: React.FC<Props> = ({
     className,
   });
 
-  const image = cardImages.length ? cardImages[0].url : '';
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
 
   let priceComponent = null;
+  const image = images.filter((img) => img.label === 'average')[0]?.url;
 
   if (priceDiscount && discountPriceValue) {
     priceComponent = (
@@ -57,7 +58,11 @@ const Card: React.FC<Props> = ({
     <div className={classes}>
       {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
       <div className={styles.cardPoster}>
-        <img className={styles.cardImage} src={image} alt={productName} />
+        {image ? (
+          <img className={styles.cardImage} src={image} alt={productName} />
+        ) : (
+          <img className={styles.cardImage} src={holder} alt={productName} />
+        )}
         <div className={styles.cardButton}>
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
         </div>

@@ -9,8 +9,9 @@ import { Price } from '../baseComponents/Price';
 import { FilterChip } from '../baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../baseComponents/FilterColorCheckBox';
 import { NumberInput } from '../baseComponents/NumberInput';
-// import { ProductCarousel } from '../ProductCarousel';
-// import { Modal } from '../Modal';
+import { ProductCarousel } from '../ProductCarousel';
+import { Modal } from '../Modal';
+import holder from './images/holder.png';
 import styles from './CurrentProduct.module.scss';
 
 type Props = {
@@ -20,16 +21,19 @@ type Props = {
 const CurrentProduct: React.FC<Props> = () => {
   const { currentProduct, isProductLoading } = productStore;
 
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const [count, setCount] = useState<number>(0);
 
-  // const handleClickOpen = (): void => {
-  //   setOpen(true);
-  // };
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // const handleClose = (): void => {
-  //   setOpen(false);
-  // };
+  const handleClickOpen = (): void => {
+    setOpen(true);
+  };
+
+  const handleClose = (): void => {
+    setOpen(false);
+  };
 
   if (isProductLoading) {
     return (
@@ -57,6 +61,9 @@ const CurrentProduct: React.FC<Props> = () => {
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
 
   let priceComponent = null;
+  let bigImages: string[] = [];
+  let smallImages: string[] = [];
+  let averageImages: string[] = [];
 
   if (priceDiscount && discountPriceValue) {
     priceComponent = (
@@ -80,13 +87,41 @@ const CurrentProduct: React.FC<Props> = () => {
     );
   }
 
+  if (currentProduct?.images?.length > 0) {
+    bigImages = currentProduct.images.filter((image) => image.label === 'big').map((image) => image.url);
+
+    smallImages = currentProduct.images.filter((image) => image.label === 'small').map((image) => image.url);
+
+    averageImages = currentProduct.images.filter((image) => image.label === 'average').map((image) => image.url);
+  }
+
+  let carouselComponent;
+
+  if (smallImages.length > 0) {
+    carouselComponent = (
+      <ProductCarousel
+        className={styles.carousel}
+        images={averageImages}
+        thumbs={smallImages}
+        variant={'thumbnails'}
+        setActiveImageIndex={setActiveImageIndex}
+        openModal={handleClickOpen}
+        isZoom
+      />
+    );
+  } else if (averageImages.length > 0) {
+    carouselComponent = <ProductCarousel images={averageImages} variant={'full'} openModal={handleClickOpen} isZoom />;
+  } else {
+    carouselComponent = <img src={holder} alt="Product placeholder" />;
+  }
+
   return (
     <>
-      {/* <Modal images={[]} isOpen={open} onClose={handleClose} /> */}
+      {bigImages?.length > 0 && (
+        <Modal images={bigImages} activeImageIndex={activeImageIndex} isOpen={open} onClose={handleClose} />
+      )}
       <div className={styles.root}>
-        <div className={styles.column}>
-          {/* <ProductCarousel images={[]} thumbs={[]} variant={'thumbnails'} openModal={handleClickOpen} isZoom /> */}
-        </div>
+        {carouselComponent}
         <div className={styles.column}>
           <h2 className={styles.title}>{productName}</h2>
           <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>

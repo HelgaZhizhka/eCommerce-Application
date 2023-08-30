@@ -20,13 +20,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 type Props = {
   isOpen: boolean;
-  onClose: () => void;
   title?: string;
   images?: string[];
   thumbs?: string[];
+  activeImageIndex?: number;
+  onClose: () => void;
 };
 
-const Modal: React.FC<Props> = ({ isOpen, onClose, title, images }) => (
+const Modal: React.FC<Props> = ({ isOpen, activeImageIndex = 0, onClose, title, images }) => (
   <Box>
     <BootstrapDialog className={styles.modal} onClose={onClose} open={isOpen}>
       <DialogTitle id="customized-dialog-title">{title}</DialogTitle>
@@ -43,7 +44,7 @@ const Modal: React.FC<Props> = ({ isOpen, onClose, title, images }) => (
       >
         <CloseIcon />
       </IconButton>
-      {images && <ProductCarousel images={images} variant={'fullsize'} />}
+      {images && <ProductCarousel images={images} activeImageIndex={activeImageIndex} variant={'full'} />}
     </BootstrapDialog>
   </Box>
 );
