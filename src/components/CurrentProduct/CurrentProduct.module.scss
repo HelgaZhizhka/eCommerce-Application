@@ -62,4 +62,8 @@
 
 .footer {
   margin-top: 20px;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    border-bottom: 1px solid var(--color-text);
+  }
 }

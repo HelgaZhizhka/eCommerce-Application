@@ -47,11 +47,16 @@ const ProductCarousel: React.FC<Props> = ({
 
   const swiperParamsSecond: SwiperOptions = {
     spaceBetween: 60,
-    slidesPerView: 4,
+    slidesPerView: 3,
     grabCursor: true,
     slideToClickedSlide: true,
     modules: [FreeMode, Navigation, Thumbs],
     watchSlidesProgress: true,
+    breakpoints: {
+      568: {
+        slidesPerView: 4,
+      },
+    },
   };
 
   const handleImageClick = (index: number): void => {
