@@ -14,12 +14,13 @@ type Props = {
 };
 
 const Filter: React.FC<Props> = ({ className }) => {
-  const { isFilterSize, isFilterColor } = productStore;
+  const { isFilterSize, isFilterColor, isColorAttribute, isSizeAttribute } = productStore;
+
   return (
     <Box className={`${className} ${styles.filter}`} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
       <FilterNestedList />
-      {isFilterSize && <FilterChip />}
-      {isFilterColor && <FilterColorCheckBox />}
+      {isFilterSize && <FilterChip sizeAtr={isSizeAttribute} />}
+      {isFilterColor && <FilterColorCheckBox colorAtr={isColorAttribute} />}
       <FilterPrice />
       <FilterReset />
     </Box>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
@@ -17,14 +17,17 @@ const sizes = ['XS', 'S', 'M', 'L', 'XL', 'OneSize'];
 type Props = {
   radioButton?: boolean;
   className?: string;
+  sizeAtr?: string;
 };
 
-const FilterChip: React.FC<Props> = ({ radioButton }) => {
-  // проверка на странице продукта
-  const [activeChip, setActiveChip] = React.useState<string>('');
-  // проверка в категориях
-  const [activeChips, setActiveChips] = React.useState<string[]>([]);
-  console.log(activeChips);
+const FilterChip: React.FC<Props> = ({ radioButton, sizeAtr }) => {
+  const [activeChip, setActiveChip] = useState<string>('');
+  const [activeChips, setActiveChips] = useState<string[]>([]);
+
+  useEffect(() => {
+    const sizeFilter = { [sizeAtr as string]: activeChips };
+    console.log(sizeFilter);
+  }, [sizeAtr, activeChips]);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {

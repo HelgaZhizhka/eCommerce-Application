@@ -33,6 +33,8 @@ type ProductStoreType = {
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   isFilterSize: boolean;
   isFilterColor: boolean;
+  isColorAttribute: string;
+  isSizeAttribute: string;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -47,6 +49,8 @@ const createProductStore = (): ProductStoreType => {
     sortState: SortOption.Default,
     isFilterSize: false,
     isFilterColor: false,
+    isColorAttribute: '',
+    isSizeAttribute: '',
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -134,23 +138,21 @@ const createProductStore = (): ProductStoreType => {
           if (item.variants.length > 0) {
             if (item.variants[0].attributes?.length) {
               const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
-
-              //! Найти один элемент
-              const colorAttributes = item.variants.map((attr) =>
-                attr.attributes?.filter((atr) => atr.name.includes('color'))
-              );
-              const colorNames = colorAttributes.map((attrs) => attrs?.map((atr) => atr.name));
-
               const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
-              const sizeAttributes = item.variants.map((attr) =>
-                attr.attributes?.filter((atr) => atr.name.includes('size'))
-              );
-              const sizeNames = sizeAttributes.map((attrs) => attrs?.map((atr) => atr.name));
+
+              const colorAttribute = item.variants
+              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
+              .find((attr) => attr !== undefined)?.name || '';
+
+              const sizeAttribute = item.variants
+              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
+              .find((attr) => attr !== undefined)?.name || '';
 
               runInAction(() => {
-                console.log(colorNames[0]?.join(), sizeNames[0]?.join());
                 store.isFilterColor = isColor;
                 store.isFilterSize = isSize;
+                store.isColorAttribute = colorAttribute;
+                store.isSizeAttribute = sizeAttribute;
               });
             }
           }
