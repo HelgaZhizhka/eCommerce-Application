@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 
 import styles from './ProfileEdit.module.scss';
+import { ProfilePersonalInfo } from '../baseComponents/ProfilePersonalInfo';
 
 type Props = {
   className?: string;
@@ -11,6 +12,7 @@ type Props = {
 const ProfileEdit: React.FC<Props> = ({ onSaveChange, onModeChange }) => (
   <div className={styles.root}>
     <h3>Edit forms</h3>
+    <ProfilePersonalInfo />
     <Button variant="outlined" color="primary" onClick={(): void => onSaveChange({ userName: 'Ron' })}>
       Save
     </Button>

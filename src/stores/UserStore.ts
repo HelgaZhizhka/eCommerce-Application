@@ -22,7 +22,7 @@ type UserStoreType = {
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
-    isEditMode: false,
+    isEditMode: true,
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
