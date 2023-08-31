@@ -90,8 +90,8 @@ const CurrentProduct: React.FC<Props> = () => {
         <div className={styles.column}>
           <h2 className={styles.title}>{productName}</h2>
           <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
-          <FilterChip radioButton />
-          <FilterColorCheckBox radioButton />
+          {/* <FilterChip radioButton />
+          <FilterColorCheckBox radioButton /> */}
           <div className={styles.footer}>
             {priceComponent}
             <div className={styles.flex}>

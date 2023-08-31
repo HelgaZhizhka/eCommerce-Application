@@ -11,9 +11,18 @@ import styles from './FilterMobile.module.scss';
 type Props = {
   anchorElFilter: null | HTMLElement;
   handleCloseFilter: () => void;
+  categoryId: string;
+  isFilterSize: boolean;
+  isFilterColor: boolean;
 };
 
-const FilterMobile: React.FC<Props> = ({ anchorElFilter, handleCloseFilter }) => {
+const FilterMobile: React.FC<Props> = ({
+  anchorElFilter,
+  handleCloseFilter,
+  isFilterSize,
+  isFilterColor,
+  categoryId,
+}) => {
   const open = Boolean(anchorElFilter);
 
   return (
@@ -46,8 +55,8 @@ const FilterMobile: React.FC<Props> = ({ anchorElFilter, handleCloseFilter }) =>
         >
           <CloseIcon />
         </IconButton>
-        <FilterChip />
-        <FilterColorCheckBox />
+        {isFilterSize && <FilterChip categoryId={categoryId} />}
+        {isFilterColor && <FilterColorCheckBox categoryId={categoryId} />}
         <FilterPrice />
         <FilterReset mobile />
       </div>

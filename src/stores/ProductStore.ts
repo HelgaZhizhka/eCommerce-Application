@@ -1,8 +1,8 @@
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction, toJS } from 'mobx';
 
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
-import { getCategories, getProductByKey, getProductsByCategory } from '../services/productService';
+import { getCategories, getProductByFilter, getProductByKey, getProductsByCategory } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 
 type ProductType = {
@@ -35,6 +35,12 @@ type ProductStoreType = {
   isFilterColor: boolean;
   isColorAttribute: string;
   isSizeAttribute: string;
+  getFilteredProducts: (category: string) => Promise<void>;
+  filterSizes: string[];
+  filterColors: string[];
+  setFilterOptions: () => Record<string, string[]>[];
+  updateFilterSize: (data: string[]) => void;
+  updateFilterColor: (data: string[]) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -47,10 +53,12 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
-    isFilterSize: false,
-    isFilterColor: false,
+    isFilterSize: true,
+    isFilterColor: true,
     isColorAttribute: '',
     isSizeAttribute: '',
+    filterSizes: [] as string[],
+    filterColors: [] as string[],
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -112,8 +120,8 @@ const createProductStore = (): ProductStoreType => {
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
         store.isProductsLoading = true;
-        store.isFilterColor = false;
-        store.isFilterSize = false;
+        // store.isFilterColor = false;
+        // store.isFilterSize = false;
       });
 
       try {
@@ -212,6 +220,35 @@ const createProductStore = (): ProductStoreType => {
           store.isProductLoading = false;
         });
       }
+    },
+
+    async getFilteredProducts(category: string): Promise<void> {
+      const data = store.setFilterOptions();
+      const categoryId = store.categoryIdByName(category);
+
+      if (!categoryId) return;
+
+      const fetchedProductsByFilter = await getProductByFilter(data, categoryId);
+    },
+
+    setFilterOptions(): Record<string, string[]>[] {
+      const filterData = [
+      {
+        [store.isColorAttribute]: store.filterColors
+      },
+      {
+        [store.isSizeAttribute]: store.filterSizes
+      }
+    ]
+      return filterData;
+    },
+
+    updateFilterSize(data: string[]): void {
+      store.filterSizes = [...data]
+    },
+
+    updateFilterColor(data: string[]): void {
+      store.filterColors = [...data];
     },
   };
 
