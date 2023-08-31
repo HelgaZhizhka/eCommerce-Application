@@ -1,7 +1,10 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
+import { Customer } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/customer";
+
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
 import setAdress from '../services/setCustomersDetails';
+
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -9,6 +12,7 @@ type UserStoreType = {
   isRegistration: boolean;
   isEditMode: boolean;
   error: null | string;
+  userProfile: Customer | null;
   login: (email: string, password: string) => Promise<void>;
   signup: () => Promise<void>;
   logout: () => void;
@@ -22,7 +26,8 @@ type UserStoreType = {
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
-    isEditMode: false,
+    userProfile: {} as Customer,
+    isEditMode: true,
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
@@ -34,6 +39,9 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 200) {
             store.loggedIn = true;
+            store.userProfile = {
+              ...response.body.customer
+            }
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
@@ -55,6 +63,9 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
+            store.userProfile = {
+              ...response.body.customer
+            }
             if (data.email && data.password) {
               setAdress(data.email, data.password);
             }
@@ -88,6 +99,7 @@ const createUserStore = (): UserStoreType => {
       store.loggedIn = false;
       store.userData = {};
       store.error = null;
+      store.userProfile = {} as Customer;
     },
 
     setEditMode(isEditMode: boolean): void {
@@ -96,7 +108,7 @@ const createUserStore = (): UserStoreType => {
 
     saveUserData(data: object): void {
       store.userData = { ...store.userData, ...data };
-    }
+    },   
   };
 
   makeAutoObservable(store); 
@@ -108,6 +120,7 @@ const createUserStore = (): UserStoreType => {
     }
   );
 
+  
   return store;
 };
 

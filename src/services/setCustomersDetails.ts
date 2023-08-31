@@ -4,8 +4,6 @@ import { MyCustomerUpdate } from "@commercetools/platform-sdk/dist/declarations/
 import { ClientResponse } from "@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types";
 import { apiWithPasswordFlow } from "./BuildClient";
 
-
-
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
   const response = await customer.me().get().execute();
   return response.body;
@@ -38,6 +36,15 @@ const setAdress = async (email: string, password: string): Promise<void> => {
   try {
     const customerInfo = await getCustomerInfo(customer)
     await setAddressRequest(customer, customerInfo)
+  } catch (error) {
+    throw new Error('Error')
+  }
+};
+
+export const getUser = async (email: string, password: string): Promise<Customer> => {
+  const customer = apiWithPasswordFlow(email, password);
+  try {
+    return await getCustomerInfo(customer)
   } catch (error) {
     throw new Error('Error')
   }
