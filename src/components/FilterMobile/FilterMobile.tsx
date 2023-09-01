@@ -12,6 +12,7 @@ type Props = {
   anchorElFilter: null | HTMLElement;
   handleCloseFilter: () => void;
   categoryId: string;
+  subcategoryId?: string;
   isFilterSize: boolean;
   isFilterColor: boolean;
 };
@@ -22,6 +23,7 @@ const FilterMobile: React.FC<Props> = ({
   isFilterSize,
   isFilterColor,
   categoryId,
+  subcategoryId,
 }) => {
   const open = Boolean(anchorElFilter);
 
@@ -55,8 +57,8 @@ const FilterMobile: React.FC<Props> = ({
         >
           <CloseIcon />
         </IconButton>
-        {isFilterSize && <FilterChip categoryId={categoryId} />}
-        {isFilterColor && <FilterColorCheckBox categoryId={categoryId} />}
+        {isFilterSize && <FilterChip categoryId={categoryId} subcategoryId={subcategoryId} />}
+        {isFilterColor && <FilterColorCheckBox categoryId={categoryId} subcategoryId={subcategoryId} />}
         <FilterPrice />
         <FilterReset mobile />
       </div>

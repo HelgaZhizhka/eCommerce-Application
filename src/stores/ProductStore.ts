@@ -1,6 +1,7 @@
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction, toJS } from 'mobx';
 
+import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import { getCategories, getProductByFilter, getProductByKey, getProductsByCategory } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
@@ -31,6 +32,7 @@ type ProductStoreType = {
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
   categoryIdByName: (nameCategory: string) => string | undefined;
+  getFetchedProducts: (fetchedProducts: ProductProjection[]) => ProductType[]
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   setSearchValue: (data: string) => void;
   isFilterSize: boolean;
@@ -120,6 +122,56 @@ const createProductStore = (): ProductStoreType => {
       return undefined;
     },
 
+    getFetchedProducts(fetchedProducts: ProductProjection[]): ProductType[] {
+
+      const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
+      const obj = {} as ProductType;
+      obj.key = `${item.key}`;
+      obj.productName = `${item.name?.en}`;
+      obj.description = `${item.description?.en}`;
+
+      if (item.masterVariant.prices?.length) {
+        obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
+        obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
+        obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
+
+        if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+      }
+
+      if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+      if (item.variants.length > 0) {
+        if (item.variants[0].attributes?.length) {
+          const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
+          const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
+
+          const colorAttribute = item.variants
+          .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
+          .find((attr) => attr !== undefined)?.name || '';
+
+          const sizeAttribute = item.variants
+          .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
+          .find((attr) => attr !== undefined)?.name || '';
+
+          runInAction(() => {
+            store.isFilterColor = isColor;
+            store.isFilterSize = isSize;
+            store.isColorAttribute = colorAttribute;
+            store.isSizeAttribute = sizeAttribute;
+          });
+        }
+      }
+      acc.push(obj);
+
+      return acc;
+    }, [] as ProductType[]);
+
+    return productsList;
+
+    // runInAction(() => {
+    //   store.products = [...productsList];
+    // });
+  },
+
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
         store.isProductsLoading = true;
@@ -131,48 +183,50 @@ const createProductStore = (): ProductStoreType => {
         if (id === undefined) return;
 
         const fetchedProductsByCategory = await getProductsByCategory(id);
-        const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
-          const obj = {} as ProductType;
-          obj.key = `${item.key}`;
-          obj.productName = `${item.name?.en}`;
-          obj.description = `${item.description?.en}`;
 
-          if (item.masterVariant.prices?.length) {
-            obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
-            obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
-            obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
+        // const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
+        //   const obj = {} as ProductType;
+        //   obj.key = `${item.key}`;
+        //   obj.productName = `${item.name?.en}`;
+        //   obj.description = `${item.description?.en}`;
 
-            if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
-          }
+        //   if (item.masterVariant.prices?.length) {
+        //     obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
+        //     obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
+        //     obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
 
-          if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
-          if (item.variants.length > 0) {
-            if (item.variants[0].attributes?.length) {
-              const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
-              const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
+        //     if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+        //   }
 
-              const colorAttribute = item.variants
-              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
-              .find((attr) => attr !== undefined)?.name || '';
+        //   if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+        //   if (item.variants.length > 0) {
+        //     if (item.variants[0].attributes?.length) {
+        //       const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
+        //       const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
 
-              const sizeAttribute = item.variants
-              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
-              .find((attr) => attr !== undefined)?.name || '';
+        //       const colorAttribute = item.variants
+        //       .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
+        //       .find((attr) => attr !== undefined)?.name || '';
 
-              runInAction(() => {
-                store.isFilterColor = isColor;
-                store.isFilterSize = isSize;
-                store.isColorAttribute = colorAttribute;
-                store.isSizeAttribute = sizeAttribute;
-              });
-            }
-          }
-          acc.push(obj);
+        //       const sizeAttribute = item.variants
+        //       .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
+        //       .find((attr) => attr !== undefined)?.name || '';
 
-          return acc;
-        }, [] as ProductType[]);
+        //       runInAction(() => {
+        //         store.isFilterColor = isColor;
+        //         store.isFilterSize = isSize;
+        //         store.isColorAttribute = colorAttribute;
+        //         store.isSizeAttribute = sizeAttribute;
+        //       });
+        //     }
+        //   }
+        //   acc.push(obj);
+
+        //   return acc;
+        // }, [] as ProductType[]);
 
         runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProductsByCategory)
           store.products = [...productsList];
         });
       } catch (err) {
@@ -232,7 +286,28 @@ const createProductStore = (): ProductStoreType => {
       if (!categoryId) return;
 
       const fetchedProductsByFilter = await getProductByFilter(data, categoryId);
-    },
+
+        runInAction(() => {
+          store.isProductsLoading = true;
+        });
+
+        try {
+
+          runInAction(() => {
+            const productsList = store.getFetchedProducts(fetchedProductsByFilter)
+            store.products = [...productsList];
+          });
+        } catch (err) {
+          runInAction(() => {
+            store.error = 'Error fetching products';
+          });
+        } finally {
+          runInAction(() => {
+            store.isProductsLoading = false;
+          });
+        }
+      },
+
 
     setFilterOptions(): Record<string, string[]>[] {
       const filterData = [

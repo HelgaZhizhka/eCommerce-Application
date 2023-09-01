@@ -43,7 +43,7 @@ export async function getProductByKey(key: string): Promise<Product> {
   return response.body
 }
 
-export async function getProductByFilter(filters: object[], categoryID: string): Promise<ProductProjectionPagedSearchResponse> {
+export async function getProductByFilter(filters: object[], categoryID: string): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
 
   const filterPropertiescategoryID = `categories.id:subtree("${categoryID}")`;
@@ -69,5 +69,5 @@ export async function getProductByFilter(filters: object[], categoryID: string):
       }
     )
     .execute()
-  return response.body
+  return response.body.results
 }

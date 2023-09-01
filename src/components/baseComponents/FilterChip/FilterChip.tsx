@@ -20,16 +20,21 @@ type Props = {
   radioButton?: boolean;
   className?: string;
   categoryId: string;
+  subcategoryId?: string;
 };
 
-const FilterChip: React.FC<Props> = ({ radioButton, categoryId }) => {
+const FilterChip: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
   const { updateFilterSize, filterSizes, getFilteredProducts } = productStore;
   const [activeChip, setActiveChip] = useState<string>('');
   const [activeChips, setActiveChips] = useState<string[]>(filterSizes);
 
   useEffect(() => {
     updateFilterSize(activeChips);
-    if (activeChips.length) getFilteredProducts(categoryId);
+    if (activeChips.length) {
+      if (subcategoryId) {
+        getFilteredProducts(subcategoryId);
+      } else getFilteredProducts(categoryId);
+    }
   }, [activeChips]);
 
   const handleChipClick = (label: string): void => {

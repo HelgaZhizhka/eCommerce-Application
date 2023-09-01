@@ -11,6 +11,7 @@ type Props = {
   radioButton?: boolean;
   className?: string;
   categoryId: string;
+  subcategoryId?: string;
 };
 
 enum ColorOptions {
@@ -26,12 +27,16 @@ enum ColorOptions {
 const colorOptionValues = Object.values(ColorOptions);
 const colorNames = Object.keys(ColorOptions);
 
-const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId }) => {
+const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
   const { updateFilterColor, filterColors, getFilteredProducts } = productStore;
   const [values, setValues] = useState<string[]>(filterColors);
   useEffect(() => {
     updateFilterColor(values);
-    if (values.length) getFilteredProducts(categoryId);
+    if (values.length) {
+      if (subcategoryId) {
+        getFilteredProducts(subcategoryId);
+      } else getFilteredProducts(categoryId);
+    }
   }, [values]);
 
   const toggleOptions = (color: string): void => {

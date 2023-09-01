@@ -92,6 +92,7 @@ const Catalog: React.FC = () => {
                 anchorElFilter={anchorElFilter}
                 handleCloseFilter={handleCloseFilter}
                 categoryId={categoryId}
+                subcategoryId={subcategoryId}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
@@ -108,6 +109,7 @@ const Catalog: React.FC = () => {
                 isFilterColor={isFilterColor}
                 className={`${styles.sticky} ${styles.filter}`}
                 categoryId={categoryId}
+                subcategoryId={subcategoryId}
               />
             </aside>
           )}
