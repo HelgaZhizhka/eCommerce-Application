@@ -50,7 +50,6 @@
 }
 
 .footerRow {
-
   @include create-mq($grid__bp-md, 'min') {
     display: flex;
     justify-content: space-between;
@@ -58,7 +57,6 @@
 }
 
 .footerColumn {
-
   @include create-mq($grid__bp-md, 'min') {
     padding: 0 10px;
   }

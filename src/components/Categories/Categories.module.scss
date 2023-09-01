@@ -39,7 +39,8 @@
   }
 }
 
-.vertical, .mobile {
+.vertical,
+.mobile {
   .menuItem {
     display: block;
     margin-bottom: 8px;
@@ -50,7 +51,6 @@
   margin-bottom: 50px;
 
   .menuItem {
-
     &:nth-child(1) > .menuLink {
       background-size: 95px 95px;
       background-image: url(./images/sales.png);
@@ -105,7 +105,6 @@
         filter: drop-shadow(0px 0px 16px rgba(62, 23, 255, 0.8));
       }
     }
-
   }
 
   .menuLink {
@@ -124,7 +123,7 @@
     cursor: pointer;
 
     &::after {
-      content: none 
+      content: none;
     }
 
     span {
