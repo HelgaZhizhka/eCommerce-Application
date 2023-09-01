@@ -4,12 +4,8 @@ import {
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
-import {
-  createApiBuilderFromCtpClient,
-} from '@commercetools/platform-sdk';
-import {
-  ByProjectKeyRequestBuilder
-} from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
 const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];
@@ -45,6 +41,28 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
+
+  return apiRoot;
+}
+
+export function apiWithRefreshTokenFlow(token: string) {
+  const refreshTokenFlowOptions = {
+    host: hostAUTH,
+    projectKey,
+    credentials: {
+      clientId,
+      clientSecret,
+    },
+    refreshToken: token,
+    fetch,
+  };
+
+  const client = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withRefreshTokenFlow(refreshTokenFlowOptions)
+    .build();
+
+  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
   return apiRoot;
 }
 
@@ -65,5 +83,6 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
+
   return apiRoot;
 }

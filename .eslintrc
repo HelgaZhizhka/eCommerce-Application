@@ -70,6 +70,7 @@
     "@typescript-eslint/no-non-null-assertion": "error",
     "no-debugger": "off",
     "class-methods-use-this": "off",
-    "dot-notation": "off"
+    "dot-notation": "off",
+    "non-null-assertion": "off"
   }
 }

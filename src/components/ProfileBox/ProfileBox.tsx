@@ -1,5 +1,4 @@
-import { Customer } from '@commercetools/platform-sdk';
-
+import { Address } from '@commercetools/platform-sdk';
 import styles from './ProfileBox.module.scss';
 
 import { ProfileView } from '../ProfileView';
@@ -10,15 +9,50 @@ type Props = {
   editMode: boolean;
   onModeChange: (mode: boolean) => void;
   onSaveChange: (data: object) => void;
-  userProfile: Customer | null;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  shippingAddresses?: Address[];
+  billingAddresses?: Address[];
+  defaultShippingAddress?: Address | null;
+  defaultBillingAddress?: Address | null;
 };
 
-const ProfileBox: React.FC<Props> = ({ editMode, onModeChange, onSaveChange, userProfile }) => (
+const ProfileBox: React.FC<Props> = ({
+  editMode,
+  onModeChange,
+  onSaveChange,
+  firstName,
+  lastName,
+  email,
+  shippingAddresses,
+  billingAddresses,
+  defaultShippingAddress,
+  defaultBillingAddress,
+}) => (
   <div className={styles.root}>
     {!editMode ? (
-      <ProfileView onModeChange={onModeChange} userProfile={userProfile} />
+      <ProfileView
+        onModeChange={onModeChange}
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+        shippingAddresses={shippingAddresses}
+        billingAddresses={billingAddresses}
+        defaultShippingAddress={defaultShippingAddress}
+        defaultBillingAddress={defaultBillingAddress}
+      />
     ) : (
-      <ProfileEdit onModeChange={onModeChange} onSaveChange={onSaveChange} />
+      <ProfileEdit
+        onModeChange={onModeChange}
+        onSaveChange={onSaveChange}
+        firstName={firstName}
+        lastName={lastName}
+        shippingAddresses={shippingAddresses}
+        billingAddresses={billingAddresses}
+        defaultShippingAddress={defaultShippingAddress}
+        defaultBillingAddress={defaultBillingAddress}
+      />
     )}
   </div>
 );

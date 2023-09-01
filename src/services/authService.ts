@@ -1,22 +1,61 @@
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
 
-export const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
+// import { tokenData } from '../stores/TokenStore';
+
+
+export const customerLogin = async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+
+
   const customer = apiWithPasswordFlow(email, password);
-  return customer
+  const response = customer
     .me()
     .login()
-    .post(
-      {
-        body: {
-          email,
-          password,
-        }
-      }
-    )
-    .execute()
+    .post({
+      body: {
+        email,
+        password,
+      },
+    })
+    .execute();
+    
+    // response
+    //   .then((res) => {
+    //     console.log(res.headers);
+    //   })
+    //   .catch((error) => {
+    //     console.error('An error occurred:', error);
+    //   });
+
+
+    // const { headers } = (await response);
+    // console.log(headers);
+
+    
+
+    //  if ((await response)) {
+    //    await getAccessToken()
+    //      .then((token) => {
+    //         console.log(token);
+            
+    //        tokenData.set({
+    //          token: token,
+    //          expirationTime: Date.now() + 3600 * 1000,
+    //          refreshToken: '',
+    //        });
+    //      })
+    //      .catch((err) => {
+    //        console.error('Error:', err);
+    //      });
+    //  }
+
+      
+
+
+    return response;
+
 }
 
 export const customerSignUp = (values: Record<string, string | number | boolean>): Promise<ClientResponse<CustomerSignInResult>> => {
