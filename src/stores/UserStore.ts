@@ -96,10 +96,10 @@ const createUserStore = (): UserStoreType => {
 
     saveUserData(data: object): void {
       store.userData = { ...store.userData, ...data };
-    }
+    },
   };
 
-  makeAutoObservable(store); 
+  makeAutoObservable(store);
 
   reaction(
     () => store.loggedIn,

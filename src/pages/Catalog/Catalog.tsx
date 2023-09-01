@@ -23,6 +23,7 @@ type Params = {
 };
 
 const Catalog: React.FC = () => {
+  const { isFilterSize, isFilterColor } = productStore;
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
@@ -85,7 +86,14 @@ const Catalog: React.FC = () => {
               <IconButton aria-label="sort" onClick={handleClickFilter}>
                 <FilterListIcon />
               </IconButton>
-              <FilterMobile anchorElFilter={anchorElFilter} handleCloseFilter={handleCloseFilter} />
+              <FilterMobile
+                isFilterSize={isFilterSize}
+                isFilterColor={isFilterColor}
+                anchorElFilter={anchorElFilter}
+                handleCloseFilter={handleCloseFilter}
+                categoryId={categoryId}
+                subcategoryId={subcategoryId}
+              />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
@@ -96,7 +104,13 @@ const Catalog: React.FC = () => {
         <div className={styles.container}>
           {!isMobile && (
             <aside>
-              <Filter className={`${styles.sticky} ${styles.filter}`} />
+              <Filter
+                isFilterSize={isFilterSize}
+                isFilterColor={isFilterColor}
+                className={`${styles.sticky} ${styles.filter}`}
+                categoryId={categoryId}
+                subcategoryId={subcategoryId}
+              />
             </aside>
           )}
           <div className={styles.products}>

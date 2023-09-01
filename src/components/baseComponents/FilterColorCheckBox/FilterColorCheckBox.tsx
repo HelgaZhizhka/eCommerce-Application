@@ -2,33 +2,41 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import CheckIcon from '@mui/icons-material/Check';
+import { observer } from 'mobx-react-lite';
+
+import { productStore } from '../../../stores';
 
 type Props = {
   radioButton?: boolean;
   className?: string;
-  colorAtr?: string;
+  categoryId: string;
+  subcategoryId?: string;
 };
 
 enum ColorOptions {
-  White = 'var(--filter-white)',
-  Red = 'var(--filter-red)',
-  Orange = 'var(--filter-orange)',
-  Green = 'var(--filter-green)',
-  Blue = 'var(--filter-blue)',
-  Black = 'var(--filter-black)',
-  Multicolor = 'multicolor',
+  white = 'var(--filter-white)',
+  red = 'var(--filter-red)',
+  orange = 'var(--filter-orange)',
+  green = 'var(--filter-green)',
+  blue = 'var(--filter-blue)',
+  black = 'var(--filter-black)',
+  multicolor = 'multicolor',
 }
 
 const colorOptionValues = Object.values(ColorOptions);
 const colorNames = Object.keys(ColorOptions);
 
-const FilterColorCheckBox: React.FC<Props> = ({ radioButton, colorAtr }) => {
-  const [values, setValues] = useState<string[]>([]);
-
+const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
+  const { updateFilterColor, filterColors, getFilteredProducts } = productStore;
+  const [values, setValues] = useState<string[]>(filterColors);
   useEffect(() => {
-    const sizeFilter = { [colorAtr as string]: values };
-    console.log(sizeFilter);
-  }, [colorAtr, values]);
+    updateFilterColor(values);
+    if (values.length) {
+      if (subcategoryId) {
+        getFilteredProducts(subcategoryId);
+      } else getFilteredProducts(categoryId);
+    }
+  }, [values]);
 
   const toggleOptions = (color: string): void => {
     if (values.includes(color)) {
@@ -81,4 +89,4 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, colorAtr }) => {
   );
 };
 
-export default FilterColorCheckBox;
+export default observer(FilterColorCheckBox);

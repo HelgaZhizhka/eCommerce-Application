@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { observer } from 'mobx-react-lite';
+import { productStore } from '../../../stores';
 
 const CustomChip = styled(Chip)({
   borderRadius: '16px',
@@ -12,22 +14,28 @@ const CustomChip = styled(Chip)({
   border: '1px solid grey',
 });
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL', 'OneSize'];
+const sizes = ['xs', 's', 'm', 'l', 'xl', 'one-size'];
 
 type Props = {
   radioButton?: boolean;
   className?: string;
-  sizeAtr?: string;
+  categoryId: string;
+  subcategoryId?: string;
 };
 
-const FilterChip: React.FC<Props> = ({ radioButton, sizeAtr }) => {
+const FilterChip: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
+  const { updateFilterSize, filterSizes, getFilteredProducts } = productStore;
   const [activeChip, setActiveChip] = useState<string>('');
-  const [activeChips, setActiveChips] = useState<string[]>([]);
+  const [activeChips, setActiveChips] = useState<string[]>(filterSizes);
 
   useEffect(() => {
-    const sizeFilter = { [sizeAtr as string]: activeChips };
-    console.log(sizeFilter);
-  }, [sizeAtr, activeChips]);
+    updateFilterSize(activeChips);
+    if (activeChips.length) {
+      if (subcategoryId) {
+        getFilteredProducts(subcategoryId);
+      } else getFilteredProducts(categoryId);
+    }
+  }, [activeChips]);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {
@@ -73,4 +81,4 @@ const FilterChip: React.FC<Props> = ({ radioButton, sizeAtr }) => {
   );
 };
 
-export default FilterChip;
+export default observer(FilterChip);

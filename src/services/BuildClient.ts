@@ -4,12 +4,8 @@ import {
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
-import {
-  createApiBuilderFromCtpClient,
-} from '@commercetools/platform-sdk';
-import {
-  ByProjectKeyRequestBuilder
-} from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
 const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];

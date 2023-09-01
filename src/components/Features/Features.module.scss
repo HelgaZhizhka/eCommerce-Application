@@ -59,9 +59,9 @@
   right: 20px;
   top: 20px;
 
-   @include create-mq($grid__bp-sm - 1, 'max') {
+  @include create-mq($grid__bp-sm - 1, 'max') {
     display: none;
-   }
+  }
 }
 
 .cardTitle {
