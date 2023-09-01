@@ -29,12 +29,11 @@ const colorNames = Object.keys(ColorOptions);
 const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
   const { updateFilterColor, filterColors, getFilteredProducts } = productStore;
   const [values, setValues] = useState<string[]>(filterColors);
+
   useEffect(() => {
-    updateFilterColor(values);
     if (values.length) {
-      if (subcategoryId) {
-        getFilteredProducts(subcategoryId);
-      } else getFilteredProducts(categoryId);
+      updateFilterColor(values);
+      getFilteredProducts(subcategoryId || categoryId);
     }
   }, [values]);
 

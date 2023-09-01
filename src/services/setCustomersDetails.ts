@@ -2,7 +2,7 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithPasswordFlow } from './BuildClient';
+import { apiWithPasswordFlow, apiWithRefreshTokenFlow } from './BuildClient';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
   const response = await customer.me().get().execute();
@@ -32,7 +32,7 @@ const setAddressRequest = async (
   return response;
 };
 
-const setAdress = async (email: string, password: string): Promise<void> => {
+export const setAdress = async (email: string, password: string): Promise<void> => {
   const customer = apiWithPasswordFlow(email, password);
   try {
     const customerInfo = await getCustomerInfo(customer);
@@ -42,4 +42,10 @@ const setAdress = async (email: string, password: string): Promise<void> => {
   }
 };
 
-export default setAdress;
+export const getUser = async (): Promise<Customer | null> => {
+  const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
+
+  const customerProfile = await apiWithRefreshTokenFlow(token).me().get().execute();
+
+  return customerProfile.body;
+};

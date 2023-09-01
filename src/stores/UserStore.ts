@@ -1,7 +1,10 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
+import { Customer } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/customer";
+
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import setAdress from '../services/setCustomersDetails';
+import { setAdress, getUser} from '../services/setCustomersDetails';
+
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -9,6 +12,7 @@ type UserStoreType = {
   isRegistration: boolean;
   isEditMode: boolean;
   error: null | string;
+  userProfile: Customer | null;
   login: (email: string, password: string) => Promise<void>;
   signup: () => Promise<void>;
   logout: () => void;
@@ -17,12 +21,14 @@ type UserStoreType = {
   resetRegistration: () => void;
   setEditMode: (isEditMode: boolean) => void;
   saveUserData: (data: object) => void;
+  getUserProfile: () => Promise<void>;
 };
 
 const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
-    isEditMode: false,
+    userProfile: {} as Customer,
+    isEditMode: true,
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
@@ -32,9 +38,12 @@ const createUserStore = (): UserStoreType => {
         const response = await customerLogin(email, password);
         runInAction(() => {
           store.error = null;
+           console.log(response);
+
           if (response.statusCode === 200) {
             store.loggedIn = true;
           }
+
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
           }
@@ -55,9 +64,11 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
+
             if (data.email && data.password) {
               setAdress(data.email, data.password);
             }
+
             store.isRegistration = true;
           }
           if (response.statusCode === 400) {
@@ -88,6 +99,7 @@ const createUserStore = (): UserStoreType => {
       store.loggedIn = false;
       store.userData = {};
       store.error = null;
+      store.userProfile = {} as Customer;
     },
 
     setEditMode(isEditMode: boolean): void {
@@ -96,6 +108,16 @@ const createUserStore = (): UserStoreType => {
 
     saveUserData(data: object): void {
       store.userData = { ...store.userData, ...data };
+    },
+
+    async getUserProfile(): Promise<void> {
+      const userProfile = await getUser()
+
+      if (!userProfile) return;
+      
+      store.userProfile = {
+        ...userProfile,
+      };
     },
   };
 
@@ -108,6 +130,7 @@ const createUserStore = (): UserStoreType => {
     }
   );
 
+  
   return store;
 };
 

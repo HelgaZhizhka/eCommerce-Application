@@ -9,4 +9,6 @@ export enum IconName {
   WHATSUP = 'whatsup',
   EXIT = 'exit',
   FAVORITE = 'favorite',
+  EDIT = 'edit',
+  DELETE = 'delete',
 }

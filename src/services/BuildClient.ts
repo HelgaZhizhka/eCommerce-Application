@@ -41,6 +41,28 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
+
+  return apiRoot;
+}
+
+export function apiWithRefreshTokenFlow(token: string): ByProjectKeyRequestBuilder {
+  const refreshTokenFlowOptions = {
+    host: hostAUTH,
+    projectKey,
+    credentials: {
+      clientId,
+      clientSecret,
+    },
+    refreshToken: token,
+    fetch,
+  };
+
+  const client = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withRefreshTokenFlow(refreshTokenFlowOptions)
+    .build();
+
+  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
   return apiRoot;
 }
 
@@ -61,5 +83,6 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
+
   return apiRoot;
 }
