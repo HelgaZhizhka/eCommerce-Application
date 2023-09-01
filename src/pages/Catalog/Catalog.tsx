@@ -112,7 +112,7 @@ const Catalog: React.FC = () => {
             </aside>
           )}
           <div className={styles.products}>
-            <ProductList className={styles.productsList} categoryId={categoryId} />
+            <ProductList className={styles.productsList} categoryId={categoryId} subcategoryId={subcategoryId} />
           </div>
         </div>
       </div>
