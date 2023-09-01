@@ -11,13 +11,21 @@ import styles from './ProductList.module.scss';
 type Props = {
   className?: string;
   categoryId: string;
+  subcategoryId?: string | null;
 };
 
-const ProductList: React.FC<Props> = ({ className, categoryId }) => {
+const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) => {
   const { products, isProductsLoading } = productStore;
 
-  const generateProductPath = (catId: string, productId: string): string =>
-    RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', productId);
+  const generateProductPath = (catId: string, subCatId: string | null | undefined, productId: string): string => {
+    let path = RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', productId);
+    if (subCatId) {
+      path = path.replace(':subcategoryId?', subCatId);
+    } else {
+      path = path.replace(':subcategoryId?/', '');
+    }
+    return path;
+  };
 
   return isProductsLoading ? (
     <Box
@@ -37,11 +45,11 @@ const ProductList: React.FC<Props> = ({ className, categoryId }) => {
         const { key, productName, description, price, priceDiscount, currency, images, isDiscount } = card;
         return (
           <li className={styles.productItem} key={key}>
-            <Link to={generateProductPath(categoryId, key.toString())}>
+            <Link to={generateProductPath(categoryId, subcategoryId, key.toString())}>
               <Card
                 productName={productName}
                 description={description}
-                cardImages={images}
+                images={images}
                 price={price}
                 priceDiscount={priceDiscount}
                 currency={currency}

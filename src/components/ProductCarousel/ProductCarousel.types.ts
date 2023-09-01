@@ -1,3 +1,3 @@
-export type VARIANT = 'thumbnails' | 'fullsize' 
+export type VARIANT = 'thumbnails' | 'full' 
 
 

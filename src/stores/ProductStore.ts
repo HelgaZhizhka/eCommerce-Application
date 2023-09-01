@@ -33,6 +33,10 @@ type ProductStoreType = {
   categoryIdByName: (nameCategory: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   setSearchValue: (data: string) => void;
+  isFilterSize: boolean;
+  isFilterColor: boolean;
+  isColorAttribute: string;
+  isSizeAttribute: string;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -46,6 +50,10 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
+    isFilterSize: false,
+    isFilterColor: false,
+    isColorAttribute: '',
+    isSizeAttribute: '',
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -107,10 +115,11 @@ const createProductStore = (): ProductStoreType => {
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
         store.isProductsLoading = true;
+        store.isFilterColor = false;
+        store.isFilterSize = false;
       });
 
       try {
-
         if (id === undefined) return;
 
         const fetchedProductsByCategory = await getProductsByCategory(id);
@@ -129,7 +138,27 @@ const createProductStore = (): ProductStoreType => {
           }
 
           if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+          if (item.variants.length > 0) {
+            if (item.variants[0].attributes?.length) {
+              const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
+              const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
 
+              const colorAttribute = item.variants
+              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
+              .find((attr) => attr !== undefined)?.name || '';
+
+              const sizeAttribute = item.variants
+              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
+              .find((attr) => attr !== undefined)?.name || '';
+
+              runInAction(() => {
+                store.isFilterColor = isColor;
+                store.isFilterSize = isSize;
+                store.isColorAttribute = colorAttribute;
+                store.isSizeAttribute = sizeAttribute;
+              });
+            }
+          }
           acc.push(obj);
 
           return acc;
@@ -150,10 +179,10 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchProduct(key: string): Promise<void> {
-       runInAction(() => {
-         store.isProductLoading = true;
-       });
-    
+      runInAction(() => {
+        store.isProductLoading = true;
+      });
+
       try {
         if (key === undefined) return;
         const fetchedProductByKey = await getProductByKey(key);
