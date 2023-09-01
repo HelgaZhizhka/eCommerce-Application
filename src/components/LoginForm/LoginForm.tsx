@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Link } from 'react-router-dom';
@@ -25,13 +25,10 @@ const initialValues: LoginFormValues = {
 
 const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [message, setMessage] = useState<Message>({});
   const [messagePassword, setMessagePassword] = useState<Message>({});
   const [inputStartedEmail, setInputStartedEmail] = useState(false);
-
   const [inputStartedPassword, setInputStartedPassword] = useState(false);
-
   const [allFieldsValid, setAllFieldsValid] = useState(false);
 
   const handleClickShowPassword = (): void => {
@@ -52,6 +49,7 @@ const LoginForm: React.FC = () => {
       default:
         break;
     }
+
     if (setter) {
       setter((prevMessage) => ({
         ...prevMessage,
@@ -60,98 +58,101 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  const areAllValuesFalse = (obj: Record<string, boolean>): boolean => {
-    if (Object.keys(obj).length === 0) {
-      return false;
-    }
-    return Object.values(obj).every((value) => value === false);
-  };
+  const areAllValuesFalse = (obj: Record<string, boolean>): boolean =>
+    Object.values(obj).every((value) => value === false);
 
   useEffect(() => {
     if (areAllValuesFalse(message) && areAllValuesFalse(messagePassword)) {
       setAllFieldsValid(true);
-    } else setAllFieldsValid(false);
+    } else {
+      setAllFieldsValid(false);
+    }
   }, [message, messagePassword]);
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>, submitting: boolean, callback: () => void): void => {
+    if (event.key === 'Enter' && !submitting && allFieldsValid) {
+      callback();
+    }
+  };
+
   return (
-    <>
-      <Formik
-        initialValues={initialValues}
-        validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
-        onSubmit={(values, { setSubmitting }): void => {
-          // loginStatus(values.email, values.password);
-          userStore.login(values.email, values.password);
-          // console.log(values);
-          setSubmitting(false);
-        }}
-      >
-        {({ submitForm, isSubmitting }): JSX.Element => (
-          <Form>
-            <div className={styles.inputContainer}>
-              <Field
-                component={FormikTextField}
-                name="email"
-                type="email"
-                label="Email"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                helperText={<ErrorMessage name="email" />}
-                onFocus={(): void => setInputStartedEmail(true)}
-              />
+    <Formik
+      initialValues={initialValues}
+      validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
+      onSubmit={(values, { setSubmitting }): void => {
+        userStore.login(values.email, values.password);
+        setSubmitting(false);
+      }}
+    >
+      {({ submitForm, isSubmitting }): JSX.Element => (
+        <Form>
+          <div className={styles.inputContainer}>
+            <Field
+              component={FormikTextField}
+              name="email"
+              type="email"
+              label="Email"
+              variant="standard"
+              fullWidth
+              margin="normal"
+              helperText={<ErrorMessage name="email" />}
+              onFocus={(): void => setInputStartedEmail(true)}
+            />
+            {inputStartedEmail && <ShowValidate validate={message} />}
+          </div>
 
-              {inputStartedEmail && <ShowValidate validate={message} />}
-            </div>
+          <div className={styles.inputContainer}>
+            <Field
+              component={FormikTextField}
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              name="password"
+              variant="standard"
+              fullWidth
+              margin="normal"
+              helperText={<ErrorMessage name="password" />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              onFocus={(): void => setInputStartedPassword(true)}
+              onKeyDown={(event: KeyboardEvent<HTMLInputElement>): void =>
+                handleKeyPress(event, isSubmitting, submitForm)
+              }
+            />
+            {inputStartedPassword && <ShowValidate validate={messagePassword} />}
+          </div>
 
-            <div className={styles.inputContainer}>
-              <Field
-                component={FormikTextField}
-                type={showPassword ? 'text' : 'password'}
-                label="Password"
-                name="password"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                helperText={<ErrorMessage name="password" />}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                onFocus={(): void => setInputStartedPassword(true)}
-              />
+          <div className={styles.btnLogin}>
+            <Button
+              disabled={isSubmitting || !allFieldsValid}
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={submitForm}
+            >
+              Sign in
+            </Button>
+          </div>
 
-              {inputStartedPassword && <ShowValidate validate={messagePassword} />}
-            </div>
+          <div className={styles.lineContainer}>
+            <div className={styles.line}></div>
+            <div className={styles.text}>or</div>
+          </div>
 
-            <div className={styles.btnLogin}>
-              <Button
-                disabled={isSubmitting || !allFieldsValid}
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={submitForm}
-              >
-                Sign in
-              </Button>
-            </div>
-            <div className={styles.lineContainer}>
-              <div className={styles.line}></div>
-              <div className={styles.text}>or</div>
-            </div>
-            <Link to="/registration">
-              <Button variant="outlined" fullWidth color="primary">
-                Sign up
-              </Button>
-            </Link>
-          </Form>
-        )}
-      </Formik>
-    </>
+          <Link to="/registration">
+            <Button variant="outlined" fullWidth color="primary">
+              Sign up
+            </Button>
+          </Link>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

@@ -25,12 +25,14 @@ type ProductStoreType = {
   currentProduct: ProductType | null;
   categories: ExtendedCategory[];
   error: null | string;
+  sortState: SortOption;
+  searchValue: string;
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
-  sortState: SortOption;
   setSortState: (value: SortOption) => void;
   categoryIdByName: (nameCategory: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
+  setSearchValue: (data: string) => void;
   isFilterSize: boolean;
   isFilterColor: boolean;
   isColorAttribute: string;
@@ -48,6 +50,7 @@ const createProductStore = (): ProductStoreType => {
     isAppLoading: false,
     isProductsLoading: false,
     isProductLoading: false,
+    searchValue: '',
     products: [] as ProductType[],
     currentProduct: {} as ProductType,
     categories: [] as ExtendedCategory[],
@@ -250,6 +253,9 @@ const createProductStore = (): ProductStoreType => {
     updateFilterColor(data: string[]): void {
       store.filterColors = [...data];
     },
+    setSearchValue(data: string): void{
+      store.searchValue = data
+    }
   };
 
   makeAutoObservable(store);
