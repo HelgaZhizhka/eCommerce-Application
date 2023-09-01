@@ -121,7 +121,7 @@ const createUserStore = (): UserStoreType => {
     },
   };
 
-  makeAutoObservable(store); 
+  makeAutoObservable(store);
 
   reaction(
     () => store.loggedIn,

@@ -1,10 +1,11 @@
 import { ThemeOptions, createTheme } from '@mui/material/styles';
 
-const getCSSVariableValue = (name: string): string => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+const getCSSVariableValue = (name: string): string =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const colorOrange = getCSSVariableValue('--orange');
 const colorLightOrange = getCSSVariableValue('--orange-light');
 const colorWhite = getCSSVariableValue('--white');
-const colorLightWhite  = getCSSVariableValue('--light-white');
+const colorLightWhite = getCSSVariableValue('--light-white');
 const colorBlack = getCSSVariableValue('--black');
 const colorGreen = getCSSVariableValue('--green');
 const colorBlue = getCSSVariableValue('--blue');
@@ -13,9 +14,8 @@ const stateDanger = getCSSVariableValue('--state-error');
 const stateSuccess = getCSSVariableValue('--state-success');
 const colorPurple = getCSSVariableValue('--purple');
 
-
 const commonHeadingStyles = {
-  letterSpacing: '0.64px', 
+  letterSpacing: '0.64px',
 };
 
 const lightTheme = createTheme({
@@ -120,7 +120,6 @@ const lightTheme = createTheme({
   },
 } as ThemeOptions);
 
-
 const darkTheme = createTheme({
   ...lightTheme,
   palette: {
@@ -162,6 +161,5 @@ const darkTheme = createTheme({
     },
   },
 });
-
 
 export { lightTheme, darkTheme };

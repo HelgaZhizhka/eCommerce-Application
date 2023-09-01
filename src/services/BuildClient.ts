@@ -45,7 +45,7 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
   return apiRoot;
 }
 
-export function apiWithRefreshTokenFlow(token: string) {
+export function apiWithRefreshTokenFlow(token: string): ByProjectKeyRequestBuilder {
   const refreshTokenFlowOptions = {
     host: hostAUTH,
     projectKey,

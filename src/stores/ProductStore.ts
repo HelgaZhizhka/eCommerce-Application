@@ -1,8 +1,9 @@
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction } from 'mobx';
 
+import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
-import { getCategories, getProductByKey, getProductsByCategory } from '../services/productService';
+import { getCategories, getProductByFilter, getProductByKey, getProductsByCategory } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 
 type ProductType = {
@@ -25,16 +26,25 @@ type ProductStoreType = {
   currentProduct: ProductType | null;
   categories: ExtendedCategory[];
   error: null | string;
+  sortState: SortOption;
+  searchValue: string;
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
-  sortState: SortOption;
   setSortState: (value: SortOption) => void;
   categoryIdByName: (nameCategory: string) => string | undefined;
+  getFetchedProducts: (fetchedProducts: ProductProjection[]) => ProductType[];
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
+  setSearchValue: (data: string) => void;
   isFilterSize: boolean;
   isFilterColor: boolean;
   isColorAttribute: string;
   isSizeAttribute: string;
+  getFilteredProducts: (category: string) => Promise<void>;
+  filterSizes: string[];
+  filterColors: string[];
+  setFilterOptions: () => Record<string, string[]>[];
+  updateFilterSize: (data: string[]) => void;
+  updateFilterColor: (data: string[]) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -42,15 +52,18 @@ const createProductStore = (): ProductStoreType => {
     isAppLoading: false,
     isProductsLoading: false,
     isProductLoading: false,
+    searchValue: '',
     products: [] as ProductType[],
     currentProduct: {} as ProductType,
     categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
-    isFilterSize: false,
-    isFilterColor: false,
+    isFilterSize: true,
+    isFilterColor: true,
     isColorAttribute: '',
     isSizeAttribute: '',
+    filterSizes: [] as string[],
+    filterColors: [] as string[],
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -109,59 +122,67 @@ const createProductStore = (): ProductStoreType => {
       return undefined;
     },
 
+    getFetchedProducts(fetchedProducts: ProductProjection[]): ProductType[] {
+      const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
+        const obj = {} as ProductType;
+        obj.key = `${item.key}`;
+        obj.productName = `${item.name?.en}`;
+        obj.description = `${item.description?.en}`;
+
+        if (item.masterVariant.prices?.length) {
+          obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
+          obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
+          obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
+
+          if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+        }
+
+        if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
+        if (item.variants.length > 0) {
+          if (item.variants[0].attributes?.length) {
+            const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
+            const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
+
+            const colorAttribute =
+              item.variants
+                .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
+                .find((attr) => attr !== undefined)?.name || '';
+
+            const sizeAttribute =
+              item.variants
+                .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
+                .find((attr) => attr !== undefined)?.name || '';
+
+            runInAction(() => {
+              store.isFilterColor = isColor;
+              store.isFilterSize = isSize;
+              store.isColorAttribute = colorAttribute;
+              store.isSizeAttribute = sizeAttribute;
+            });
+          }
+        }
+        acc.push(obj);
+
+        return acc;
+      }, [] as ProductType[]);
+
+      return productsList;
+    },
+
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
         store.isProductsLoading = true;
-        store.isFilterColor = false;
-        store.isFilterSize = false;
+        // store.isFilterColor = false;
+        // store.isFilterSize = false;
       });
 
       try {
         if (id === undefined) return;
 
         const fetchedProductsByCategory = await getProductsByCategory(id);
-        const productsList: ProductType[] = fetchedProductsByCategory.reduce((acc, item) => {
-          const obj = {} as ProductType;
-          obj.key = `${item.key}`;
-          obj.productName = `${item.name?.en}`;
-          obj.description = `${item.description?.en}`;
-
-          if (item.masterVariant.prices?.length) {
-            obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
-            obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
-            obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
-
-            if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
-          }
-
-          if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
-          if (item.variants.length > 0) {
-            if (item.variants[0].attributes?.length) {
-              const isColor = !!item.variants[0].attributes.filter((atr) => atr.name.includes('color')).length;
-              const isSize = !!item.variants[0].attributes.filter((atr) => atr.name.includes('size')).length;
-
-              const colorAttribute = item.variants
-              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('color')))
-              .find((attr) => attr !== undefined)?.name || '';
-
-              const sizeAttribute = item.variants
-              .map((attr) => (attr.attributes || []).find((atr) => atr.name.includes('size')))
-              .find((attr) => attr !== undefined)?.name || '';
-
-              runInAction(() => {
-                store.isFilterColor = isColor;
-                store.isFilterSize = isSize;
-                store.isColorAttribute = colorAttribute;
-                store.isSizeAttribute = sizeAttribute;
-              });
-            }
-          }
-          acc.push(obj);
-
-          return acc;
-        }, [] as ProductType[]);
 
         runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProductsByCategory);
           store.products = [...productsList];
         });
       } catch (err) {
@@ -212,6 +233,57 @@ const createProductStore = (): ProductStoreType => {
           store.isProductLoading = false;
         });
       }
+    },
+
+    async getFilteredProducts(category: string): Promise<void> {
+      const data = store.setFilterOptions();
+      const categoryId = store.categoryIdByName(category);
+
+      if (!categoryId) return;
+
+      const fetchedProductsByFilter = await getProductByFilter(data, categoryId);
+
+      runInAction(() => {
+        store.isProductsLoading = true;
+      });
+
+      try {
+        runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProductsByFilter);
+          store.products = [...productsList];
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      } finally {
+        runInAction(() => {
+          store.isProductsLoading = false;
+        });
+      }
+    },
+
+    setFilterOptions(): Record<string, string[]>[] {
+      const filterData = [
+        {
+          [store.isColorAttribute]: store.filterColors,
+        },
+        {
+          [store.isSizeAttribute]: store.filterSizes,
+        },
+      ];
+      return filterData;
+    },
+
+    updateFilterSize(data: string[]): void {
+      store.filterSizes = [...data];
+    },
+
+    updateFilterColor(data: string[]): void {
+      store.filterColors = [...data];
+    },
+    setSearchValue(data: string): void {
+      store.searchValue = data;
     },
   };
 

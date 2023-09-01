@@ -19,7 +19,7 @@
   text-align: center;
   padding: 1rem;
 
-  &:nth-child(1){
+  &:nth-child(1) {
     background-color: var(--blue);
   }
 
@@ -38,7 +38,7 @@
   &:nth-child(5) {
     background-color: var(--purple);
   }
-  
+
   &:nth-child(6) {
     background-color: var(--pink);
   }
