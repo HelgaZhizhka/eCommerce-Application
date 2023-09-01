@@ -45,23 +45,18 @@ export async function getProductByKey(key: string): Promise<Product> {
 
 export async function getProductByFilter(filters: object[], categoryID: string): Promise<ProductProjectionPagedSearchResponse> {
   const visitor = apiWithClientCredentialsFlow();
-  console.log(Object.values(filters[0]), categoryID)
-  // const filterArray = variants.attributes.${}
-  let filterPropertiesColors;
-  let filterPropertiesSize;
-  const filterPropertiescategoryID = `categories.id:subtree("${categoryID}")`;
 
+  const filterPropertiescategoryID = `categories.id:subtree("${categoryID}")`;
   const filterProperties = [];
-  if (Object.values(filters[0])[0].length) {
-    filterPropertiesColors = `variants.attributes.color-clothes.key:${Object.values(filters[0]).map(item => item.map(item1 => `"${item1}"`)).join(",")}`;
-    filterProperties.push(filterPropertiesColors)
+
+  const filtersCounter = Object.values(filters[0]).length;
+
+  for (let i = 0; i < filtersCounter; i+= 1) {
+    const filter = `variants.attributes.${Object.keys(filters[i])}.key:${Object.values(filters[i]).map(item => item.map((item1: string) => `"${item1}"`)).join(",")}`;
+    filterProperties.push(filter);
   }
-  if (Object.values(filters[1])[0].length) {
-    filterPropertiesSize = `variants.attributes.size-clothes.key:${Object.values(filters[1]).map(item => item.map(item1 => `"${item1}"`)).join(",")}`;
-    filterProperties.push(filterPropertiesSize)
-  }
-  filterProperties.push(filterPropertiescategoryID)
-  console.log(Object.values(filters[1])[0]);
+
+  filterProperties.push(filterPropertiescategoryID);
 
   const response = await visitor
     .productProjections()
@@ -75,17 +70,4 @@ export async function getProductByFilter(filters: object[], categoryID: string):
     )
     .execute()
   return response.body
-
-//   {
-//     "color-clothes": [
-//         "Green",
-//         "Orange"
-//     ]
-// }
-// {
-//   "color-clothes": [
-//       "Green",
-//       "Orange"
-//   ]
-// }
 }
