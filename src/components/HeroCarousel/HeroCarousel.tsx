@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { Navigation, Autoplay, EffectFade, Scrollbar } from 'swiper/modules';
@@ -48,15 +49,16 @@ const HeroCarousel: React.FC = () => (
         <div className={styles.content}>
           <h2 className={styles.title}>-15%</h2>
           <p className={styles.description}>Hot discounts on t-shirts this month!</p>
-
-          <Button
-            className={styles.button}
-            variant="contained"
-            color="primary"
-            sx={{ mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-          >
-            Want
-          </Button>
+          <Link to="/category/clothes/t-shirts">
+            <Button
+              className={styles.button}
+              variant="contained"
+              color="primary"
+              sx={{ mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+            >
+              Want
+            </Button>
+          </Link>
         </div>
         <picture>
           <source media={`(max-width: ${lightTheme.breakpoints.values.md - 1}px)`} srcSet={fon1Mob} />
@@ -78,13 +80,15 @@ const HeroCarousel: React.FC = () => (
           <div className={styles.contentWrapper}>
             <h2 className={styles.title}>-30%</h2>
             <p className={styles.description}>SuperHot discounts on DrinkWare this week!</p>
-            <Button
-              className={styles.button}
-              variant="contained"
-              sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-            >
-              Want
-            </Button>
+            <Link to="/category/drinkware">
+              <Button
+                className={styles.button}
+                variant="contained"
+                sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+              >
+                Want
+              </Button>
+            </Link>
           </div>
         </div>
         <picture>
@@ -113,13 +117,15 @@ const HeroCarousel: React.FC = () => (
           <div className={styles.contentWrapper}>
             <h2 className={styles.title}>New</h2>
             <p className={styles.description}>Don&apos;t miss the new stickers for your creativity!</p>
-            <Button
-              className={styles.button}
-              variant="contained"
-              sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
-            >
-              Want
-            </Button>
+            <Link to="/category/office/stickers">
+              <Button
+                className={styles.button}
+                variant="contained"
+                sx={{ color: 'var(--white)', mt: '10px', fontWeight: '700', fontSize: '1.25rem' }}
+              >
+                Want
+              </Button>
+            </Link>
           </div>
         </div>
         <picture>

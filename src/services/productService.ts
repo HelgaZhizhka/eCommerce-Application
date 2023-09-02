@@ -1,8 +1,6 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import {
-  Product,
-  ProductProjection
-} from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
@@ -32,6 +30,18 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
     .execute();
 
   return response.body.results;
+}
+
+export async function getProductsTypeByCategory(key: string): Promise<AttributeDefinition[] | undefined> {
+  const visitor = apiWithClientCredentialsFlow();
+
+  const response = await visitor
+    .productTypes()
+    .withKey({ key: `${key}` })
+    .get()
+    .execute();
+
+  return response.body.attributes;
 }
 
 export async function getProductByKey(key: string): Promise<Product> {
