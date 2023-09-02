@@ -1,5 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { useEffect, useState, MouseEvent } from 'react';
+import { observer } from 'mobx-react-lite';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -23,7 +24,8 @@ type Params = {
 };
 
 const Catalog: React.FC = () => {
-  const { isFilterSize, isFilterColor } = productStore;
+  const { isFilterSize, isFilterColor, fetchProductsByCategory, categoryIdByName, fetchProductsTypeByCategory } =
+    productStore;
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
@@ -50,16 +52,18 @@ const Catalog: React.FC = () => {
       return;
     }
 
-    let id = productStore.categoryIdByName(categoryId);
+    fetchProductsTypeByCategory(categoryId);
+
+    let id = categoryIdByName(categoryId);
 
     if (subcategoryId) {
-      id = productStore.categoryIdByName(subcategoryId);
+      id = categoryIdByName(subcategoryId);
     }
 
     if (id) {
-      productStore.fetchProductsByCategory(id);
+      fetchProductsByCategory(id);
     }
-  }, [categoryId, subcategoryId]);
+  }, [categoryId, subcategoryId, fetchProductsByCategory, fetchProductsTypeByCategory, categoryIdByName]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
@@ -122,4 +126,4 @@ const Catalog: React.FC = () => {
   );
 };
 
-export default Catalog;
+export default observer(Catalog);
