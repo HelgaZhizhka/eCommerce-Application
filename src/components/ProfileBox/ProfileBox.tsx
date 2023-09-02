@@ -14,7 +14,7 @@ type Props = {
   email?: string;
   birthDate: string;
   shippingAddresses: Address[];
-  billingAddresses?: Address[];
+  billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
   defaultBillingAddress?: Address | null;
 };

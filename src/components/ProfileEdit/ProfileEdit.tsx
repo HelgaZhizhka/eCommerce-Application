@@ -1,12 +1,11 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { Address } from '@commercetools/platform-sdk';
 import Button from '@mui/material/Button';
-import { Form, Formik } from 'formik';
 
 import styles from './ProfileEdit.module.scss';
-import { ProfilePersonalInfo } from '../baseComponents/ProfilePersonalInfo';
-import { validationSchema } from './validate';
-import { ProfileShippingAddress } from '../baseComponents/ProfileShippingAdress';
+import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
+import { ProfileAddress } from '../ProfileShippingAdress';
+import { ModalChangePassword } from '../baseComponents/ModalChangePassword';
 
 type Props = {
   className?: string;
@@ -16,7 +15,7 @@ type Props = {
   lastName?: string;
   birthDate: string;
   shippingAddresses: Address[];
-  billingAddresses?: Address[];
+  billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
   defaultBillingAddress?: Address | null;
 };
@@ -32,62 +31,84 @@ const ProfileEdit: React.FC<Props> = ({
   defaultShippingAddress,
   defaultBillingAddress,
 }) => {
-  console.log('1');
+  const [openAddressModal, setOpenAddressModal] = useState(false);
+
+  const handleOpenAddressModal = (): void => setOpenAddressModal(true);
+
+  const handleCloseAddressModal = (): void => setOpenAddressModal(false);
 
   return (
     <div className={styles.root}>
       <Button
-        sx={{ marginLeft: 'auto', fontSize: '24px' }}
-        variant="text"
-        color="primary"
+        variant="outlined"
+        sx={{
+          mt: '15px',
+          ml: 'auto',
+          width: '240px',
+          height: '60px',
+          borderColor: 'orange',
+          color: 'orange',
+          fontSize: '1.2rem',
+          fontWeight: 600,
+        }}
         onClick={(): void => onModeChange(false)}
       >
         Cancel
       </Button>
 
-      <Formik
+      <ProfilePersonalInfo
         initialValues={{
           firstName: firstName || '',
           lastName: lastName || '',
           birthDate: birthDate || '',
-          shippingStreetName: shippingAddresses[0]?.streetName || '',
-          shippingCityName: shippingAddresses[0]?.city || '',
-          shippingPostalCodeName: shippingAddresses[0]?.postalCode || '',
-          shippingCountryName: shippingAddresses[0]?.country,
-          shippingCheckBox: !!defaultShippingAddress,
         }}
-        validationSchema={validationSchema}
-        enableReinitialize={true}
-        onSubmit={(values, { setSubmitting }): void => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 500);
-        }}
-      >
-        {({ isValid }): ReactElement => (
-          <Form>
-            <ProfilePersonalInfo />
-            <ProfileShippingAddress />
+      />
 
-            <div className={styles.buttonWrapper}>
-              <Button
-                sx={{
-                  fontSize: '24px',
-                }}
-                variant="contained"
-                type="submit"
-                disabled={!isValid}
-              >
-                Save changes
-              </Button>
-              <Button sx={{ fontSize: '24px' }} variant="outlined" color="primary">
-                Change password
-              </Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+      {shippingAddresses.map((address, index) => (
+        <ProfileAddress
+          key={index}
+          initialValues={{
+            name: 'Shipping',
+            id: address.id || '',
+            street: address.streetName || '',
+            city: address.city || '',
+            postalCode: address.postalCode || '',
+            country: address.country || '',
+            checkBox: !!defaultShippingAddress,
+          }}
+        />
+      ))}
+
+      {billingAddresses.map((address, index) => (
+        <ProfileAddress
+          key={index}
+          initialValues={{
+            name: 'Billing',
+            id: address.id || '',
+            street: address.streetName || '',
+            city: address.city || '',
+            postalCode: address.postalCode || '',
+            country: address.country || '',
+            checkBox: !!defaultBillingAddress,
+          }}
+        />
+      ))}
+
+      <div className={styles.buttonWrapper}>
+        <Button
+          sx={{
+            fontSize: '24px',
+          }}
+          variant="contained"
+          onClick={handleOpenAddressModal}
+        >
+          Add address
+        </Button>
+        <Button sx={{ fontSize: '24px' }} variant="outlined" color="primary">
+          Change password
+        </Button>
+      </div>
+      <ModalChangePassword openAddressModal={openAddressModal} handleCloseAddressModal={handleCloseAddressModal} />
     </div>
   );
 };
