@@ -3,6 +3,60 @@
 @import '../../styles/abstract/functions';
 
 .root {
-  padding: 10px;
-  
+  position: relative;
+}
+
+.header {
+  font-size: 18px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 24px;
+  }
+}
+
+.headerTitle {
+  margin-bottom: 20px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.section {
+  position: relative;
+  padding-right: 40px;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+.contentItem {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  background: var(--page-bg);
+  border-radius: 2px;
+}
+
+.contentTitle {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.iconDelete {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-20%);
+  z-index: 10;
+}
+
+.iconEdit {
+  color: var(--state-primary);
 }

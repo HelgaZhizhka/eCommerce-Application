@@ -82,7 +82,6 @@ export const validate = (
     updateMessage('postalCodeBilling', codeShippingValid, false);
   }
 
-
   if (!/^\d{5}$/.test(values.postalCodeBilling)) {
     updateMessage('postalCodeBilling', codeShippingValidDigits, true);
   } else {

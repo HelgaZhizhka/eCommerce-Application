@@ -5,4 +5,3 @@ export enum SortOption {
   PriceLowToHigh = 'Price, low to high',
   PriceHighToLow = 'Price, high to low',
 }
-

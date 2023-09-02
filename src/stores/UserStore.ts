@@ -3,7 +3,8 @@ import { Customer } from "@commercetools/platform-sdk/dist/declarations/src/gene
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import setAdress from '../services/setCustomersDetails';
+import { setAdress, getUser} from '../services/setCustomersDetails';
+
 
 
 type UserStoreType = {
@@ -21,6 +22,7 @@ type UserStoreType = {
   resetRegistration: () => void;
   setEditMode: (isEditMode: boolean) => void;
   saveUserData: (data: object) => void;
+  getUserProfile: () => Promise<void>;
 };
 
 const createUserStore = (): UserStoreType => {
@@ -37,12 +39,15 @@ const createUserStore = (): UserStoreType => {
         const response = await customerLogin(email, password);
         runInAction(() => {
           store.error = null;
+           console.log(response);
+
           if (response.statusCode === 200) {
             store.loggedIn = true;
             store.userProfile = {
               ...response.body.customer
             }
           }
+
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
           }
@@ -63,12 +68,10 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
-            store.userProfile = {
-              ...response.body.customer
-            }
             if (data.email && data.password) {
               setAdress(data.email, data.password);
             }
+
             store.isRegistration = true;
           }
           if (response.statusCode === 400) {
@@ -108,10 +111,20 @@ const createUserStore = (): UserStoreType => {
 
     saveUserData(data: object): void {
       store.userData = { ...store.userData, ...data };
-    },   
+    },
+
+    async getUserProfile(): Promise<void> {
+      const userProfile = await getUser()
+
+      if (!userProfile) return;
+      
+      store.userProfile = {
+        ...userProfile,
+      };
+    },
   };
 
-  makeAutoObservable(store); 
+  makeAutoObservable(store);
 
   reaction(
     () => store.loggedIn,
