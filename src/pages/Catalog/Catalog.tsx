@@ -30,6 +30,8 @@ const Catalog: React.FC = () => {
     fetchProductsByCategory,
     categoryIdByName,
     fetchProductsTypeByCategory,
+    getFilteredProducts,
+    getFilteredProductsByPrice,
     clearFilterData,
   } = productStore;
 
@@ -39,22 +41,6 @@ const Catalog: React.FC = () => {
 
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
-
-  const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElFilter(event.currentTarget);
-  };
-
-  const handleCloseFilter = (): void => {
-    setAnchorElFilter(null);
-  };
-
-  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElSort(event.currentTarget);
-  };
-
-  const handleCloseSort = (): void => {
-    setAnchorElSort(null);
-  };
 
   useEffect(() => {
     if (!categoryId) {
@@ -77,6 +63,30 @@ const Catalog: React.FC = () => {
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
   }
+
+  const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
+    setAnchorElFilter(event.currentTarget);
+  };
+
+  const handleCloseFilter = (): void => {
+    setAnchorElFilter(null);
+  };
+
+  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
+    setAnchorElSort(event.currentTarget);
+  };
+
+  const handleCloseSort = (): void => {
+    setAnchorElSort(null);
+  };
+
+  const handleChange = (): void => {
+    getFilteredProducts(subcategoryId || categoryId);
+  };
+
+  const handleChangePrice = (): void => {
+    getFilteredProductsByPrice(subcategoryId || categoryId);
+  };
 
   const handleResetFilters = (): void => {
     clearFilterData();
@@ -119,10 +129,10 @@ const Catalog: React.FC = () => {
                 isFilterSize={isFilterSize}
                 isFilterColor={isFilterColor}
                 anchorElFilter={anchorElFilter}
-                categoryId={categoryId}
-                subcategoryId={subcategoryId}
                 handleCloseFilter={handleCloseFilter}
                 onReset={handleResetFilters}
+                onChange={handleChange}
+                onChangePrice={handleChangePrice}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
@@ -138,9 +148,9 @@ const Catalog: React.FC = () => {
                 isFilterSize={isFilterSize}
                 isFilterColor={isFilterColor}
                 className={`${styles.sticky} ${styles.filter}`}
-                categoryId={categoryId}
-                subcategoryId={subcategoryId}
                 onReset={handleResetFilters}
+                onChange={handleChange}
+                onChangePrice={handleChangePrice}
               />
             </aside>
           )}

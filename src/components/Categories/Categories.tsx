@@ -34,18 +34,43 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
     link: variant !== 'filter',
   });
 
-  const { categories } = productStore;
+  const { categories, getProductsByDiscount } = productStore;
+
+  const enhancedCategories = [
+    {
+      id: 'saleId',
+      slug: { en: 'sale' },
+      name: { en: 'Sale' },
+      subcategories: [],
+    },
+    ...categories,
+  ];
+
+  const handleCategoryClick = (slug: string): void => {
+    if (slug === 'sale') {
+      getProductsByDiscount();
+    }
+
+    if (onClose) {
+      onClose();
+    }
+  };
 
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
-      {categories.map((category) => {
+      {enhancedCategories.map((category) => {
         const IconComponent = categoryIcons[category.slug.en as CategorySlug];
 
         return (
           <li key={category.id} className={styles.menuItem}>
             {variant === 'filter' ? (
               <>
-                <ListItemButton sx={{ pl: 4 }} component={Link} to={`/category/${category.slug.en}`} onClick={onClose}>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  component={Link}
+                  to={`/category/${category.slug.en}`}
+                  onClick={(): void => handleCategoryClick(category.slug.en)}
+                >
                   <ListItemIcon>{IconComponent && <IconComponent />}</ListItemIcon>
                   <ListItemText primary={category.name.en} />
                 </ListItemButton>
@@ -65,7 +90,7 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
                     [styles.brand]: category.slug.en === 'sale',
                   })}
                   to={`/category/${category.slug.en}`}
-                  onClick={onClose ? (): void => onClose() : undefined}
+                  onClick={(): void => handleCategoryClick(category.slug.en)}
                 >
                   <span>{category.name.en}</span>
                 </Link>

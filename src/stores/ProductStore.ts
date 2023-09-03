@@ -5,10 +5,12 @@ import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations
 import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import {
   getCategories,
-  getProductByFilter,
+  getProductsByFilter,
   getProductByKey,
   getProductsByCategory,
+  getProductsByPrice,
   getProductsTypeByCategory,
+  getProductsDiscounted,
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 
@@ -40,6 +42,7 @@ type ProductStoreType = {
   isSizeAttribute: string;
   filterSizes: string[];
   filterColors: string[];
+  filterPrice: number | number[];
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
@@ -49,9 +52,12 @@ type ProductStoreType = {
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
   setSearchValue: (data: string) => void;
   getFilteredProducts: (category: string) => Promise<void>;
+  getFilteredProductsByPrice: (category: string) => Promise<void>;
+  getProductsByDiscount: () => Promise<void>;
   setFilterOptions: () => Record<string, string[]>[];
   updateFilterSize: (data: string[]) => void;
   updateFilterColor: (data: string[]) => void;
+  updateFilterPrice: (data: number[]) => void;
   clearFilterData: () => void;
 };
 
@@ -72,6 +78,7 @@ const createProductStore = (): ProductStoreType => {
     isSizeAttribute: '',
     filterSizes: [] as string[],
     filterColors: [] as string[],
+    filterPrice: [10, 80] as number[],
 
     setSortState(value: SortOption): void {
       store.sortState = value;
@@ -186,10 +193,10 @@ const createProductStore = (): ProductStoreType => {
       try {
         if (id === undefined) return;
 
-        const fetchedProductsByCategory = await getProductsByCategory(id);
+        const fetchedProducts = await getProductsByCategory(id);
 
         runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProductsByCategory);
+          const productsList = store.getFetchedProducts(fetchedProducts);
           store.products = [...productsList];
         });
       } catch (err) {
@@ -248,7 +255,7 @@ const createProductStore = (): ProductStoreType => {
 
       if (!categoryId) return;
 
-      const fetchedProductsByFilter = await getProductByFilter(data, categoryId);
+      const fetchedProductsByFilter = await getProductsByFilter(data, categoryId);
 
       runInAction(() => {
         store.isProductsLoading = true;
@@ -257,6 +264,58 @@ const createProductStore = (): ProductStoreType => {
       try {
         runInAction(() => {
           const productsList = store.getFetchedProducts(fetchedProductsByFilter);
+          store.products = [...productsList];
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      } finally {
+        runInAction(() => {
+          store.isProductsLoading = false;
+        });
+      }
+    },
+
+    async getFilteredProductsByPrice(category: string): Promise<void> {
+      const categoryId = store.categoryIdByName(category);
+
+      const data = store.filterPrice;
+
+      if (!categoryId) return;
+
+      const fetchedProducts = await getProductsByPrice(data, categoryId);
+
+      runInAction(() => {
+        store.isProductsLoading = true;
+      });
+
+      try {
+        runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProducts);
+          store.products = [...productsList];
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      } finally {
+        runInAction(() => {
+          store.isProductsLoading = false;
+        });
+      }
+    },
+
+    async getProductsByDiscount(): Promise<void> {
+      const fetchedProducts = await getProductsDiscounted();
+
+      runInAction(() => {
+        store.isProductsLoading = true;
+      });
+
+      try {
+        runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProducts);
           store.products = [...productsList];
         });
       } catch (err) {
@@ -314,6 +373,10 @@ const createProductStore = (): ProductStoreType => {
       store.filterColors = [...data];
     },
 
+    updateFilterPrice(data: number[]): void {
+      store.filterPrice = [...data];
+    },
+
     clearFilterData(): void {
       store.filterColors = [];
       store.filterSizes = [];
@@ -321,6 +384,7 @@ const createProductStore = (): ProductStoreType => {
       store.isFilterColor = false;
       store.isColorAttribute = '';
       store.isSizeAttribute = '';
+      store.filterPrice = [10, 80];
     },
 
     setSearchValue(data: string): void {

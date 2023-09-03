@@ -20,10 +20,6 @@ export const currencies = [
     value: 'EUR',
     label: '€',
   },
-  {
-    value: 'UAH',
-    label: '₴',
-  },
 ];
 
 export const contacts = {

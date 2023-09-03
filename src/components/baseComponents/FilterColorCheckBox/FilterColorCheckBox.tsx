@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import CheckIcon from '@mui/icons-material/Check';
-import { observer } from 'mobx-react-lite';
 
 import { productStore } from '../../../stores';
 
 type Props = {
   radioButton?: boolean;
   className?: string;
-  categoryId: string;
-  subcategoryId?: string;
+  onChange?: () => void;
 };
 
 enum ColorOptions {
@@ -30,8 +29,8 @@ enum ColorOptions {
 const colorOptionValues = Object.values(ColorOptions);
 const colorNames = Object.keys(ColorOptions);
 
-const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
-  const { updateFilterColor, filterColors, getFilteredProducts } = productStore;
+const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
+  const { updateFilterColor, filterColors } = productStore;
   const [values, setValues] = useState<string[]>(filterColors);
   const [active, setActive] = useState<boolean>(false);
 
@@ -42,8 +41,11 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcate
     }
 
     updateFilterColor(values);
-    getFilteredProducts(subcategoryId || categoryId);
-  }, [values, updateFilterColor, getFilteredProducts, subcategoryId, categoryId, active]);
+
+    if (onChange) {
+      onChange();
+    }
+  }, [values, updateFilterColor, onChange, active]);
 
   const toggleOptions = (color: string): void => {
     if (values.includes(color)) {

@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
+
+import { productStore } from '../../../stores';
 
 function valueText(value: number): string {
   return `${value}`;
 }
 
-const FilterPrice: React.FC = () => {
-  const [value, setValue] = useState<number[]>([20, 37]);
+type Props = {
+  className?: string;
+  onChangePrice?: () => void;
+};
+
+const FilterPrice: React.FC<Props> = ({ onChangePrice }) => {
+  const { updateFilterPrice, filterPrice } = productStore;
+
+  const [value, setValue] = useState<number[]>(filterPrice as number[]);
+  const [active, setActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!active) {
+      setActive(true);
+      return;
+    }
+
+    setValue(filterPrice as number[]);
+  }, [filterPrice, active]);
 
   const handleChange = (event: Event, newValue: number | number[]): void => {
     setValue(newValue as number[]);
+    updateFilterPrice(newValue as number[]);
+  };
+
+  const handleChangeCommit = (): void => {
+    if (onChangePrice) {
+      onChangePrice();
+    }
   };
 
   return (
@@ -32,14 +59,15 @@ const FilterPrice: React.FC = () => {
           getAriaLabel={(): string => 'Price range'}
           value={value}
           onChange={handleChange}
+          onChangeCommitted={handleChangeCommit}
           valueLabelDisplay="auto"
           getAriaValueText={valueText}
-          // min={15} // Минимальное значение
-          // max={45} // Максимальное значение
+          min={5}
+          max={100}
         />
       </Box>
     </>
   );
 };
 
-export default FilterPrice;
+export default observer(FilterPrice);

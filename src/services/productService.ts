@@ -56,25 +56,24 @@ export async function getProductByKey(key: string): Promise<Product> {
   return response.body;
 }
 
-export async function getProductByFilter(filters: object[], categoryID: string): Promise<ProductProjection[]> {
+export async function getProductsByFilter(filters: object[], categoryID: string): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
 
-  const filterPropertiescategoryID = `categories.id:subtree("${categoryID}")`;
+  const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
   const filterProperties = [];
 
   if (!filters.length) return getProductsByCategory(categoryID);
 
   const filtersCounter = Object.values(filters).length;
 
-
   for (let i = 0; i < filtersCounter; i += 1) {
     const filter = `variants.attributes.${Object.keys(filters[i])}.key:${Object.values(filters[i])
       .map((item) => item.map((item1: string) => `"${item1}"`))
       .join(',')}`;
-      filterProperties.push(filter);
+    filterProperties.push(filter);
   }
 
-  filterProperties.push(filterPropertiescategoryID);
+  filterProperties.push(filterPropertiesCategoryID);
 
   const response = await visitor
     .productProjections()
@@ -85,5 +84,46 @@ export async function getProductByFilter(filters: object[], categoryID: string):
       },
     })
     .execute();
+  return response.body.results;
+}
+
+export async function getProductsByPrice(filter: object, categoryID: string): Promise<ProductProjection[]> {
+  const visitor = apiWithClientCredentialsFlow();
+
+  const from = +Object.values(filter)[0];
+  const to = +Object.values(filter)[1];
+  console.log(from, to);
+  const filterObj = `variants.price.centAmount:range(${from} to ${to})`;
+  const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
+
+  const response = await visitor
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        priceCurrency: 'EUR',
+        filter: 'variants.scopedPriceDiscounted:true',
+      },
+    })
+    .execute();
+
+  return response.body.results;
+}
+
+
+export async function getProductsDiscounted(): Promise<ProductProjection[]> {
+  const visitor = apiWithClientCredentialsFlow();
+
+  const response = await visitor
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        priceCurrency: 'EUR',
+        filter: 'variants.scopedPriceDiscounted:true',
+      },
+    })
+    .execute();
+
   return response.body.results;
 }
