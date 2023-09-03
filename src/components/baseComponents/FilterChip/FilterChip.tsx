@@ -27,14 +27,17 @@ const FilterChip: React.FC<Props> = ({ radioButton, categoryId, subcategoryId })
   const { updateFilterSize, filterSizes, getFilteredProducts } = productStore;
   const [activeChip, setActiveChip] = useState<string>('');
   const [activeChips, setActiveChips] = useState<string[]>(filterSizes);
+  const [active, setActive] = useState<boolean>(false);
 
   useEffect(() => {
-    if (activeChips.length) {
-      updateFilterSize(activeChips);
-
-      getFilteredProducts(subcategoryId || categoryId);
+    if (!active) {
+      setActive(true);
+      return;
     }
-  }, [activeChips]);
+
+    updateFilterSize(activeChips);
+    getFilteredProducts(subcategoryId || categoryId);
+  }, [activeChips, updateFilterSize, getFilteredProducts, subcategoryId, categoryId, active]);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {

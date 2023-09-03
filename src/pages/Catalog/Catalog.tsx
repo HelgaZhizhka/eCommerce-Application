@@ -24,14 +24,26 @@ type Params = {
 };
 
 const Catalog: React.FC = () => {
-  const { isFilterSize, isFilterColor, fetchProductsByCategory, categoryIdByName, fetchProductsTypeByCategory } =
-    productStore;
+  const {
+    isFilterSize,
+    isFilterColor,
+    fetchProductsByCategory,
+    categoryIdByName,
+    fetchProductsTypeByCategory,
+    clearFilterData,
+  } = productStore;
+
+  const { categoryId, subcategoryId } = useParams<Params>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
   const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
     setAnchorElFilter(event.currentTarget);
   };
+
   const handleCloseFilter = (): void => {
     setAnchorElFilter(null);
   };
@@ -39,13 +51,10 @@ const Catalog: React.FC = () => {
   const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
     setAnchorElSort(event.currentTarget);
   };
+
   const handleCloseSort = (): void => {
     setAnchorElSort(null);
   };
-
-  const { categoryId, subcategoryId } = useParams<Params>();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (!categoryId) {
@@ -68,6 +77,22 @@ const Catalog: React.FC = () => {
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
   }
+
+  const handleResetFilters = (): void => {
+    clearFilterData();
+
+    fetchProductsTypeByCategory(categoryId);
+
+    let id = categoryIdByName(categoryId);
+
+    if (subcategoryId) {
+      id = categoryIdByName(subcategoryId);
+    }
+
+    if (id) {
+      fetchProductsByCategory(id);
+    }
+  };
 
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
@@ -94,9 +119,10 @@ const Catalog: React.FC = () => {
                 isFilterSize={isFilterSize}
                 isFilterColor={isFilterColor}
                 anchorElFilter={anchorElFilter}
-                handleCloseFilter={handleCloseFilter}
                 categoryId={categoryId}
                 subcategoryId={subcategoryId}
+                handleCloseFilter={handleCloseFilter}
+                onReset={handleResetFilters}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
@@ -114,6 +140,7 @@ const Catalog: React.FC = () => {
                 className={`${styles.sticky} ${styles.filter}`}
                 categoryId={categoryId}
                 subcategoryId={subcategoryId}
+                onReset={handleResetFilters}
               />
             </aside>
           )}

@@ -20,6 +20,10 @@ enum ColorOptions {
   green = 'var(--filter-green)',
   blue = 'var(--filter-blue)',
   black = 'var(--filter-black)',
+  gray = 'var(--filter-gray)',
+  brown = 'var(--filter-brown)',
+  purple = 'var(--filter-purple)',
+  lightblue = 'var(--filter-lightblue)',
   multicolor = 'multicolor',
 }
 
@@ -29,13 +33,17 @@ const colorNames = Object.keys(ColorOptions);
 const FilterColorCheckBox: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
   const { updateFilterColor, filterColors, getFilteredProducts } = productStore;
   const [values, setValues] = useState<string[]>(filterColors);
+  const [active, setActive] = useState<boolean>(false);
 
   useEffect(() => {
-    if (values.length) {
-      updateFilterColor(values);
-      getFilteredProducts(subcategoryId || categoryId);
+    if (!active) {
+      setActive(true);
+      return;
     }
-  }, [values]);
+
+    updateFilterColor(values);
+    getFilteredProducts(subcategoryId || categoryId);
+  }, [values, updateFilterColor, getFilteredProducts, subcategoryId, categoryId, active]);
 
   const toggleOptions = (color: string): void => {
     if (values.includes(color)) {
