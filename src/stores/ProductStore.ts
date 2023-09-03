@@ -34,6 +34,12 @@ type ProductStoreType = {
   error: null | string;
   sortState: SortOption;
   searchValue: string;
+  isFilterSize: boolean;
+  isFilterColor: boolean;
+  isColorAttribute: string;
+  isSizeAttribute: string;
+  filterSizes: string[];
+  filterColors: string[];
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
@@ -42,16 +48,11 @@ type ProductStoreType = {
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
   setSearchValue: (data: string) => void;
-  isFilterSize: boolean;
-  isFilterColor: boolean;
-  isColorAttribute: string;
-  isSizeAttribute: string;
   getFilteredProducts: (category: string) => Promise<void>;
-  filterSizes: string[];
-  filterColors: string[];
   setFilterOptions: () => Record<string, string[]>[];
   updateFilterSize: (data: string[]) => void;
   updateFilterColor: (data: string[]) => void;
+  clearFilterData: () => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -65,8 +66,8 @@ const createProductStore = (): ProductStoreType => {
     categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
-    isFilterSize: true,
-    isFilterColor: true,
+    isFilterSize: false,
+    isFilterColor: false,
     isColorAttribute: '',
     isSizeAttribute: '',
     filterSizes: [] as string[],
@@ -163,18 +164,17 @@ const createProductStore = (): ProductStoreType => {
 
       const productTypes = await getProductsTypeByCategory(`${key}`);
 
-
       if (!productTypes) return;
 
-     const isColorAttribute = productTypes.filter((atr) => atr.name.includes('color'))[0]?.name || '';
-     const isSizeAttribute = productTypes.filter((atr) => atr.name.includes('size'))[0]?.name || '';
+      const isColorAttribute = productTypes.filter((atr) => atr.name.includes('color'))[0]?.name || '';
+      const isSizeAttribute = productTypes.filter((atr) => atr.name.includes('size'))[0]?.name || '';
 
-     runInAction(() => {
-       store.isSizeAttribute = isSizeAttribute;
-       store.isColorAttribute = isColorAttribute;
-       store.isFilterColor = !!isColorAttribute;
-       store.isFilterSize = !!isSizeAttribute;
-     });
+      runInAction(() => {
+        store.isSizeAttribute = isSizeAttribute;
+        store.isColorAttribute = isColorAttribute;
+        store.isFilterColor = !!isColorAttribute;
+        store.isFilterSize = !!isSizeAttribute;
+      });
     },
 
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
@@ -317,6 +317,10 @@ const createProductStore = (): ProductStoreType => {
     clearFilterData(): void {
       store.filterColors = [];
       store.filterSizes = [];
+      store.isFilterSize = false;
+      store.isFilterColor = false;
+      store.isColorAttribute = '';
+      store.isSizeAttribute = '';
     },
 
     setSearchValue(data: string): void {

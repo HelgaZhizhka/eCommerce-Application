@@ -62,13 +62,16 @@ export async function getProductByFilter(filters: object[], categoryID: string):
   const filterPropertiescategoryID = `categories.id:subtree("${categoryID}")`;
   const filterProperties = [];
 
-  const filtersCounter = Object.values(filters[0]).length;
+  if (!filters.length) return getProductsByCategory(categoryID);
+
+  const filtersCounter = Object.values(filters).length;
+
 
   for (let i = 0; i < filtersCounter; i += 1) {
     const filter = `variants.attributes.${Object.keys(filters[i])}.key:${Object.values(filters[i])
       .map((item) => item.map((item1: string) => `"${item1}"`))
       .join(',')}`;
-    filterProperties.push(filter);
+      filterProperties.push(filter);
   }
 
   filterProperties.push(filterPropertiescategoryID);
