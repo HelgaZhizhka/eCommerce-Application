@@ -8,7 +8,7 @@ type Props = {
   className?: string;
   editMode: boolean;
   onModeChange: (mode: boolean) => void;
-  onSaveChange: (data: object) => void;
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -39,6 +39,7 @@ const ProfileBox: React.FC<Props> = ({
         firstName={firstName}
         lastName={lastName}
         email={email}
+        birthDate={birthDate}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
         defaultShippingAddress={defaultShippingAddress}

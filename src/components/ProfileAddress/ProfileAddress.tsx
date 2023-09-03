@@ -14,6 +14,7 @@ const CustomCheckbox = styled(Checkbox)(() => ({
 }));
 
 type Props = {
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
   initialValues: {
     name: string;
     id: string;
@@ -25,11 +26,14 @@ type Props = {
   };
 };
 
-const ProfileAddress: React.FC<Props> = ({ initialValues }) => (
+const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => (
   <Box sx={{ p: '40px 0', borderBottom: '3px solid grey' }}>
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <h3>{initialValues.name} address:</h3>
-      <Button onClick={(): void => console.log(initialValues.id)} sx={{ fontSize: '20px' }}>
+      <Button
+        onClick={(): void => onSaveChange({ ...initialValues, action: 'removeAddress' })}
+        sx={{ fontSize: '20px' }}
+      >
         Delete address
       </Button>
     </Box>
@@ -38,7 +42,8 @@ const ProfileAddress: React.FC<Props> = ({ initialValues }) => (
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values): void => {
-        console.log(values);
+        console.log(initialValues);
+        onSaveChange({ ...values, action: 'changeAddress' });
       }}
     >
       {({ isValid }): ReactElement => (

@@ -2,6 +2,7 @@ import { Category } from '@commercetools/platform-sdk/dist/declarations/src/gene
 import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
+import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
 export async function getCategories(): Promise<Category[]> {
@@ -38,7 +39,11 @@ export async function getProductsTypeByCategory(key: string): Promise<AttributeD
   const response = await visitor
     .productTypes()
     .withKey({ key: `${key}` })
-    .get()
+    .get({
+      queryArgs: {
+        limit: 100,
+      },
+    })
     .execute();
 
   return response.body.attributes;
@@ -56,74 +61,80 @@ export async function getProductByKey(key: string): Promise<Product> {
   return response.body;
 }
 
-export async function getProductsByFilter(filters: object[], categoryID: string): Promise<ProductProjection[]> {
+export async function getProductsByFilter(
+  categoryID: string,
+  filtersAttributes: Record<string, string[]>[],
+  filterPrice?: number[],
+  sortDetail?: SortObject
+): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
+  console.log(filtersAttributes, filterPrice, sortDetail);
 
-  const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
-  const filterProperties = [];
+  const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
+  const filtersCounter = Object.values(filtersAttributes).length;
 
-  if (!filters.length) return getProductsByCategory(categoryID);
-
-  const filtersCounter = Object.values(filters).length;
+  let sortObj: string | undefined;
 
   for (let i = 0; i < filtersCounter; i += 1) {
-    const filter = `variants.attributes.${Object.keys(filters[i])}.key:${Object.values(filters[i])
-      .map((item) => item.map((item1: string) => `"${item1}"`))
+    const filter = `variants.attributes.${Object.keys(filtersAttributes[i])}.key:${Object.values(filtersAttributes[i])
+      .map((item) => item.map((item1) => `"${item1}"`))
       .join(',')}`;
     filterProperties.push(filter);
   }
 
-  filterProperties.push(filterPropertiesCategoryID);
+  if (filterPrice?.length) {
+    const from = filterPrice[0] * 100;
+    const to = filterPrice[1] * 100;
+    filterProperties.push(`variants.price.centAmount:range(${from} to ${to})`);
+  }
 
-  const response = await visitor
-    .productProjections()
-    .search()
-    .get({
-      queryArgs: {
-        filter: filterProperties,
-      },
-    })
-    .execute();
-  return response.body.results;
+  if (sortDetail?.key && sortDetail?.key !== 'default') {
+    const sortKey = sortDetail.key === 'name' ? 'name.en' : sortDetail.key;
+    sortObj = `${sortKey} ${sortDetail.order}`;
+  }
+
+
+  try {
+    const response = await visitor
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: filterProperties,
+          ...(sortObj ? { sort: sortObj } : {}),
+          limit: 100,
+        },
+      })
+      .execute();
+    return response.body.results;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
 }
 
-export async function getProductsByPrice(filter: object, categoryID: string): Promise<ProductProjection[]> {
-  const visitor = apiWithClientCredentialsFlow();
+// export async function sortProducts(sortDetail: SortObject, categoryID: string): Promise<ProductProjection[]> {
+//   const visitor = apiWithClientCredentialsFlow();
 
-  const from = +Object.values(filter)[0];
-  const to = +Object.values(filter)[1];
-  console.log(from, to);
-  const filterObj = `variants.price.centAmount:range(${from} to ${to})`;
-  const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
+//   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
 
-  const response = await visitor
-    .productProjections()
-    .search()
-    .get({
-      queryArgs: {
-        priceCurrency: 'EUR',
-        filter: 'variants.scopedPriceDiscounted:true',
-      },
-    })
-    .execute();
+// let sortObj = '';
 
-  return response.body.results;
-}
+// if (sortDetail.key) {
+//   const sortKey = sortDetail.key === 'name' ? 'name.en' : sortDetail.key;
+//   sortObj = `${sortKey} ${sortDetail.order}`;
+// }
 
+//   const response = await visitor
+//     .productProjections()
+//     .search()
+//     .get({
+//       queryArgs: {
+//         filter: filterPropertiesCategoryID,
+//         sort: sortObj,
+//       },
+//     })
+//     .execute();
 
-export async function getProductsDiscounted(): Promise<ProductProjection[]> {
-  const visitor = apiWithClientCredentialsFlow();
-
-  const response = await visitor
-    .productProjections()
-    .search()
-    .get({
-      queryArgs: {
-        priceCurrency: 'EUR',
-        filter: 'variants.scopedPriceDiscounted:true',
-      },
-    })
-    .execute();
-
-  return response.body.results;
-}
+//   return response.body.results;
+// }

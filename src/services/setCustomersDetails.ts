@@ -2,6 +2,8 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
+import { Address } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+
 import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
@@ -50,3 +52,48 @@ export const getUser = async (): Promise<Customer | null> => {
 
   return customerProfile.body;
 };
+
+
+export const removeAddress = async (address: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const body: MyCustomerUpdate = {
+    version: +`${address.version}`,
+    actions: [
+      {
+        action: 'removeAddress',
+        addressId: `${address.id}`
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute()
+
+  return response;
+}
+
+export const changeAddress = async (newAddress: Address & { version: number }): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const {city, country, postalCode, streetName, id, version} = newAddress
+
+  const body: MyCustomerUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        action: 'changeAddress',
+        addressId: `${id}`,
+        address: {
+          "streetName": `${streetName}`,
+          "postalCode": `${postalCode}`,
+          "city": `${city}`,
+          "country": `${country}`,
+        }
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute()
+
+  return response
+}

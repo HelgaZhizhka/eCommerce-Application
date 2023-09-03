@@ -9,7 +9,7 @@ import { productStore } from '../../../stores';
 type Props = {
   radioButton?: boolean;
   className?: string;
-  onChange?: () => void;
+  onChange?: (type?: string) => void;
 };
 
 enum ColorOptions {
@@ -45,7 +45,7 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
     if (onChange) {
       onChange();
     }
-  }, [values, updateFilterColor, onChange, active]);
+  }, [values]);
 
   const toggleOptions = (color: string): void => {
     if (values.includes(color)) {

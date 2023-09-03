@@ -31,7 +31,6 @@ const Catalog: React.FC = () => {
     categoryIdByName,
     fetchProductsTypeByCategory,
     getFilteredProducts,
-    getFilteredProductsByPrice,
     clearFilterData,
   } = productStore;
 
@@ -58,7 +57,7 @@ const Catalog: React.FC = () => {
     if (id) {
       fetchProductsByCategory(id);
     }
-  }, [categoryId, subcategoryId, fetchProductsByCategory, fetchProductsTypeByCategory, categoryIdByName]);
+  }, [categoryId, subcategoryId]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
@@ -80,12 +79,8 @@ const Catalog: React.FC = () => {
     setAnchorElSort(null);
   };
 
-  const handleChange = (): void => {
-    getFilteredProducts(subcategoryId || categoryId);
-  };
-
-  const handleChangePrice = (): void => {
-    getFilteredProductsByPrice(subcategoryId || categoryId);
+  const handleChange = (type?: string): void => {
+    getFilteredProducts(subcategoryId || categoryId, type);
   };
 
   const handleResetFilters = (): void => {
@@ -119,7 +114,7 @@ const Catalog: React.FC = () => {
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
           {!isMobile ? (
-            <Sorting />
+            <Sorting onChange={handleChange} />
           ) : (
             <div className={styles.actions}>
               <IconButton aria-label="sort" onClick={handleClickFilter}>
@@ -132,12 +127,11 @@ const Catalog: React.FC = () => {
                 handleCloseFilter={handleCloseFilter}
                 onReset={handleResetFilters}
                 onChange={handleChange}
-                onChangePrice={handleChangePrice}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
-              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} />
+              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} onChange={handleChange} />
             </div>
           )}
         </div>
@@ -150,7 +144,6 @@ const Catalog: React.FC = () => {
                 className={`${styles.sticky} ${styles.filter}`}
                 onReset={handleResetFilters}
                 onChange={handleChange}
-                onChangePrice={handleChangePrice}
               />
             </aside>
           )}

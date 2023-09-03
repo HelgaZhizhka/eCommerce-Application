@@ -1,15 +1,22 @@
+@import '../../../styles/abstract/variables';
+@import '../../../styles/abstract/mixins';
+
 .inputContainer {
-  display: flex;  
-  margin-bottom: 20px; 
+  display: flex;
+  margin-bottom: 20px;
 }
 
 .labelTitle {
   display: block;
-  color: var(--filter-orange);  
+  color: var(--filter-orange);
   font-size: 20px;
 }
 
 .field {
-  width: 60vw;
+  width: 90vw;
   font-size: 24px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 60vw;
+  }
 }

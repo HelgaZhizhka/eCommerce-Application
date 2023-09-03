@@ -13,7 +13,7 @@ type Props = {
   isFilterSize: boolean;
   isFilterColor: boolean;
   onReset: () => void;
-  onChange?: () => void;
+  onChange?: (type?: string) => void;
   onChangePrice?: () => void;
 };
 
@@ -22,7 +22,7 @@ const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, onRes
     <FilterNestedList />
     {isFilterSize && <FilterChip onChange={onChange} />}
     {isFilterColor && <FilterColorCheckBox onChange={onChange} />}
-    <FilterPrice onChangePrice={onChangePrice} />
+    <FilterPrice onChange={onChange} />
     <FilterReset onClick={onReset} />
   </Box>
 );

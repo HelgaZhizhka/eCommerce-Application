@@ -8,9 +8,10 @@ import { SortingList } from '../baseComponents/SortingList';
 type Props = {
   anchorElSort: null | HTMLElement;
   handleCloseSort: () => void;
+  onChange?: (type?: string) => void;
 };
 
-const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort }) => {
+const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort, onChange }) => {
   const open = Boolean(anchorElSort);
 
   const handleMenuItemClick = (): void => {
@@ -45,7 +46,7 @@ const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort }) => {
           <CloseIcon />
         </IconButton>
         <Box sx={{ mt: '30px' }}>
-          <SortingList handleMenuItemClick={handleMenuItemClick} />
+          <SortingList onChange={onChange} handleMenuItemClick={handleMenuItemClick} />
         </Box>
       </div>
     </Popover>

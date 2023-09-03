@@ -2,17 +2,16 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
-import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
+import { SortDetails, SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import {
   getCategories,
   getProductsByFilter,
   getProductByKey,
   getProductsByCategory,
-  getProductsByPrice,
   getProductsTypeByCategory,
-  getProductsDiscounted,
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
+import { initialPriceRange } from '../constants';
 
 type ProductType = {
   key: string;
@@ -51,9 +50,7 @@ type ProductStoreType = {
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
   setSearchValue: (data: string) => void;
-  getFilteredProducts: (category: string) => Promise<void>;
-  getFilteredProductsByPrice: (category: string) => Promise<void>;
-  getProductsByDiscount: () => Promise<void>;
+  getFilteredProducts: (category: string, type?: string) => Promise<void>;
   setFilterOptions: () => Record<string, string[]>[];
   updateFilterSize: (data: string[]) => void;
   updateFilterColor: (data: string[]) => void;
@@ -78,9 +75,9 @@ const createProductStore = (): ProductStoreType => {
     isSizeAttribute: '',
     filterSizes: [] as string[],
     filterColors: [] as string[],
-    filterPrice: [10, 80] as number[],
+    filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
 
-    setSortState(value: SortOption): void {
+    async setSortState(value: SortOption): Promise<void> {
       store.sortState = value;
     },
 
@@ -249,65 +246,20 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
-    async getFilteredProducts(category: string): Promise<void> {
-      const data = store.setFilterOptions();
+    async getFilteredProducts(category: string, type?: string): Promise<void> {
       const categoryId = store.categoryIdByName(category);
-
       if (!categoryId) return;
 
-      const fetchedProductsByFilter = await getProductsByFilter(data, categoryId);
+      const filterAttributes = store.setFilterOptions();
+      let fetchedProducts = [] as ProductProjection[];
 
-      runInAction(() => {
-        store.isProductsLoading = true;
-      });
-
-      try {
-        runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProductsByFilter);
-          store.products = [...productsList];
-        });
-      } catch (err) {
-        runInAction(() => {
-          store.error = 'Error fetching products';
-        });
-      } finally {
-        runInAction(() => {
-          store.isProductsLoading = false;
-        });
+      if (type === 'price') {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, store.filterPrice);
+      } else if (type === 'sort') {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, undefined, SortDetails[store.sortState]);
+      } else {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes);
       }
-    },
-
-    async getFilteredProductsByPrice(category: string): Promise<void> {
-      const categoryId = store.categoryIdByName(category);
-
-      const data = store.filterPrice;
-
-      if (!categoryId) return;
-
-      const fetchedProducts = await getProductsByPrice(data, categoryId);
-
-      runInAction(() => {
-        store.isProductsLoading = true;
-      });
-
-      try {
-        runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProducts);
-          store.products = [...productsList];
-        });
-      } catch (err) {
-        runInAction(() => {
-          store.error = 'Error fetching products';
-        });
-      } finally {
-        runInAction(() => {
-          store.isProductsLoading = false;
-        });
-      }
-    },
-
-    async getProductsByDiscount(): Promise<void> {
-      const fetchedProducts = await getProductsDiscounted();
 
       runInAction(() => {
         store.isProductsLoading = true;
@@ -330,39 +282,26 @@ const createProductStore = (): ProductStoreType => {
     },
 
     setFilterOptions(): Record<string, string[]>[] {
-      let options = [];
+      const options = [];
 
-      if (!store.isColorAttribute) {
-        options = [
-          {
-            [store.isSizeAttribute]: store.filterSizes,
-          },
-        ];
-      }
-
-      if (!store.isSizeAttribute) {
-        options = [
-          {
-            [store.isColorAttribute]: store.filterColors,
-          },
-        ];
-      }
-
-      options = [
-        {
+      if (store.isColorAttribute) {
+        options.push({
           [store.isColorAttribute]: store.filterColors,
-        },
-        {
-          [store.isSizeAttribute]: store.filterSizes,
-        },
-      ];
+        });
+      }
 
-      const filteredOptions = options.filter((option) => {
+      if (store.isSizeAttribute) {
+        options.push({
+          [store.isSizeAttribute]: store.filterSizes,
+        });
+      }
+
+      const filters = options.filter((option) => {
         const key = Object.keys(option)[0];
         return option[key] && option[key].length > 0;
       });
 
-      return filteredOptions;
+      return filters;
     },
 
     updateFilterSize(data: string[]): void {
@@ -384,7 +323,7 @@ const createProductStore = (): ProductStoreType => {
       store.isFilterColor = false;
       store.isColorAttribute = '';
       store.isSizeAttribute = '';
-      store.filterPrice = [10, 80];
+      store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
     },
 
     setSearchValue(data: string): void {

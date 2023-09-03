@@ -14,18 +14,16 @@ type Props = {
   isFilterColor: boolean;
   handleCloseFilter: () => void;
   onReset: () => void;
-  onChange?: () => void;
-  onChangePrice?: () => void;
+  onChange?: (type?: string) => void;
 };
 
 const FilterMobile: React.FC<Props> = ({
   anchorElFilter,
-  handleCloseFilter,
   isFilterSize,
   isFilterColor,
+  handleCloseFilter,
   onReset,
   onChange,
-  onChangePrice,
 }) => {
   const open = Boolean(anchorElFilter);
 
@@ -61,7 +59,7 @@ const FilterMobile: React.FC<Props> = ({
         </IconButton>
         {isFilterSize && <FilterChip onChange={onChange} />}
         {isFilterColor && <FilterColorCheckBox onChange={onChange} />}
-        <FilterPrice onChangePrice={onChangePrice} />
+        <FilterPrice onChange={onChange} />
         <FilterReset mobile onClick={onReset} />
       </div>
     </Popover>

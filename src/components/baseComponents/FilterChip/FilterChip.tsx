@@ -19,7 +19,7 @@ const sizes = ['xs', 's', 'm', 'l', 'xl', 'one-size'];
 type Props = {
   radioButton?: boolean;
   className?: string;
-  onChange?: () => void;
+  onChange?: (type?: string) => void;
 };
 
 const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
@@ -39,7 +39,7 @@ const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
     if (onChange) {
       onChange();
     }
-  }, [activeChips, updateFilterSize, onChange, active]);
+  }, [activeChips]);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Menu } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 import { Box, styled } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { SortingList } from '../baseComponents/SortingList';
 import { SortOption } from '../baseComponents/SortingList/SortList.enum';
+import { productStore } from '../../stores';
 
 const CustomButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
@@ -15,12 +17,14 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 type Props = {
   className?: string;
+  onChange?: (type?: string) => void;
 };
 
-const Sorting: React.FC<Props> = ({ className }) => {
+const Sorting: React.FC<Props> = ({ className, onChange }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedSort, setSelectedSort] = useState<SortOption>(SortOption.Default);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { sortState } = productStore;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -32,8 +36,7 @@ const Sorting: React.FC<Props> = ({ className }) => {
     setIsMenuOpen(false);
   };
 
-  const handleMenuItemClick = (sortOption: SortOption): void => {
-    setSelectedSort(sortOption);
+  const handleMenuItemClick = (): void => {
     handleClose();
   };
 
@@ -47,7 +50,7 @@ const Sorting: React.FC<Props> = ({ className }) => {
         variant="contained"
         color="primary"
       >
-        Sorting by: {selectedSort}
+        Sorting by: {sortState}
         {isMenuOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </CustomButton>
       <Menu
@@ -65,10 +68,10 @@ const Sorting: React.FC<Props> = ({ className }) => {
           horizontal: 'right',
         }}
       >
-        <SortingList handleMenuItemClick={handleMenuItemClick} />
+        <SortingList onChange={onChange} handleMenuItemClick={handleMenuItemClick} />
       </Menu>
     </Box>
   );
 };
 
-export default Sorting;
+export default observer(Sorting);

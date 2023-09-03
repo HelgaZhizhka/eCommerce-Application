@@ -1,4 +1,15 @@
 .root {
   position: relative;
+}
+
+.input {
   font-size: toRem(20px);
+  width: 100%;
+}
+
+.button {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  z-index: 10;
 }

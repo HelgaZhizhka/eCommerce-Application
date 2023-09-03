@@ -1,9 +1,10 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
 import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
+import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser } from '../services/setCustomersDetails';
+import { setAdress, getUser, removeAddress, changeAddress } from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -19,8 +20,8 @@ type UserStoreType = {
   clearError: () => void;
   resetRegistration: () => void;
   setEditMode: (isEditMode: boolean) => void;
-  saveUserData: (data: object) => void;
   getUserProfile: () => Promise<void>;
+  updateUserProfile: (data: Record<string, string | boolean | number>) => Promise<void>
 };
 
 const createUserStore = (): UserStoreType => {
@@ -107,10 +108,6 @@ const createUserStore = (): UserStoreType => {
       store.isEditMode = isEditMode;
     },
 
-    saveUserData(data: object): void {
-      store.userData = { ...store.userData, ...data };
-    },
-
     async getUserProfile(): Promise<void> {
       const userProfile = await getUser();
 
@@ -121,6 +118,33 @@ const createUserStore = (): UserStoreType => {
         };
       });
     },
+
+    async updateUserProfile(data: Record<string, string | boolean | number>): Promise<void> {
+      const { action } = data;
+
+      let response: ClientResponse<Customer>;
+      let body: Customer;
+
+      const id = data.id;
+      const currentData = {...data, version: store.userProfile.version}
+
+      if (action === 'removeAddress') {
+        response = await removeAddress(data);
+        body = response.body;
+      };
+
+      if (action === 'changeAddress') {
+        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0];
+        response = await changeAddress({...currentAddress, ...currentData});
+        body = response.body;
+      }
+
+      runInAction(() => {
+        store.userProfile = {
+          ...body,
+        };
+      });
+    }
   };
 
   makeAutoObservable(store);

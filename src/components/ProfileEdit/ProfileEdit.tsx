@@ -10,7 +10,7 @@ import { ModalProfile } from '../baseComponents/ModalProfile';
 
 type Props = {
   className?: string;
-  onSaveChange: (data: object) => void;
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
@@ -43,8 +43,8 @@ const ProfileEdit: React.FC<Props> = ({
       <Button
         variant="outlined"
         sx={{
-          mt: '15px',
           ml: 'auto',
+          mb: '20px',
           width: '240px',
           height: '60px',
           borderColor: 'orange',
@@ -68,6 +68,7 @@ const ProfileEdit: React.FC<Props> = ({
       {shippingAddresses.map((address, index) => (
         <ProfileAddress
           key={index}
+          onSaveChange={onSaveChange}
           initialValues={{
             name: 'Shipping',
             id: address.id || '',
@@ -83,6 +84,7 @@ const ProfileEdit: React.FC<Props> = ({
       {billingAddresses.map((address, index) => (
         <ProfileAddress
           key={index}
+          onSaveChange={onSaveChange}
           initialValues={{
             name: 'Billing',
             id: address.id || '',

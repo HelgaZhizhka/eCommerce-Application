@@ -12,6 +12,7 @@ import { productStore } from '../../stores';
 import { SubCategories } from '../SubCategories';
 import { SIZE, THEME, VARIANT, CategorySlug } from './Categories.types';
 import styles from './Categories.module.scss';
+import { RoutePaths } from '../../routes/routes.enum';
 
 type Props = {
   size?: SIZE;
@@ -34,7 +35,7 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
     link: variant !== 'filter',
   });
 
-  const { categories, getProductsByDiscount } = productStore;
+  const { categories } = productStore;
 
   const enhancedCategories = [
     {
@@ -45,16 +46,6 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
     },
     ...categories,
   ];
-
-  const handleCategoryClick = (slug: string): void => {
-    if (slug === 'sale') {
-      getProductsByDiscount();
-    }
-
-    if (onClose) {
-      onClose();
-    }
-  };
 
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
@@ -68,8 +59,8 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
                 <ListItemButton
                   sx={{ pl: 4 }}
                   component={Link}
-                  to={`/category/${category.slug.en}`}
-                  onClick={(): void => handleCategoryClick(category.slug.en)}
+                  to={category.slug.en === 'sale' ? RoutePaths.SALE : `/category/${category.slug.en}`}
+                  onClick={onClose}
                 >
                   <ListItemIcon>{IconComponent && <IconComponent />}</ListItemIcon>
                   <ListItemText primary={category.name.en} />
@@ -89,8 +80,8 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
                   className={classNames(categoriesClasses, {
                     [styles.brand]: category.slug.en === 'sale',
                   })}
-                  to={`/category/${category.slug.en}`}
-                  onClick={(): void => handleCategoryClick(category.slug.en)}
+                  to={category.slug.en === 'sale' ? RoutePaths.SALE : `/category/${category.slug.en}`}
+                  onClick={onClose ? (): void => onClose() : undefined}
                 >
                   <span>{category.name.en}</span>
                 </Link>

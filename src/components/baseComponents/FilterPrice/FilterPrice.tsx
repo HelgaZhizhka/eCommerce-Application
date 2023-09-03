@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 
+import { initialPriceRange } from '../../../constants';
 import { productStore } from '../../../stores';
 
 function valueText(value: number): string {
@@ -11,10 +12,10 @@ function valueText(value: number): string {
 
 type Props = {
   className?: string;
-  onChangePrice?: () => void;
+  onChange?: (type?: string) => void;
 };
 
-const FilterPrice: React.FC<Props> = ({ onChangePrice }) => {
+const FilterPrice: React.FC<Props> = ({ onChange }) => {
   const { updateFilterPrice, filterPrice } = productStore;
 
   const [value, setValue] = useState<number[]>(filterPrice as number[]);
@@ -35,8 +36,8 @@ const FilterPrice: React.FC<Props> = ({ onChangePrice }) => {
   };
 
   const handleChangeCommit = (): void => {
-    if (onChangePrice) {
-      onChangePrice();
+    if (onChange) {
+      onChange('price');
     }
   };
 
@@ -62,8 +63,8 @@ const FilterPrice: React.FC<Props> = ({ onChangePrice }) => {
           onChangeCommitted={handleChangeCommit}
           valueLabelDisplay="auto"
           getAriaValueText={valueText}
-          min={5}
-          max={100}
+          min={initialPriceRange.min}
+          max={initialPriceRange.max}
         />
       </Box>
     </>
