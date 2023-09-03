@@ -10,7 +10,7 @@ type Props = {
 };
 
 const FieldWrapper: React.FC<Props> = ({ label, name, type, variant }) => (
-  <div className={styles.fieldWrapper}>
+  <div>
     <label className={styles.labelTitle} htmlFor={name}>
       {label}
     </label>

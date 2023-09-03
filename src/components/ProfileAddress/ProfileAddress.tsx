@@ -47,13 +47,13 @@ const ProfileAddress: React.FC<Props> = ({ initialValues }) => (
             Street
           </label>
           <div className={styles.inputContainer}>
-            <Field className={styles.field} component={FormikTextField} id="street" name="street" variant="standard" />
+            <Field className={styles.field} component={FormikTextField} name="street" variant="standard" />
           </div>
           <label className={styles.lablelTitle} htmlFor="city">
             City
           </label>
           <div className={styles.inputContainer}>
-            <Field className={styles.field} component={FormikTextField} id="city" name="city" variant="standard" />
+            <Field className={styles.field} component={FormikTextField} name="city" variant="standard" />
           </div>
           <label className={styles.lablelTitle} htmlFor="postalCode">
             Postal code
@@ -62,7 +62,6 @@ const ProfileAddress: React.FC<Props> = ({ initialValues }) => (
             <Field
               className={styles.field}
               component={FormikTextField}
-              id="postalCode"
               name="postalCode"
               type="number"
               variant="standard"
@@ -72,14 +71,7 @@ const ProfileAddress: React.FC<Props> = ({ initialValues }) => (
             Country
           </label>
           <div className={styles.inputContainer}>
-            <Field
-              className={styles.field}
-              component={FormikTextField}
-              id="country"
-              name="country"
-              select
-              variant="standard"
-            >
+            <Field className={styles.field} component={FormikTextField} name="country" select variant="standard">
               <MenuItem value="UA">UA</MenuItem>
               <MenuItem value="US">US</MenuItem>
             </Field>

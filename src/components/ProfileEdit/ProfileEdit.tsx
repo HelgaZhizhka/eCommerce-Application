@@ -3,9 +3,10 @@ import { Address } from '@commercetools/platform-sdk';
 import Button from '@mui/material/Button';
 
 import styles from './ProfileEdit.module.scss';
+
 import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
-import { ProfileAddress } from '../ProfileShippingAdress';
-import { ModalChangePassword } from '../baseComponents/ModalChangePassword';
+import { ProfileAddress } from '../ProfileAddress';
+import { ModalProfile } from '../baseComponents/ModalProfile';
 
 type Props = {
   className?: string;
@@ -31,11 +32,11 @@ const ProfileEdit: React.FC<Props> = ({
   defaultShippingAddress,
   defaultBillingAddress,
 }) => {
-  const [openAddressModal, setOpenAddressModal] = useState(false);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
-  const handleOpenAddressModal = (): void => setOpenAddressModal(true);
-
-  const handleCloseAddressModal = (): void => setOpenAddressModal(false);
+  const handleOpenAddressModal = (): void => setActiveModal('address');
+  const handleOpenPasswordModal = (): void => setActiveModal('password');
+  const handleCloseModal = (): void => setActiveModal(null);
 
   return (
     <div className={styles.root}>
@@ -104,11 +105,11 @@ const ProfileEdit: React.FC<Props> = ({
         >
           Add address
         </Button>
-        <Button sx={{ fontSize: '24px' }} variant="outlined" color="primary">
+        <Button onClick={handleOpenPasswordModal} sx={{ fontSize: '24px' }} variant="outlined" color="primary">
           Change password
         </Button>
       </div>
-      <ModalChangePassword openAddressModal={openAddressModal} handleCloseAddressModal={handleCloseAddressModal} />
+      <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} />
     </div>
   );
 };
