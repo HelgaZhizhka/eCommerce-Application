@@ -2,7 +2,7 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { apiWithPasswordFlow, apiwithExistingTokenFlow, myToken } from './BuildClient';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
   const response = await customer.me().get().execute();
@@ -44,7 +44,11 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 
 export const getUser = async (): Promise<Customer | null> => {
   // const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
+
   const customer2 = apiwithExistingTokenFlow();
+
+  // if (localStorage.getItem('token') === undefined || '') localStorage.setItem('token', myToken.get().token);
+  // console.log(myToken.get(), localStorage.getItem('token'));
 
   const customerProfile = await customer2.me().get().execute();
 

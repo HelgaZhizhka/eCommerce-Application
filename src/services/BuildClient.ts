@@ -7,7 +7,7 @@ import {
   TokenStore,
   TokenCacheOptions,
 } from '@commercetools/sdk-client-v2';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { Middleware, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
@@ -31,6 +31,7 @@ export class MyTokenCache implements TokenCache {
 
   public set(newCache: TokenStore, tokenCacheOptions?: TokenCacheOptions): void {
     this.myCache = newCache;
+    localStorage.setItem('token', this.myCache.token)
    }
 
   public get(tokenCacheOptions?: TokenCacheOptions): TokenStore {
@@ -38,14 +39,16 @@ export class MyTokenCache implements TokenCache {
    }
 }
 
-export const myToken =  new MyTokenCache();
+export const myToken = new MyTokenCache();
 
 export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
   type ExistingTokenMiddlewareOptions = {
     force?: boolean;
   };
 
-  const authorization = `Bearer ${myToken.myCache.token}`;
+  const token = localStorage.getItem('token');
+
+  const authorization = `Bearer ${token}`;
   const options: ExistingTokenMiddlewareOptions = {
     force: true,
   };
@@ -82,6 +85,8 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
+
+  localStorage.setItem('token', myToken.myCache.token);
 
   return apiRoot;
 }
