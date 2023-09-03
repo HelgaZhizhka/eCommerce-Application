@@ -12,8 +12,9 @@ type Props = {
   firstName?: string;
   lastName?: string;
   email?: string;
-  shippingAddresses?: Address[];
-  billingAddresses?: Address[];
+  birthDate: string;
+  shippingAddresses: Address[];
+  billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
   defaultBillingAddress?: Address | null;
 };
@@ -25,6 +26,7 @@ const ProfileBox: React.FC<Props> = ({
   firstName,
   lastName,
   email,
+  birthDate,
   shippingAddresses,
   billingAddresses,
   defaultShippingAddress,
@@ -48,6 +50,7 @@ const ProfileBox: React.FC<Props> = ({
         onSaveChange={onSaveChange}
         firstName={firstName}
         lastName={lastName}
+        birthDate={birthDate}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
         defaultShippingAddress={defaultShippingAddress}
