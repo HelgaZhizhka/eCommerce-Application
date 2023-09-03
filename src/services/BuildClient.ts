@@ -3,6 +3,9 @@ import {
   type PasswordAuthMiddlewareOptions,
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
+  TokenCache,
+  TokenStore,
+  TokenCacheOptions,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -19,6 +22,43 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
+export class MyTokenCache implements TokenCache {
+  public myCache: TokenStore = {
+    token: '',
+    expirationTime: 0,
+    refreshToken: '',
+  }
+
+  public set(newCache: TokenStore, tokenCacheOptions?: TokenCacheOptions): void {
+    this.myCache = newCache;
+   }
+
+  public get(tokenCacheOptions?: TokenCacheOptions): TokenStore {
+     return this.myCache
+   }
+}
+
+export const myToken =  new MyTokenCache();
+
+export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
+  type ExistingTokenMiddlewareOptions = {
+    force?: boolean;
+  };
+
+  const authorization = `Bearer ${myToken.myCache.token}`;
+  const options: ExistingTokenMiddlewareOptions = {
+    force: true,
+  };
+
+  const client = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withExistingTokenFlow(authorization, options)
+    .build();
+
+    const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+    return apiRoot
+}
+
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
@@ -31,6 +71,7 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
         password,
       },
     },
+    tokenCache: myToken,
     scopes,
     fetch,
   };
@@ -45,26 +86,26 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
   return apiRoot;
 }
 
-export function apiWithRefreshTokenFlow(token: string): ByProjectKeyRequestBuilder {
-  const refreshTokenFlowOptions = {
-    host: hostAUTH,
-    projectKey,
-    credentials: {
-      clientId,
-      clientSecret,
-    },
-    refreshToken: token,
-    fetch,
-  };
+// export function apiWithRefreshTokenFlow(myToken: TokenCache): ByProjectKeyRequestBuilder {
+//   const refreshTokenFlowOptions = {
+//     host: hostAUTH,
+//     projectKey,
+//     credentials: {
+//       clientId,
+//       clientSecret,
+//     },
+//     refreshToken: myToken.get,
+//     fetch,
+//   };
 
-  const client = new ClientBuilder()
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withRefreshTokenFlow(refreshTokenFlowOptions)
-    .build();
+//   const client = new ClientBuilder()
+//     .withHttpMiddleware(httpMiddlewareOptions)
+//     .withRefreshTokenFlow(refreshTokenFlowOptions)
+//     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-  return apiRoot;
-}
+//   const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+//   return apiRoot;
+// }
 
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
   const authMiddlewareOptions: AuthMiddlewareOptions = {
@@ -74,6 +115,7 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
       clientId,
       clientSecret,
     },
+    // tokenCache: myToken,
     scopes,
     fetch,
   };
