@@ -68,6 +68,7 @@ const ProfileEdit: React.FC<Props> = ({
       {shippingAddresses.map((address, index) => (
         <ProfileAddress
           key={index}
+          onSaveChange={onSaveChange}
           initialValues={{
             name: 'Shipping',
             id: address.id || '',
@@ -83,6 +84,7 @@ const ProfileEdit: React.FC<Props> = ({
       {billingAddresses.map((address, index) => (
         <ProfileAddress
           key={index}
+          onSaveChange={onSaveChange}
           initialValues={{
             name: 'Billing',
             id: address.id || '',

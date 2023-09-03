@@ -5,6 +5,7 @@ import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileBox } from '../../components/ProfileBox';
 import { userStore } from '../../stores';
+
 import styles from './Profile.module.scss';
 
 const Profile: React.FC = () => {
@@ -15,8 +16,8 @@ const Profile: React.FC = () => {
   };
 
   const handleSaveChange = (data: object): void => {
-    userStore.setEditMode(false);
-    userStore.saveUserData(data);
+    // userStore.setEditMode(false);
+    userStore.saveUserData({ version: userProfile?.version, ...data });
   };
 
   useEffect(() => {
