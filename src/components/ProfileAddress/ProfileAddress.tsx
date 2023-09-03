@@ -14,7 +14,9 @@ const CustomCheckbox = styled(Checkbox)(() => ({
 }));
 
 type Props = {
+  onSaveChange: (data: object) => void;
   initialValues: {
+    onSaveChange?: () => void;
     name: string;
     id: string;
     street: string;
