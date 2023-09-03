@@ -45,12 +45,57 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 export const getUser = async (): Promise<Customer | null> => {
   // const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
 
-  const customer2 = apiwithExistingTokenFlow();
+  const customer = apiwithExistingTokenFlow();
 
   // if (localStorage.getItem('token') === undefined || '') localStorage.setItem('token', myToken.get().token);
   // console.log(myToken.get(), localStorage.getItem('token'));
 
-  const customerProfile = await customer2.me().get().execute();
+  const customerProfile = await customer.me().get().execute();
 
   return customerProfile.body;
 };
+
+
+export const deleteAddress = async (addressID: string, version: number): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const body: MyCustomerUpdate = {
+    version,
+    actions: [
+      {
+        action: 'removeAddress',
+        addressId: `${addressID}`
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute()
+
+  return response
+}
+
+export const updateAddress = async (newAddress: Record<string, string | boolean>, addressID: string, version: number): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const {city, country, postalCode, street} = newAddress
+
+  const body: MyCustomerUpdate = {
+    version,
+    actions: [
+      {
+        action: 'changeAddress',
+        addressId: `${addressID}`,
+        address: {
+          "streetName": `${street}`,
+          "postalCode": `${postalCode}`,
+          "city": `${city}`,
+          "country": `${country}`,
+        }
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute()
+
+  return response
+}
