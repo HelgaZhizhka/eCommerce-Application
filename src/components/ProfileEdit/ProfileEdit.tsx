@@ -10,7 +10,7 @@ import { ModalProfile } from '../baseComponents/ModalProfile';
 
 type Props = {
   className?: string;
-  onSaveChange: (data: object) => void;
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
