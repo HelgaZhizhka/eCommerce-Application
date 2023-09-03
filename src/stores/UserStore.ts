@@ -1,10 +1,9 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
-import { Customer } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/customer";
+import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser} from '../services/setCustomersDetails';
-
+import { setAdress, getUser } from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -38,10 +37,13 @@ const createUserStore = (): UserStoreType => {
         const response = await customerLogin(email, password);
         runInAction(() => {
           store.error = null;
-           console.log(response);
+          console.log(response);
 
           if (response.statusCode === 200) {
             store.loggedIn = true;
+            store.userProfile = {
+              ...response.body.customer,
+            };
           }
 
           if (response.statusCode === 400) {
@@ -64,7 +66,6 @@ const createUserStore = (): UserStoreType => {
           store.error = null;
           if (response.statusCode === 201) {
             store.loggedIn = true;
-
             if (data.email && data.password) {
               setAdress(data.email, data.password);
             }
@@ -111,13 +112,14 @@ const createUserStore = (): UserStoreType => {
     },
 
     async getUserProfile(): Promise<void> {
-      const userProfile = await getUser()
+      const userProfile = await getUser();
 
       if (!userProfile) return;
-      
-      store.userProfile = {
-        ...userProfile,
-      };
+      runInAction(() => {
+        store.userProfile = {
+          ...userProfile,
+        };
+      });
     },
   };
 
@@ -130,7 +132,6 @@ const createUserStore = (): UserStoreType => {
     }
   );
 
-  
   return store;
 };
 

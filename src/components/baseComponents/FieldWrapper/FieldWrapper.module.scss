@@ -1,0 +1,15 @@
+.inputContainer {
+  display: flex;  
+  margin-bottom: 20px; 
+}
+
+.labelTitle {
+  display: block;
+  color: var(--filter-orange);  
+  font-size: 20px;
+}
+
+.field {
+  width: 60vw;
+  font-size: 24px;
+}

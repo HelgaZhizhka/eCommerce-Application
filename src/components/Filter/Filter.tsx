@@ -14,15 +14,16 @@ type Props = {
   isFilterColor: boolean;
   categoryId: string;
   subcategoryId?: string;
+  onReset: () => void;
 };
 
-const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, categoryId, subcategoryId }) => (
+const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, categoryId, subcategoryId, onReset }) => (
   <Box className={`${className} ${styles.filter}`} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
     <FilterNestedList />
     {isFilterSize && <FilterChip categoryId={categoryId} subcategoryId={subcategoryId} />}
     {isFilterColor && <FilterColorCheckBox categoryId={categoryId} subcategoryId={subcategoryId} />}
     <FilterPrice />
-    <FilterReset />
+    <FilterReset onClick={onReset} />
   </Box>
 );
 
