@@ -79,8 +79,8 @@ const HeroCarousel: React.FC = () => (
         <div className={styles.content}>
           <div className={styles.contentWrapper}>
             <h2 className={styles.title}>-30%</h2>
-            <p className={styles.description}>SuperHot discounts on DrinkWare this week!</p>
-            <Link to="/category/drinkware">
+            <p className={styles.description}>SuperHot discounts on Mugs this week!</p>
+            <Link to="/category/drinkware/mugs">
               <Button
                 className={styles.button}
                 variant="contained"

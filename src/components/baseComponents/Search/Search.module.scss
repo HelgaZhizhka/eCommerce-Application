@@ -2,6 +2,9 @@
 @import '../../../styles/abstract/mixins';
 
 .root {
+  display: flex;
+  align-items: center;
+
   @include create-mq($grid__bp-md, 'min') {
     position: relative;
   }
@@ -13,8 +16,11 @@
 }
 
 .button {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  z-index: 10;
+  margin-left: 5px;
+}
+
+.clearButton {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }

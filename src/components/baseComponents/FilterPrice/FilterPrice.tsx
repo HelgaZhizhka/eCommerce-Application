@@ -7,9 +7,7 @@ import { initialPriceRange } from '../../../constants';
 import { productStore } from '../../../stores';
 import styles from './FilterPrice.module.scss';
 
-function valueText(value: number): string {
-  return `${value}`;
-}
+const valueText = (value: number): string => `${value}`;
 
 type Props = {
   className?: string;
@@ -21,6 +19,12 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
 
   const [value, setValue] = useState<number[]>(filterPrice as number[]);
   const [active, setActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (JSON.stringify(filterPrice) !== JSON.stringify(value)) {
+      setValue(filterPrice as number[]);
+    }
+  }, [filterPrice]);
 
   useEffect(() => {
     if (!active) {

@@ -17,10 +17,6 @@
   }
 }
 
-.headerTitle {
-  margin-bottom: 20px;
-}
-
 .title {
   margin: 0;
   font-size: 24px;
@@ -43,6 +39,9 @@
 }
 
 .contentTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 24px;
@@ -58,4 +57,14 @@
 
 .iconEdit {
   color: var(--state-primary);
+}
+
+.label {
+  display: inline-block;
+  padding: 5px 25px;
+  border-radius: 44px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--state-primary);
+  border: 1px solid var(--state-primary);
 }

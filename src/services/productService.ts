@@ -5,6 +5,8 @@ import { AttributeDefinition } from '@commercetools/platform-sdk';
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
+const DEFAULT_LIMIT = 100;
+
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
   const response = await visitor.categories().get().execute();
@@ -26,7 +28,7 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
     .get({
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
-        limit: 100,
+        limit: DEFAULT_LIMIT,
       },
     })
     .execute();
@@ -40,11 +42,7 @@ export async function getProductsTypeByCategory(key: string): Promise<AttributeD
   const response = await visitor
     .productTypes()
     .withKey({ key: `${key}` })
-    .get({
-      queryArgs: {
-        limit: 100,
-      },
-    })
+    .get()
     .execute();
 
   return response.body.attributes;
@@ -69,7 +67,6 @@ export async function getProductsByFilter(
   sortDetail?: SortObject
 ): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
-  console.log(filtersAttributes, filterPrice, sortDetail);
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
   const filtersCounter = Object.values(filtersAttributes).length;
@@ -101,7 +98,7 @@ export async function getProductsByFilter(
       queryArgs: {
         filter: filterProperties,
         ...(sortObj ? { sort: sortObj } : {}),
-        limit: 100,
+        limit: DEFAULT_LIMIT,
       },
     })
     .execute();
@@ -118,11 +115,9 @@ export async function getSearchProducts(categoryID: string, searchValue: string)
     .search()
     .get({
       queryArgs: {
-        fuzzy: true,
-        fuzzyLevel: 2,
-        'text.en': searchValue,
-        limit: 100,
+        limit: DEFAULT_LIMIT,
         filter: filterPropertiesCategoryID,
+        'text.en': searchValue,
       },
     })
     .execute();

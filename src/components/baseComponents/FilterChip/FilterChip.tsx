@@ -29,6 +29,12 @@ const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
   const [active, setActive] = useState<boolean>(false);
 
   useEffect(() => {
+    if (JSON.stringify(filterSizes) !== JSON.stringify(activeChips)) {
+      setActiveChips(filterSizes);
+    }
+  }, [filterSizes]);
+
+  useEffect(() => {
     if (!active) {
       setActive(true);
       return;

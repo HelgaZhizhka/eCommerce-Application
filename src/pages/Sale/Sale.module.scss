@@ -2,20 +2,20 @@
 @import '../../styles/abstract/mixins';
 
 .container {
-  padding-top: 50px;
   padding-bottom: 60px;
 
   @include create-mq($grid__bp-md, 'min') {
+    padding-top: 60px;
     padding-left: 80px;
     padding-right: 80px;
   }
 }
 
 .title {
-  text-align: center;
   color: var(--red);
 }
 
 .fon {
-  margin-bottom: 20px;
+  display: block;
+  margin: 0 auto 20px;
 }

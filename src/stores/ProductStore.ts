@@ -58,6 +58,7 @@ type ProductStoreType = {
   updateFilterColor: (data: string[]) => void;
   updateFilterPrice: (data: number[]) => void;
   clearFilterData: () => void;
+  clearSearchValue: () => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -164,6 +165,10 @@ const createProductStore = (): ProductStoreType => {
       runInAction(() => {
         store.isFilterColor = false;
         store.isFilterSize = false;
+
+        if (store.searchValue) {
+          store.clearSearchValue();
+        }
       });
 
       const key = `${categoryKey[0].toUpperCase()}${categoryKey.slice(1)}`;
@@ -185,8 +190,8 @@ const createProductStore = (): ProductStoreType => {
 
     async fetchProductsByCategory(id: string | undefined): Promise<void> {
       runInAction(() => {
-        store.clearFilterData();
         store.isProductsLoading = true;
+        store.clearFilterData();
       });
 
       try {
@@ -249,54 +254,54 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchSearchProducts(category: string): Promise<void> {
-       const categoryId = store.categoryIdByName(category);
-       if (!categoryId) return;
+      const categoryId = store.categoryIdByName(category);
+      if (!categoryId) return;
 
-       const fetchedProducts = await getSearchProducts(categoryId, store.searchValue);
-        
-       runInAction(() => {
-         store.isProductsLoading = true;
-       });
+      const fetchedProducts = await getSearchProducts(categoryId, store.searchValue);
 
-       try {
-         runInAction(() => {
-           const productsList = store.getFetchedProducts(fetchedProducts);
-           store.products = [...productsList];
-           store.searchValue = '';
-         });
-       } catch (err) {
-         runInAction(() => {
-           store.error = 'Error fetching products';
-         });
-       } finally {
-         runInAction(() => {
-           store.isProductsLoading = false;
-         });
-       }
+      runInAction(() => {
+        store.isProductsLoading = true;
+        store.filterColors = [];
+        store.filterSizes = [];
+        store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
+      });
+
+      try {
+        runInAction(() => {
+          const productsList = store.getFetchedProducts(fetchedProducts);
+          store.products = [...productsList];
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error fetching products';
+        });
+      } finally {
+        runInAction(() => {
+          store.isProductsLoading = false;
+        });
+      }
     },
 
-    async getFilteredProducts(category: string, type?: string): Promise<void> {
+    async getFilteredProducts(category: string): Promise<void> {
       const categoryId = store.categoryIdByName(category);
       if (!categoryId) return;
 
       const filterAttributes = store.setFilterOptions();
       let fetchedProducts = [] as ProductProjection[];
 
-      if (type === 'price') {
-        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, store.filterPrice);
-      } else if (type === 'sort') {
-        fetchedProducts = await getProductsByFilter(
-          categoryId,
-          filterAttributes,
-          undefined,
-          SortDetails[store.sortState]
-        );
-      } else {
-        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes);
-      }
+      fetchedProducts = await getProductsByFilter(
+        categoryId,
+        filterAttributes,
+        store.filterPrice,
+        SortDetails[store.sortState]
+      );
 
       runInAction(() => {
         store.isProductsLoading = true;
+
+        if (store.searchValue) {
+          store.clearSearchValue();
+        }
       });
 
       try {
@@ -340,6 +345,10 @@ const createProductStore = (): ProductStoreType => {
 
     setSearchValue(data: string): void {
       store.searchValue = data;
+    },
+
+    clearSearchValue(): void {
+      store.searchValue = '';
     },
 
     updateFilterSize(data: string[]): void {
