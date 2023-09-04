@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import { Address } from '@commercetools/platform-sdk';
+import IconButton from '@mui/material/IconButton';
 
 import styles from './ProfileView.module.scss';
 import { Icon } from '../baseComponents/Icon';
@@ -66,7 +67,9 @@ const ProfileView: React.FC<Props> = ({
           <p className={styles.contentItemValue}>
             {`${address.streetName}, ${address.city}, ${address.state}, ${address.postalCode}`}
           </p>
-          <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+          <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
+            <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+          </IconButton>
         </div>
       </div>
     ))}
@@ -83,9 +86,10 @@ const ProfileView: React.FC<Props> = ({
           <p className={styles.contentItemValue}>
             {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
-          <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+          <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
+            <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+          </IconButton>
         </div>
-        <Icon name={IconName.DELETE} width={40} height={40} className={`icon ${styles.iconDelete}`} />
       </div>
     ))}
   </div>
