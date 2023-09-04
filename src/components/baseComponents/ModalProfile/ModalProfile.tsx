@@ -9,10 +9,6 @@ import { PasswordChange } from '../../PasswordChange';
 import styles from './ModalProfile.module.scss';
 
 const style = {
-  // position: 'absolute' as const,
-  // top: '50%' as const,
-  // left: '50%' as const,
-  // transform: 'translate(-50%, -50%)' as const,
   bgcolor: 'background.paper' as const,
   border: '2px solid #000' as const,
   boxShadow: 24 as const,

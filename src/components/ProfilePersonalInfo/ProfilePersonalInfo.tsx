@@ -2,9 +2,8 @@ import { ReactElement } from 'react';
 import { Form, Formik } from 'formik';
 import Button from '@mui/material/Button';
 
-import { validationSchema } from './validate';
-
 import { FieldWrapper } from '../baseComponents/FieldWrapper';
+import { validationSchema } from './validate';
 
 type Props = {
   onSaveChange: (data: Record<string, string | boolean | number>) => void;

@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { Address } from '@commercetools/platform-sdk';
 import Button from '@mui/material/Button';
 
-import styles from './ProfileEdit.module.scss';
-
 import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
 import { ProfileAddress } from '../ProfileAddress';
 import { ModalProfile } from '../baseComponents/ModalProfile';
+import styles from './ProfileEdit.module.scss';
 
 type Props = {
   className?: string;

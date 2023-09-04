@@ -2,9 +2,9 @@ import Button from '@mui/material/Button';
 import { Address } from '@commercetools/platform-sdk';
 import IconButton from '@mui/material/IconButton';
 
-import styles from './ProfileView.module.scss';
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
+import styles from './ProfileView.module.scss';
 
 type Props = {
   className?: string;

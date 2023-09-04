@@ -38,8 +38,6 @@ const Profile: React.FC = () => {
     defaultShippingAddressId,
   } = userProfile || {};
 
-  // const dateOfBirth = dateOfBirth || '';
-
   const preparedAddresses =
     userProfile &&
     ((): {

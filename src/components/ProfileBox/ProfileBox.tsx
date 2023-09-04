@@ -1,8 +1,8 @@
 import { Address } from '@commercetools/platform-sdk';
-import styles from './ProfileBox.module.scss';
 
 import { ProfileView } from '../ProfileView';
 import ProfileEdit from '../ProfileEdit/ProfileEdit';
+import styles from './ProfileBox.module.scss';
 
 type Props = {
   className?: string;
