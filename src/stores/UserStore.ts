@@ -143,6 +143,11 @@ const createUserStore = (): UserStoreType => {
         body = response.body;
       }
 
+      if (action === 'addAddress') {
+        response = await addAddress(data);
+        body = response.body;
+      }
+
       runInAction(() => {
         store.userProfile = {
           ...body,

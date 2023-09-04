@@ -45,12 +45,8 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 };
 
 export const getUser = async (): Promise<Customer | null> => {
-  // const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
 
   const customer = apiwithExistingTokenFlow();
-
-  // if (localStorage.getItem('token') === undefined || '') localStorage.setItem('token', myToken.get().token);
-  // console.log(myToken.get(), localStorage.getItem('token'));
 
   const customerProfile = await customer.me().get().execute();
 
@@ -100,4 +96,30 @@ export const changeAddress = async (newAddress: Address & { version: number }): 
   const response = await customer.me().post({ body }).execute()
 
   return response
+}
+
+
+export const addAddress = async (address: Address & { version: number }): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const {city, country, postalCode, streetName, id, version} = address
+
+  const body: MyCustomerUpdate = {
+    version: +`${address.version}`,
+    actions: [
+      {
+        action: 'addAddress',
+        address: {
+          "streetName": `${streetName}`,
+          "postalCode": `${postalCode}`,
+          "city": `${city}`,
+          "country": `${country}`,
+        }
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute()
+
+  return response;
 }
