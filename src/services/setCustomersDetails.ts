@@ -74,7 +74,7 @@ const setDefaultBillingAddress = async (customer: ByProjectKeyRequestBuilder, ve
       })
       .execute();
   }
-   
+
 
    return response
 
@@ -256,4 +256,33 @@ export const addAddress = async (newAddress: Record<string, string | boolean | n
   }
 
   return response as ClientResponse<Customer>;
+}
+
+export const updatePesonalData = async (userInfo: Record<string, string>): Promise<ClientResponse<Customer>> => {
+
+  const { firstName, lastName, dateOfBirth, version } = userInfo;
+
+  const customer = apiwithExistingTokenFlow();
+
+  const body: MyCustomerUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        "action": "setFirstName",
+        firstName
+      },
+      {
+        "action": "setLastName",
+        lastName
+      },
+      {
+        "action": "setDateOfBirth",
+        dateOfBirth
+      }
+    ],
+  };
+
+  const response = await customer.me().post({ body }).execute();
+
+  return response;
 }
