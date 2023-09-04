@@ -24,18 +24,22 @@ const setDefaultShippingAddress = async (customer: ByProjectKeyRequestBuilder, v
       }
      }).execute()
 
+  } else {
+    response = await customer
+      .me()
+      .post({
+        body: {
+          version: +`${version}`,
+          actions: [
+            {
+              action: 'setDefaultShippingAddress',
+              addressId: id,
+            },
+          ],
+        },
+      })
+      .execute();
   }
-  response = await customer.me().post({
-    body: {
-      version: +`${version}`,
-      actions: [
-        {
-          action: 'setDefaultShippingAddress',
-          addressId: id
-        }
-      ],
-    }
-   }).execute()
 
    return response
 
@@ -54,18 +58,23 @@ const setDefaultBillingAddress = async (customer: ByProjectKeyRequestBuilder, ve
       ],
     }
    }).execute()
+  } else {
+    response = await customer
+      .me()
+      .post({
+        body: {
+          version: +`${version}`,
+          actions: [
+            {
+              action: 'setDefaultBillingAddress',
+              addressId: id,
+            },
+          ],
+        },
+      })
+      .execute();
   }
-   response = await customer.me().post({
-    body: {
-      version: +`${version}`,
-      actions: [
-        {
-          action: 'setDefaultBillingAddress',
-          addressId: id
-        }
-      ],
-    }
-   }).execute()
+   
 
    return response
 

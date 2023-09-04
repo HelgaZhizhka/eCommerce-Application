@@ -19,9 +19,7 @@ const ProfilePersonalInfo: React.FC<Props> = ({ initialValues }) => (
     initialValues={initialValues}
     enableReinitialize={true}
     validationSchema={validationSchema}
-    onSubmit={(values): void => {
-      console.log(values);
-    }}
+    onSubmit={(): void => {}}
   >
     {({ isValid }): ReactElement => (
       <Form>

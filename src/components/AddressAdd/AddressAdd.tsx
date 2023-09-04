@@ -46,7 +46,6 @@ const AddressAdd: React.FC<Props> = ({ onSaveChange }) => (
       validationSchema={validationSchema}
       onSubmit={(values): void => {
         onSaveChange({ ...values, action: 'addAddress' });
-        console.log(values);
       }}
     >
       {({ isValid }): ReactElement => (

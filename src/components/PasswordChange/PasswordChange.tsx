@@ -38,13 +38,7 @@ const PasswordChange: React.FC = () => {
         <h3>Change password</h3>
       </Box>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values): void => {
-          console.log(values);
-        }}
-      >
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(): void => {}}>
         {({ isValid }): ReactElement => (
           <Form>
             <label className={styles.lablelTitle} htmlFor="currentPassword">
