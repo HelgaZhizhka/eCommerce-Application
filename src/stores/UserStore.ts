@@ -4,7 +4,7 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser, removeAddress, changeAddress } from '../services/setCustomersDetails';
+import { setAdress, getUser, removeAddress, changeAddress, addAddress } from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -129,17 +129,22 @@ const createUserStore = (): UserStoreType => {
       let response: ClientResponse<Customer>;
       let body: Customer;
 
-      const { id }= data;
+      const { id } = data;
       const currentData = {...data, version: store.userProfile.version}
 
       if (action === 'removeAddress') {
-        response = await removeAddress(data);
+        response = await removeAddress(currentData);
         body = response.body;
       };
 
       if (action === 'changeAddress') {
-        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0];
+        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0] as unknown as Record<string, string | boolean | number>;
         response = await changeAddress({...currentAddress, ...currentData});
+        body = response.body;
+      }
+
+      if (action === 'addAddress') {
+        response = await addAddress(currentData);
         body = response.body;
       }
 
