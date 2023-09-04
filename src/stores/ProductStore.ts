@@ -42,7 +42,7 @@ type ProductStoreType = {
   isSizeAttribute: string;
   filterSizes: string[];
   filterColors: string[];
-  filterPrice: number | number[];
+  filterPrice: number[];
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;

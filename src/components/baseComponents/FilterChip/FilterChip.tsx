@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
@@ -17,49 +16,20 @@ const CustomChip = styled(Chip)({
 const sizes = ['xs', 's', 'm', 'l', 'xl', 'one-size'];
 
 type Props = {
-  radioButton?: boolean;
   className?: string;
   onChange?: (type?: string) => void;
 };
 
-const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
+const FilterChip: React.FC<Props> = ({ onChange }) => {
   const { updateFilterSize, filterSizes } = productStore;
-  const [activeChip, setActiveChip] = useState<string>('');
-  const [activeChips, setActiveChips] = useState<string[]>(filterSizes);
-  const [active, setActive] = useState<boolean>(false);
+  const handleChipClick = (label: string): void => {
+    const isAlreadySelected = filterSizes.includes(label);
+    const updatedSizes = isAlreadySelected ? filterSizes.filter((size) => size !== label) : [...filterSizes, label];
 
-  useEffect(() => {
-    if (JSON.stringify(filterSizes) !== JSON.stringify(activeChips)) {
-      setActiveChips(filterSizes);
-    }
-  }, [filterSizes]);
-
-  useEffect(() => {
-    if (!active) {
-      setActive(true);
-      return;
-    }
-
-    updateFilterSize(activeChips);
+    updateFilterSize(updatedSizes);
 
     if (onChange) {
       onChange();
-    }
-  }, [activeChips]);
-
-  const handleChipClick = (label: string): void => {
-    if (activeChip === label) {
-      setActiveChip('');
-    } else {
-      setActiveChip(label);
-    }
-  };
-
-  const handleChipsClick = (label: string): void => {
-    if (activeChips.includes(label)) {
-      setActiveChips(activeChips.filter((chip) => chip !== label));
-    } else {
-      setActiveChips([...activeChips, label]);
     }
   };
 
@@ -67,25 +37,15 @@ const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
     <>
       <h3>Size</h3>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-        {sizes.map((size) =>
-          radioButton ? (
-            <CustomChip
-              key={size}
-              label={size}
-              color="primary"
-              variant={activeChip === size ? 'filled' : 'outlined'}
-              onClick={(): void => handleChipClick(size)}
-            />
-          ) : (
-            <CustomChip
-              key={size}
-              label={size}
-              color="primary"
-              variant={activeChips.includes(size) ? 'filled' : 'outlined'}
-              onClick={(): void => handleChipsClick(size)}
-            />
-          )
-        )}
+        {sizes.map((size) => (
+          <CustomChip
+            key={size}
+            label={size}
+            color="primary"
+            variant={filterSizes.includes(size) ? 'filled' : 'outlined'}
+            onClick={(): void => handleChipClick(size)}
+          />
+        ))}
       </Box>
     </>
   );
