@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from '@mui/material';
@@ -26,6 +25,12 @@ const Search: React.FC<Props> = ({ className, onChange }) => {
       onChange();
     }
   }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
+  }
   return (
     <div className={`${styles.root} ${className}`}>
       <Input
@@ -33,6 +38,7 @@ const Search: React.FC<Props> = ({ className, onChange }) => {
         type="search"
         value={searchValue}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         startAdornment={
           <InputAdornment position="start">
             <Icon name={IconName.SEARCH} width={20} height={20} color="var(--gray)" className="icon" />

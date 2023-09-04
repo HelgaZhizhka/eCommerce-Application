@@ -68,7 +68,7 @@ const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => (
               className={styles.field}
               component={FormikTextField}
               name="postalCode"
-              type="number"
+              type="string"
               variant="standard"
             />
           </div>
