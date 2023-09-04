@@ -252,8 +252,7 @@ const createProductStore = (): ProductStoreType => {
        const categoryId = store.categoryIdByName(category);
        if (!categoryId) return;
 
-       const fetchedProducts = await getSearchProducts(store.searchValue, categoryId);
-        console.log(fetchedProducts);
+       const fetchedProducts = await getSearchProducts(categoryId, store.searchValue);
         
        runInAction(() => {
          store.isProductsLoading = true;
@@ -261,8 +260,9 @@ const createProductStore = (): ProductStoreType => {
 
        try {
          runInAction(() => {
-          //  const productsList = store.getFetchedProducts(fetchedProducts);
-          //  store.products = [...productsList];
+           const productsList = store.getFetchedProducts(fetchedProducts);
+           store.products = [...productsList];
+           store.searchValue = '';
          });
        } catch (err) {
          runInAction(() => {

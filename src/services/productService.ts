@@ -112,20 +112,18 @@ export async function getProductsByFilter(
   }
 }
 
-export async function getSearchProducts(searchValue: string, categoryID: string): Promise<Suggestion[]> {
+export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
 
   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
 
   const response = await visitor
     .productProjections()
-    .suggest()
+    .search()
     .get({
       queryArgs: {
-        fuzzy: true,
-        fuzzyLevel: 2,
+        'text.en': searchValue,
         limit: 100,
-        text: searchValue,
         filter: filterPropertiesCategoryID,
       },
     })
