@@ -65,7 +65,7 @@ const ProfileView: React.FC<Props> = ({
         </h4>
         <div className={styles.contentItem}>
           <p className={styles.contentItemValue}>
-            {`${address.streetName}, ${address.city}, ${address.state}, ${address.postalCode}`}
+            {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
           <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
             <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
