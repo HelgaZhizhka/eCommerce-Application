@@ -73,7 +73,7 @@ const AddressAdd: React.FC = () => (
               className={styles.field}
               component={FormikTextField}
               name="postalCode"
-              type="number"
+              type="string"
               variant="standard"
             />
           </div>
