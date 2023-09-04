@@ -44,7 +44,6 @@
 }
 
 .productsPanel {
-  position: relative;
   padding: 10px 20px;
   margin-bottom: 20px;
   display: flex;
@@ -54,7 +53,7 @@
   background-color: var(--body-bg);
 
   @include create-mq($grid__bp-md - 1, 'max') {
-    padding-top: 40px;
+    padding-top: 60px;
   }
 
   @include create-mq($grid__bp-md, 'min') {
@@ -82,7 +81,7 @@
 
   @include create-mq($grid__bp-md - 1, 'max') {
     position: absolute;
-    top: 0;
+    top: 20px;
     left: 0;
     z-index: 10;
   }
