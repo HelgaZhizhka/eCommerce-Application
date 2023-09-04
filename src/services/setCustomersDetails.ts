@@ -258,9 +258,9 @@ export const addAddress = async (newAddress: Record<string, string | boolean | n
   return response as ClientResponse<Customer>;
 }
 
-export const updatePesonalData = async (userInfo: Record<string, string>, version: number): Promise<ClientResponse<Customer>> => {
+export const updatePesonalData = async (userInfo: Record<string, string>): Promise<ClientResponse<Customer>> => {
 
-  const { firstName, lastName, dateOfBirth } = userInfo;
+  const { firstName, lastName, dateOfBirth, version } = userInfo;
 
   const customer = apiwithExistingTokenFlow();
 
