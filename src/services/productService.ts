@@ -1,9 +1,11 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection, Suggestion } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { apiWithClientCredentialsFlow } from './BuildClient';
+
+const DEFAULT_LIMIT = 100;
 
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
@@ -26,7 +28,7 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
     .get({
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
-        limit: 100,
+        limit: DEFAULT_LIMIT,
       },
     })
     .execute();
@@ -40,11 +42,7 @@ export async function getProductsTypeByCategory(key: string): Promise<AttributeD
   const response = await visitor
     .productTypes()
     .withKey({ key: `${key}` })
-    .get({
-      queryArgs: {
-        limit: 100,
-      },
-    })
+    .get()
     .execute();
 
   return response.body.attributes;
@@ -93,23 +91,18 @@ export async function getProductsByFilter(
     sortObj = `${sortKey} ${sortDetail.order}`;
   }
 
-  try {
-    const response = await visitor
-      .productProjections()
-      .search()
-      .get({
-        queryArgs: {
-          filter: filterProperties,
-          ...(sortObj ? { sort: sortObj } : {}),
-          limit: 100,
-        },
-      })
-      .execute();
-    return response.body.results;
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return [];
-  }
+  const response = await visitor
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: filterProperties,
+        ...(sortObj ? { sort: sortObj } : {}),
+        limit: DEFAULT_LIMIT,
+      },
+    })
+    .execute();
+  return response.body.results;
 }
 
 export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
@@ -122,9 +115,9 @@ export async function getSearchProducts(categoryID: string, searchValue: string)
     .search()
     .get({
       queryArgs: {
-        'text.en': searchValue,
-        limit: 100,
+        limit: DEFAULT_LIMIT,
         filter: filterPropertiesCategoryID,
+        'text.en': searchValue,
       },
     })
     .execute();

@@ -35,6 +35,12 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
   const [active, setActive] = useState<boolean>(false);
 
   useEffect(() => {
+    if (JSON.stringify(filterColors) !== JSON.stringify(values)) {
+      setValues(filterColors);
+    }
+  }, [filterColors]);
+
+  useEffect(() => {
     if (!active) {
       setActive(true);
       return;

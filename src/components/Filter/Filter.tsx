@@ -14,10 +14,9 @@ type Props = {
   isFilterColor: boolean;
   onReset: () => void;
   onChange?: (type?: string) => void;
-  onChangePrice?: () => void;
 };
 
-const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, onReset, onChange, onChangePrice }) => (
+const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, onReset, onChange }) => (
   <Box className={`${className} ${styles.root}`} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
     <FilterNestedList />
     {isFilterSize && <FilterChip onChange={onChange} />}

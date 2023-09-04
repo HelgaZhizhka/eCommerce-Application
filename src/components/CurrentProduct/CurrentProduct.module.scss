@@ -8,6 +8,10 @@
   @include create-mq($grid__bp-md, 'min') {
     display: grid;
     grid-template-columns: 1fr 2fr;
+    gap: 40px;
+  }
+  
+  @include create-mq($grid__bp-lg, 'min') {
     gap: 120px;
   }
 }
