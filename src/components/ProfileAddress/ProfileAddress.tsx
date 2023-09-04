@@ -42,7 +42,6 @@ const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => (
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }): void => {
-        console.log(initialValues);
         onSaveChange({ ...values, action: 'changeAddress' });
         setSubmitting(false);
       }}
