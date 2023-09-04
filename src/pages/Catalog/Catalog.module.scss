@@ -51,6 +51,14 @@
   justify-content: space-between;
   font-size: toRem(20px);
   background-color: var(--body-bg);
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-top: 60px;
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    justify-content: flex-end;
+  }
 }
 
 .productsList {
@@ -65,5 +73,22 @@
 
   @include create-mq($grid__bp-md, 'min') {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.search {
+  width: 100%;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 400px;
+    margin-left: auto;
+    margin-right: 15px;
   }
 }

@@ -11,7 +11,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
-import { Search } from '../baseComponents/Search';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { SelectCurrency } from '../SelectCurrency';
@@ -46,7 +45,6 @@ const HeaderMobile: React.FC = () => {
             <Link to={RoutePaths.CART}>
               <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
             </Link>
-            <SelectCurrency />
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
                 <LoginIcon sx={{ ml: '10px' }} fontSize="large" />
@@ -63,8 +61,8 @@ const HeaderMobile: React.FC = () => {
             )}
           </div>
         </div>
-        <div className={styles.flex}>
-          <Search className={styles.search} />
+        <div className={`${styles.flex} ${styles.end}`}>
+          <SelectCurrency />
           <ThemeToggle />
         </div>
       </Container>

@@ -43,8 +43,8 @@ const ProfileEdit: React.FC<Props> = ({
       <Button
         variant="outlined"
         sx={{
-          mt: '15px',
           ml: 'auto',
+          mb: '20px',
           width: '240px',
           height: '60px',
           borderColor: 'orange',

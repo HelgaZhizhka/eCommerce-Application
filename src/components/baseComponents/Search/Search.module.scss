@@ -1,4 +1,20 @@
+@import '../../../styles/abstract/variables';
+@import '../../../styles/abstract/mixins';
+
 .root {
-  position: relative;
+  @include create-mq($grid__bp-md, 'min') {
+    position: relative;
+  }
+}
+
+.input {
   font-size: toRem(20px);
+  width: 100%;
+}
+
+.button {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  z-index: 10;
 }

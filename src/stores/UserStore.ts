@@ -28,7 +28,7 @@ const createUserStore = (): UserStoreType => {
   const store = {
     userData: {},
     userProfile: {} as Customer,
-    isEditMode: true,
+    isEditMode: false,
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
