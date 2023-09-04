@@ -111,7 +111,7 @@ const ProfileEdit: React.FC<Props> = ({
           Change password
         </Button>
       </div>
-      <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} />
+      <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} onSaveChange={onSaveChange} />
     </div>
   );
 };

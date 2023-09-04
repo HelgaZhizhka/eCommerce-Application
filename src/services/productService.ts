@@ -1,5 +1,5 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection, Suggestion } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';

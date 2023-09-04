@@ -133,18 +133,18 @@ const createUserStore = (): UserStoreType => {
       const currentData = {...data, version: store.userProfile.version}
 
       if (action === 'removeAddress') {
-        response = await removeAddress(data);
+        response = await removeAddress(currentData);
         body = response.body;
       };
 
       if (action === 'changeAddress') {
-        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0];
+        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0] as unknown as Record<string, string | boolean | number>;
         response = await changeAddress({...currentAddress, ...currentData});
         body = response.body;
       }
 
       if (action === 'addAddress') {
-        response = await addAddress(data);
+        response = await addAddress(currentData);
         body = response.body;
       }
 
