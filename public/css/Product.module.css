@@ -1,0 +1,25 @@
+.root {
+  padding-top: 50px;
+  padding-bottom: 60px;
+}
+@media screen and (min-width: 1024px) {
+  .root {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+.container {
+  margin-top: 40px;
+}
+@media screen and (min-width: 1024px) {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 120px;
+  }
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+}/*# sourceMappingURL=Product.module.css.map */

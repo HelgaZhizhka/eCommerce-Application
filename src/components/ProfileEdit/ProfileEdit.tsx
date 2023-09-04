@@ -14,7 +14,7 @@ type Props = {
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
-  birthDate: string;
+  dateOfBirth?: string;
   shippingAddresses: Address[];
   billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
@@ -26,7 +26,7 @@ const ProfileEdit: React.FC<Props> = ({
   onModeChange,
   firstName,
   lastName,
-  birthDate,
+  dateOfBirth,
   shippingAddresses,
   billingAddresses,
   defaultShippingAddress,
@@ -58,10 +58,11 @@ const ProfileEdit: React.FC<Props> = ({
       </Button>
 
       <ProfilePersonalInfo
+        onSaveChange={onSaveChange}
         initialValues={{
           firstName: firstName || '',
           lastName: lastName || '',
-          birthDate: birthDate || '',
+          dateOfBirth: dateOfBirth || '',
         }}
       />
 

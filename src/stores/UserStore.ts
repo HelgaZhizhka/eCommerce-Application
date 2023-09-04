@@ -4,7 +4,7 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser, removeAddress, changeAddress, addAddress } from '../services/setCustomersDetails';
+import { setAdress, getUser, removeAddress, changeAddress, addAddress, updatePersonalData } from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -145,6 +145,11 @@ const createUserStore = (): UserStoreType => {
 
       if (action === 'addAddress') {
         response = await addAddress(currentData);
+        body = response.body;
+      }
+
+      if (action === 'changePersonalData') {
+        response = await updatePersonalData(currentData);
         body = response.body;
       }
 

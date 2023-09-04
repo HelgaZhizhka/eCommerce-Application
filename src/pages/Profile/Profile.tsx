@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
     defaultShippingAddressId,
   } = userProfile || {};
 
-  const birthDate = dateOfBirth || '';
+  // const dateOfBirth = dateOfBirth || '';
 
   const preparedAddresses =
     userProfile &&
@@ -88,7 +88,7 @@ const Profile: React.FC = () => {
             firstName={firstName}
             lastName={lastName}
             email={email}
-            birthDate={birthDate}
+            dateOfBirth={dateOfBirth}
             defaultShippingAddress={preparedAddresses.defaultShippingAddress}
             defaultBillingAddress={preparedAddresses.defaultBillingAddress}
             shippingAddresses={preparedAddresses.shippingAddresses}

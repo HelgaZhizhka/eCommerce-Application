@@ -11,7 +11,7 @@ type Props = {
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
-  birthDate: string;
+  dateOfBirth?: string;
   email?: string;
   shippingAddresses?: Address[];
   billingAddresses?: Address[];
@@ -23,7 +23,7 @@ const ProfileView: React.FC<Props> = ({
   onModeChange,
   firstName,
   lastName,
-  birthDate,
+  dateOfBirth,
   email,
   shippingAddresses,
   billingAddresses,
@@ -37,7 +37,7 @@ const ProfileView: React.FC<Props> = ({
           {firstName} {lastName}
         </h3>
         <p>{email}</p>
-        <p>{birthDate}</p>
+        <p>{dateOfBirth}</p>
       </div>
       <Button
         variant="outlined"
