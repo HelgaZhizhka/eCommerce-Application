@@ -32,6 +32,7 @@ const Catalog: React.FC = () => {
     categoryIdByName,
     fetchProductsTypeByCategory,
     getFilteredProducts,
+    fetchSearchProducts,
     clearFilterData,
   } = productStore;
 
@@ -84,6 +85,11 @@ const Catalog: React.FC = () => {
     getFilteredProducts(subcategoryId || categoryId, type);
   };
 
+  const handleSearch = (): void => {
+    fetchSearchProducts(subcategoryId || categoryId);
+    // getFilteredProducts(subcategoryId || categoryId);
+  };
+
   const handleResetFilters = (): void => {
     clearFilterData();
 
@@ -114,7 +120,7 @@ const Catalog: React.FC = () => {
       <div className={styles.root}>
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
-          <Search className={styles.search} />
+          <Search onChange={handleSearch} className={styles.search} />
           {!isMobile ? (
             <Sorting onChange={handleChange} />
           ) : (

@@ -1,5 +1,5 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection, Suggestion } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
@@ -26,6 +26,7 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
     .get({
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
+        limit: 100,
       },
     })
     .execute();
@@ -92,7 +93,6 @@ export async function getProductsByFilter(
     sortObj = `${sortKey} ${sortDetail.order}`;
   }
 
-
   try {
     const response = await visitor
       .productProjections()
@@ -112,28 +112,22 @@ export async function getProductsByFilter(
   }
 }
 
-// export async function sortProducts(sortDetail: SortObject, categoryID: string): Promise<ProductProjection[]> {
-//   const visitor = apiWithClientCredentialsFlow();
+export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
+  const visitor = apiWithClientCredentialsFlow();
 
-//   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
+  const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
 
-// let sortObj = '';
+  const response = await visitor
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        'text.en': searchValue,
+        limit: 100,
+        filter: filterPropertiesCategoryID,
+      },
+    })
+    .execute();
 
-// if (sortDetail.key) {
-//   const sortKey = sortDetail.key === 'name' ? 'name.en' : sortDetail.key;
-//   sortObj = `${sortKey} ${sortDetail.order}`;
-// }
-
-//   const response = await visitor
-//     .productProjections()
-//     .search()
-//     .get({
-//       queryArgs: {
-//         filter: filterPropertiesCategoryID,
-//         sort: sortObj,
-//       },
-//     })
-//     .execute();
-
-//   return response.body.results;
-// }
+  return response.body.results;
+}

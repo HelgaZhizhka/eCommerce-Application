@@ -10,28 +10,28 @@ import { IconName } from '../Icon/Icon.enum';
 import styles from './Search.module.scss';
 
 type Props = {
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  onChange?: () => void;
 };
 
-const Search: React.FC<Props> = ({ className }) => {
-  const { setSearchValue } = productStore;
-  const [inputValue, setInputValue] = useState('');
+const Search: React.FC<Props> = ({ className, onChange }) => {
+  const { searchValue, setSearchValue } = productStore;
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    setInputValue(event.target.value);
+    setSearchValue(event.target.value);
   }
 
   function handleClick(): void {
-    setSearchValue(inputValue);
-    setInputValue('');
+    if (onChange) {
+      onChange();
+    }
   }
   return (
     <div className={`${styles.root} ${className}`}>
       <Input
         className={styles.input}
         type="search"
-        value={inputValue}
+        value={searchValue}
         onChange={handleChange}
         startAdornment={
           <InputAdornment position="start">
