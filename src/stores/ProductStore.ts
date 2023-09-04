@@ -9,6 +9,7 @@ import {
   getProductByKey,
   getProductsByCategory,
   getProductsTypeByCategory,
+  getSearchProducts,
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { initialPriceRange } from '../constants';
@@ -49,6 +50,7 @@ type ProductStoreType = {
   getFetchedProducts: (fetchedProducts: ProductProjection[]) => ProductType[];
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
+  fetchSearchProducts(category: string): Promise<void>;
   setSearchValue: (data: string) => void;
   getFilteredProducts: (category: string, type?: string) => Promise<void>;
   setFilterOptions: () => Record<string, string[]>[];
@@ -246,6 +248,33 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
+    async fetchSearchProducts(category: string): Promise<void> {
+       const categoryId = store.categoryIdByName(category);
+       if (!categoryId) return;
+
+       const fetchedProducts = await getSearchProducts(store.searchValue, categoryId);
+        console.log(fetchedProducts);
+        
+       runInAction(() => {
+         store.isProductsLoading = true;
+       });
+
+       try {
+         runInAction(() => {
+          //  const productsList = store.getFetchedProducts(fetchedProducts);
+          //  store.products = [...productsList];
+         });
+       } catch (err) {
+         runInAction(() => {
+           store.error = 'Error fetching products';
+         });
+       } finally {
+         runInAction(() => {
+           store.isProductsLoading = false;
+         });
+       }
+    },
+
     async getFilteredProducts(category: string, type?: string): Promise<void> {
       const categoryId = store.categoryIdByName(category);
       if (!categoryId) return;
@@ -256,7 +285,12 @@ const createProductStore = (): ProductStoreType => {
       if (type === 'price') {
         fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, store.filterPrice);
       } else if (type === 'sort') {
-        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, undefined, SortDetails[store.sortState]);
+        fetchedProducts = await getProductsByFilter(
+          categoryId,
+          filterAttributes,
+          undefined,
+          SortDetails[store.sortState]
+        );
       } else {
         fetchedProducts = await getProductsByFilter(categoryId, filterAttributes);
       }
@@ -304,6 +338,10 @@ const createProductStore = (): ProductStoreType => {
       return filters;
     },
 
+    setSearchValue(data: string): void {
+      store.searchValue = data;
+    },
+
     updateFilterSize(data: string[]): void {
       store.filterSizes = [...data];
     },
@@ -324,10 +362,6 @@ const createProductStore = (): ProductStoreType => {
       store.isColorAttribute = '';
       store.isSizeAttribute = '';
       store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
-    },
-
-    setSearchValue(data: string): void {
-      store.searchValue = data;
     },
   };
 
