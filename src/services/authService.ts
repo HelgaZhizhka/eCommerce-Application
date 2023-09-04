@@ -1,23 +1,26 @@
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow, myToken } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, myToken } from './BuildClient';
 
-export const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerLogin = (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
   console.log(myToken.get())
   const customer = apiWithPasswordFlow(email, password);
-  // const token = myToken.set()
+
+  const response =  customer
+  .me()
+  .login()
+  .post({
+    body: {
+      email,
+      password,
+    },
+  })
+  .execute();
+
   console.log(myToken.get())
-  return customer
-    .me()
-    .login()
-    .post({
-      body: {
-        email,
-        password,
-      },
-    })
-    .execute();
+
+  return response
 };
 
 export const customerSignUp = (

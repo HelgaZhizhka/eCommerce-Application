@@ -5,18 +5,22 @@ import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileBox } from '../../components/ProfileBox';
 import { userStore } from '../../stores';
+
 import styles from './Profile.module.scss';
 
 const Profile: React.FC = () => {
-  const { isEditMode, userProfile, getUserProfile } = userStore;
+  const { isEditMode, userProfile, getUserProfile, updateUserProfile } = userStore;
 
   const handleModeChange = (mode: boolean): void => {
     userStore.setEditMode(mode);
   };
 
-  const handleSaveChange = (data: object): void => {
-    userStore.setEditMode(false);
-    userStore.saveUserData(data);
+  const handleSaveChange = (data: Record<string, string | boolean | number>): void => {
+    // userStore.setEditMode(false);
+    // if (!userProfile) return
+    const currentData = { ...data };
+    updateUserProfile(currentData);
+    // userStore.saveUserData({ version: userProfile?.version, ...data });
   };
 
   useEffect(() => {
