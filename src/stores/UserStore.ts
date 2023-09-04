@@ -129,7 +129,7 @@ const createUserStore = (): UserStoreType => {
       let response: ClientResponse<Customer>;
       let body: Customer;
 
-      const id = data.id;
+      const { id } = data;
       const currentData = {...data, version: store.userProfile.version}
 
       if (action === 'removeAddress') {
