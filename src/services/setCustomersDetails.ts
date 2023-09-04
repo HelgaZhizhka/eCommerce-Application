@@ -99,13 +99,13 @@ export const changeAddress = async (newAddress: Address & { version: number }): 
 }
 
 
-export const addAddress = async (address: Address & { version: number }): Promise<ClientResponse<Customer>> => {
+export const addAddress = async (address: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
 
-  const {city, country, postalCode, streetName, id, version} = address
+  const {city, country, postalCode, streetName, version} = address
 
   const body: MyCustomerUpdate = {
-    version: +`${address.version}`,
+    version: +`${version}`,
     actions: [
       {
         action: 'addAddress',
