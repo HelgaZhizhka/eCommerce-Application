@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 
 import { initialPriceRange } from '../../../constants';
 import { productStore } from '../../../stores';
+import styles from './FilterPrice.module.scss';
 
 function valueText(value: number): string {
   return `${value}`;
@@ -42,7 +43,7 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
   };
 
   return (
-    <>
+    <div className={styles.root}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h3>Price</h3>
         <Box
@@ -67,7 +68,7 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
           max={initialPriceRange.max}
         />
       </Box>
-    </>
+    </div>
   );
 };
 

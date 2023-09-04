@@ -1,5 +1,5 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection, Suggestion } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
@@ -69,6 +69,7 @@ export async function getProductsByFilter(
   sortDetail?: SortObject
 ): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
+  console.log(filtersAttributes, filterPrice, sortDetail);
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
   const filtersCounter = Object.values(filtersAttributes).length;
@@ -93,23 +94,18 @@ export async function getProductsByFilter(
     sortObj = `${sortKey} ${sortDetail.order}`;
   }
 
-  try {
-    const response = await visitor
-      .productProjections()
-      .search()
-      .get({
-        queryArgs: {
-          filter: filterProperties,
-          ...(sortObj ? { sort: sortObj } : {}),
-          limit: 100,
-        },
-      })
-      .execute();
-    return response.body.results;
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return [];
-  }
+  const response = await visitor
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: filterProperties,
+        ...(sortObj ? { sort: sortObj } : {}),
+        limit: 100,
+      },
+    })
+    .execute();
+  return response.body.results;
 }
 
 export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
@@ -122,6 +118,8 @@ export async function getSearchProducts(categoryID: string, searchValue: string)
     .search()
     .get({
       queryArgs: {
+        fuzzy: true,
+        fuzzyLevel: 2,
         'text.en': searchValue,
         limit: 100,
         filter: filterPropertiesCategoryID,
