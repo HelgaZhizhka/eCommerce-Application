@@ -19,12 +19,11 @@ const sizes = ['xs', 's', 'm', 'l', 'xl', 'one-size'];
 type Props = {
   radioButton?: boolean;
   className?: string;
-  categoryId: string;
-  subcategoryId?: string;
+  onChange?: (type?: string) => void;
 };
 
-const FilterChip: React.FC<Props> = ({ radioButton, categoryId, subcategoryId }) => {
-  const { updateFilterSize, filterSizes, getFilteredProducts } = productStore;
+const FilterChip: React.FC<Props> = ({ radioButton, onChange }) => {
+  const { updateFilterSize, filterSizes } = productStore;
   const [activeChip, setActiveChip] = useState<string>('');
   const [activeChips, setActiveChips] = useState<string[]>(filterSizes);
   const [active, setActive] = useState<boolean>(false);
@@ -36,8 +35,11 @@ const FilterChip: React.FC<Props> = ({ radioButton, categoryId, subcategoryId })
     }
 
     updateFilterSize(activeChips);
-    getFilteredProducts(subcategoryId || categoryId);
-  }, [activeChips, updateFilterSize, getFilteredProducts, subcategoryId, categoryId, active]);
+
+    if (onChange) {
+      onChange();
+    }
+  }, [activeChips]);
 
   const handleChipClick = (label: string): void => {
     if (activeChip === label) {

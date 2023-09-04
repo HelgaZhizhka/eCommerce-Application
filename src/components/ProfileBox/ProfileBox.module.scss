@@ -5,7 +5,7 @@
 .root {
   padding: 20px;
 
-  @include create-mq($grid__bp-md - 1, 'max') {
+  @include create-mq($grid__bp-lg, 'min') {
     padding: 50px 80px 60px;
   }
 }

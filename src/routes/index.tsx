@@ -9,6 +9,7 @@ import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import Catalog from '../pages/Catalog/Catalog';
 import { About } from '../pages/About';
+import { Sale } from '../pages/Sale';
 import { Profile } from '../pages/Profile';
 import { Cart } from '../pages/Cart';
 import { Product } from '../pages/Product';
@@ -85,6 +86,14 @@ const RouterConfig: React.FC = () => {
           element={
             <MotionWrapper>
               <About />
+            </MotionWrapper>
+          }
+        />
+        <Route
+          path={RoutePaths.SALE}
+          element={
+            <MotionWrapper>
+              <Sale />
             </MotionWrapper>
           }
         />

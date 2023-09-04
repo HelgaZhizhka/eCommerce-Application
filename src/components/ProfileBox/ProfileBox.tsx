@@ -39,6 +39,7 @@ const ProfileBox: React.FC<Props> = ({
         firstName={firstName}
         lastName={lastName}
         email={email}
+        birthDate={birthDate}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
         defaultShippingAddress={defaultShippingAddress}

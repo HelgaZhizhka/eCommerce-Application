@@ -10,6 +10,7 @@ type Props = {
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
+  birthDate: string;
   email?: string;
   shippingAddresses?: Address[];
   billingAddresses?: Address[];
@@ -21,6 +22,7 @@ const ProfileView: React.FC<Props> = ({
   onModeChange,
   firstName,
   lastName,
+  birthDate,
   email,
   shippingAddresses,
   billingAddresses,
@@ -33,7 +35,8 @@ const ProfileView: React.FC<Props> = ({
         <h3 className={styles.title}>
           {firstName} {lastName}
         </h3>
-        <span>{email}</span>
+        <p>{email}</p>
+        <p>{birthDate}</p>
       </div>
       <Button
         variant="outlined"
@@ -65,7 +68,6 @@ const ProfileView: React.FC<Props> = ({
           </p>
           <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
         </div>
-        <Icon name={IconName.DELETE} width={40} height={40} className={`icon ${styles.iconDelete}`} />
       </div>
     ))}
 
@@ -79,7 +81,7 @@ const ProfileView: React.FC<Props> = ({
         </h4>
         <div className={styles.contentItem}>
           <p className={styles.contentItemValue}>
-            {`${address.streetName}, ${address.city}, ${address.state}, ${address.postalCode}`}
+            {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
           <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
         </div>

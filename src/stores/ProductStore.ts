@@ -2,15 +2,16 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
-import { SortOption } from '../components/baseComponents/SortingList/SortList.enum';
+import { SortDetails, SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import {
   getCategories,
-  getProductByFilter,
+  getProductsByFilter,
   getProductByKey,
   getProductsByCategory,
   getProductsTypeByCategory,
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
+import { initialPriceRange } from '../constants';
 
 type ProductType = {
   key: string;
@@ -40,6 +41,7 @@ type ProductStoreType = {
   isSizeAttribute: string;
   filterSizes: string[];
   filterColors: string[];
+  filterPrice: number | number[];
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
@@ -48,10 +50,11 @@ type ProductStoreType = {
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
   setSearchValue: (data: string) => void;
-  getFilteredProducts: (category: string) => Promise<void>;
+  getFilteredProducts: (category: string, type?: string) => Promise<void>;
   setFilterOptions: () => Record<string, string[]>[];
   updateFilterSize: (data: string[]) => void;
   updateFilterColor: (data: string[]) => void;
+  updateFilterPrice: (data: number[]) => void;
   clearFilterData: () => void;
 };
 
@@ -72,8 +75,9 @@ const createProductStore = (): ProductStoreType => {
     isSizeAttribute: '',
     filterSizes: [] as string[],
     filterColors: [] as string[],
+    filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
 
-    setSortState(value: SortOption): void {
+    async setSortState(value: SortOption): Promise<void> {
       store.sortState = value;
     },
 
@@ -186,10 +190,10 @@ const createProductStore = (): ProductStoreType => {
       try {
         if (id === undefined) return;
 
-        const fetchedProductsByCategory = await getProductsByCategory(id);
+        const fetchedProducts = await getProductsByCategory(id);
 
         runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProductsByCategory);
+          const productsList = store.getFetchedProducts(fetchedProducts);
           store.products = [...productsList];
         });
       } catch (err) {
@@ -242,13 +246,20 @@ const createProductStore = (): ProductStoreType => {
       }
     },
 
-    async getFilteredProducts(category: string): Promise<void> {
-      const data = store.setFilterOptions();
+    async getFilteredProducts(category: string, type?: string): Promise<void> {
       const categoryId = store.categoryIdByName(category);
-
       if (!categoryId) return;
 
-      const fetchedProductsByFilter = await getProductByFilter(data, categoryId);
+      const filterAttributes = store.setFilterOptions();
+      let fetchedProducts = [] as ProductProjection[];
+
+      if (type === 'price') {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, store.filterPrice);
+      } else if (type === 'sort') {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes, undefined, SortDetails[store.sortState]);
+      } else {
+        fetchedProducts = await getProductsByFilter(categoryId, filterAttributes);
+      }
 
       runInAction(() => {
         store.isProductsLoading = true;
@@ -256,7 +267,7 @@ const createProductStore = (): ProductStoreType => {
 
       try {
         runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProductsByFilter);
+          const productsList = store.getFetchedProducts(fetchedProducts);
           store.products = [...productsList];
         });
       } catch (err) {
@@ -271,39 +282,26 @@ const createProductStore = (): ProductStoreType => {
     },
 
     setFilterOptions(): Record<string, string[]>[] {
-      let options = [];
+      const options = [];
 
-      if (!store.isColorAttribute) {
-        options = [
-          {
-            [store.isSizeAttribute]: store.filterSizes,
-          },
-        ];
-      }
-
-      if (!store.isSizeAttribute) {
-        options = [
-          {
-            [store.isColorAttribute]: store.filterColors,
-          },
-        ];
-      }
-
-      options = [
-        {
+      if (store.isColorAttribute) {
+        options.push({
           [store.isColorAttribute]: store.filterColors,
-        },
-        {
-          [store.isSizeAttribute]: store.filterSizes,
-        },
-      ];
+        });
+      }
 
-      const filteredOptions = options.filter((option) => {
+      if (store.isSizeAttribute) {
+        options.push({
+          [store.isSizeAttribute]: store.filterSizes,
+        });
+      }
+
+      const filters = options.filter((option) => {
         const key = Object.keys(option)[0];
         return option[key] && option[key].length > 0;
       });
 
-      return filteredOptions;
+      return filters;
     },
 
     updateFilterSize(data: string[]): void {
@@ -314,6 +312,10 @@ const createProductStore = (): ProductStoreType => {
       store.filterColors = [...data];
     },
 
+    updateFilterPrice(data: number[]): void {
+      store.filterPrice = [...data];
+    },
+
     clearFilterData(): void {
       store.filterColors = [];
       store.filterSizes = [];
@@ -321,6 +323,7 @@ const createProductStore = (): ProductStoreType => {
       store.isFilterColor = false;
       store.isColorAttribute = '';
       store.isSizeAttribute = '';
+      store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
     },
 
     setSearchValue(data: string): void {

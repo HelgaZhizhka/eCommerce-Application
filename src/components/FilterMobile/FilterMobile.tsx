@@ -10,22 +10,20 @@ import styles from './FilterMobile.module.scss';
 
 type Props = {
   anchorElFilter: null | HTMLElement;
-  categoryId: string;
-  subcategoryId?: string;
   isFilterSize: boolean;
   isFilterColor: boolean;
   handleCloseFilter: () => void;
   onReset: () => void;
+  onChange?: (type?: string) => void;
 };
 
 const FilterMobile: React.FC<Props> = ({
   anchorElFilter,
-  handleCloseFilter,
   isFilterSize,
   isFilterColor,
-  categoryId,
-  subcategoryId,
+  handleCloseFilter,
   onReset,
+  onChange,
 }) => {
   const open = Boolean(anchorElFilter);
 
@@ -59,9 +57,9 @@ const FilterMobile: React.FC<Props> = ({
         >
           <CloseIcon />
         </IconButton>
-        {isFilterSize && <FilterChip categoryId={categoryId} subcategoryId={subcategoryId} />}
-        {isFilterColor && <FilterColorCheckBox categoryId={categoryId} subcategoryId={subcategoryId} />}
-        <FilterPrice />
+        {isFilterSize && <FilterChip onChange={onChange} />}
+        {isFilterColor && <FilterColorCheckBox onChange={onChange} />}
+        <FilterPrice onChange={onChange} />
         <FilterReset mobile onClick={onReset} />
       </div>
     </Popover>

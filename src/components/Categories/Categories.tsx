@@ -12,6 +12,7 @@ import { productStore } from '../../stores';
 import { SubCategories } from '../SubCategories';
 import { SIZE, THEME, VARIANT, CategorySlug } from './Categories.types';
 import styles from './Categories.module.scss';
+import { RoutePaths } from '../../routes/routes.enum';
 
 type Props = {
   size?: SIZE;
@@ -36,16 +37,31 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
 
   const { categories } = productStore;
 
+  const enhancedCategories = [
+    {
+      id: 'saleId',
+      slug: { en: 'sale' },
+      name: { en: 'Sale' },
+      subcategories: [],
+    },
+    ...categories,
+  ];
+
   return (
     <ul className={classNames(styles.root, styles[size], styles[variant], styles[theme], className)}>
-      {categories.map((category) => {
+      {enhancedCategories.map((category) => {
         const IconComponent = categoryIcons[category.slug.en as CategorySlug];
 
         return (
           <li key={category.id} className={styles.menuItem}>
             {variant === 'filter' ? (
               <>
-                <ListItemButton sx={{ pl: 4 }} component={Link} to={`/category/${category.slug.en}`} onClick={onClose}>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  component={Link}
+                  to={category.slug.en === 'sale' ? RoutePaths.SALE : `/category/${category.slug.en}`}
+                  onClick={onClose}
+                >
                   <ListItemIcon>{IconComponent && <IconComponent />}</ListItemIcon>
                   <ListItemText primary={category.name.en} />
                 </ListItemButton>
@@ -64,7 +80,7 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
                   className={classNames(categoriesClasses, {
                     [styles.brand]: category.slug.en === 'sale',
                   })}
-                  to={`/category/${category.slug.en}`}
+                  to={category.slug.en === 'sale' ? RoutePaths.SALE : `/category/${category.slug.en}`}
                   onClick={onClose ? (): void => onClose() : undefined}
                 >
                   <span>{category.name.en}</span>

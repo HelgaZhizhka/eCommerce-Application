@@ -7,7 +7,6 @@ import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
-import { Search } from '../baseComponents/Search';
 import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
@@ -44,7 +43,6 @@ const Header: React.FC = () => {
           )}
         </div>
         <div className={styles.flex}>
-          <Search className={styles.search} />
           <div className={`ml-auto ${styles.flex}`}>
             {!loggedIn ? (
               <>

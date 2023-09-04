@@ -20,11 +20,12 @@ export const currencies = [
     value: 'EUR',
     label: '€',
   },
-  {
-    value: 'UAH',
-    label: '₴',
-  },
 ];
+
+export const initialPriceRange = {
+  min: 1,
+  max: 50,
+};
 
 export const contacts = {
   phone: '(+380) 68 018 45 67',

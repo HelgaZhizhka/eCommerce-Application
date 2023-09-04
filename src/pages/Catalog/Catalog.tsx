@@ -17,6 +17,7 @@ import { productStore } from '../../stores';
 import styles from './Catalog.module.scss';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
+import { Search } from '../../components/baseComponents/Search';
 
 type Params = {
   categoryId: string;
@@ -30,6 +31,7 @@ const Catalog: React.FC = () => {
     fetchProductsByCategory,
     categoryIdByName,
     fetchProductsTypeByCategory,
+    getFilteredProducts,
     clearFilterData,
   } = productStore;
 
@@ -39,22 +41,6 @@ const Catalog: React.FC = () => {
 
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
-
-  const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElFilter(event.currentTarget);
-  };
-
-  const handleCloseFilter = (): void => {
-    setAnchorElFilter(null);
-  };
-
-  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElSort(event.currentTarget);
-  };
-
-  const handleCloseSort = (): void => {
-    setAnchorElSort(null);
-  };
 
   useEffect(() => {
     if (!categoryId) {
@@ -72,11 +58,31 @@ const Catalog: React.FC = () => {
     if (id) {
       fetchProductsByCategory(id);
     }
-  }, [categoryId, subcategoryId, fetchProductsByCategory, fetchProductsTypeByCategory, categoryIdByName]);
+  }, [categoryId, subcategoryId]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
   }
+
+  const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
+    setAnchorElFilter(event.currentTarget);
+  };
+
+  const handleCloseFilter = (): void => {
+    setAnchorElFilter(null);
+  };
+
+  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
+    setAnchorElSort(event.currentTarget);
+  };
+
+  const handleCloseSort = (): void => {
+    setAnchorElSort(null);
+  };
+
+  const handleChange = (type?: string): void => {
+    getFilteredProducts(subcategoryId || categoryId, type);
+  };
 
   const handleResetFilters = (): void => {
     clearFilterData();
@@ -108,8 +114,9 @@ const Catalog: React.FC = () => {
       <div className={styles.root}>
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
+          <Search className={styles.search} />
           {!isMobile ? (
-            <Sorting />
+            <Sorting onChange={handleChange} />
           ) : (
             <div className={styles.actions}>
               <IconButton aria-label="sort" onClick={handleClickFilter}>
@@ -119,15 +126,14 @@ const Catalog: React.FC = () => {
                 isFilterSize={isFilterSize}
                 isFilterColor={isFilterColor}
                 anchorElFilter={anchorElFilter}
-                categoryId={categoryId}
-                subcategoryId={subcategoryId}
                 handleCloseFilter={handleCloseFilter}
                 onReset={handleResetFilters}
+                onChange={handleChange}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
-              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} />
+              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} onChange={handleChange} />
             </div>
           )}
         </div>
@@ -138,9 +144,8 @@ const Catalog: React.FC = () => {
                 isFilterSize={isFilterSize}
                 isFilterColor={isFilterColor}
                 className={`${styles.sticky} ${styles.filter}`}
-                categoryId={categoryId}
-                subcategoryId={subcategoryId}
                 onReset={handleResetFilters}
+                onChange={handleChange}
               />
             </aside>
           )}

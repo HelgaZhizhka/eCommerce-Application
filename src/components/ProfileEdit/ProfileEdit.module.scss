@@ -1,6 +1,5 @@
 @import '../../styles/abstract/variables';
 @import '../../styles/abstract/mixins';
-@import '../../styles/abstract/functions';
 
 .root {
   display: flex;
@@ -11,9 +10,14 @@
 }
 
 .buttonWrapper {
-  display: flex;
-  align-self: center;
-  justify-content: center;
   gap: 20px;
   margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+
+  @include create-mq($grid__bp-md, 'min') {
+    flex-direction: row;
+  }
 }

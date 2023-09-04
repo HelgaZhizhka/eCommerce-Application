@@ -5,17 +5,23 @@ import { productStore } from '../../../stores';
 import { SortOption } from './SortList.enum';
 
 type Props = {
-  handleMenuItemClick?: (sortOption: SortOption) => void;
   className?: string;
+  handleMenuItemClick?: (sortOption: SortOption) => void;
+  onChange?: (type?: string) => void;
 };
 
-const SortingList: React.FC<Props> = ({ handleMenuItemClick }) => {
+const SortingList: React.FC<Props> = ({ handleMenuItemClick, onChange }) => {
   const { sortState, setSortState } = productStore;
 
   const handleMenuItemClickWrapper = (sortEnumValue: SortOption): void => {
     setSortState(sortEnumValue);
+
     if (handleMenuItemClick) {
       handleMenuItemClick(sortEnumValue);
+    }
+
+    if (onChange) {
+      onChange('sort');
     }
   };
 
