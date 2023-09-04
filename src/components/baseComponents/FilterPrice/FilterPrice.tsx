@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
@@ -16,27 +16,7 @@ type Props = {
 
 const FilterPrice: React.FC<Props> = ({ onChange }) => {
   const { updateFilterPrice, filterPrice } = productStore;
-
-  const [value, setValue] = useState<number[]>(filterPrice as number[]);
-  const [active, setActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (JSON.stringify(filterPrice) !== JSON.stringify(value)) {
-      setValue(filterPrice as number[]);
-    }
-  }, [filterPrice]);
-
-  useEffect(() => {
-    if (!active) {
-      setActive(true);
-      return;
-    }
-
-    setValue(filterPrice as number[]);
-  }, [filterPrice, active]);
-
   const handleChange = (event: Event, newValue: number | number[]): void => {
-    setValue(newValue as number[]);
     updateFilterPrice(newValue as number[]);
   };
 
@@ -57,13 +37,13 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
             letterSpacing: '0.4px',
           }}
         >
-          EUR {value[0]} - {value[1]}
+          EUR {filterPrice[0]} - {filterPrice[1]}
         </Box>
       </Box>
       <Box style={{ width: '100%' }}>
         <Slider
           getAriaLabel={(): string => 'Price range'}
-          value={value}
+          value={filterPrice}
           onChange={handleChange}
           onChangeCommitted={handleChangeCommit}
           valueLabelDisplay="auto"
