@@ -1,7 +1,7 @@
 import Input from '@mui/material/Input';
+import { observer } from 'mobx-react-lite';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 
 import { productStore } from '../../../stores';
 import { Icon } from '../Icon';
@@ -16,21 +16,22 @@ type Props = {
 const Search: React.FC<Props> = ({ className, onChange }) => {
   const { searchValue, setSearchValue } = productStore;
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
-  }
+  };
 
-  function handleClick(): void {
+  const handleClick = (): void => {
     if (onChange) {
       onChange();
     }
-  }
+  };
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>): void {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       handleClick();
     }
-  }
+  };
+
   return (
     <div className={`${styles.root} ${className}`}>
       <Input
@@ -45,7 +46,7 @@ const Search: React.FC<Props> = ({ className, onChange }) => {
           </InputAdornment>
         }
       />
-      <Button className={styles.button} sx={{ position: 'absolute' }} variant="contained" onClick={handleClick}>
+      <Button className={styles.button} sx={{ ml: 2 }} variant="contained" onClick={handleClick}>
         Search
       </Button>
     </div>

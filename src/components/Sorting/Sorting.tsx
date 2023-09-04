@@ -6,7 +6,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { SortingList } from '../baseComponents/SortingList';
-import { SortOption } from '../baseComponents/SortingList/SortList.enum';
 import { productStore } from '../../stores';
 
 const CustomButton = styled(Button)(({ theme }) => ({

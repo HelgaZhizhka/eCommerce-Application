@@ -39,3 +39,17 @@
   overflow: hidden;
   -webkit-line-clamp: 2;
 }
+
+input[type="search"]::-webkit-search-clear-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type="search"]::-ms-clear {
+  display: none;
+}
+
+
+input[type="search"]::-webkit-search-cancel-button {
+  appearance: none;
+}

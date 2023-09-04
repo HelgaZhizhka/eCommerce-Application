@@ -71,6 +71,7 @@
     "no-debugger": "off",
     "class-methods-use-this": "off",
     "dot-notation": "off",
-    "non-null-assertion": "off"
+    "non-null-assertion": "off",
+     "react-hooks/exhaustive-deps": "off"
   }
 }
