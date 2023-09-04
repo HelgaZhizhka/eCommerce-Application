@@ -35,19 +35,23 @@ const createUserStore = (): UserStoreType => {
 
     async login(email: string, password: string): Promise<void> {
       try {
-        const response = await customerLogin(email, password);
+        // const {response, token} = await customerLogin(email, password);
+        // const res = await response;
+        const res = await customerLogin(email, password);
+        // console.log(token);
+
+        // localStorage.setItem('token', token);
         runInAction(() => {
           store.error = null;
-          console.log(response);
 
-          if (response.statusCode === 200) {
+          if (res.statusCode === 200) {
             store.loggedIn = true;
             store.userProfile = {
-              ...response.body.customer,
+              ...res.body.customer,
             };
           }
 
-          if (response.statusCode === 400) {
+          if (res.statusCode === 400) {
             throw new Error('Unexpected error');
           }
         });
@@ -125,7 +129,7 @@ const createUserStore = (): UserStoreType => {
       let response: ClientResponse<Customer>;
       let body: Customer;
 
-      const id = data.id;
+      const { id }= data;
       const currentData = {...data, version: store.userProfile.version}
 
       if (action === 'removeAddress') {

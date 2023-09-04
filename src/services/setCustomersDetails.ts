@@ -46,9 +46,13 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 
 export const getUser = async (): Promise<Customer | null> => {
   // const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
-  const customer2 = apiwithExistingTokenFlow();
 
-  const customerProfile = await customer2.me().get().execute();
+  const customer = apiwithExistingTokenFlow();
+
+  // if (localStorage.getItem('token') === undefined || '') localStorage.setItem('token', myToken.get().token);
+  // console.log(myToken.get(), localStorage.getItem('token'));
+
+  const customerProfile = await customer.me().get().execute();
 
   return customerProfile.body;
 };

@@ -17,6 +17,7 @@ import { productStore } from '../../stores';
 import styles from './Catalog.module.scss';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
+import { Search } from '../../components/baseComponents/Search';
 
 type Params = {
   categoryId: string;
@@ -113,6 +114,7 @@ const Catalog: React.FC = () => {
       <div className={styles.root}>
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
+          <Search className={styles.search} />
           {!isMobile ? (
             <Sorting onChange={handleChange} />
           ) : (

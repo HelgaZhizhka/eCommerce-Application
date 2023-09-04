@@ -68,7 +68,6 @@ export async function getProductsByFilter(
   sortDetail?: SortObject
 ): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
-  console.log(filtersAttributes, filterPrice, sortDetail);
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
   const filtersCounter = Object.values(filtersAttributes).length;
