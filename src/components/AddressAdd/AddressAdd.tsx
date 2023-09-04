@@ -91,10 +91,11 @@ const AddressAdd: React.FC<Props> = ({ onSaveChange }) => (
           </div>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <FormControlLabel
+              className={styles.nowrap}
               control={<Field type="checkbox" name="checkBox" component={CustomCheckbox} />}
               label="Use default"
             />
-            <Button type="submit" disabled={!isValid} sx={{ fontSize: '20px' }}>
+            <Button className={styles.nowrap} type="submit" disabled={!isValid} sx={{ fontSize: '20px' }}>
               Add address
               <AddIcon />
             </Button>

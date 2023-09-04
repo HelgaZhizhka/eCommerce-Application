@@ -3,10 +3,11 @@
 @import '../../styles/abstract/functions';
 
 .root {
-  padding-top: 50px;
+  padding-top: 20px;
   padding-bottom: 60px;
 
   @include create-mq($grid__bp-md, 'min') {
+    padding-top: 50px;
     padding-left: 80px;
     padding-right: 80px;
   }
