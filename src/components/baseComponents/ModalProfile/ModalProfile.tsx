@@ -24,9 +24,10 @@ const style = {
 type Props = {
   activeModal: string | null;
   handleCloseModal: () => void;
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
 };
 
-const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal }) => (
+const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal, onSaveChange }) => (
   <div>
     <Modal
       open={!!activeModal}
@@ -46,7 +47,7 @@ const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal }) => (
         >
           <CloseIcon />
         </IconButton>
-        {activeModal === 'address' && <AddressAdd />}
+        {activeModal === 'address' && <AddressAdd onSaveChange={onSaveChange} />}
         {activeModal === 'password' && <PasswordChange />}
       </Box>
     </Modal>

@@ -32,7 +32,10 @@ const initialValues: InitialValuesType = {
   checkBox: false,
 };
 
-const AddressAdd: React.FC = () => (
+type Props = {
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
+};
+const AddressAdd: React.FC<Props> = ({ onSaveChange }) => (
   <Box sx={{ p: '30px', borderBottom: '3px solid grey' }}>
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <h3>Add new address</h3>
@@ -42,6 +45,7 @@ const AddressAdd: React.FC = () => (
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values): void => {
+        onSaveChange({ ...values, action: 'addAddress' });
         console.log(values);
       }}
     >

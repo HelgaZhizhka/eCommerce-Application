@@ -2,7 +2,6 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { Address } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 
 import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
 
@@ -10,6 +9,101 @@ const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Cu
   const response = await customer.me().get().execute();
   return response.body;
 };
+
+const setDefaultShippingAddress = async (customer: ByProjectKeyRequestBuilder, version: number, id?: string): Promise<ClientResponse<Customer>> => {
+  let response;
+  if (!id) {
+    response = await customer.me().post({
+      body: {
+        version: +`${version}`,
+        actions: [
+          {
+            action: 'setDefaultShippingAddress',
+          }
+        ],
+      }
+     }).execute()
+
+  }
+  response = await customer.me().post({
+    body: {
+      version: +`${version}`,
+      actions: [
+        {
+          action: 'setDefaultShippingAddress',
+          addressId: id
+        }
+      ],
+    }
+   }).execute()
+
+   return response
+
+}
+
+const setDefaultBillingAddress = async (customer: ByProjectKeyRequestBuilder, version: number, id?: string): Promise<ClientResponse<Customer>> => {
+  let response;
+  if (!id) {
+    response = await customer.me().post({
+    body: {
+      version: +`${version}`,
+      actions: [
+        {
+          action: 'setDefaultBillingAddress',
+        }
+      ],
+    }
+   }).execute()
+  }
+   response = await customer.me().post({
+    body: {
+      version: +`${version}`,
+      actions: [
+        {
+          action: 'setDefaultBillingAddress',
+          addressId: id
+        }
+      ],
+    }
+   }).execute()
+
+   return response
+
+}
+
+const addBillingAddressId = async (customer: ByProjectKeyRequestBuilder, version: number, id: string): Promise<ClientResponse<Customer>> => {
+  const response = await customer.me().post({
+    body: {
+      version: +`${version}`,
+      actions: [
+        {
+          action: 'addBillingAddressId',
+          addressId: `${id}`
+        }
+      ],
+    }
+   }).execute()
+
+   return response
+
+}
+
+const addShippingAddressId = async (customer: ByProjectKeyRequestBuilder, version: number, id: string): Promise<ClientResponse<Customer>> => {
+  const response = await customer.me().post({
+    body: {
+      version: +`${version}`,
+      actions: [
+        {
+          action: 'addShippingAddressId',
+          addressId: `${id}`
+        }
+      ],
+    }
+   }).execute()
+
+   return response
+
+}
 
 const setAddressRequest = async (
   customer: ByProjectKeyRequestBuilder,
@@ -45,12 +139,8 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 };
 
 export const getUser = async (): Promise<Customer | null> => {
-  // const token = 'ecommerce-project-final-task:WS5N3w5JYARU3TxjFb4BtLy7eSX7JRhQyeoTY6uuUyQ';
 
   const customer = apiwithExistingTokenFlow();
-
-  // if (localStorage.getItem('token') === undefined || '') localStorage.setItem('token', myToken.get().token);
-  // console.log(myToken.get(), localStorage.getItem('token'));
 
   const customerProfile = await customer.me().get().execute();
 
@@ -76,10 +166,10 @@ export const removeAddress = async (address: Record<string, string | boolean | n
   return response;
 }
 
-export const changeAddress = async (newAddress: Address & { version: number }): Promise<ClientResponse<Customer>> => {
+export const changeAddress = async (newAddress: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
 
-  const {city, country, postalCode, streetName, id, version} = newAddress
+  const {city, country, postalCode, streetName, id, version, checkBox, name} = newAddress;
 
   const body: MyCustomerUpdate = {
     version: +`${version}`,
@@ -88,16 +178,73 @@ export const changeAddress = async (newAddress: Address & { version: number }): 
         action: 'changeAddress',
         addressId: `${id}`,
         address: {
-          "streetName": `${streetName}`,
-          "postalCode": `${postalCode}`,
-          "city": `${city}`,
-          "country": `${country}`,
+          streetName: `${streetName}`,
+          postalCode: `${postalCode}`,
+          city: `${city}`,
+          country: `${country}`,
         }
       }
     ],
   };
 
-  const response = await customer.me().post({ body }).execute()
+  const response = await customer.me().post({ body }).execute();
 
-  return response
+  const newVersion = response.body.version;
+
+  let newResponce;
+
+  const adressid = id as string | undefined;
+
+  if (name === 'Billing') newResponce = checkBox ? await setDefaultBillingAddress(customer, newVersion, adressid) : await setDefaultBillingAddress(customer, newVersion)
+  if (name === 'Shipping') newResponce = checkBox ? await setDefaultShippingAddress(customer, newVersion, adressid) : await setDefaultShippingAddress(customer, newVersion)
+
+  return newResponce as ClientResponse<Customer>
+}
+
+
+export const addAddress = async (newAddress: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  let response: ClientResponse<Customer> | undefined;
+
+  const {address, checkBox, city, country, postalCode, street, version} = newAddress;
+
+  const body: MyCustomerUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        action: 'addAddress',
+        address: {
+          streetName: `${street}`,
+          postalCode: `${postalCode}`,
+          city: `${city}`,
+          country: `${country}`,
+        }
+      }
+    ],
+  };
+
+  const responseAddAddress = await customer.me().post({ body }).execute()
+
+  const id = responseAddAddress.body.addresses.at(-1)?.id as string;
+  const newVersion = responseAddAddress.body.version
+
+
+  if (address === "Shipping") {
+    if (checkBox) {
+      response = await setDefaultShippingAddress(customer, newVersion, id)
+    } else {
+      response = await addShippingAddressId(customer, newVersion, id)
+    }
+  }
+
+  if (address === "Billing") {
+    if (checkBox) {
+      response = await setDefaultBillingAddress(customer, newVersion, id)
+    } else {
+      response = await addBillingAddressId(customer, newVersion, id)
+    }
+  }
+
+  return response as ClientResponse<Customer>;
 }
