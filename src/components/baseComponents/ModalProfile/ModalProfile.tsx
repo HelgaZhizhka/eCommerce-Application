@@ -44,7 +44,7 @@ const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal, onSaveCh
           <CloseIcon />
         </IconButton>
         {activeModal === 'address' && <AddressAdd onSaveChange={onSaveChange} />}
-        {activeModal === 'password' && <PasswordChange />}
+        {activeModal === 'password' && <PasswordChange onSaveChange={onSaveChange} />}
       </Box>
     </Modal>
   </div>

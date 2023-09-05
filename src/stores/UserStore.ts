@@ -4,7 +4,16 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser, removeAddress, changeAddress, addAddress, updatePersonalData } from '../services/setCustomersDetails';
+import {
+  setAdress,
+  getUser,
+  removeAddress,
+  changeAddress,
+  addAddress,
+  updatePersonalData,
+  changePassword,
+} from '../services/setCustomersDetails';
+import { myToken } from '../services/BuildClient';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -12,16 +21,18 @@ type UserStoreType = {
   isRegistration: boolean;
   isEditMode: boolean;
   error: null | string;
+  success: null | string;
   userProfile: Customer | null;
   login: (email: string, password: string) => Promise<void>;
   signup: () => Promise<void>;
   logout: () => void;
   updateUserData: (data: object) => void;
   clearError: () => void;
+  clearSuccess: () => void;
   resetRegistration: () => void;
   setEditMode: (isEditMode: boolean) => void;
   getUserProfile: () => Promise<void>;
-  updateUserProfile: (data: Record<string, string | boolean | number>) => Promise<void>
+  updateUserProfile: (data: Record<string, string | boolean | number>) => Promise<void>;
 };
 
 const createUserStore = (): UserStoreType => {
@@ -32,17 +43,14 @@ const createUserStore = (): UserStoreType => {
     loggedIn: localStorage.getItem('loggedIn') === 'true',
     isRegistration: false,
     error: null as null | string,
+    success: null as null | string,
 
     async login(email: string, password: string): Promise<void> {
       try {
-        // const {response, token} = await customerLogin(email, password);
-        // const res = await response;
         const res = await customerLogin(email, password);
-        // console.log(token);
 
-        // localStorage.setItem('token', token);
         runInAction(() => {
-          store.error = null;
+          store.clearError();
 
           if (res.statusCode === 200) {
             store.loggedIn = true;
@@ -57,7 +65,7 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
-          store.error = 'Customer account with the given credentials not found';
+          store.error = 'Customer account with the given credentials not found.  Log in or use another email address';
         });
       }
     },
@@ -68,7 +76,7 @@ const createUserStore = (): UserStoreType => {
         const response = await customerSignUp(data);
 
         runInAction(() => {
-          store.error = null;
+          store.clearError();
           if (response.statusCode === 201) {
             store.loggedIn = true;
             if (data.email && data.password) {
@@ -83,7 +91,8 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
-          store.error = 'There is already an existing customer with the provided email.';
+          store.error =
+            'There is already an existing customer with the provided email. Log in or use another email address';
         });
       }
     },
@@ -96,15 +105,21 @@ const createUserStore = (): UserStoreType => {
       store.error = null;
     },
 
+    clearSuccess(): void {
+      store.success = null;
+    },
+
     updateUserData(data: Partial<RegistrationFormValuesData>): void {
       store.userData = { ...store.userData, ...data };
     },
 
     logout(): void {
       localStorage.removeItem('loggedIn');
+      localStorage.removeItem('token');
+      myToken.clear();
       store.loggedIn = false;
       store.userData = {};
-      store.error = null;
+      store.clearError();
       store.userProfile = {} as Customer;
     },
 
@@ -127,19 +142,22 @@ const createUserStore = (): UserStoreType => {
       const { action } = data;
 
       let response: ClientResponse<Customer>;
-      let body: Customer;
+      let body: Customer = store.userProfile;
 
       const { id } = data;
-      const currentData = {...data, version: store.userProfile.version}
+      const currentData = { ...data, version: store.userProfile.version };
 
       if (action === 'removeAddress') {
         response = await removeAddress(currentData);
         body = response.body;
-      };
+      }
 
       if (action === 'changeAddress') {
-        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0] as unknown as Record<string, string | boolean | number>;
-        response = await changeAddress({...currentAddress, ...currentData});
+        const currentAddress = store.userProfile.addresses.filter((item) => item.id === id)[0] as unknown as Record<
+          string,
+          string | boolean | number
+        >;
+        response = await changeAddress({ ...currentAddress, ...currentData });
         body = response.body;
       }
 
@@ -153,12 +171,38 @@ const createUserStore = (): UserStoreType => {
         body = response.body;
       }
 
+      if (action === 'changePassword') {
+        try {
+          response = await changePassword(currentData);
+
+          runInAction(() => {
+            store.clearError();
+            store.clearSuccess();
+            if (response.statusCode === 200) {
+              body = response.body;
+              runInAction(() => {
+                store.success =
+                  'Password changed successfully';
+              });
+            }
+            if (response.statusCode === 400) {
+              throw new Error('The given current password does not match.');
+            }
+          });
+        } catch (err) {
+          runInAction(() => {
+            store.error =
+              'The given current password does not match';
+          });
+        }
+      }
+
       runInAction(() => {
         store.userProfile = {
           ...body,
         };
       });
-    }
+    },
   };
 
   makeAutoObservable(store);

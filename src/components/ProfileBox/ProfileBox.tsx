@@ -51,6 +51,7 @@ const ProfileBox: React.FC<Props> = ({
         onSaveChange={onSaveChange}
         firstName={firstName}
         lastName={lastName}
+        email={email}
         dateOfBirth={dateOfBirth}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
