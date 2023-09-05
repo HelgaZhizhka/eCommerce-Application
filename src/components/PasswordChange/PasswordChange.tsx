@@ -8,6 +8,10 @@ import { TextField as FormikTextField } from 'formik-material-ui';
 import styles from './PasswordChange.module.scss';
 import { validationSchema } from './validate';
 
+type Props = {
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
+};
+
 type InitialValuesType = {
   currentPassword: string;
   newPassword: string;
@@ -20,7 +24,7 @@ const initialValues: InitialValuesType = {
   repeatNewPassword: '',
 };
 
-const PasswordChange: React.FC = () => {
+const PasswordChange: React.FC<Props> = ({ onSaveChange }) => {
   const [ShowRepeatNewPassword, setShowRepeatNewPassword] = useState(false);
   const [ShowNewPassword, setShowNewPassword] = useState(false);
   const [CurrentPassword, setCurrentPassword] = useState(false);
@@ -38,7 +42,14 @@ const PasswordChange: React.FC = () => {
         <h3>Change password</h3>
       </Box>
 
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(): void => {}}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }): void => {
+          onSaveChange({ ...values, action: 'changePassword' });
+          setSubmitting(false);
+        }}
+      >
         {({ isValid }): ReactElement => (
           <Form>
             <label className={styles.lablelTitle} htmlFor="currentPassword">

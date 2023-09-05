@@ -11,6 +11,7 @@ type Props = {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
+    email: string;
   };
 };
 
@@ -28,6 +29,7 @@ const ProfilePersonalInfo: React.FC<Props> = ({ initialValues, onSaveChange }) =
       <Form>
         <FieldWrapper label="First Name" name="firstName" type="text" variant="standard" />
         <FieldWrapper label="Last Name" name="lastName" type="text" variant="standard" />
+        <FieldWrapper label="Email" name="email" type="text" variant="standard" />
         <FieldWrapper label="Date of birth" name="dateOfBirth" type="date" variant="standard" />
         <Button sx={{ fontSize: '20px' }} variant="contained" type="submit" disabled={!isValid}>
           Save
