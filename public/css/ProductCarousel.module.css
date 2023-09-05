@@ -1,0 +1,29 @@
+.thumbnails .rootFirstSwiper,
+.thumbnails .rootSecondSwiper {
+  max-width: 500px;
+}
+.thumbnails .wrapImg {
+  width: 300px;
+  margin: 0 auto;
+}
+.thumbnails .wrapImgSecond {
+  width: 80px;
+  margin-top: 20px;
+}
+.thumbnails .img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.zoom {
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+}
+
+.grab {
+  cursor: -webkit-grab;
+  cursor: grab;
+}/*# sourceMappingURL=ProductCarousel.module.css.map */

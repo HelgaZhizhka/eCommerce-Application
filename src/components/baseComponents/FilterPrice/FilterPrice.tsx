@@ -1,4 +1,3 @@
-// import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';

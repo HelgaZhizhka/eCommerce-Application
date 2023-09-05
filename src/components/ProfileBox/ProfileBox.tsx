@@ -1,8 +1,8 @@
 import { Address } from '@commercetools/platform-sdk';
-import styles from './ProfileBox.module.scss';
 
 import { ProfileView } from '../ProfileView';
 import ProfileEdit from '../ProfileEdit/ProfileEdit';
+import styles from './ProfileBox.module.scss';
 
 type Props = {
   className?: string;
@@ -12,7 +12,7 @@ type Props = {
   firstName?: string;
   lastName?: string;
   email?: string;
-  birthDate: string;
+  dateOfBirth?: string;
   shippingAddresses: Address[];
   billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
@@ -26,7 +26,7 @@ const ProfileBox: React.FC<Props> = ({
   firstName,
   lastName,
   email,
-  birthDate,
+  dateOfBirth,
   shippingAddresses,
   billingAddresses,
   defaultShippingAddress,
@@ -39,7 +39,7 @@ const ProfileBox: React.FC<Props> = ({
         firstName={firstName}
         lastName={lastName}
         email={email}
-        birthDate={birthDate}
+        dateOfBirth={dateOfBirth}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
         defaultShippingAddress={defaultShippingAddress}
@@ -51,7 +51,7 @@ const ProfileBox: React.FC<Props> = ({
         onSaveChange={onSaveChange}
         firstName={firstName}
         lastName={lastName}
-        birthDate={birthDate}
+        dateOfBirth={dateOfBirth}
         shippingAddresses={shippingAddresses}
         billingAddresses={billingAddresses}
         defaultShippingAddress={defaultShippingAddress}

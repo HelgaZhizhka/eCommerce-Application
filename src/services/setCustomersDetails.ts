@@ -259,7 +259,7 @@ export const addAddress = async (newAddress: Record<string, string | boolean | n
   return response as ClientResponse<Customer>;
 }
 
-export const updatePesonalData = async (userInfo: Record<string, string>): Promise<ClientResponse<Customer>> => {
+export const updatePersonalData = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
 
   const { firstName, lastName, dateOfBirth, version } = userInfo;
 
@@ -270,15 +270,15 @@ export const updatePesonalData = async (userInfo: Record<string, string>): Promi
     actions: [
       {
         "action": "setFirstName",
-        firstName
+        firstName: `${firstName}`
       },
       {
         "action": "setLastName",
-        lastName
+        lastName: `${lastName}`
       },
       {
         "action": "setDateOfBirth",
-        dateOfBirth
+        dateOfBirth: `${dateOfBirth}`
       }
     ],
   };

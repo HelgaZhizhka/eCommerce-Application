@@ -2,16 +2,16 @@ import Button from '@mui/material/Button';
 import { Address } from '@commercetools/platform-sdk';
 import IconButton from '@mui/material/IconButton';
 
-import styles from './ProfileView.module.scss';
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
+import styles from './ProfileView.module.scss';
 
 type Props = {
   className?: string;
   onModeChange: (mode: boolean) => void;
   firstName?: string;
   lastName?: string;
-  birthDate: string;
+  dateOfBirth?: string;
   email?: string;
   shippingAddresses?: Address[];
   billingAddresses?: Address[];
@@ -23,7 +23,7 @@ const ProfileView: React.FC<Props> = ({
   onModeChange,
   firstName,
   lastName,
-  birthDate,
+  dateOfBirth,
   email,
   shippingAddresses,
   billingAddresses,
@@ -37,7 +37,7 @@ const ProfileView: React.FC<Props> = ({
           {firstName} {lastName}
         </h3>
         <p>{email}</p>
-        <p>{birthDate}</p>
+        <p>{dateOfBirth}</p>
       </div>
       <Button
         variant="outlined"
@@ -65,7 +65,7 @@ const ProfileView: React.FC<Props> = ({
         </h4>
         <div className={styles.contentItem}>
           <p className={styles.contentItemValue}>
-            {`${address.streetName}, ${address.city}, ${address.state}, ${address.postalCode}`}
+            {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
           <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
             <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />

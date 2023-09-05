@@ -44,13 +44,13 @@ export const validate = (
   }
 
   const calculateAge = (birthday: string): number => {
-    const birthDate = new Date(birthday);
+    const dateOfBirth = new Date(birthday);
     const currentDate = new Date();
 
-    const age = currentDate.getFullYear() - birthDate.getFullYear();
-    const monthDifference = currentDate.getMonth() - birthDate.getMonth();
+    const age = currentDate.getFullYear() - dateOfBirth.getFullYear();
+    const monthDifference = currentDate.getMonth() - dateOfBirth.getMonth();
 
-    if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < birthDate.getDate())) {
+    if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < dateOfBirth.getDate())) {
       return age - 1;
     }
 

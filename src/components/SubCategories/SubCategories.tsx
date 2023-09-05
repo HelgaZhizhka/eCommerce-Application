@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import { ExtendedCategory } from '../../stores/ProductStore.interfaces';
 import styles from './SubCategories.module.scss';
 
