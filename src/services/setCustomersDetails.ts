@@ -309,7 +309,7 @@ export const changePassword = async (userInfo: Record<string, string | number>):
     .execute()
     .then(response => {
       if (response.statusCode === 200) {
-        const email = response.body.email
+        const { email } = response.body
         customerLogin(email, `${newPassword}`);
       }
       return response
