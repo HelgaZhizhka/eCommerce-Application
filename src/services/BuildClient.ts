@@ -36,6 +36,14 @@ export class MyTokenCache implements TokenCache {
   public get(): TokenStore {
      return this.myCache
    }
+
+  public clear(): void {
+    this.myCache = {
+      token: '',
+      expirationTime: 0,
+      refreshToken: '',
+    };
+  }
 }
 
 export const myToken = new MyTokenCache();
@@ -62,6 +70,8 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
 }
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
+  myToken.clear();
+  
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,

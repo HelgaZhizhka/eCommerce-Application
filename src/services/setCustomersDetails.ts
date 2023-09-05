@@ -292,13 +292,14 @@ export const updatePersonalData = async (userInfo: Record<string, string | numbe
   return response;
 }
 
-export const changePassword = async (version: string, currentPassword: string, newPassword: string) => {
+export const changePassword = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
+  const { version, currentPassword, newPassword } = userInfo;
 
   const body: MyCustomerChangePassword = {
     version: +`${version}`,
-    currentPassword,
-    newPassword
+    currentPassword: `${currentPassword}`,
+    newPassword: `${newPassword}`
   };
 
   const setNewPassword = await customer
@@ -306,13 +307,13 @@ export const changePassword = async (version: string, currentPassword: string, n
     .password()
     .post({body})
     .execute()
-    .then( response => {
+    .then(response => {
       if (response.statusCode === 200) {
         const email = response.body.email
-        customerLogin(email, newPassword);
+        customerLogin(email, `${newPassword}`);
       }
-    }
-  )
+      return response
+    })
 
   return setNewPassword
 }
