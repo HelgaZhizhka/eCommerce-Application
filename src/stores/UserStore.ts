@@ -4,7 +4,14 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
-import { setAdress, getUser, removeAddress, changeAddress, addAddress, updatePersonalData } from '../services/setCustomersDetails';
+import {
+  setAdress,
+  getUser,
+  removeAddress,
+  changeAddress,
+  addAddress,
+  updatePersonalData,
+} from '../services/setCustomersDetails';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -21,7 +28,7 @@ type UserStoreType = {
   resetRegistration: () => void;
   setEditMode: (isEditMode: boolean) => void;
   getUserProfile: () => Promise<void>;
-  updateUserProfile: (data: Record<string, string | boolean | number>) => Promise<void>
+  updateUserProfile: (data: Record<string, string | boolean | number>) => Promise<void>;
 };
 
 const createUserStore = (): UserStoreType => {
@@ -35,12 +42,8 @@ const createUserStore = (): UserStoreType => {
 
     async login(email: string, password: string): Promise<void> {
       try {
-        // const {response, token} = await customerLogin(email, password);
-        // const res = await response;
         const res = await customerLogin(email, password);
-        // console.log(token);
 
-        // localStorage.setItem('token', token);
         runInAction(() => {
           store.error = null;
 
@@ -57,7 +60,7 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
-          store.error = 'Customer account with the given credentials not found';
+          store.error = 'Customer account with the given credentials not found.  Log in or use another email address';
         });
       }
     },
@@ -83,7 +86,8 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
-          store.error = 'There is already an existing customer with the provided email.';
+          store.error =
+            'There is already an existing customer with the provided email. Log in or use another email address';
         });
       }
     },
@@ -130,16 +134,19 @@ const createUserStore = (): UserStoreType => {
       let body: Customer;
 
       const { id } = data;
-      const currentData = {...data, version: store.userProfile.version}
+      const currentData = { ...data, version: store.userProfile.version };
 
       if (action === 'removeAddress') {
         response = await removeAddress(currentData);
         body = response.body;
-      };
+      }
 
       if (action === 'changeAddress') {
-        const currentAddress = store.userProfile.addresses.filter(item => item.id === id)[0] as unknown as Record<string, string | boolean | number>;
-        response = await changeAddress({...currentAddress, ...currentData});
+        const currentAddress = store.userProfile.addresses.filter((item) => item.id === id)[0] as unknown as Record<
+          string,
+          string | boolean | number
+        >;
+        response = await changeAddress({ ...currentAddress, ...currentData });
         body = response.body;
       }
 
@@ -153,12 +160,17 @@ const createUserStore = (): UserStoreType => {
         body = response.body;
       }
 
+      if (action === 'changePassword') {
+        response = await updatePersonalData(currentData);
+        body = response.body;
+      }
+
       runInAction(() => {
         store.userProfile = {
           ...body,
         };
       });
-    }
+    },
   };
 
   makeAutoObservable(store);

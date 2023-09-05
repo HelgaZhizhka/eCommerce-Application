@@ -260,7 +260,7 @@ export const addAddress = async (newAddress: Record<string, string | boolean | n
 
 export const updatePersonalData = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
 
-  const { firstName, lastName, dateOfBirth, version } = userInfo;
+  const { firstName, lastName, dateOfBirth, email, version } = userInfo;
 
   const customer = apiwithExistingTokenFlow();
 
@@ -278,7 +278,11 @@ export const updatePersonalData = async (userInfo: Record<string, string | numbe
       {
         "action": "setDateOfBirth",
         dateOfBirth: `${dateOfBirth}`
-      }
+      },
+      {
+        "action": "changeEmail",
+        email: `${email}`
+      },
     ],
   };
 

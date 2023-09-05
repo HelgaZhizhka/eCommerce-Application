@@ -14,6 +14,7 @@ type Props = {
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
+  email?: string;
   shippingAddresses: Address[];
   billingAddresses: Address[];
   defaultShippingAddress?: Address | null;
@@ -26,6 +27,7 @@ const ProfileEdit: React.FC<Props> = ({
   firstName,
   lastName,
   dateOfBirth,
+  email,
   shippingAddresses,
   billingAddresses,
   defaultShippingAddress,
@@ -62,6 +64,7 @@ const ProfileEdit: React.FC<Props> = ({
           firstName: firstName || '',
           lastName: lastName || '',
           dateOfBirth: dateOfBirth || '',
+          email: email || '',
         }}
       />
 
