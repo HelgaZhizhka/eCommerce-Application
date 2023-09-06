@@ -2,7 +2,7 @@ import Container from '@mui/material/Container';
 
 const Cart: React.FC = () => (
   <Container maxWidth="xl">
-    <h2>Cart</h2>
+    <h2>Cart page</h2>
   </Container>
 );
 
