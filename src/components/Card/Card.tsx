@@ -1,47 +1,82 @@
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 
-import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
-import cardImg from './images/TShirt.png';
+import { Price } from '../baseComponents/Price';
+import holder from './images/holder.png';
 import styles from './Card.module.scss';
 
 type Props = {
-  className?: string;
+  productName: string;
+  description: string;
+  price: string;
+  priceDiscount?: string;
+  currency: string;
+  images: Image[];
   isDiscount?: boolean;
+  className?: string;
 };
 
-const Card: React.FC<Props> = ({ className, isDiscount = true }) => {
+const Card: React.FC<Props> = ({
+  productName,
+  description,
+  price,
+  priceDiscount,
+  currency,
+  images,
+  isDiscount = false,
+  className,
+}) => {
   const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
     className,
   });
 
+  const priceValue = price ? (+price / 100).toFixed(2) : undefined;
+  const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
+
+  let priceComponent = null;
+  const image = images.filter((img) => img.label === 'average')[0]?.url;
+
+  if (priceDiscount && discountPriceValue) {
+    priceComponent = (
+      <>
+        <Price variant="old" currency={currency}>
+          {priceValue}
+        </Price>
+        <Price variant="new" currency={currency}>
+          {discountPriceValue}
+        </Price>
+      </>
+    );
+  } else if (priceValue) {
+    priceComponent = <Price currency={currency}>{priceValue}</Price>;
+  }
+
   return (
     <div className={classes}>
       {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
       <div className={styles.cardPoster}>
-        <img className={styles.cardImage} src={cardImg} alt="TShirt with label" />
-        <Link className={styles.cardButton} to={RoutePaths.CART}>
+        {image ? (
+          <img className={styles.cardImage} src={image} alt={productName} />
+        ) : (
+          <img className={styles.cardImage} src={holder} alt={productName} />
+        )}
+        <div className={styles.cardButton}>
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
-        </Link>
+        </div>
       </div>
       <div className={styles.cardBody}>
-        <h4 className={`text-overflow ${styles.cardTitle}`}>Standart raccoon t-shirt</h4>
-        <p className={`text-overflow ${styles.cardDescription}`}>
-          Standart raccoon t-shirt raccoon t-shirt raccoon t-shirt raccoon t-shirt
-        </p>
-        <span className={styles.cardPriceNew}>
-          <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
-        </span>
-        {/* <span className={styles.cardPrice}>
-          <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
-        </span> */}
-        <span className={styles.cardPriceOld}>
-          <span className={styles.value}>15.00</span> <span className={styles.currency}>eur</span>
-        </span>
+        {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
+        {description && description !== 'undefined' && (
+          <p
+            className={`text-overflow ${styles.cardDescription}`}
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></p>
+        )}
       </div>
+      <div className={styles.cardFooter}>{priceComponent}</div>
     </div>
   );
 };

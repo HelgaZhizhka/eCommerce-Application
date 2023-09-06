@@ -3,24 +3,26 @@ import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/s
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
 
-export const customerLogin = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerLogin = (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
   const customer = apiWithPasswordFlow(email, password);
-  return customer
-    .me()
-    .login()
-    .post(
-      {
-        body: {
-          email,
-          password,
-        }
-      }
-    )
-    .execute()
-}
 
-export const customerSignUp = (values: Record<string, string | number | boolean>): Promise<ClientResponse<CustomerSignInResult>> => {
+  const response =  customer
+  .me()
+  .login()
+  .post({
+    body: {
+      email,
+      password,
+    },
+  })
+  .execute();
 
+  return response
+};
+
+export const customerSignUp = (
+  values: Record<string, string | number | boolean>
+): Promise<ClientResponse<CustomerSignInResult>> => {
   const shippingAddress = {
     firstName: `${values.firstName}`,
     lastName: `${values.lastName}`,
@@ -29,12 +31,12 @@ export const customerSignUp = (values: Record<string, string | number | boolean>
     postalCode: `${values.postalCodeShipping}`,
     city: `${values.cityShipping}`,
     email: `${values.email}`,
-  }
+  };
 
   let billingAddress;
 
   if (values.checkedAddBillingForm) {
-    billingAddress = shippingAddress
+    billingAddress = shippingAddress;
   } else {
     billingAddress = {
       firstName: `${values.firstName}`,
@@ -56,9 +58,10 @@ export const customerSignUp = (values: Record<string, string | number | boolean>
     addresses: [shippingAddress, billingAddress],
     defaultShippingAddress: values.checkedShippingDefault ? 0 : undefined,
     // shippingAddresses: [0],
-    defaultBillingAddress: (values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault)) ? 1 : undefined,
+    defaultBillingAddress:
+      values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault) ? 1 : undefined,
     // billingAddresses: [1],
-  }
+  };
 
   // if (values.checkedShippingDefault) requestbody.defaultShippingAddress = 0;
   // deafultbilling when Use this address for billing is checked
@@ -68,12 +71,10 @@ export const customerSignUp = (values: Record<string, string | number | boolean>
   const signUpCustomer = newCustomer
     .me()
     .signup()
-    .post(
-      {
-        body: requestbody,
-      }
-    )
-    .execute()
+    .post({
+      body: requestbody,
+    })
+    .execute();
 
   return signUpCustomer;
-}
+};

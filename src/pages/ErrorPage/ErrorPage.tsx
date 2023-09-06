@@ -3,8 +3,8 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 import { RoutePaths } from '../../routes/routes.enum';
-import styles from './ErrorPage.module.scss';
 import image404 from './images/404.png';
+import styles from './ErrorPage.module.scss';
 
 const ErrorPage: React.FC = () => (
   <Container maxWidth="xl">

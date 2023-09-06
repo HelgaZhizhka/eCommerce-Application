@@ -3,13 +3,11 @@ import {
   type PasswordAuthMiddlewareOptions,
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
+  TokenCache,
+  TokenStore
 } from '@commercetools/sdk-client-v2';
-import {
-  createApiBuilderFromCtpClient,
-} from '@commercetools/platform-sdk';
-import {
-  ByProjectKeyRequestBuilder
-} from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
 const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];
@@ -23,7 +21,57 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
+export class MyTokenCache implements TokenCache {
+  public myCache: TokenStore = {
+    token: '',
+    expirationTime: 0,
+    refreshToken: '',
+  }
+
+  public set(newCache: TokenStore): void {
+    this.myCache = newCache;
+    localStorage.setItem('token', this.myCache.token)
+   }
+
+  public get(): TokenStore {
+     return this.myCache
+   }
+
+  public clear(): void {
+    this.myCache = {
+      token: '',
+      expirationTime: 0,
+      refreshToken: '',
+    };
+  }
+}
+
+export const myToken = new MyTokenCache();
+
+export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
+  type ExistingTokenMiddlewareOptions = {
+    force?: boolean;
+  };
+
+  const token = localStorage.getItem('token');
+
+  const authorization = `Bearer ${token}`;
+  const options: ExistingTokenMiddlewareOptions = {
+    force: true,
+  };
+
+  const client = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withExistingTokenFlow(authorization, options)
+    .build();
+
+    const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+    return apiRoot
+}
+
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
+  myToken.clear();
+  
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -35,6 +83,7 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
         password,
       },
     },
+    tokenCache: myToken,
     scopes,
     fetch,
   };
@@ -45,8 +94,32 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
+
+  localStorage.setItem('token', myToken.myCache.token);
+
   return apiRoot;
 }
+
+// export function apiWithRefreshTokenFlow(myToken: TokenCache): ByProjectKeyRequestBuilder {
+//   const refreshTokenFlowOptions = {
+//     host: hostAUTH,
+//     projectKey,
+//     credentials: {
+//       clientId,
+//       clientSecret,
+//     },
+//     refreshToken: myToken.get,
+//     fetch,
+//   };
+
+//   const client = new ClientBuilder()
+//     .withHttpMiddleware(httpMiddlewareOptions)
+//     .withRefreshTokenFlow(refreshTokenFlowOptions)
+//     .build();
+
+//   const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+//   return apiRoot;
+// }
 
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
   const authMiddlewareOptions: AuthMiddlewareOptions = {
@@ -56,6 +129,7 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
       clientId,
       clientSecret,
     },
+    // tokenCache: myToken,
     scopes,
     fetch,
   };
@@ -65,5 +139,6 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
+
   return apiRoot;
 }

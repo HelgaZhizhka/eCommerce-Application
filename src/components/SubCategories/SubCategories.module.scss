@@ -1,0 +1,17 @@
+.root {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  border-radius: var(--border-radius);
+}
+
+.link {
+  color: inherit;
+  transition: color var(--transition-delay) var(--transition-function);
+  &:hover {
+    color: var(--gray);
+  }
+}

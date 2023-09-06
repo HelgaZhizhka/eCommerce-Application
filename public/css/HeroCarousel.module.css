@@ -1,0 +1,473 @@
+.root {
+  height: 280px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+@media screen and (min-width: 1024px) {
+  .root {
+    height: 420px;
+  }
+}
+
+.content {
+  font-weight: 700;
+  color: var(--white);
+  text-align: center;
+}
+@media screen and (min-width: 1024px) {
+  .content {
+    font-size: 1.5rem;
+  }
+}
+
+.container {
+  position: relative;
+  padding: 0;
+  height: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.description {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.title {
+  margin: 0;
+  line-height: 1;
+}
+
+.fon1,
+.fon2,
+.fon3,
+.fon4,
+.fon5,
+.fon6,
+.fon7,
+.fon8,
+.label1,
+.label2,
+.label3,
+.label4,
+.image1 {
+  position: absolute;
+}
+
+.slide1 .container,
+.slide2 .container,
+.slide3 .container {
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+}
+
+.slide1 .container,
+.slide2 .container {
+  background-image: url(./images/sale.png);
+}
+
+.slide1 {
+  background-image: url(./images/slide1/mob/slide1.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media screen and (min-width: 1024px) {
+  .slide1 {
+    background-image: url(./images/slide1/slide1.png);
+  }
+}
+.slide1 .container {
+  background-position: 5% 0;
+}
+@media screen and (min-width: 1280px) {
+  .slide1 .container {
+    background-position: 25% 0;
+  }
+}
+.slide1 .container::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-image: url(./images/slide1/mob/girl.png);
+  background-size: auto 100%;
+  background-position: 3% 0;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .container::after {
+    background-position: -60% 0;
+    background-image: url(./images/slide1/girl.png);
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide1 .container::after {
+    background-position: 2% 0;
+  }
+}
+.slide1 .fon2 {
+  top: 0;
+  right: 0;
+}
+@media screen and (min-width: 600px) {
+  .slide1 .fon2 {
+    right: 22%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .fon2 {
+    right: 18%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide1 .fon2 {
+    right: 26%;
+  }
+}
+.slide1 .fon1 {
+  bottom: -5%;
+  right: 0;
+}
+@media screen and (min-width: 600px) {
+  .slide1 .fon1 {
+    right: 22%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .fon1 {
+    right: 12%;
+    bottom: 0;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide1 .fon1 {
+    right: 22%;
+  }
+}
+.slide1 .label1 {
+  top: 5%;
+  right: 5%;
+}
+@media screen and (min-width: 600px) {
+  .slide1 .label1 {
+    right: 23%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .label1 {
+    right: 15%;
+    top: 0;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide1 .label1 {
+    right: 23%;
+  }
+}
+.slide1 .bg1 {
+  top: 0;
+  left: 30%;
+  z-index: 12;
+}
+.slide1 .content {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding: 20px;
+  border-radius: 2px;
+  background: linear-gradient(359deg, #cb0985 0%, #fa811e 100%);
+  -webkit-box-shadow: 0 4px 8px 0px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 4px 8px 0px rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+@media screen and (min-width: 428px) {
+  .slide1 .content {
+    width: 220px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .content {
+    width: 350px;
+    padding: 25px 35px;
+  }
+}
+.slide1 .title {
+  font-size: 3.5rem;
+}
+@media screen and (min-width: 1024px) {
+  .slide1 .title {
+    font-size: 5.875rem;
+  }
+}
+
+.slide2 .content,
+.slide3 .content {
+  position: relative;
+  height: 100%;
+  width: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 12;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .content,
+  .slide3 .content {
+    width: 470px;
+    padding: 0 45px;
+  }
+}
+.slide2 .contentWrapper,
+.slide3 .contentWrapper {
+  margin: auto 0;
+}
+
+.slide2 {
+  background-image: url(./images/slide2/mob/slide2.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 {
+    background-image: url(./images/slide2/slide2.png);
+  }
+}
+.slide2 .container {
+  background-position: 94% 0;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .container {
+    background-position: 75% 0;
+  }
+}
+.slide2 .content {
+  margin-left: 8px;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .content {
+    margin-left: 0;
+  }
+}
+.slide2 .title {
+  font-size: 4.5rem;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .title {
+    font-size: 8.125rem;
+  }
+}
+.slide2 .button {
+  background-color: var(--black);
+}
+.slide2 .button:hover {
+  background-color: var(--dark);
+}
+.slide2 .fon6 {
+  top: 20%;
+  right: 0;
+}
+@media screen and (min-width: 600px) {
+  .slide2 .fon6 {
+    right: 12%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .fon6 {
+    top: 0;
+    right: -80px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide2 .fon6 {
+    right: -140px;
+  }
+}
+.slide2 .fon3 {
+  top: 0;
+  right: 20%;
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .fon3 {
+    right: 25%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .fon3 {
+    right: 20%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide2 .fon3 {
+    right: 10%;
+  }
+}
+.slide2 .fon4 {
+  bottom: 0;
+  right: 24%;
+}
+@media screen and (max-width: 1023px) {
+  .slide2 .fon4 {
+    display: none;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide2 .fon4 {
+    right: 14%;
+  }
+}
+.slide2 .fon5 {
+  bottom: 0;
+  right: 20%;
+}
+@media screen and (min-width: 600px) {
+  .slide2 .fon5 {
+    right: 25%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .fon5 {
+    bottom: 0;
+    right: 32%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide2 .fon5 {
+    right: 20%;
+  }
+}
+.slide2 .fon7 {
+  bottom: 0;
+  display: none;
+}
+@media screen and (min-width: 1440px) {
+  .slide2 .fon7 {
+    display: block;
+    right: -10%;
+  }
+}
+.slide2 .label2 {
+  top: 10%;
+  right: 0;
+}
+@media screen and (min-width: 600px) {
+  .slide2 .label2 {
+    right: 10%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide2 .label2 {
+    top: auto;
+    bottom: 0;
+    right: 20%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide2 .label2 {
+    right: 10%;
+  }
+}
+
+.slide3 {
+  background-image: url(./images/slide3/mob/slide3.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media screen and (min-width: 1024px) {
+  .slide3 {
+    background-image: url(./images/slide3/slide3.png);
+  }
+}
+.slide3 .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background-image: url(./images/slide3/new.png);
+  background-position: 2% 0;
+}
+.slide3 .content {
+  margin-right: 8px;
+  color: var(--blue);
+}
+@media screen and (min-width: 1024px) {
+  .slide3 .content {
+    margin-right: 0;
+  }
+}
+.slide3 .title {
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e17ff), to(rgba(62, 23, 255, 0)));
+  background: linear-gradient(180deg, #3e17ff 0%, rgba(62, 23, 255, 0) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3.5rem;
+}
+@media screen and (min-width: 1024px) {
+  .slide3 .title {
+    font-size: 8.125rem;
+  }
+}
+.slide3 .button {
+  background-color: var(--blue);
+}
+.slide3 .button:hover {
+  background-color: var(--blue-hover);
+}
+.slide3 .fon8 {
+  top: 0;
+  left: -10%;
+}
+@media screen and (min-width: 600px) {
+  .slide3 .fon8 {
+    top: 0;
+    left: 0;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .slide3 .fon8 {
+    top: 0;
+    left: -28%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .slide3 .fon8 {
+    left: -10%;
+  }
+}
+.slide3 .label3 {
+  top: 10%;
+  left: 10%;
+}
+@media screen and (min-width: 1024px) {
+  .slide3 .label3 {
+    top: auto;
+    bottom: 0;
+    left: 42%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .button {
+    width: 180px;
+    height: 66px;
+  }
+}/*# sourceMappingURL=HeroCarousel.module.css.map */

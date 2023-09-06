@@ -8,7 +8,9 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.3",
+    "@mui/joy": "^5.0.0-beta.2",
     "@mui/material": "^5.14.3",
+    "@mui/system": "^5.14.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,6 +20,7 @@
     "formik": "^2.4.3",
     "formik-material-ui": "^4.0.0-alpha.2",
     "framer-motion": "^10.16.0",
+    "jsdom": "^22.1.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "mobx": "^6.10.0",
@@ -30,7 +33,8 @@
     "sass": "^1.64.2",
     "sort-by": "^1.2.0",
     "swiper": "^10.1.0",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

@@ -6,7 +6,7 @@ import { userStore } from '../../stores';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
 import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
-import { MenuCategories } from '../../components/MenuCategories';
+import { Categories } from '../../components/Categories';
 import styles from './Main.module.scss';
 
 const Main: React.FC = () => {
@@ -49,7 +49,7 @@ const Main: React.FC = () => {
           <Container className={styles.container} maxWidth="xl">
             <section className={styles.section}>
               <h2 className={styles.title}> Shop by category</h2>
-              <MenuCategories className={styles.categories} size={'l'} theme={'dark'} variant={'rounded'} />
+              <Categories className={styles.categories} size={'l'} theme={'dark'} variant={'rounded'} />
             </section>
           </Container>
         </>

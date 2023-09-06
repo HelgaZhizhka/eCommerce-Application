@@ -1,0 +1,94 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  padding-bottom: 60px;
+
+  @include create-mq($grid__bp-lg, 'min') {
+    padding-top: 50px;
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+.container {
+  @include create-mq($grid__bp-md, 'min') {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 80px;
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.filter {
+  @include create-mq($grid__bp-md, 'min') {
+    border-radius: var(--border-radius);
+
+    &.sticky {
+      top: 80px;
+      max-height: 88vh;
+      overflow-y: auto;
+      z-index: 9;
+    }
+  }
+}
+
+.products {
+  padding-bottom: 20px;
+}
+
+.productsPanel {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: toRem(20px);
+  background-color: var(--body-bg);
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    padding-top: 60px;
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    justify-content: flex-end;
+  }
+}
+
+.productsList {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+
+  @include create-mq($grid__bp-sm, 'min') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.search {
+  width: 100%;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 400px;
+    margin-left: auto;
+    margin-right: 15px;
+  }
+}

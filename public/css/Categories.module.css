@@ -1,0 +1,191 @@
+.root {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.s .menuLink {
+  font-size: 1rem;
+}
+
+.m .menuLink {
+  font-size: 1.25rem;
+}
+
+.l .menuLink {
+  font-size: 1.5rem;
+}
+
+.horizontal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.horizontal .menuItem {
+  margin-right: 60px;
+}
+
+.vertical .menuItem,
+.mobile .menuItem {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.rounded {
+  margin-bottom: 50px;
+}
+.rounded .menuItem:nth-child(1) > .menuLink {
+  background-size: 95px 95px;
+  background-image: url(./images/sales.png);
+  background-color: var(--red);
+  -webkit-transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function), -webkit-filter var(--transition-duration) var(--transition-function);
+}
+@media screen and (min-width: 600px) {
+  .rounded .menuItem:nth-child(1) > .menuLink {
+    background-size: 160px 160px;
+  }
+}
+.rounded .menuItem:nth-child(1) > .menuLink:hover {
+  -webkit-filter: drop-shadow(0px 0px 16px rgba(246, 23, 23, 0.8));
+          filter: drop-shadow(0px 0px 16px rgba(246, 23, 23, 0.8));
+}
+.rounded .menuItem:nth-child(2) > .menuLink {
+  background-image: url(./images/cloth.png);
+  background-color: var(--orange);
+  -webkit-transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function), -webkit-filter var(--transition-duration) var(--transition-function);
+}
+.rounded .menuItem:nth-child(2) > .menuLink:hover {
+  -webkit-filter: drop-shadow(0px 0px 16px rgba(255, 152, 67, 0.8));
+          filter: drop-shadow(0px 0px 16px rgba(255, 152, 67, 0.8));
+}
+.rounded .menuItem:nth-child(3) > .menuLink {
+  background-image: url(./images/drinkware.png);
+  background-color: var(--purple);
+  -webkit-transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function), -webkit-filter var(--transition-duration) var(--transition-function);
+}
+.rounded .menuItem:nth-child(3) > .menuLink:hover {
+  -webkit-filter: drop-shadow(0px 0px 16px rgba(182, 45, 211, 0.8));
+          filter: drop-shadow(0px 0px 16px rgba(182, 45, 211, 0.8));
+}
+.rounded .menuItem:nth-child(4) > .menuLink {
+  background-image: url(./images/office.png);
+  background-color: var(--green);
+  -webkit-transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function), -webkit-filter var(--transition-duration) var(--transition-function);
+}
+.rounded .menuItem:nth-child(4) > .menuLink:hover {
+  -webkit-filter: drop-shadow(0px 0px 16px rgba(0, 148, 68, 0.8));
+          filter: drop-shadow(0px 0px 16px rgba(0, 148, 68, 0.8));
+}
+.rounded .menuItem:nth-child(5) > .menuLink {
+  background-image: url(./images/bags.png);
+  background-color: var(--blue);
+  -webkit-transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: -webkit-filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function);
+  transition: filter var(--transition-duration) var(--transition-function), -webkit-filter var(--transition-duration) var(--transition-function);
+}
+.rounded .menuItem:nth-child(5) > .menuLink:hover {
+  -webkit-filter: drop-shadow(0px 0px 16px rgba(62, 23, 255, 0.8));
+          filter: drop-shadow(0px 0px 16px rgba(62, 23, 255, 0.8));
+}
+.rounded .menuLink {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 95px;
+  height: 95px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background-position: 50% 50%;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+.rounded .menuLink::after {
+  content: none;
+}
+.rounded .menuLink span {
+  margin-top: auto;
+  padding-top: 110%;
+}
+@media screen and (min-width: 600px) {
+  .rounded .menuLink {
+    width: 160px;
+    height: 160px;
+    font-size: 1.5rem;
+    background-size: auto;
+  }
+}
+.rounded .menuLink span {
+  position: absolute;
+  bottom: -25%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.light .menuLink {
+  color: var(--nav-color-light);
+}
+.light .menuLink::after {
+  background-color: var(--nav-color-light-hover);
+}
+.light .menuLink:hover {
+  color: var(--nav-color-light-hover);
+}
+
+.dark .menuLink {
+  color: var(--nav-color-dark);
+}
+.dark .menuLink::after {
+  background-color: var(--nav-color-dark-hover);
+}
+.dark .menuLink:hover {
+  color: var(--nav-color-dark-hover);
+}
+
+.light .brand,
+.dark .brand {
+  color: var(--red);
+}
+.light .brand:hover,
+.dark .brand:hover {
+  color: var(--red);
+}
+.light .brand::after,
+.dark .brand::after {
+  background-color: var(--red);
+}
+
+.subCategories {
+  background-color: var(--panel-bg);
+}/*# sourceMappingURL=Categories.module.css.map */

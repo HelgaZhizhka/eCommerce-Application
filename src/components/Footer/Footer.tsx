@@ -6,9 +6,11 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
 import { RoutePaths } from '../../routes/routes.enum';
+import { contacts } from '../../constants';
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
-import { MenuCategories } from '../MenuCategories';
+import { PhoneNumber } from '../baseComponents/PhoneNumber';
+import { Categories } from '../Categories';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
 import styles from './Footer.module.scss';
@@ -21,25 +23,13 @@ const Footer: React.FC = () => (
           <div className={styles.logo}>
             <Logo variant={LogoVariant.WHITE} />
           </div>
-          <div className={styles.links}>
-            <Link className={`link ${styles.link}`} to={RoutePaths.LOGIN}>
-              Sign In
-            </Link>
-            <span className={styles.divider}>|</span>
-            <Link className={`link ${styles.link}`} to={RoutePaths.REGISTRATION}>
-              Sign Up
-            </Link>
-            <span className={styles.divider}>|</span>
-            <Link className={`link ${styles.link}`} to={RoutePaths.PROFILE}>
-              User Profile
-            </Link>
-          </div>
+          <h1 className={styles.heading}>YesCode: Merch for True Coders</h1>
         </div>
         <div className={styles.footerColumn}>
           <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
             Categories
           </Typography>
-          <MenuCategories />
+          <Categories />
         </div>
         <div className={styles.footerColumn}>
           <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
@@ -50,21 +40,16 @@ const Footer: React.FC = () => (
           </Link>
           <List>
             <ListItem sx={{ p: 0, mb: 2 }}>
-              <Icon name={IconName.PHONE} width={32} height={32} className={'icon mr-1'} />
-              <a className="text-inherit" href="tel:+38068588284186">
-                (+380) 68 018 45 67
-              </a>
+              <PhoneNumber>(+380) 68 018 45 67</PhoneNumber>
             </ListItem>
             <ListItem sx={{ p: 0, mb: 2 }}>
               <Icon name={IconName.WHATSUP} width={32} height={32} className={'icon mr-1'} />
-              <a className="text-inherit" href="tel:+38068588284186">
-                (+380) 68 018 45 67
-              </a>
+              <span>{contacts.phone}</span>
             </ListItem>
             <ListItem sx={{ p: 0, mb: 2 }}>
               <Icon name={IconName.EMAIL} width={32} height={32} className={'icon mr-1'} />
               <a className="text-inherit" href="mailto:yescode@gmail.com">
-                (+380) 68 018 45 67
+                {contacts.email}
               </a>
             </ListItem>
           </List>

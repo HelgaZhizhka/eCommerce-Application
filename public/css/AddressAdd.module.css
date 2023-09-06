@@ -1,0 +1,20 @@
+.inputContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.lablelTitle {
+  display: block;
+  color: var(--filter-orange);
+  font-size: 20px;
+}
+
+.field {
+  width: 60vw;
+}
+
+.nowrap {
+  white-space: nowrap;
+}/*# sourceMappingURL=AddressAdd.module.css.map */

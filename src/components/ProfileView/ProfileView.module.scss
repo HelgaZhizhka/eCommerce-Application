@@ -1,0 +1,70 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  position: relative;
+}
+
+.header {
+  font-size: 18px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 24px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.section {
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+.contentItem {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  background: var(--page-bg);
+  border-radius: 2px;
+}
+
+.contentTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.iconDelete {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-20%);
+  z-index: 10;
+}
+
+.iconEdit {
+  color: var(--state-primary);
+}
+
+.label {
+  display: inline-block;
+  padding: 5px 25px;
+  border-radius: 44px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--state-primary);
+  border: 1px solid var(--state-primary);
+}
