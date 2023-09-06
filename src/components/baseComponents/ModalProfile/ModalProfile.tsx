@@ -6,27 +6,24 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { AddressAdd } from '../../AddressAdd';
 import { PasswordChange } from '../../PasswordChange';
+import styles from './ModalProfile.module.scss';
 
 const style = {
-  position: 'absolute' as const,
-  top: '50%' as const,
-  left: '50%' as const,
-  transform: 'translate(-50%, -50%)' as const,
   bgcolor: 'background.paper' as const,
   border: '2px solid #000' as const,
   boxShadow: 24 as const,
   pt: 2 as const,
   px: 4 as const,
   pb: 3 as const,
-  m: '0 15px' as const,
 };
 
 type Props = {
   activeModal: string | null;
   handleCloseModal: () => void;
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
 };
 
-const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal }) => (
+const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal, onSaveChange }) => (
   <div>
     <Modal
       open={!!activeModal}
@@ -34,7 +31,7 @@ const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal }) => (
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Box sx={{ ...style, width: 400 }}>
+      <Box className={styles.popup} sx={{ ...style }}>
         <IconButton
           aria-label="close"
           onClick={handleCloseModal}
@@ -46,8 +43,8 @@ const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal }) => (
         >
           <CloseIcon />
         </IconButton>
-        {activeModal === 'address' && <AddressAdd />}
-        {activeModal === 'password' && <PasswordChange />}
+        {activeModal === 'address' && <AddressAdd onSaveChange={onSaveChange} />}
+        {activeModal === 'password' && <PasswordChange onSaveChange={onSaveChange} />}
       </Box>
     </Modal>
   </div>

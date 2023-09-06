@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 
 import { initialPriceRange } from '../../../constants';
 import { productStore } from '../../../stores';
+import styles from './FilterPrice.module.scss';
 
-function valueText(value: number): string {
-  return `${value}`;
-}
+const valueText = (value: number): string => `${value}`;
 
 type Props = {
   className?: string;
@@ -17,21 +15,7 @@ type Props = {
 
 const FilterPrice: React.FC<Props> = ({ onChange }) => {
   const { updateFilterPrice, filterPrice } = productStore;
-
-  const [value, setValue] = useState<number[]>(filterPrice as number[]);
-  const [active, setActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!active) {
-      setActive(true);
-      return;
-    }
-
-    setValue(filterPrice as number[]);
-  }, [filterPrice, active]);
-
   const handleChange = (event: Event, newValue: number | number[]): void => {
-    setValue(newValue as number[]);
     updateFilterPrice(newValue as number[]);
   };
 
@@ -42,7 +26,7 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
   };
 
   return (
-    <>
+    <div className={styles.root}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h3>Price</h3>
         <Box
@@ -52,13 +36,13 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
             letterSpacing: '0.4px',
           }}
         >
-          EUR {value[0]} - {value[1]}
+          EUR {filterPrice[0]} - {filterPrice[1]}
         </Box>
       </Box>
       <Box style={{ width: '100%' }}>
         <Slider
           getAriaLabel={(): string => 'Price range'}
-          value={value}
+          value={filterPrice}
           onChange={handleChange}
           onChangeCommitted={handleChangeCommit}
           valueLabelDisplay="auto"
@@ -67,7 +51,7 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
           max={initialPriceRange.max}
         />
       </Box>
-    </>
+    </div>
   );
 };
 

@@ -43,9 +43,9 @@ const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values): void => {
-          console.log(initialValues);
+        onSubmit={(values, { setSubmitting }): void => {
           onSaveChange({ ...values, action: 'changeAddress' });
+          setSubmitting(false);
         }}
       >
         {({ isValid }): ReactElement => (

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/pages/Product/Product.module.scss","Product.module.css","../../src/styles/abstract/_mixins.scss"],"names":[],"mappings":"AAIA;EACE,iBAAA;EACA,oBAAA;ACHF;ACCI;EFAJ;IAKI,kBAAA;IACA,mBAAA;ECFF;AACF;;ADKA;EACE,gBAAA;ACFF;ACTI;EFUJ;IAII,aAAA;IACA,8BAAA;IACA,UAAA;ECDF;AACF;;ADIA;EACE,mBAAA;ACDF","file":"Product.module.css"}

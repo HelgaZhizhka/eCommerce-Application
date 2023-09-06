@@ -32,7 +32,10 @@ const initialValues: InitialValuesType = {
   checkBox: false,
 };
 
-const AddressAdd: React.FC = () => (
+type Props = {
+  onSaveChange: (data: Record<string, string | boolean | number>) => void;
+};
+const AddressAdd: React.FC<Props> = ({ onSaveChange }) => (
   <Box sx={{ p: '30px', borderBottom: '3px solid grey' }}>
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <h3>Add new address</h3>
@@ -42,7 +45,7 @@ const AddressAdd: React.FC = () => (
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values): void => {
-        console.log(values);
+        onSaveChange({ ...values, action: 'addAddress' });
       }}
     >
       {({ isValid }): ReactElement => (
@@ -88,10 +91,11 @@ const AddressAdd: React.FC = () => (
           </div>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <FormControlLabel
+              className={styles.nowrap}
               control={<Field type="checkbox" name="checkBox" component={CustomCheckbox} />}
               label="Use default"
             />
-            <Button type="submit" disabled={!isValid} sx={{ fontSize: '20px' }}>
+            <Button className={styles.nowrap} type="submit" disabled={!isValid} sx={{ fontSize: '20px' }}>
               Add address
               <AddIcon />
             </Button>

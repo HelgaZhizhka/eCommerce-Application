@@ -4,10 +4,9 @@ import {
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
   TokenCache,
-  TokenStore,
-  TokenCacheOptions,
+  TokenStore
 } from '@commercetools/sdk-client-v2';
-import { Middleware, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
@@ -29,14 +28,22 @@ export class MyTokenCache implements TokenCache {
     refreshToken: '',
   }
 
-  public set(newCache: TokenStore, tokenCacheOptions?: TokenCacheOptions): void {
+  public set(newCache: TokenStore): void {
     this.myCache = newCache;
     localStorage.setItem('token', this.myCache.token)
    }
 
-  public get(tokenCacheOptions?: TokenCacheOptions): TokenStore {
+  public get(): TokenStore {
      return this.myCache
    }
+
+  public clear(): void {
+    this.myCache = {
+      token: '',
+      expirationTime: 0,
+      refreshToken: '',
+    };
+  }
 }
 
 export const myToken = new MyTokenCache();
@@ -63,6 +70,8 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
 }
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
+  myToken.clear();
+  
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,

@@ -14,10 +14,10 @@ import { Filter } from '../../components/Filter';
 import { Sorting } from '../../components/Sorting';
 import { ProductList } from '../../components/ProductList';
 import { productStore } from '../../stores';
-import styles from './Catalog.module.scss';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
+import styles from './Catalog.module.scss';
 
 type Params = {
   categoryId: string;
@@ -81,13 +81,8 @@ const Catalog: React.FC = () => {
     setAnchorElSort(null);
   };
 
-  const handleChange = (type?: string): void => {
-    getFilteredProducts(subcategoryId || categoryId, type);
-  };
-
-  const handleSearch = (): void => {
-    fetchSearchProducts(subcategoryId || categoryId);
-    // getFilteredProducts(subcategoryId || categoryId);
+  const handleChange = (): void => {
+    getFilteredProducts(subcategoryId || categoryId);
   };
 
   const handleResetFilters = (): void => {
@@ -104,6 +99,10 @@ const Catalog: React.FC = () => {
     if (id) {
       fetchProductsByCategory(id);
     }
+  };
+
+  const handleSearch = (): void => {
+    fetchSearchProducts(subcategoryId || categoryId);
   };
 
   const breadcrumbItems = [

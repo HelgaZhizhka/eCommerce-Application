@@ -1,0 +1,25 @@
+.root {
+  display: block;
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.new {
+  font-size: 1.5rem;
+  color: var(--state-info);
+}
+
+.old {
+  font-size: 0.75rem;
+  color: var(--gray);
+  text-decoration: line-through;
+}
+
+.value {
+  margin-right: 2px;
+}
+
+.currency {
+  text-transform: uppercase;
+}/*# sourceMappingURL=Price.module.css.map */

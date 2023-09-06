@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -7,7 +6,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { productStore } from '../../../stores';
 
 type Props = {
-  radioButton?: boolean;
   className?: string;
   onChange?: (type?: string) => void;
 };
@@ -29,31 +27,22 @@ enum ColorOptions {
 const colorOptionValues = Object.values(ColorOptions);
 const colorNames = Object.keys(ColorOptions);
 
-const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
+const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {
   const { updateFilterColor, filterColors } = productStore;
-  const [values, setValues] = useState<string[]>(filterColors);
-  const [active, setActive] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!active) {
-      setActive(true);
-      return;
+  const toggleOptions = (color: string): void => {
+    let updatedColors: string[];
+
+    if (filterColors.includes(color)) {
+      updatedColors = filterColors.filter((c) => c !== color);
+    } else {
+      updatedColors = [...filterColors, color];
     }
 
-    updateFilterColor(values);
+    updateFilterColor(updatedColors);
 
     if (onChange) {
       onChange();
-    }
-  }, [values]);
-
-  const toggleOptions = (color: string): void => {
-    if (values.includes(color)) {
-      setValues((val) => val.filter((c) => c !== color));
-    } else if (radioButton) {
-      setValues([color]);
-    } else {
-      setValues((val) => [...val, color]);
     }
   };
 
@@ -64,7 +53,7 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
         {colorOptionValues.map((color, index) => (
           <Button
             key={index}
-            variant={values.includes(colorNames[index]) ? 'contained' : 'outlined'}
+            variant={filterColors.includes(colorNames[index]) ? 'contained' : 'outlined'}
             onClick={(): void => toggleOptions(colorNames[index])}
             sx={{
               borderRadius: '50%',
@@ -90,7 +79,7 @@ const FilterColorCheckBox: React.FC<Props> = ({ radioButton, onChange }) => {
               border: '1px solid grey',
             }}
           >
-            {values.includes(colorNames[index]) && <CheckIcon />}
+            {filterColors.includes(colorNames[index]) && <CheckIcon />}
           </Button>
         ))}
       </Box>

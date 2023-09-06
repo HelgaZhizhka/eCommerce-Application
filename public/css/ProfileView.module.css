@@ -1,0 +1,84 @@
+.root {
+  position: relative;
+}
+
+.header {
+  font-size: 18px;
+}
+@media screen and (min-width: 1024px) {
+  .header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    font-size: 24px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.section {
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+.contentItem {
+  padding: 10px 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 24px;
+  background: var(--page-bg);
+  border-radius: 2px;
+}
+
+.contentTitle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.iconDelete {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-20%);
+          transform: translateY(-20%);
+  z-index: 10;
+}
+
+.iconEdit {
+  color: var(--state-primary);
+}
+
+.label {
+  display: inline-block;
+  padding: 5px 25px;
+  border-radius: 44px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--state-primary);
+  border: 1px solid var(--state-primary);
+}/*# sourceMappingURL=ProfileView.module.css.map */

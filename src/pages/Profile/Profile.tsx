@@ -6,6 +6,8 @@ import { Address } from '@commercetools/platform-sdk';
 import { ProfileBox } from '../../components/ProfileBox';
 import { userStore } from '../../stores';
 
+import { RoutePaths } from '../../routes/routes.enum';
+import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import styles from './Profile.module.scss';
 
 const Profile: React.FC = () => {
@@ -16,11 +18,8 @@ const Profile: React.FC = () => {
   };
 
   const handleSaveChange = (data: Record<string, string | boolean | number>): void => {
-    // userStore.setEditMode(false);
-    // if (!userProfile) return
     const currentData = { ...data };
     updateUserProfile(currentData);
-    // userStore.saveUserData({ version: userProfile?.version, ...data });
   };
 
   useEffect(() => {
@@ -38,8 +37,6 @@ const Profile: React.FC = () => {
     defaultBillingAddressId,
     defaultShippingAddressId,
   } = userProfile || {};
-
-  const birthDate = dateOfBirth || '';
 
   const preparedAddresses =
     userProfile &&
@@ -72,9 +69,15 @@ const Profile: React.FC = () => {
       };
     })();
 
+  const breadcrumbItems = [
+    { text: 'Home', path: RoutePaths.MAIN },
+    { text: 'User profile', path: `${RoutePaths.PROFILE}` },
+  ];
+
   return (
     <Container maxWidth="xl">
       <section className={styles.root}>
+        <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
         {preparedAddresses ? (
           <ProfileBox
             editMode={isEditMode}
@@ -83,7 +86,7 @@ const Profile: React.FC = () => {
             firstName={firstName}
             lastName={lastName}
             email={email}
-            birthDate={birthDate}
+            dateOfBirth={dateOfBirth}
             defaultShippingAddress={preparedAddresses.defaultShippingAddress}
             defaultBillingAddress={preparedAddresses.defaultBillingAddress}
             shippingAddresses={preparedAddresses.shippingAddresses}
