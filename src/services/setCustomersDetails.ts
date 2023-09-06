@@ -1,9 +1,10 @@
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
+import { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 
 import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { customerLogin } from './authService';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
   const response = await customer.me().get().execute();
@@ -289,4 +290,30 @@ export const updatePersonalData = async (userInfo: Record<string, string | numbe
   const response = await customer.me().post({ body }).execute();
 
   return response;
+}
+
+export const changePassword = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
+  const customer = apiwithExistingTokenFlow();
+  const { version, currentPassword, newPassword } = userInfo;
+
+  const body: MyCustomerChangePassword = {
+    version: +`${version}`,
+    currentPassword: `${currentPassword}`,
+    newPassword: `${newPassword}`
+  };
+
+  const setNewPassword = await customer
+    .me()
+    .password()
+    .post({body})
+    .execute()
+    .then(response => {
+      if (response.statusCode === 200) {
+        const { email } = response.body
+        customerLogin(email, `${newPassword}`);
+      }
+      return response
+    })
+
+  return setNewPassword
 }
