@@ -50,8 +50,6 @@ const createUserStore = (): UserStoreType => {
         const res = await customerLogin(email, password);
 
         runInAction(() => {
-          store.clearError();
-
           if (res.statusCode === 200) {
             store.loggedIn = true;
             store.userProfile = {
@@ -65,6 +63,7 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
+          store.clearError();
           store.error = 'Customer account with the given credentials not found.  Log in or use another email address';
         });
       }
@@ -76,7 +75,6 @@ const createUserStore = (): UserStoreType => {
         const response = await customerSignUp(data);
 
         runInAction(() => {
-          store.clearError();
           if (response.statusCode === 201) {
             store.loggedIn = true;
             if (data.email && data.password) {
@@ -91,6 +89,7 @@ const createUserStore = (): UserStoreType => {
         });
       } catch (err) {
         runInAction(() => {
+          store.clearError();
           store.error =
             'There is already an existing customer with the provided email. Log in or use another email address';
         });
@@ -148,8 +147,29 @@ const createUserStore = (): UserStoreType => {
       const currentData = { ...data, version: store.userProfile.version };
 
       if (action === 'removeAddress') {
-        response = await removeAddress(currentData);
-        body = response.body;
+         try {
+           response = await removeAddress(currentData);
+           body = response.body;
+
+            runInAction(() => {
+              store.clearSuccess();
+              if (response.statusCode === 200) {
+                body = response.body;
+                runInAction(() => {
+                  store.success = 'Address removed successfully';
+                });
+              }
+              if (response.statusCode === 400) {
+                throw new Error('Error occurred while removing an address.');
+              }
+            });
+         } catch (err) {
+           runInAction(() => {
+             store.clearError();
+             store.error = 'Error occurred while removing an address.';
+           });
+         }
+       
       }
 
       if (action === 'changeAddress') {
@@ -157,18 +177,82 @@ const createUserStore = (): UserStoreType => {
           string,
           string | boolean | number
         >;
-        response = await changeAddress({ ...currentAddress, ...currentData });
-        body = response.body;
+
+        try {
+          response = await changeAddress({ ...currentAddress, ...currentData });
+          body = response.body;
+
+          runInAction(() => {
+            store.clearSuccess();
+            if (response.statusCode === 200) {
+              body = response.body;
+              runInAction(() => {
+                store.success = 'Address changed successfully';
+              });
+            }
+            if (response.statusCode === 400) {
+              throw new Error('Error occurred while editing an address.');
+            }
+          });
+        } catch (err) {
+          runInAction(() => {
+            store.clearError();
+            store.error = 'Error occurred while editing an address.';
+          });
+        }
+       
       }
 
       if (action === 'addAddress') {
-        response = await addAddress(currentData);
-        body = response.body;
+        try {
+          response = await addAddress(currentData);
+          body = response.body;
+
+          runInAction(() => {
+            store.clearSuccess();
+            if (response.statusCode === 200) {
+              body = response.body;
+              runInAction(() => {
+                store.success = 'Address added successfully';
+              });
+            }
+            if (response.statusCode === 400) {
+              throw new Error('Error occurred while adding an address.');
+            }
+          });
+
+        } catch (err) {
+          runInAction(() => {
+            store.clearError();
+            store.error = 'Error occurred while adding an address.';
+          });
+        }
+       
       }
 
       if (action === 'changePersonalData') {
-        response = await updatePersonalData(currentData);
-        body = response.body;
+        try {
+          response = await updatePersonalData(currentData);
+          body = response.body;
+
+          runInAction(() => {
+            store.clearSuccess();
+            if (response.statusCode === 200) {
+              body = response.body;
+              runInAction(() => {
+                store.success = 'Your personal data changed successfully';
+              });
+            }
+            if (response.statusCode === 400) {
+              throw new Error('The email format invalid.');
+            }
+          });
+        } catch (err) {
+          runInAction(() => {
+            store.clearError();
+            store.error = 'The email format invalid';
+          });
+        }
       }
 
       if (action === 'changePassword') {
@@ -176,13 +260,11 @@ const createUserStore = (): UserStoreType => {
           response = await changePassword(currentData);
 
           runInAction(() => {
-            store.clearError();
             store.clearSuccess();
             if (response.statusCode === 200) {
               body = response.body;
               runInAction(() => {
-                store.success =
-                  'Password changed successfully';
+                store.success = 'Password changed successfully';
               });
             }
             if (response.statusCode === 400) {
@@ -191,8 +273,8 @@ const createUserStore = (): UserStoreType => {
           });
         } catch (err) {
           runInAction(() => {
-            store.error =
-              'The given current password does not match';
+            store.clearError();
+            store.error = 'The given current password does not match';
           });
         }
       }

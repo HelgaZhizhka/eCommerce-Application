@@ -3,6 +3,11 @@ import * as yup from 'yup';
 export const validationSchema = yup.object({
   firstName: yup.string().required('First Name is required'),
   lastName: yup.string().required('Last Name is required'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format')
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Invalid email format'),
   dateOfBirth: yup
     .date()
     .nullable()
