@@ -17,6 +17,8 @@ import { productStore } from '../../stores';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
+import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
+
 import styles from './Catalog.module.scss';
 
 type Params = {
@@ -156,6 +158,7 @@ const Catalog: React.FC = () => {
           )}
           <div className={styles.products}>
             <ProductList className={styles.productsList} categoryId={categoryId} subcategoryId={subcategoryId} />
+            <PaginationCatalog />
           </div>
         </div>
       </div>

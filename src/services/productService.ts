@@ -3,9 +3,10 @@ import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/dec
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
+import { DEFAULT_LIMIT } from '../constants';
+
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
-const DEFAULT_LIMIT = 100;
 
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
@@ -19,8 +20,9 @@ export async function getProducts(): Promise<Product[]> {
   return response.body.results;
 }
 
-export async function getProductsByCategory(id: string): Promise<ProductProjection[]> {
+export async function getProductsByCategory(id: string, currentPage: number): Promise<ProductProjection[]> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = currentPage === 1 ? 0 : currentPage * DEFAULT_LIMIT - 1;
 
   const response = await visitor
     .productProjections()
@@ -29,6 +31,7 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
         limit: DEFAULT_LIMIT,
+        offset
       },
     })
     .execute();
