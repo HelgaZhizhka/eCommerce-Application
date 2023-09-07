@@ -1,20 +1,20 @@
 import Pagination from '@mui/material/Pagination';
 import { Box } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 
-import { productStore } from '../../../stores';
+type Props = {
+  handleChange: (page: number) => void;
+  totalPages: number;
+};
 
-const CustomPagination: React.FC = () => {
-  const { setCurrentPage, currentPage } = productStore;
-
+const CustomPagination: React.FC<Props> = ({ handleChange, totalPages }) => {
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number): void => {
-    setCurrentPage(page);
+    handleChange(page);
   };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', mt: '40px' }}>
-      <Pagination onChange={handlePageChange} count={10} color="primary" size="large" />
+      <Pagination onChange={handlePageChange} count={totalPages} color="primary" size="large" />
     </Box>
   );
 };
-export default observer(CustomPagination);
+export default CustomPagination;

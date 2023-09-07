@@ -7,7 +7,6 @@ import { DEFAULT_LIMIT } from '../constants';
 
 import { apiWithClientCredentialsFlow } from './BuildClient';
 
-
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
   const response = await visitor.categories().get().execute();
@@ -20,7 +19,13 @@ export async function getProducts(): Promise<Product[]> {
   return response.body.results;
 }
 
-export async function getProductsByCategory(id: string, currentPage: number): Promise<ProductProjection[]> {
+export async function getProductsByCategory(
+  id: string,
+  currentPage: number
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
   const offset = currentPage === 1 ? 0 : currentPage * DEFAULT_LIMIT - 1;
 
@@ -31,12 +36,16 @@ export async function getProductsByCategory(id: string, currentPage: number): Pr
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
         limit: DEFAULT_LIMIT,
-        offset
+        offset,
       },
     })
     .execute();
+  const { results, total } = response.body;
 
-  return response.body.results;
+  return {
+    results,
+    total,
+  };
 }
 
 export async function getProductsTypeByCategory(key: string): Promise<AttributeDefinition[] | undefined> {
