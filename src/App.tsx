@@ -44,7 +44,7 @@ const App: React.FC = () => {
         ) : (
           <>
             {!isMobile ? <Header /> : <HeaderMobile />}
-            <Box component="main" sx={{ position: 'relative', flex: '1' }}>
+            <Box component="main" sx={{ position: 'relative', flex: '1', pb: 2 }}>
               <RoutesConfig />
             </Box>
             <Footer />

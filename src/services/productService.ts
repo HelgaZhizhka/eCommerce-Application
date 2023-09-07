@@ -3,9 +3,9 @@ import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/dec
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
-import { apiWithClientCredentialsFlow } from './BuildClient';
+import { DEFAULT_LIMIT } from '../constants';
 
-const DEFAULT_LIMIT = 100;
+import { apiWithClientCredentialsFlow } from './BuildClient';
 
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
@@ -19,8 +19,15 @@ export async function getProducts(): Promise<Product[]> {
   return response.body.results;
 }
 
-export async function getProductsByCategory(id: string): Promise<ProductProjection[]> {
+export async function getProductsByCategory(
+  id: string,
+  currentPage: number
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const response = await visitor
     .productProjections()
@@ -29,11 +36,16 @@ export async function getProductsByCategory(id: string): Promise<ProductProjecti
       queryArgs: {
         filter: `categories.id:subtree("${id}")`,
         limit: DEFAULT_LIMIT,
+        offset,
       },
     })
     .execute();
+  const { results, total } = response.body;
 
-  return response.body.results;
+  return {
+    results,
+    total,
+  };
 }
 
 export async function getProductsTypeByCategory(key: string): Promise<AttributeDefinition[] | undefined> {
@@ -62,11 +74,16 @@ export async function getProductByKey(key: string): Promise<Product> {
 
 export async function getProductsByFilter(
   categoryID: string,
+  currentPage: number,
   filtersAttributes: Record<string, string[]>[],
   filterPrice?: number[],
   sortDetail?: SortObject
-): Promise<ProductProjection[]> {
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
   const filtersCounter = Object.values(filtersAttributes).length;
@@ -99,14 +116,28 @@ export async function getProductsByFilter(
         filter: filterProperties,
         ...(sortObj ? { sort: sortObj } : {}),
         limit: DEFAULT_LIMIT,
+        offset,
       },
     })
     .execute();
-  return response.body.results;
+  const { results, total } = response.body;
+
+  return {
+    results,
+    total,
+  };
 }
 
-export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
+export async function getSearchProducts(
+  categoryID: string,
+  currentPage: number,
+  searchValue: string
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
 
@@ -116,11 +147,17 @@ export async function getSearchProducts(categoryID: string, searchValue: string)
     .get({
       queryArgs: {
         limit: DEFAULT_LIMIT,
+        offset,
         filter: filterPropertiesCategoryID,
         'text.en': searchValue,
       },
     })
     .execute();
 
-  return response.body.results;
+  const { results, total } = response.body;
+
+  return {
+    results,
+    total,
+  };
 }
