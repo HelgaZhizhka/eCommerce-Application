@@ -1,4 +1,3 @@
-import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
@@ -13,18 +12,8 @@ import {
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { initialPriceRange } from '../constants';
+import { ProductType } from './Product.type';
 
-type ProductType = {
-  key: string;
-  slug: string;
-  productName: string;
-  description: string;
-  price: string;
-  priceDiscount?: string;
-  currency: string;
-  images: Image[];
-  isDiscount: boolean;
-};
 
 type ProductStoreType = {
   isAppLoading: boolean;
@@ -59,6 +48,7 @@ type ProductStoreType = {
   updateFilterPrice: (data: number[]) => void;
   clearFilterData: () => void;
   clearSearchValue: () => void;
+  toggleProductInCart: (key: string) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -148,6 +138,10 @@ const createProductStore = (): ProductStoreType => {
           obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
           obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
           obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
+          obj.variants = [...item.variants];
+
+          obj.isAddedToCart = false;
+          obj.quantity = 1;
 
           if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
         }
@@ -372,6 +366,14 @@ const createProductStore = (): ProductStoreType => {
       store.isSizeAttribute = '';
       store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
     },
+
+    toggleProductInCart(key: string): void {
+      const product = store.products.find((p) => p.key === key);
+      if (product) {
+        product.isAddedToCart = !product.isAddedToCart;
+      }
+    },
+
   };
 
   makeAutoObservable(store);

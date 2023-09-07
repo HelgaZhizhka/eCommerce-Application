@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { productStore } from '../../stores';
+import { cartStore, productStore } from '../../stores';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Card } from '../Card';
 import styles from './ProductList.module.scss';
@@ -16,6 +16,7 @@ type Props = {
 
 const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) => {
   const { products, isProductsLoading } = productStore;
+  const { addToCart } = cartStore;
 
   const generateProductPath = (catId: string, subCatId: string | null | undefined, productId: string): string => {
     let path = RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', productId);
@@ -41,8 +42,8 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
     </Box>
   ) : (
     <ul className={`${className} ${styles.root}`}>
-      {products.map((card) => {
-        const { key, productName, description, price, priceDiscount, currency, images, isDiscount } = card;
+      {products.map((product) => {
+        const { key, productName, description, price, priceDiscount, currency, images, isDiscount } = product;
         return (
           <li className={styles.productItem} key={key}>
             <Link to={generateProductPath(categoryId, subcategoryId, key.toString())}>
@@ -54,6 +55,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
                 priceDiscount={priceDiscount}
                 currency={currency}
                 isDiscount={isDiscount}
+                onAddToCart={(): void => addToCart(product)}
               />
             </Link>
           </li>

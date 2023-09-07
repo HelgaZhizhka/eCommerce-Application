@@ -16,6 +16,7 @@ type Props = {
   images: Image[];
   isDiscount?: boolean;
   className?: string;
+  onAddToCart: () => void;
 };
 
 const Card: React.FC<Props> = ({
@@ -27,11 +28,18 @@ const Card: React.FC<Props> = ({
   images,
   isDiscount = false,
   className,
+  onAddToCart,
 }) => {
   const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
     className,
   });
+
+  const handleAddToCart = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    e.preventDefault();
+    onAddToCart();
+  };
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
@@ -63,9 +71,9 @@ const Card: React.FC<Props> = ({
         ) : (
           <img className={styles.cardImage} src={holder} alt={productName} />
         )}
-        <div className={styles.cardButton}>
+        <button className={styles.cardButton} onClick={handleAddToCart}>
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
-        </div>
+        </button>
       </div>
       <div className={styles.cardBody}>
         {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
