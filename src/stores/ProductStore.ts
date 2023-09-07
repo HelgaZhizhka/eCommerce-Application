@@ -43,6 +43,8 @@ type ProductStoreType = {
   filterSizes: string[];
   filterColors: string[];
   filterPrice: number[];
+  currentPage: number;
+  totalProducts: number;
   fetchProduct: (key: string) => Promise<void>;
   fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
@@ -59,6 +61,8 @@ type ProductStoreType = {
   updateFilterPrice: (data: number[]) => void;
   clearFilterData: () => void;
   clearSearchValue: () => void;
+  setCurrentPage: (pageNumber: number) => void;
+  resetCurrentPage: () => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -76,6 +80,8 @@ const createProductStore = (): ProductStoreType => {
     isFilterColor: false,
     isColorAttribute: '',
     isSizeAttribute: '',
+    currentPage: 1,
+    totalProducts: 0,
     filterSizes: [] as string[],
     filterColors: [] as string[],
     filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
@@ -197,10 +203,11 @@ const createProductStore = (): ProductStoreType => {
       try {
         if (id === undefined) return;
 
-        const fetchedProducts = await getProductsByCategory(id);
+        const { results, total } = await getProductsByCategory(id, store.currentPage);
 
         runInAction(() => {
-          const productsList = store.getFetchedProducts(fetchedProducts);
+          const productsList = store.getFetchedProducts(results);
+          if (total !== undefined) store.totalProducts = total;
           store.products = [...productsList];
         });
       } catch (err) {
@@ -371,6 +378,15 @@ const createProductStore = (): ProductStoreType => {
       store.isColorAttribute = '';
       store.isSizeAttribute = '';
       store.filterPrice = [initialPriceRange.min, initialPriceRange.max] as number[];
+    },
+
+    setCurrentPage(pageNumber: number): void {
+      if (store.currentPage !== pageNumber) {
+        store.currentPage = pageNumber;
+      }
+    },
+    resetCurrentPage(): void {
+      store.currentPage = 1;
     },
   };
 

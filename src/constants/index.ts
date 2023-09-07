@@ -31,3 +31,5 @@ export const contacts = {
   phone: '(+380) 68 018 45 67',
   email: 'yescode@gmail.com',
 };
+
+export const DEFAULT_LIMIT = 8;

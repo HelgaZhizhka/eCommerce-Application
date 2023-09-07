@@ -17,7 +17,10 @@ import { productStore } from '../../stores';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
+import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
+
 import styles from './Catalog.module.scss';
+import { DEFAULT_LIMIT } from '../../constants';
 
 type Params = {
   categoryId: string;
@@ -28,12 +31,15 @@ const Catalog: React.FC = () => {
   const {
     isFilterSize,
     isFilterColor,
+    totalProducts,
     fetchProductsByCategory,
     categoryIdByName,
     fetchProductsTypeByCategory,
     getFilteredProducts,
     fetchSearchProducts,
     clearFilterData,
+    setCurrentPage,
+    resetCurrentPage,
   } = productStore;
 
   const { categoryId, subcategoryId } = useParams<Params>();
@@ -43,22 +49,26 @@ const Catalog: React.FC = () => {
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
-  useEffect(() => {
-    if (!categoryId) {
-      return;
-    }
+  function getProducts(catId: string, subId: string | undefined): void {
+    fetchProductsTypeByCategory(catId);
 
-    fetchProductsTypeByCategory(categoryId);
+    let id = categoryIdByName(catId);
 
-    let id = categoryIdByName(categoryId);
-
-    if (subcategoryId) {
-      id = categoryIdByName(subcategoryId);
+    if (subId) {
+      id = categoryIdByName(subId);
     }
 
     if (id) {
       fetchProductsByCategory(id);
     }
+  }
+
+  useEffect(() => {
+    if (!categoryId) {
+      return;
+    }
+    resetCurrentPage();
+    getProducts(categoryId, subcategoryId);
   }, [categoryId, subcategoryId]);
 
   if (!categoryId) {
@@ -87,23 +97,14 @@ const Catalog: React.FC = () => {
 
   const handleResetFilters = (): void => {
     clearFilterData();
-
-    fetchProductsTypeByCategory(categoryId);
-
-    let id = categoryIdByName(categoryId);
-
-    if (subcategoryId) {
-      id = categoryIdByName(subcategoryId);
-    }
-
-    if (id) {
-      fetchProductsByCategory(id);
-    }
+    getProducts(categoryId, subcategoryId);
   };
 
   const handleSearch = (): void => {
     fetchSearchProducts(subcategoryId || categoryId);
   };
+
+  const totalPages = Math.floor(totalProducts / DEFAULT_LIMIT);
 
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
@@ -113,6 +114,11 @@ const Catalog: React.FC = () => {
   if (subcategoryId) {
     breadcrumbItems.push({ text: subcategoryId, path: `${RoutePaths.MAIN}category/${categoryId}/${subcategoryId}` });
   }
+
+  const handlePaginationChange = (page: number): void => {
+    setCurrentPage(page);
+    getProducts(categoryId, subcategoryId);
+  };
 
   return (
     <Container maxWidth="xl">
@@ -156,6 +162,7 @@ const Catalog: React.FC = () => {
           )}
           <div className={styles.products}>
             <ProductList className={styles.productsList} categoryId={categoryId} subcategoryId={subcategoryId} />
+            {totalPages > 1 && <PaginationCatalog handleChange={handlePaginationChange} totalPages={totalPages} />}
           </div>
         </div>
       </div>
