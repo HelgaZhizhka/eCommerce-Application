@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types/swiper-options';
@@ -40,7 +40,7 @@ const ProductCarousel: React.FC<Props> = ({
     initialSlide: activeImageIndex,
     centeredSlides: true,
     slidesPerView: 1,
-    thumbs: thumbsSwiper ? { swiper: thumbsSwiper } : undefined,
+    thumbs: { swiper: thumbsSwiper },
     modules: [FreeMode, Navigation, Thumbs],
     slideToClickedSlide: true,
   };
@@ -58,6 +58,10 @@ const ProductCarousel: React.FC<Props> = ({
       },
     },
   };
+
+  useEffect(() => {
+    console.log('Thumbs swiper instance:', thumbsSwiper);
+  }, [thumbsSwiper]);
 
   const handleImageClick = (index: number): void => {
     if (setActiveImageIndex) {
@@ -81,7 +85,7 @@ const ProductCarousel: React.FC<Props> = ({
           {thumbs.map((img, index) => (
             <SwiperSlide key={index}>
               <div className={styles.wrapImgSecond}>
-                <img className={styles.img} src={img} alt="t-Shirt" />
+                <img className={styles.img} src={img} alt="t-Shirt" onClick={(): void => handleImageClick(index)} />
               </div>
             </SwiperSlide>
           ))}
