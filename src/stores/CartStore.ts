@@ -15,7 +15,7 @@ type CartStoreType = {
 const createCartStore = (): CartStoreType => {
   const store = {
     productsInCart: [] as ProductType[],
-    totalAmount: 0,
+    totalAmount: 1,
 
 
     addToCart(product: ProductType): void {

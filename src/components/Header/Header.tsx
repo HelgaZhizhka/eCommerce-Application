@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
+import Badge from '@mui/material/Badge';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
@@ -13,12 +14,13 @@ import { LogoVariant } from '../Logo/Logo.enum';
 import { Categories } from '../Categories';
 import { SelectCurrency } from '../SelectCurrency';
 import { InfoPanel } from '../InfoPanel';
-import { userStore } from '../../stores';
+import { cartStore, userStore } from '../../stores';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
   const { loggedIn } = userStore;
+  const { totalAmount } = cartStore;
 
   return (
     <header className={styles.root}>
@@ -63,7 +65,9 @@ const Header: React.FC = () => {
               </Link>
             )}
             <Link to={RoutePaths.CART}>
-              <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+              <Badge badgeContent={totalAmount} color="secondary">
+                <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+              </Badge>
             </Link>
             <SelectCurrency />
           </div>
