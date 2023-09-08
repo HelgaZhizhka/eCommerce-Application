@@ -32,14 +32,15 @@ const Catalog: React.FC = () => {
     isFilterSize,
     isFilterColor,
     totalProducts,
+    currentPage,
     fetchProductsByCategory,
     categoryIdByName,
     fetchProductsTypeByCategory,
     getFilteredProducts,
     fetchSearchProducts,
-    clearFilterData,
+    paginationNavigate,
     setCurrentPage,
-    resetCurrentPage,
+    clearFilterData,
   } = productStore;
 
   const { categoryId, subcategoryId } = useParams<Params>();
@@ -49,30 +50,54 @@ const Catalog: React.FC = () => {
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
-  function getProducts(catId: string, subId: string | undefined): void {
-    fetchProductsTypeByCategory(catId);
-
-    let id = categoryIdByName(catId);
-
-    if (subId) {
-      id = categoryIdByName(subId);
+  const getId = (): string | undefined => {
+    if (!categoryId) {
+      return '';
     }
+
+    const idCategory = subcategoryId || categoryId;
+
+    return categoryIdByName(idCategory);
+  };
+
+  const getProducts = (): void => {
+    if (!categoryId) {
+      return;
+    }
+
+    fetchProductsTypeByCategory(categoryId);
+
+    const id = getId();
 
     if (id) {
       fetchProductsByCategory(id);
     }
-  }
+  };
 
   useEffect(() => {
     if (!categoryId) {
       return;
     }
-    resetCurrentPage();
-    getProducts(categoryId, subcategoryId);
+
+    setCurrentPage(1);
+    clearFilterData();
+
+    getProducts();
   }, [categoryId, subcategoryId]);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
+  }
+
+  const totalPages = Math.ceil(totalProducts / DEFAULT_LIMIT);
+
+  const breadcrumbItems = [
+    { text: 'Home', path: RoutePaths.MAIN },
+    { text: categoryId, path: `${RoutePaths.MAIN}category/${categoryId}` },
+  ];
+
+  if (subcategoryId) {
+    breadcrumbItems.push({ text: subcategoryId, path: `${RoutePaths.MAIN}category/${categoryId}/${subcategoryId}` });
   }
 
   const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
@@ -91,33 +116,38 @@ const Catalog: React.FC = () => {
     setAnchorElSort(null);
   };
 
-  const handleChange = (): void => {
-    getFilteredProducts(subcategoryId || categoryId);
+  const handleFilterChange = (): void => {
+    setCurrentPage(1);
+
+    const id = getId();
+
+    if (id) {
+      getFilteredProducts(id);
+    }
   };
 
   const handleResetFilters = (): void => {
     clearFilterData();
-    getProducts(categoryId, subcategoryId);
+    setCurrentPage(1);
+    getProducts();
   };
 
   const handleSearch = (): void => {
-    fetchSearchProducts(subcategoryId || categoryId);
+    setCurrentPage(1);
+    const id = getId();
+
+    if (id) {
+      fetchSearchProducts(id);
+    }
   };
 
-  const totalPages = Math.floor(totalProducts / DEFAULT_LIMIT);
-
-  const breadcrumbItems = [
-    { text: 'Home', path: RoutePaths.MAIN },
-    { text: categoryId, path: `${RoutePaths.MAIN}category/${categoryId}` },
-  ];
-
-  if (subcategoryId) {
-    breadcrumbItems.push({ text: subcategoryId, path: `${RoutePaths.MAIN}category/${categoryId}/${subcategoryId}` });
-  }
-
   const handlePaginationChange = (page: number): void => {
-    setCurrentPage(page);
-    getProducts(categoryId, subcategoryId);
+    const id = getId();
+
+    if (id) {
+      paginationNavigate(page, id);
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -127,7 +157,7 @@ const Catalog: React.FC = () => {
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
           <Search onChange={handleSearch} className={styles.search} />
           {!isMobile ? (
-            <Sorting onChange={handleChange} />
+            <Sorting onChange={handleFilterChange} />
           ) : (
             <div className={styles.actions}>
               <IconButton aria-label="sort" onClick={handleClickFilter}>
@@ -139,12 +169,12 @@ const Catalog: React.FC = () => {
                 anchorElFilter={anchorElFilter}
                 handleCloseFilter={handleCloseFilter}
                 onReset={handleResetFilters}
-                onChange={handleChange}
+                onChange={handleFilterChange}
               />
               <IconButton aria-label="filter" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
-              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} onChange={handleChange} />
+              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} onChange={handleFilterChange} />
             </div>
           )}
         </div>
@@ -156,13 +186,21 @@ const Catalog: React.FC = () => {
                 isFilterColor={isFilterColor}
                 className={`${styles.sticky} ${styles.filter}`}
                 onReset={handleResetFilters}
-                onChange={handleChange}
+                onChange={handleFilterChange}
               />
             </aside>
           )}
           <div className={styles.products}>
             <ProductList className={styles.productsList} categoryId={categoryId} subcategoryId={subcategoryId} />
-            {totalPages > 1 && <PaginationCatalog handleChange={handlePaginationChange} totalPages={totalPages} />}
+            <div className={styles.pagination}>
+              {totalPages > 1 && (
+                <PaginationCatalog
+                  handleChange={handlePaginationChange}
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

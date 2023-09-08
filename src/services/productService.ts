@@ -27,7 +27,7 @@ export async function getProductsByCategory(
   total: number | undefined;
 }> {
   const visitor = apiWithClientCredentialsFlow();
-  const offset = currentPage === 1 ? 0 : currentPage * DEFAULT_LIMIT - 1;
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const response = await visitor
     .productProjections()
@@ -74,11 +74,16 @@ export async function getProductByKey(key: string): Promise<Product> {
 
 export async function getProductsByFilter(
   categoryID: string,
+  currentPage: number,
   filtersAttributes: Record<string, string[]>[],
   filterPrice?: number[],
   sortDetail?: SortObject
-): Promise<ProductProjection[]> {
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
   const filtersCounter = Object.values(filtersAttributes).length;
@@ -111,14 +116,28 @@ export async function getProductsByFilter(
         filter: filterProperties,
         ...(sortObj ? { sort: sortObj } : {}),
         limit: DEFAULT_LIMIT,
+        offset,
       },
     })
     .execute();
-  return response.body.results;
+  const { results, total } = response.body;
+
+  return {
+    results,
+    total,
+  };
 }
 
-export async function getSearchProducts(categoryID: string, searchValue: string): Promise<ProductProjection[]> {
+export async function getSearchProducts(
+  categoryID: string,
+  currentPage: number,
+  searchValue: string
+): Promise<{
+  results: ProductProjection[];
+  total: number | undefined;
+}> {
   const visitor = apiWithClientCredentialsFlow();
+  const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
 
@@ -128,11 +147,17 @@ export async function getSearchProducts(categoryID: string, searchValue: string)
     .get({
       queryArgs: {
         limit: DEFAULT_LIMIT,
+        offset,
         filter: filterPropertiesCategoryID,
         'text.en': searchValue,
       },
     })
     .execute();
 
-  return response.body.results;
+  const { results, total } = response.body;
+
+  return {
+    results,
+    total,
+  };
 }
