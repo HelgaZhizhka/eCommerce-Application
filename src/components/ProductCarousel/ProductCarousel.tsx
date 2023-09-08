@@ -40,10 +40,20 @@ const ProductCarousel: React.FC<Props> = ({
     initialSlide: activeImageIndex,
     centeredSlides: true,
     slidesPerView: 1,
-    thumbs: { swiper: thumbsSwiper },
     modules: [FreeMode, Navigation, Thumbs],
     slideToClickedSlide: true,
   };
+
+  const [mainSwiperParams, setMainSwiperParams] = useState(swiperParamsFirst);
+
+  useEffect(() => {
+    if (thumbsSwiper) {
+      setMainSwiperParams({
+        ...swiperParamsFirst,
+        thumbs: { swiper: thumbsSwiper },
+      });
+    }
+  }, [thumbsSwiper]);
 
   const swiperParamsSecond: SwiperOptions = {
     spaceBetween: 60,
@@ -59,38 +69,37 @@ const ProductCarousel: React.FC<Props> = ({
     },
   };
 
-  useEffect(() => {
-    console.log('Thumbs swiper instance:', thumbsSwiper);
-  }, [thumbsSwiper]);
-
   const handleImageClick = (index: number): void => {
     if (setActiveImageIndex) {
       setActiveImageIndex(index);
+    }
+
+    if (openModal) {
+      openModal();
     }
   };
 
   return (
     <div className={classNames(styles.root, styles[variant], className)}>
-      <Swiper className={styles.rootFirstSwiper} {...swiperParamsFirst}>
+      <Swiper className={styles.rootFirstSwiper} {...mainSwiperParams}>
         {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <div className={`${styles.wrapImg} ${isZoom ? styles.zoom : styles.grab}`} onClick={openModal}>
+            <div className={`${styles.wrapImg} ${isZoom ? styles.zoom : styles.grab}`}>
               <img className={styles.img} src={img} alt="t-Shirt" onClick={(): void => handleImageClick(index)} />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-      {thumbs && (
-        <Swiper onSwiper={setThumbsSwiper} className={styles.rootSecondSwiper} {...swiperParamsSecond}>
-          {thumbs.map((img, index) => (
+      <Swiper onSwiper={setThumbsSwiper} className={styles.rootSecondSwiper} {...swiperParamsSecond}>
+        {thumbs &&
+          thumbs.map((img, index) => (
             <SwiperSlide key={index}>
               <div className={styles.wrapImgSecond}>
-                <img className={styles.img} src={img} alt="t-Shirt" onClick={(): void => handleImageClick(index)} />
+                <img className={styles.img} src={img} alt="t-Shirt" />
               </div>
             </SwiperSlide>
           ))}
-        </Swiper>
-      )}
+      </Swiper>
     </div>
   );
 };
