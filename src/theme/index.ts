@@ -12,7 +12,6 @@ const colorBlue = getCSSVariableValue('--blue');
 const colorLightBlue = getCSSVariableValue('--light-blue');
 const stateDanger = getCSSVariableValue('--state-error');
 const stateSuccess = getCSSVariableValue('--state-success');
-const colorPurple = getCSSVariableValue('--purple');
 
 const commonHeadingStyles = {
   letterSpacing: '0.64px',
