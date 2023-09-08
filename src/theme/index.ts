@@ -111,12 +111,6 @@ const lightTheme = createTheme({
     success: {
       main: stateSuccess,
     },
-    purple: {
-      main: colorPurple,
-    },
-    blue: {
-      main: colorBlue,
-    },
   },
 } as ThemeOptions);
 
