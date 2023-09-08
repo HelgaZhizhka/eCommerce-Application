@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Badge from '@mui/material/Badge';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
@@ -15,12 +16,14 @@ import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { SelectCurrency } from '../SelectCurrency';
 import { NavBarMobile } from '../NavBarMobile';
-import { userStore } from '../../stores';
+import { cartStore, userStore } from '../../stores';
 import { Logo } from '../Logo';
 import styles from './HeaderMobile.module.scss';
 
 const HeaderMobile: React.FC = () => {
   const { loggedIn } = userStore;
+  const { totalAmount } = cartStore;
+
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const toggleNavBar = (): void => {
     setIsNavBarOpen(!isNavBarOpen);
@@ -43,8 +46,11 @@ const HeaderMobile: React.FC = () => {
               </Link>
             )}
             <Link to={RoutePaths.CART}>
-              <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+              <Badge badgeContent={totalAmount} color="secondary">
+                <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+              </Badge>
             </Link>
+            <SelectCurrency />
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
                 <LoginIcon sx={{ ml: '10px' }} fontSize="large" />
@@ -59,11 +65,8 @@ const HeaderMobile: React.FC = () => {
                 <LogoutIcon sx={{ ml: '10px' }} fontSize="large" />
               </Link>
             )}
+            <ThemeToggle />
           </div>
-        </div>
-        <div className={`${styles.flex} ${styles.end}`}>
-          <SelectCurrency />
-          <ThemeToggle />
         </div>
       </Container>
       <NavBarMobile onClose={toggleNavBar} isOpen={isNavBarOpen} />
