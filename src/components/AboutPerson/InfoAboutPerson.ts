@@ -162,6 +162,6 @@ export const info = [
     <strong>hard work</strong>. Our journey together has been nothing short of <strong>incredible</strong>, and I
     eagerly anticipate achieving even greater success as we continue to work together in the future.
   </p>`,
-    videoSource: 'https://d33wubrfki0l68.cloudfront.net/a308217d442f1d4b092baea3b0c61b489815677f/b2e59/assets/jim.mp4',
+    videoSource: './assets/video/vlad.mp4',
   },
 ];
