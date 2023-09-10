@@ -8,6 +8,7 @@ import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
 import { Categories } from '../../components/Categories';
 import styles from './Main.module.scss';
+import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
 
 const Main: React.FC = () => {
   const { isRegistration, resetRegistration } = userStore;
@@ -44,6 +45,12 @@ const Main: React.FC = () => {
                 Shopping easy with <span>YES CODE!</span>
               </h2>
               <Features />
+            </section>
+          </Container>
+          <Container maxWidth="xl">
+            <section className={styles.section}>
+              <h2 className={styles.title}>Gifts and promo codes</h2>
+              <GiftsAndPromoCodes />
             </section>
           </Container>
           <Container className={styles.container} maxWidth="xl">
