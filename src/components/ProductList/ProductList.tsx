@@ -43,7 +43,8 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
   ) : (
     <ul className={`${className} ${styles.root}`}>
       {products.map((product) => {
-        const { key, productName, description, price, priceDiscount, currency, images, isDiscount } = product;
+        const { key, productName, description, price, priceDiscount, currency, images, isDiscount, productId } =
+          product;
         return (
           <li className={styles.productItem} key={key}>
             <Link to={generateProductPath(categoryId, subcategoryId, key.toString())}>
@@ -55,7 +56,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
                 priceDiscount={priceDiscount}
                 currency={currency}
                 isDiscount={isDiscount}
-                onAddToCart={(): void => addToCart(product)}
+                onAddToCart={(): void => addToCart(productId)}
               />
             </Link>
           </li>

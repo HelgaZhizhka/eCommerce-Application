@@ -1,12 +1,12 @@
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithAnonymousSessionFlow } from './BuildClient';
 
-export const customerLogin = (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
-  const customer = apiWithPasswordFlow(email, password);
+export const customerLogin = async (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
+const newCustomer = apiwithAnonymousSessionFlow();
 
-  const response =  customer
+  const response =  newCustomer
   .me()
   .login()
   .post({
@@ -16,6 +16,9 @@ export const customerLogin = (email: string, password: string):Promise<ClientRes
     },
   })
   .execute();
+
+  const customer = apiWithPasswordFlow(email, password);
+  await customer.me().get().execute();
 
   return response
 };
