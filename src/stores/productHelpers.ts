@@ -1,4 +1,4 @@
-import { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { ProductType } from './Product.type';
@@ -16,9 +16,6 @@ export const getFetchedProducts = (fetchedProducts: ProductProjection[]): Produc
       obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
       obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
       obj.variants = [...item.variants];
-
-      obj.isAddedToCart = false;
-      obj.quantity = 1;
 
       if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
     }
@@ -47,4 +44,25 @@ export const transformFetchedCategories = (fetchedCategories: ExtendedCategory[]
   }));
 
   return extendedMainCategories;
+};
+
+export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
+  const product = {} as ProductType;
+  const data = fetchedProduct.masterData?.current;
+  product.key = `${fetchedProduct.key}`;
+  product.productName = `${data.name?.en}`;
+  product.description = `${data.description?.en}`;
+  product.variants = [...data.variants];
+
+  if (data.masterVariant.prices?.length) {
+    product.price = `${data.masterVariant.prices[0]?.value?.centAmount}`;
+    product.currency = data.masterVariant.prices[0]?.value.currencyCode;
+    product.isDiscount = Boolean(data.masterVariant.prices[0]?.discounted);
+
+    if (product.isDiscount) product.priceDiscount = `${data.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+  }
+
+  if (data.masterVariant.images !== undefined) product.images = [...data.masterVariant.images];
+
+  return product;
 };

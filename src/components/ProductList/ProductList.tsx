@@ -28,6 +28,10 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
     return path;
   };
 
+  const handleAddToCart = (productId: string): void => {
+    addToCart(productId, undefined, 1);
+  };
+
   return isProductsLoading ? (
     <Box
       sx={{
@@ -49,6 +53,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
           <li className={styles.productItem} key={key}>
             <Link to={generateProductPath(categoryId, subcategoryId, key.toString())}>
               <Card
+                productId={productId}
                 productName={productName}
                 description={description}
                 images={images}
@@ -56,7 +61,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
                 priceDiscount={priceDiscount}
                 currency={currency}
                 isDiscount={isDiscount}
-                onAddToCart={(): void => addToCart(productId)}
+                onAddToCart={handleAddToCart}
               />
             </Link>
           </li>

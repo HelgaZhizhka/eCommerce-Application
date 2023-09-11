@@ -11,7 +11,7 @@ import {
 } from '../services/productService';
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { initialPriceRange } from '../constants';
-import { getFetchedProducts, transformFetchedCategories } from './productHelpers';
+import { getFetchedProduct, getFetchedProducts, transformFetchedCategories } from './productHelpers';
 import { ProductType } from './Product.type';
 
 type ProductStoreType = {
@@ -52,6 +52,7 @@ type ProductStoreType = {
   setCurrentPage: (pageNumber: number) => void;
   paginationNavigate: (pageNumber: number, id: string | undefined) => void;
   setProductCount: (count: number) => void;
+  setProductInCartStatus: (productId: string, isInCart: boolean, quantity: number | undefined) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -143,10 +144,6 @@ const createProductStore = (): ProductStoreType => {
       runInAction(() => {
         store.isFilterColor = false;
         store.isFilterSize = false;
-
-        // if (store.searchValue) {
-        //   store.clearSearchValue();
-        // }
       });
 
       const key = `${categoryKey[0].toUpperCase()}${categoryKey.slice(1)}`;
@@ -200,24 +197,11 @@ const createProductStore = (): ProductStoreType => {
       try {
         if (key === undefined) return;
         const fetchedProductByKey = await getProductByKey(key);
-        const data = fetchedProductByKey.masterData?.current;
-        const obj = {} as ProductType;
-        obj.key = `${fetchedProductByKey.key}`;
-        obj.productName = `${data.name?.en}`;
-        obj.description = `${data.description?.en}`;
+        const product = getFetchedProduct(fetchedProductByKey);
 
-        if (data.masterVariant.prices?.length) {
-          obj.price = `${data.masterVariant.prices[0]?.value?.centAmount}`;
-          obj.currency = data.masterVariant.prices[0]?.value.currencyCode;
-          obj.isDiscount = Boolean(data.masterVariant.prices[0]?.discounted);
-
-          if (obj.isDiscount) obj.priceDiscount = `${data.masterVariant.prices[0]?.discounted?.value.centAmount}`;
-        }
-        if (data.masterVariant.images !== undefined) obj.images = [...data.masterVariant.images];
-
-        if (obj) {
+        if (product) {
           runInAction(() => {
-            store.currentProduct = { ...obj };
+            store.currentProduct = { ...product };
           });
         }
       } catch (err) {
@@ -230,7 +214,7 @@ const createProductStore = (): ProductStoreType => {
     },
 
     async fetchSearchProducts(id: string | undefined): Promise<void> {
-     if (!id) return;
+      if (!id) return;
 
       const { results, total } = await getSearchProducts(id, store.currentPage, store.searchValue);
 
@@ -322,7 +306,6 @@ const createProductStore = (): ProductStoreType => {
         store.setCurrentPage(pageNumber);
       });
 
-
       if (store.searchValue.trim()) {
         store.fetchSearchProducts(id);
         return;
@@ -380,6 +363,14 @@ const createProductStore = (): ProductStoreType => {
 
     resetTotalProducts(): void {
       store.totalProducts = 0;
+    },
+
+    setProductInCartStatus(productId: string, isInCart: boolean, quantity?: number | undefined): void {
+      const product = this.products.find((p) => p.productId === productId);
+      if (product) {
+        product.isInCart = isInCart;
+        product.quantityInCart = quantity;
+      }
     },
   };
 

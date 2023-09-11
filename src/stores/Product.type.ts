@@ -14,6 +14,6 @@ export type ProductType = {
   images: Image[];
   isDiscount: boolean;
   variants: ProductVariant[];
-  isAddedToCart: boolean;
-  quantity: number;
+  isInCart?: boolean;
+  quantityInCart?: number | undefined;
 };

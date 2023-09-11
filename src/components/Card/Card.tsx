@@ -8,6 +8,7 @@ import holder from './images/holder.png';
 import styles from './Card.module.scss';
 
 type Props = {
+  productId: string;
   productName: string;
   description: string;
   price: string;
@@ -16,10 +17,11 @@ type Props = {
   images: Image[];
   isDiscount?: boolean;
   className?: string;
-  onAddToCart: () => void;
+  onAddToCart: (productId: string) => void;
 };
 
 const Card: React.FC<Props> = ({
+  productId,
   productName,
   description,
   price,
@@ -38,7 +40,7 @@ const Card: React.FC<Props> = ({
   const handleAddToCart = (e: React.MouseEvent): void => {
     e.stopPropagation();
     e.preventDefault();
-    onAddToCart();
+    onAddToCart(productId);
   };
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
