@@ -116,6 +116,8 @@ const createUserStore = (): UserStoreType => {
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('token');
       localStorage.removeItem('cart');
+      localStorage.removeItem('cartId');
+      localStorage.removeItem('cartVersion');
       myToken.clear();
       store.loggedIn = false;
       store.userData = {};
