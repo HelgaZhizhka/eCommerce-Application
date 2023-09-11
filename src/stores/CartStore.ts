@@ -1,13 +1,14 @@
 import { makeAutoObservable, toJS } from 'mobx';
 
-import { ProductType } from './Product.type';
+import { addItemToCart } from '../services/cartService'
 
+import { ProductType } from './Product.type';
 
 
 type CartStoreType = {
   productsInCart: ProductType[];
   totalAmount: number;
-  addToCart: (product: ProductType) => void;
+  addToCart: (productId: string, variantId?:number) => void;
   removeFromCart: (productKey: string) => void;
   changeQuantity: (productKey: string, quantity: number) => void;
 };
@@ -18,11 +19,11 @@ const createCartStore = (): CartStoreType => {
     totalAmount: 1,
 
 
-    addToCart(product: ProductType): void {
-      // запрос на добавления товара в корзину 
-
-      console.log(toJS(product));
-
+    addToCart(productId: string, variantId?:number): void {
+      // запрос на добавления товара в корзину
+      // const { productId } = product.productId;
+      // console.log(toJS(product));
+      addItemToCart(productId, variantId);
     },
 
     removeFromCart(): void {

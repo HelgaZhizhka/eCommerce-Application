@@ -6,6 +6,7 @@ import { ProductType } from './Product.type';
 export const getFetchedProducts = (fetchedProducts: ProductProjection[]): ProductType[] => {
   const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
     const obj = {} as ProductType;
+    obj.productId = `${item.id}`;
     obj.key = `${item.key}`;
     obj.productName = `${item.name?.en}`;
     obj.description = `${item.description?.en}`;

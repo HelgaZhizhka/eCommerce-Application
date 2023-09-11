@@ -115,6 +115,7 @@ const createUserStore = (): UserStoreType => {
     logout(): void {
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('token');
+      localStorage.removeItem('cart');
       myToken.clear();
       store.loggedIn = false;
       store.userData = {};
@@ -169,7 +170,7 @@ const createUserStore = (): UserStoreType => {
              store.error = 'Error occurred while removing an address.';
            });
          }
-       
+
       }
 
       if (action === 'changeAddress') {
@@ -200,7 +201,7 @@ const createUserStore = (): UserStoreType => {
             store.error = 'Error occurred while editing an address.';
           });
         }
-       
+
       }
 
       if (action === 'addAddress') {
@@ -227,7 +228,7 @@ const createUserStore = (): UserStoreType => {
             store.error = 'Error occurred while adding an address.';
           });
         }
-       
+
       }
 
       if (action === 'changePersonalData') {

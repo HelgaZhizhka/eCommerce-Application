@@ -4,7 +4,8 @@ import {
   type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
   TokenCache,
-  TokenStore
+  TokenStore,
+  AnonymousAuthMiddlewareOptions
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -43,6 +44,7 @@ export class MyTokenCache implements TokenCache {
       expirationTime: 0,
       refreshToken: '',
     };
+    localStorage.removeItem('token');
   }
 }
 
@@ -71,7 +73,7 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
   myToken.clear();
-  
+
   const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -100,28 +102,8 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
   return apiRoot;
 }
 
-// export function apiWithRefreshTokenFlow(myToken: TokenCache): ByProjectKeyRequestBuilder {
-//   const refreshTokenFlowOptions = {
-//     host: hostAUTH,
-//     projectKey,
-//     credentials: {
-//       clientId,
-//       clientSecret,
-//     },
-//     refreshToken: myToken.get,
-//     fetch,
-//   };
-
-//   const client = new ClientBuilder()
-//     .withHttpMiddleware(httpMiddlewareOptions)
-//     .withRefreshTokenFlow(refreshTokenFlowOptions)
-//     .build();
-
-//   const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-//   return apiRoot;
-// }
-
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
+
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -133,12 +115,38 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
     scopes,
     fetch,
   };
+
   const ctpClientCredentialsFlow = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
+
+  return apiRoot;
+}
+
+export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
+  myToken.clear();
+
+  const anonymousMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+    host: hostAUTH,
+    projectKey,
+    credentials: {
+      clientId,
+      clientSecret
+    },
+    tokenCache: myToken,
+    scopes,
+    fetch,
+  };
+
+  const ctpAnonymousMiddlewareOptions = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withAnonymousSessionFlow(anonymousMiddlewareOptions)
+    .build();
+
+  const apiRoot = createApiBuilderFromCtpClient(ctpAnonymousMiddlewareOptions).withProjectKey({ projectKey });
 
   return apiRoot;
 }

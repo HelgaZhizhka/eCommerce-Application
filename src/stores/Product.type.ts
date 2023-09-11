@@ -3,6 +3,7 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 
 
 export type ProductType = {
+  productId: string;
   key: string;
   slug: string;
   productName: string;
