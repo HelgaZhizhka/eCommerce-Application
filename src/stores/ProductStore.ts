@@ -51,6 +51,7 @@ type ProductStoreType = {
   clearSearchValue: () => void;
   setCurrentPage: (pageNumber: number) => void;
   paginationNavigate: (pageNumber: number, id: string | undefined) => void;
+  setProductCount: (count: number) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -73,6 +74,10 @@ const createProductStore = (): ProductStoreType => {
     filterSizes: [] as string[],
     filterColors: [] as string[],
     filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
+
+    setProductCount(count: number): void {
+      store.totalProducts = count;
+    },
 
     setLoadingState(type: 'app' | 'product' | 'products', state: boolean): void {
       switch (type) {
