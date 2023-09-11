@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { productStore } from '../../stores';
 import { Price } from '../baseComponents/Price';
+import { NumberInput } from '../baseComponents/NumberInput';
+import { SelectSize } from '../baseComponents/SelectSize';
 import { ProductCarousel } from '../ProductCarousel';
 import { Modal } from '../Modal';
 import holder from './images/holder.png';
@@ -55,7 +58,9 @@ const CurrentProduct: React.FC<Props> = () => {
     return null;
   }
 
-  const { productName, description, price, priceDiscount, currency } = currentProduct;
+  const { productName, description, price, priceDiscount, currency, quantity, isAddedToCart } = currentProduct;
+
+  const { setProductCount } = productStore;
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
@@ -115,6 +120,15 @@ const CurrentProduct: React.FC<Props> = () => {
     carouselComponent = <img src={holder} alt="Product placeholder" />;
   }
 
+  const handleInputChange = (value: number): void => {
+    setProductCount(value);
+    console.log(value);
+  };
+
+  const handleSizeChange = (value: string): void => {
+    console.log(value);
+  };
+
   return (
     <>
       {bigImages?.length > 0 && (
@@ -127,14 +141,65 @@ const CurrentProduct: React.FC<Props> = () => {
             <div className={styles.column}>
               <h2 className={styles.title}>{productName}</h2>
               <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
-              <div className={styles.footer}>{priceComponent}</div>
+              <div className={styles.footer}>
+                {priceComponent}
+                <div className={styles.flex}>
+                  <SelectSize onChange={handleSizeChange} />
+                  <NumberInput value={quantity} onChange={handleInputChange} min={0} label="Quantity:" />
+                  {!isAddedToCart ? (
+                    <Button
+                      size="large"
+                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Add to cart
+                    </Button>
+                  ) : (
+                    <Button
+                      size="large"
+                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Remove from cart
+                    </Button>
+                  )}
+                </div>
+              </div>
             </div>
           </>
         ) : (
           <>
             <h2 className={styles.title}>{productName}</h2>
             {carouselComponent}
-            <div className={styles.footer}>{priceComponent}</div>
+            <div className={styles.footer}>
+              {priceComponent}
+              <div className={styles.footer}>
+                <div className={styles.flex}>
+                  <NumberInput value={quantity} onChange={handleInputChange} min={0} label="Quantity:" />
+                  {!isAddedToCart ? (
+                    <Button
+                      size="large"
+                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Add to cart
+                    </Button>
+                  ) : (
+                    <Button
+                      size="large"
+                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Remove from cart
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
             <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
           </>
         )}

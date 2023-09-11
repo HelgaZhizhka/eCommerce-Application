@@ -22,6 +22,8 @@ export const currencies = [
   },
 ];
 
+export const sizes = ['xs', 's', 'm', 'l', 'xl', 'one-size'];
+
 export const initialPriceRange = {
   min: 1,
   max: 50,
