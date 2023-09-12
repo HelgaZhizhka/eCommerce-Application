@@ -20,8 +20,8 @@ export const customerLogin = async (email: string, password: string):Promise<Cli
   })
   .execute();
 
-  const customer = apiWithPasswordFlow(email, password);
-  await getActiveCart(customer);
+  await apiWithPasswordFlow(email, password).me().get().execute();
+  await getActiveCart();
 
   return response
 };
