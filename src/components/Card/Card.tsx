@@ -15,6 +15,7 @@ type Props = {
   currency: string;
   images: Image[];
   isDiscount?: boolean;
+  isInCart?: boolean;
   className?: string;
   onAddToCart: () => void;
 };
@@ -28,6 +29,7 @@ const Card: React.FC<Props> = ({
   images,
   isDiscount = false,
   className,
+  isInCart,
   onAddToCart,
 }) => {
   const classes = classNames(styles.root, {
@@ -71,7 +73,13 @@ const Card: React.FC<Props> = ({
         ) : (
           <img className={styles.cardImage} src={holder} alt={productName} />
         )}
-        <button className={styles.cardButton} onClick={handleAddToCart}>
+        <button
+          className={classNames(styles.cardButton, {
+            [styles.disabled]: isInCart,
+          })}
+          disabled={isInCart}
+          onClick={handleAddToCart}
+        >
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
         </button>
       </div>

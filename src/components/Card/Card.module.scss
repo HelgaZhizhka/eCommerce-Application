@@ -86,6 +86,11 @@
   color: var(--gray);
 }
 
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 @media (hover: hover) {
   .root {
     &:hover {

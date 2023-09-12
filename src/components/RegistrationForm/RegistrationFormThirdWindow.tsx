@@ -32,7 +32,7 @@ interface RegistrationProps {
 
 const options = [
   { value: 'UA', label: 'Ukraine' },
-  { value: 'US', label: 'USA' },
+  { value: 'EU', label: 'European Union' },
 ];
 
 const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPage, setData }) => {

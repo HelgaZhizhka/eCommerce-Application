@@ -5,14 +5,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import { sizes } from '../../../constants';
-
 type Props = {
-  onChange?: (value: string) => void;
+  options: string[];
   className?: string;
+  onChange?: (value: string) => void;
 };
 
-const NumberInput: React.FC<Props> = ({ onChange, className }) => {
+const NumberInput: React.FC<Props> = ({ options, onChange, className }) => {
   const [size, setSize] = useState('');
 
   const handleChange = (event: SelectChangeEvent): void => {
@@ -28,7 +27,7 @@ const NumberInput: React.FC<Props> = ({ onChange, className }) => {
       <FormControl fullWidth>
         <InputLabel>Size</InputLabel>
         <Select value={size} label="Size" onChange={handleChange}>
-          {sizes.map((sizeProduct) => (
+          {options.map((sizeProduct) => (
             <MenuItem key={sizeProduct} value={sizeProduct}>
               {sizeProduct}
             </MenuItem>

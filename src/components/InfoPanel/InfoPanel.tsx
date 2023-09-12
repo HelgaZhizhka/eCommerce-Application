@@ -10,7 +10,7 @@ type Props = {
 const InfoPanel: React.FC<Props> = ({ className, variant = 'horizontal', onClose }) => (
   <span className={`${styles.root} ${styles[variant]} ${className}`}>
     <span className={`badge badge_sm badge_primary ${styles.badge}`}>%</span>
-    Free on everything{' '}
+    Discount on all t-shirts{' '}
     <Link to="/category/clothes/t-shirts" className="text-brand" onClick={onClose ? (): void => onClose() : undefined}>
       T-Shirts
     </Link>{' '}

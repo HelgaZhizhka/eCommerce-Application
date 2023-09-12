@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { AboutPerson } from '../../components/AboutPerson';
 
 import logoRs from './image/rs_school_js 1.png';
+import styles from './About.module.scss';
 
 const About: React.FC = () => (
   <Container
@@ -15,7 +16,8 @@ const About: React.FC = () => (
       </a>
     </Box>
 
-    <h2>About us</h2>
+    <h2 className={styles.title}>About Us</h2>
+    <h4 className={styles.subTitle}>one for all and all for one!</h4>
     <AboutPerson />
   </Container>
 );

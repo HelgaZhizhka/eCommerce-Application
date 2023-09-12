@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ProductVariant } from '@commercetools/platform-sdk';
 import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
@@ -6,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { productStore } from '../../stores';
+import { cartStore, productStore } from '../../stores';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -18,6 +19,21 @@ import styles from './CurrentProduct.module.scss';
 type Props = {
   className?: string;
 };
+
+function extractSizesFromVariants(variants: ProductVariant[]): string[] {
+  const sizesSet = new Set<string>();
+
+  variants.forEach((variant) => {
+    if (variant.attributes) {
+      const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size-clothes');
+      if (sizeAttribute) {
+        sizesSet.add(sizeAttribute.value.label);
+      }
+    }
+  });
+
+  return Array.from(sizesSet);
+}
 
 const CurrentProduct: React.FC<Props> = () => {
   const theme = useTheme();
@@ -58,9 +74,15 @@ const CurrentProduct: React.FC<Props> = () => {
     return null;
   }
 
-  const { productName, description, price, priceDiscount, currency, quantity, isAddedToCart } = currentProduct;
+  const { productId, productName, description, price, priceDiscount, currency, variants } = currentProduct;
 
-  const { setProductCount } = productStore;
+  let sizes: string[] = [];
+
+  if (variants && variants.length > 0) {
+    sizes = extractSizesFromVariants(currentProduct.variants);
+  }
+
+  const isInCart = cartStore.isProductInCart(productId);
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
@@ -121,7 +143,6 @@ const CurrentProduct: React.FC<Props> = () => {
   }
 
   const handleInputChange = (value: number): void => {
-    setProductCount(value);
     console.log(value);
   };
 
@@ -144,17 +165,19 @@ const CurrentProduct: React.FC<Props> = () => {
               <div className={styles.footer}>
                 {priceComponent}
                 <div className={styles.flex}>
-                  <SelectSize onChange={handleSizeChange} />
-                  <NumberInput value={quantity} onChange={handleInputChange} min={0} label="Quantity:" />
-                  {!isAddedToCart ? (
-                    <Button
-                      size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Add to cart
-                    </Button>
+                  {!isInCart ? (
+                    <>
+                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
+                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <Button
+                        size="large"
+                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <Button
                       size="large"
@@ -177,16 +200,19 @@ const CurrentProduct: React.FC<Props> = () => {
               {priceComponent}
               <div className={styles.footer}>
                 <div className={styles.flex}>
-                  <NumberInput value={quantity} onChange={handleInputChange} min={0} label="Quantity:" />
-                  {!isAddedToCart ? (
-                    <Button
-                      size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Add to cart
-                    </Button>
+                  {!isInCart ? (
+                    <>
+                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
+                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <Button
+                        size="large"
+                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <Button
                       size="large"
