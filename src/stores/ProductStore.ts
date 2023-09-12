@@ -12,7 +12,7 @@ import {
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { initialPriceRange } from '../constants';
 import { getFetchedProduct, getFetchedProducts, transformFetchedCategories } from './productHelpers';
-import { ProductType } from './Product.type';
+import { ProductType } from './Store.types';
 
 type ProductStoreType = {
   isAppLoading: boolean;
@@ -51,8 +51,6 @@ type ProductStoreType = {
   clearSearchValue: () => void;
   setCurrentPage: (pageNumber: number) => void;
   paginationNavigate: (pageNumber: number, id: string | undefined) => void;
-  setProductCount: (count: number) => void;
-  setProductInCartStatus: (productId: string, isInCart: boolean, quantity: number | undefined) => void;
 };
 
 const createProductStore = (): ProductStoreType => {
@@ -76,9 +74,6 @@ const createProductStore = (): ProductStoreType => {
     filterColors: [] as string[],
     filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
 
-    setProductCount(count: number): void {
-      store.totalProducts = count;
-    },
 
     setLoadingState(type: 'app' | 'product' | 'products', state: boolean): void {
       switch (type) {
@@ -361,17 +356,6 @@ const createProductStore = (): ProductStoreType => {
       });
     },
 
-    resetTotalProducts(): void {
-      store.totalProducts = 0;
-    },
-
-    setProductInCartStatus(productId: string, isInCart: boolean, quantity?: number | undefined): void {
-      const product = this.products.find((p) => p.productId === productId);
-      if (product) {
-        product.isInCart = isInCart;
-        product.quantityInCart = quantity;
-      }
-    },
   };
 
   makeAutoObservable(store);

@@ -1,7 +1,7 @@
 import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 
 import { ExtendedCategory } from './ProductStore.interfaces';
-import { ProductType } from './Product.type';
+import { ProductType } from './Store.types';
 
 export const getFetchedProducts = (fetchedProducts: ProductProjection[]): ProductType[] => {
   const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
@@ -49,6 +49,7 @@ export const transformFetchedCategories = (fetchedCategories: ExtendedCategory[]
 export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
   const product = {} as ProductType;
   const data = fetchedProduct.masterData?.current;
+  product.productId = `${fetchedProduct.id}`;
   product.key = `${fetchedProduct.key}`;
   product.productName = `${data.name?.en}`;
   product.description = `${data.description?.en}`;

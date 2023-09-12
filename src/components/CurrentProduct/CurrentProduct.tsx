@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { productStore } from '../../stores';
+import { cartStore, productStore } from '../../stores';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -74,8 +74,7 @@ const CurrentProduct: React.FC<Props> = () => {
     return null;
   }
 
-  const { productName, description, price, priceDiscount, currency, quantityInCart, isInCart, variants } =
-    currentProduct;
+  const { productId, productName, description, price, priceDiscount, currency, variants } = currentProduct;
 
   let sizes: string[] = [];
 
@@ -83,7 +82,7 @@ const CurrentProduct: React.FC<Props> = () => {
     sizes = extractSizesFromVariants(currentProduct.variants);
   }
 
-  const { setProductCount } = productStore;
+  const isInCart = cartStore.isProductInCart(productId);
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
@@ -144,7 +143,7 @@ const CurrentProduct: React.FC<Props> = () => {
   }
 
   const handleInputChange = (value: number): void => {
-    setProductCount(value);
+    console.log(value);
   };
 
   const handleSizeChange = (value: string): void => {
@@ -166,17 +165,19 @@ const CurrentProduct: React.FC<Props> = () => {
               <div className={styles.footer}>
                 {priceComponent}
                 <div className={styles.flex}>
-                  {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
-                  <NumberInput value={quantityInCart} onChange={handleInputChange} min={0} label="Quantity:" />
                   {!isInCart ? (
-                    <Button
-                      size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Add to cart
-                    </Button>
+                    <>
+                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
+                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <Button
+                        size="large"
+                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <Button
                       size="large"
@@ -199,16 +200,19 @@ const CurrentProduct: React.FC<Props> = () => {
               {priceComponent}
               <div className={styles.footer}>
                 <div className={styles.flex}>
-                  <NumberInput value={quantityInCart} onChange={handleInputChange} min={0} label="Quantity:" />
                   {!isInCart ? (
-                    <Button
-                      size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Add to cart
-                    </Button>
+                    <>
+                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
+                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <Button
+                        size="large"
+                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <Button
                       size="large"

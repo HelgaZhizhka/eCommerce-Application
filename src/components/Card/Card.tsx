@@ -8,7 +8,6 @@ import holder from './images/holder.png';
 import styles from './Card.module.scss';
 
 type Props = {
-  productId: string;
   productName: string;
   description: string;
   price: string;
@@ -16,12 +15,12 @@ type Props = {
   currency: string;
   images: Image[];
   isDiscount?: boolean;
+  isInCart?: boolean;
   className?: string;
-  onAddToCart: (productId: string) => void;
+  onAddToCart: () => void;
 };
 
 const Card: React.FC<Props> = ({
-  productId,
   productName,
   description,
   price,
@@ -30,6 +29,7 @@ const Card: React.FC<Props> = ({
   images,
   isDiscount = false,
   className,
+  isInCart,
   onAddToCart,
 }) => {
   const classes = classNames(styles.root, {
@@ -40,7 +40,7 @@ const Card: React.FC<Props> = ({
   const handleAddToCart = (e: React.MouseEvent): void => {
     e.stopPropagation();
     e.preventDefault();
-    onAddToCart(productId);
+    onAddToCart();
   };
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
@@ -73,7 +73,13 @@ const Card: React.FC<Props> = ({
         ) : (
           <img className={styles.cardImage} src={holder} alt={productName} />
         )}
-        <button className={styles.cardButton} onClick={handleAddToCart}>
+        <button
+          className={classNames(styles.cardButton, {
+            [styles.disabled]: isInCart,
+          })}
+          disabled={isInCart}
+          onClick={handleAddToCart}
+        >
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
         </button>
       </div>

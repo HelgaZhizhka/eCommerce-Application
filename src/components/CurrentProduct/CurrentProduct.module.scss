@@ -29,6 +29,7 @@
 }
 
 .description {
+  padding-top: 20px;
   margin-bottom: 20px;
 
   @include create-mq($grid__bp-md - 1, 'max') {
