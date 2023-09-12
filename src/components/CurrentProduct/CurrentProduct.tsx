@@ -46,6 +46,10 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  const [selectedSize, setSelectedSize] = useState<string | undefined>('');
+
+  const [quantity, setQuantity] = useState<number>(1);
+
   const handleClickOpen = (): void => {
     setOpen(true);
   };
@@ -81,6 +85,8 @@ const CurrentProduct: React.FC<Props> = () => {
   if (variants && variants.length > 0) {
     sizes = extractSizesFromVariants(currentProduct.variants);
   }
+
+  const { addToCart } = cartStore;
 
   const isInCart = cartStore.isProductInCart(productId);
 
@@ -143,11 +149,11 @@ const CurrentProduct: React.FC<Props> = () => {
   }
 
   const handleInputChange = (value: number): void => {
-    console.log(value);
+    setQuantity(value);
   };
 
   const handleSizeChange = (value: string): void => {
-    console.log(value);
+    setSelectedSize(value);
   };
 
   return (
@@ -174,6 +180,7 @@ const CurrentProduct: React.FC<Props> = () => {
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
+                        onClick={(): Promise<void> => addToCart(productId, undefined, selectedSize, quantity)}
                       >
                         Add to cart
                       </Button>
@@ -209,6 +216,7 @@ const CurrentProduct: React.FC<Props> = () => {
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
+                        onClick={(): Promise<void> => addToCart(productId, undefined, selectedSize, quantity)}
                       >
                         Add to cart
                       </Button>

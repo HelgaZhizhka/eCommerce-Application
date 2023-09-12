@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, toJS } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 import { addItemToCart } from '../services/cartService';
 
@@ -10,7 +10,12 @@ type CartStoreType = {
   totalAmount: number;
   error: null | string;
   success: null | string;
-  addToCart: (productId: string, variantId?: number, quantity?: number | undefined) => Promise<void>;
+  addToCart: (
+    productId: string,
+    variantId?: number,
+    size?: string | undefined,
+    quantity?: number | undefined
+  ) => Promise<void>;
   removeFromCart: (productId: string) => void;
   changeQuantity: (productId: string, quantity: number) => void;
   isProductInCart: (productId: string) => boolean;
@@ -26,8 +31,9 @@ const createCartStore = (): CartStoreType => {
     error: null as null | string,
     success: null as null | string,
 
-    async addToCart(productId: string, variantId?: number, quantity?: number | undefined): Promise<void> {
+    async addToCart(productId: string, variantId?: number, size?: string, quantity?: number | undefined): Promise<void> {
       try {
+        console.log(size, quantity)
         const response = await addItemToCart(productId, variantId);
 
         runInAction(() => {
@@ -48,7 +54,7 @@ const createCartStore = (): CartStoreType => {
     },
 
     isProductInCart(productId: string): boolean {
-      return this.productsInCartIds.has(productId);
+      return store.productsInCartIds.has(productId);
     },
 
     removeFromCart(productId: string): void {
