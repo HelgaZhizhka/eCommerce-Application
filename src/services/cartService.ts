@@ -14,20 +14,19 @@ export const createCart = async (): Promise<ClientResponse<Cart>> => {
   }
 
   const response = await customer.me().carts().post({body}).execute();
-  const { anonymousId, version, id } = response.body;
+  const { version, id } = response.body;
 
-  localStorage.setItem('cartAnonymousId', `${anonymousId}`);
   localStorage.setItem('cartVersion', `${version}`);
   localStorage.setItem('cartId', `${id}`);
 
   return response;
 }
 
-export const getActiveCart = async (customer: ByProjectKeyRequestBuilder): Promise<ClientResponse<Cart>> => {
+export const getActiveCart = async (): Promise<ClientResponse<Cart>> => {
+  const customer = apiwithExistingTokenFlow();
   const activeCart = await customer.me().activeCart().get().execute();
-  const { anonymousId, version, id } = activeCart.body;
+  const { version, id } = activeCart.body;
 
-  localStorage.setItem('cartAnonymousId', `${anonymousId}`);
   localStorage.setItem('cartVersion', `${version}`);
   localStorage.setItem('cartId', `${id}`);
 
@@ -39,7 +38,7 @@ export const getCarts = async (customer: ByProjectKeyRequestBuilder): Promise<Cl
   return cart;
 }
 
-export const addItemToCart = async (productId: string, variantId?: number): Promise<ClientResponse<Cart>> => {
+export const addItemToCart = async (productId: string, quantity?: number, variantId?: number): Promise<ClientResponse<Cart>> => {
 
   const existingToken = localStorage.getItem('token');
   let cartId = localStorage.getItem('cartId');
@@ -63,7 +62,8 @@ export const addItemToCart = async (productId: string, variantId?: number): Prom
       {
         action: `addLineItem`,
         productId,
-        variantId
+        variantId,
+        quantity
       }
     ]
   }

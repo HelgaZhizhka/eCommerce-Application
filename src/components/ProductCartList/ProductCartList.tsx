@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import { cartStore } from '../../stores';
+import { CardMini } from '../CardMini';
 import styles from './ProductCartList.module.scss';
 
 type Props = {
@@ -11,16 +12,10 @@ type Props = {
 const ProductCartList: React.FC<Props> = ({ className, productsInCart }) => (
   <ul className={`${className} ${styles.root}`}>
     {productsInCart.map((product) => {
-      const { key, productName, description } = product;
+      const { key, productName, images } = product;
       return (
         <li className={styles.productItem} key={key}>
-          <div className={styles.product}>
-            <h4>{productName}</h4>
-            <p
-              className={`text-overflow ${styles.cardDescription}`}
-              dangerouslySetInnerHTML={{ __html: description }}
-            ></p>
-          </div>
+          <CardMini productName={productName} images={images} />
         </li>
       );
     })}

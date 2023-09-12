@@ -11,6 +11,7 @@ import { cartStore, productStore } from '../../stores';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
+import { SizeWithVariantId } from '../baseComponents/SelectSize/SelectSize.types';
 import { ProductCarousel } from '../ProductCarousel';
 import { Modal } from '../Modal';
 import holder from './images/holder.png';
@@ -20,19 +21,19 @@ type Props = {
   className?: string;
 };
 
-function extractSizesFromVariants(variants: ProductVariant[]): string[] {
-  const sizesSet = new Set<string>();
+function extractSizesWithVariantId(variants: ProductVariant[]): SizeWithVariantId[] {
+  const sizesMap: Map<string, number> = new Map();
 
   variants.forEach((variant) => {
     if (variant.attributes) {
       const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size-clothes');
       if (sizeAttribute) {
-        sizesSet.add(sizeAttribute.value.label);
+        sizesMap.set(sizeAttribute.value.label, variant.id);
       }
     }
   });
 
-  return Array.from(sizesSet);
+  return Array.from(sizesMap.entries()).map(([size, variantId]) => ({ size, variantId }));
 }
 
 const CurrentProduct: React.FC<Props> = () => {
@@ -46,9 +47,9 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const [selectedSize, setSelectedSize] = useState<string | undefined>('');
-
   const [quantity, setQuantity] = useState<number>(1);
+
+  const [selectedVariant, setSelectedVariant] = useState<SizeWithVariantId | null>(null);
 
   const handleClickOpen = (): void => {
     setOpen(true);
@@ -80,10 +81,10 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const { productId, productName, description, price, priceDiscount, currency, variants } = currentProduct;
 
-  let sizes: string[] = [];
+  let variantsProduct: SizeWithVariantId[] = [];
 
   if (variants && variants.length > 0) {
-    sizes = extractSizesFromVariants(currentProduct.variants);
+    variantsProduct = extractSizesWithVariantId(currentProduct.variants);
   }
 
   const { addToCart } = cartStore;
@@ -152,8 +153,8 @@ const CurrentProduct: React.FC<Props> = () => {
     setQuantity(value);
   };
 
-  const handleSizeChange = (value: string): void => {
-    setSelectedSize(value);
+  const handleSizeChange = (value: SizeWithVariantId): void => {
+    setSelectedVariant({ size: value.size, variantId: value.variantId });
   };
 
   return (
@@ -173,14 +174,16 @@ const CurrentProduct: React.FC<Props> = () => {
                 <div className={styles.flex}>
                   {!isInCart ? (
                     <>
-                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
-                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      {variantsProduct.length > 0 && (
+                        <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                      )}
+                      <NumberInput value={quantity} onChange={handleInputChange} min={1} label="Quantity:" />
                       <Button
                         size="large"
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
-                        onClick={(): Promise<void> => addToCart(productId, undefined, selectedSize, quantity)}
+                        onClick={(): Promise<void> => addToCart(productId, quantity, selectedVariant?.variantId)}
                       >
                         Add to cart
                       </Button>
@@ -209,14 +212,16 @@ const CurrentProduct: React.FC<Props> = () => {
                 <div className={styles.flex}>
                   {!isInCart ? (
                     <>
-                      {sizes.length > 0 && <SelectSize options={sizes} onChange={handleSizeChange} />}
+                      {variantsProduct.length > 0 && (
+                        <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                      )}
                       <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
                       <Button
                         size="large"
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
-                        onClick={(): Promise<void> => addToCart(productId, undefined, selectedSize, quantity)}
+                        onClick={(): Promise<void> => addToCart(productId, quantity, selectedVariant?.variantId)}
                       >
                         Add to cart
                       </Button>

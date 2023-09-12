@@ -57,7 +57,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
                 currency={currency}
                 isDiscount={isDiscount}
                 isInCart={cartStore.isProductInCart(productId)}
-                onAddToCart={(): Promise<void> => addToCart(productId, undefined, undefined, 1)}
+                onAddToCart={(): Promise<void> => addToCart(productId)}
               />
             </Link>
           </li>
