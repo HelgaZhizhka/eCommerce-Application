@@ -20,6 +20,10 @@ type Props = {
   onAddToCart: () => void;
 };
 
+function getPriceValue(value: string | undefined): string | undefined {
+  return value ? (+value / 100).toFixed(2) : undefined;
+}
+
 const Card: React.FC<Props> = ({
   productName,
   description,
@@ -43,8 +47,8 @@ const Card: React.FC<Props> = ({
     onAddToCart();
   };
 
-  const priceValue = price ? (+price / 100).toFixed(2) : undefined;
-  const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
+  const priceValue = getPriceValue(price);
+  const discountPriceValue = getPriceValue(priceDiscount);
 
   let priceComponent = null;
   const image = images.filter((img) => img.label === 'average')[0]?.url;
