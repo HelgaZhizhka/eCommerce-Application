@@ -17,6 +17,7 @@ export type ProductType = {
   images: Image[];
   isDiscount: boolean;
   variants: ProductVariant[];
+  totalPrice?: string;
 };
 
 export type ProductStoreType = {
