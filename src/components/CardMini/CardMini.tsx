@@ -14,6 +14,7 @@ type Props = {
   images: Image[];
   isDiscount?: boolean;
   className?: string;
+  totalPrice?: string;
 };
 
 const CardMini: React.FC<Props> = ({

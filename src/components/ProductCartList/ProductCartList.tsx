@@ -12,10 +12,18 @@ type Props = {
 const ProductCartList: React.FC<Props> = ({ className, productsInCart }) => (
   <ul className={`${className} ${styles.root}`}>
     {productsInCart.map((product) => {
-      const { key, productName, images } = product;
+      const { key, productName, images, price, currency, isDiscount, priceDiscount, totalPrice } = product;
       return (
         <li className={styles.productItem} key={key}>
-          <CardMini productName={productName} images={images} />
+          <CardMini
+            productName={productName}
+            images={images}
+            price={price}
+            currency={currency}
+            isDiscount={isDiscount}
+            priceDiscount={priceDiscount}
+            totalPrice={totalPrice}
+          />
         </li>
       );
     })}
