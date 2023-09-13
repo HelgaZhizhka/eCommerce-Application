@@ -86,7 +86,8 @@ const createCartStore = (): CartStoreType => {
               store.totalAmount = +`${response.body.totalLineItemQuantity}`;
               const products: ProductType[] = lineItems.reduce((acc, item) => {
                 const obj = {} as ProductType;
-                obj.productId = `${item.id}`;
+                obj.productId = `${item.productId}`;
+                obj.key = `${item.productKey}`
                 obj.productName = `${item.name?.en}`;
 
                 if (item.price) {
