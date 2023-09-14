@@ -18,6 +18,7 @@ export type ProductType = {
   isDiscount: boolean;
   variants: ProductVariant[];
   totalPrice?: string;
+  quantity?: number;
 };
 
 export type ProductStoreType = {

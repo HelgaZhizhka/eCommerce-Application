@@ -1,11 +1,11 @@
 import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
 import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
-import { AttributeDefinition } from '@commercetools/platform-sdk';
+import { AttributeDefinition, ClientResponse } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { DEFAULT_LIMIT } from '../constants';
 
-import { apiWithClientCredentialsFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiwithExistingTokenFlow } from './BuildClient';
 
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();
@@ -160,4 +160,10 @@ export async function getSearchProducts(
     results,
     total,
   };
+}
+
+export async function getProductById(productId: string): Promise<ClientResponse<Product>> {
+  const customer = apiwithExistingTokenFlow();
+  const response = customer.products().withId({ID: productId}).get().execute();
+  return response;
 }

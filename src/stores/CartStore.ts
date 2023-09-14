@@ -9,6 +9,7 @@ type CartStoreType = {
   productsInCart: ProductType[];
   productsInCartIds: Set<string>;
   totalAmount: number;
+  totalPrice: number;
   error: null | string;
   success: null | string;
   initCart: () => Promise<void>;
@@ -26,6 +27,7 @@ const createCartStore = (): CartStoreType => {
     productsInCartIds: new Set<string>(),
     productsInCart: [] as ProductType[],
     totalAmount: 0,
+    totalPrice: 0,
     error: null as null | string,
     success: null as null | string,
 
@@ -38,6 +40,7 @@ const createCartStore = (): CartStoreType => {
             store.success = 'Product added to cart successfully';
             store.productsInCartIds.add(productId);
             store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
           }
 
           if (response.statusCode === 400) {
@@ -61,6 +64,7 @@ const createCartStore = (): CartStoreType => {
             if (response.statusCode === 200) {
               response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
               store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+              store.totalPrice = +`${response.body.totalPrice.centAmount}`;
             }
             if (response.statusCode === 400) {
               throw new Error('Unexpected error');
@@ -86,7 +90,8 @@ const createCartStore = (): CartStoreType => {
               store.totalAmount = +`${response.body.totalLineItemQuantity}`;
               const products: ProductType[] = lineItems.reduce((acc, item) => {
                 const obj = {} as ProductType;
-                obj.productId = `${item.id}`;
+                obj.productId = `${item.productId}`;
+                obj.key = `${item.productKey}`
                 obj.productName = `${item.name?.en}`;
 
                 if (item.price) {
@@ -94,6 +99,7 @@ const createCartStore = (): CartStoreType => {
                   obj.currency = item.price?.value.currencyCode;
                   obj.isDiscount = Boolean(item.price?.discounted);
                   obj.totalPrice = `${item.totalPrice.centAmount}`;
+                  obj.quantity = +`${item.quantity}`;
 
                   if (obj.isDiscount) obj.priceDiscount = `${item.price?.discounted?.value.centAmount}`;
                 }

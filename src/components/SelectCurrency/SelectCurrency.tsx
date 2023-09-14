@@ -9,7 +9,7 @@ const SelectCurrency: React.FC = () => (
     <TextField
       select
       label="Select"
-      defaultValue="EUR"
+      defaultValue={currencies[0].value}
       sx={{ width: '50px' }}
       SelectProps={{
         native: true,
