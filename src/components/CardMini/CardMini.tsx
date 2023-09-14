@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+import Button from '@mui/material/Button';
 
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import holder from './images/holder.png';
 import styles from './CardMini.module.scss';
+import { IconName } from '../baseComponents/Icon/Icon.enum';
+import { Icon } from '../baseComponents/Icon';
 
 type Props = {
   productName: string;
@@ -93,6 +96,9 @@ const CardMini: React.FC<Props> = ({
         />
         <div className={styles.cardTotalPrice}>{totalPriceValue}</div>
       </div>
+      <Button>
+        <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
+      </Button>
     </div>
   );
 };
