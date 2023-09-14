@@ -6,6 +6,7 @@ import { ExtendedCategory } from './ProductStore.interfaces';
 
 
 export type ProductType = {
+  lineItemId: string;
   productId: string;
   key: string;
   slug: string;

@@ -78,3 +78,33 @@ export const addItemToCart = async (productId: string, quantity?: number, varian
 
   return response
 }
+
+export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Promise<ClientResponse<Cart>> => {
+
+  let cartId = localStorage.getItem('cartId');
+  let version = localStorage.getItem('cartVersion');
+
+  const customer = apiwithExistingTokenFlow();
+
+  const body: MyCartUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        action: `changeLineItemQuantity`,
+        lineItemId,
+        quantity
+      }
+    ]
+  }
+
+  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+
+  cartId = response.body.id;
+  version = `${response.body.version}`;
+
+  localStorage.setItem('cartVersion', `${version}`);
+  localStorage.setItem('cartId', `${cartId}`);
+
+  return response;
+
+}
