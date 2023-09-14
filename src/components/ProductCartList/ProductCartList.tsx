@@ -14,6 +14,10 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
     cartStore.removeFromCart(lineItemId);
   };
 
+  const onChangeQuantity = (lineItemId: string, quantity: number): void => {
+    cartStore.changeQuantity(lineItemId, quantity);
+  };
+
   return (
     <ul className={styles.root}>
       {productsInCart.map((product) => {
@@ -42,6 +46,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
               totalPrice={totalPrice}
               quantity={quantity}
               onDelete={deleteItemFromCart}
+              onChangeQuantity={onChangeQuantity}
             />
           </li>
         );

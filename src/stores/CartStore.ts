@@ -15,8 +15,8 @@ type CartStoreType = {
   initCart: () => Promise<void>;
   getCart: () => Promise<void>;
   addToCart: (productId: string, quantity?: number, variantId?: number) => Promise<void>;
-  removeFromCart: (productId: string) => void;
-  changeQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (lineItemId: string) => Promise<void>;
+  changeQuantity: (lineItemId: string, quantity: number) => Promise<void>;
   isProductInCart: (productId: string) => boolean;
   clearError: () => void;
   clearSuccess: () => void;
@@ -150,10 +150,37 @@ const createCartStore = (): CartStoreType => {
           store.error = 'Error get cart';
         });
       }
-
     },
 
-    changeQuantity(): void {},
+    async changeQuantity(lineItemId: string, quantity: number): Promise<void> {
+      try {
+        const response = await setLineItemQuantity(lineItemId, quantity);
+
+        runInAction(() => {
+          if (response.statusCode === 200) {
+            // response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
+            const updatedProduct = response.body.lineItems.filter((item) => item.id === lineItemId)[0];
+
+            store.productsInCart.forEach(item => {
+              if (item.lineItemId === lineItemId ) {
+                item.quantity = updatedProduct.quantity;
+                item.totalPrice = `${updatedProduct.totalPrice.centAmount}`;
+                
+              }
+            })
+            store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+          }
+          if (response.statusCode === 400) {
+            throw new Error('Unexpected error');
+          }
+        });
+      } catch (error) {
+        runInAction(() => {
+          store.error = 'Error get cart';
+        });
+      }
+    },
 
     clearError(): void {
       store.error = null;
