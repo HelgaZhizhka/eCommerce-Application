@@ -39,6 +39,7 @@ const ProductCarousel: React.FC<Props> = ({
     navigation: shouldShowNavigation,
     initialSlide: activeImageIndex,
     centeredSlides: true,
+    autoHeight: true,
     slidesPerView: 1,
     modules: [FreeMode, Navigation, Thumbs],
     slideToClickedSlide: true,
