@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { addItemToCart, getActiveCart } from '../services/cartService';
+import { addItemToCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
 import { ProductType } from './Store.types';
 
 
@@ -90,6 +90,7 @@ const createCartStore = (): CartStoreType => {
               store.totalAmount = +`${response.body.totalLineItemQuantity}`;
               const products: ProductType[] = lineItems.reduce((acc, item) => {
                 const obj = {} as ProductType;
+                obj.lineItemId = `${item.id}`;
                 obj.productId = `${item.productId}`;
                 obj.key = `${item.productKey}`
                 obj.productName = `${item.name?.en}`;
@@ -128,8 +129,28 @@ const createCartStore = (): CartStoreType => {
       return store.productsInCartIds.has(productId);
     },
 
-    removeFromCart(productId: string): void {
-      store.productsInCartIds.delete(productId);
+    async removeFromCart(lineItemId: string): Promise<void> {
+      // store.productsInCartIds.delete(productId);
+      try {
+        const response = await setLineItemQuantity(lineItemId, 0);
+
+        runInAction(() => {
+          if (response.statusCode === 200) {
+            // response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
+            store.productsInCart = store.productsInCart.filter(item => item.lineItemId !== lineItemId)
+            store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+          }
+          if (response.statusCode === 400) {
+            throw new Error('Unexpected error');
+          }
+        });
+      } catch (error) {
+        runInAction(() => {
+          store.error = 'Error get cart';
+        });
+      }
+
     },
 
     changeQuantity(): void {},

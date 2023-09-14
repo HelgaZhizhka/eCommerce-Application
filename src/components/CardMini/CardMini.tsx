@@ -11,6 +11,7 @@ import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 
 type Props = {
+  lineItemId: string;
   productName: string;
   price?: string;
   priceDiscount?: string;
@@ -20,6 +21,7 @@ type Props = {
   className?: string;
   totalPrice?: string;
   quantity?: number;
+  onDelete: (lineItemId: string) => void;
 };
 
 function getPriceValue(value: string | undefined): string | undefined {
@@ -27,6 +29,7 @@ function getPriceValue(value: string | undefined): string | undefined {
 }
 
 const CardMini: React.FC<Props> = ({
+  lineItemId,
   productName,
   price,
   priceDiscount,
@@ -36,6 +39,7 @@ const CardMini: React.FC<Props> = ({
   totalPrice,
   quantity,
   className,
+  onDelete,
 }) => {
   const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
@@ -70,6 +74,10 @@ const CardMini: React.FC<Props> = ({
     setQuantityProduct(value);
   };
 
+  const handleDelete = (): void => {
+    onDelete(lineItemId);
+  };
+
   return (
     <div className={classes}>
       <div className={styles.cardInfo}>
@@ -96,7 +104,7 @@ const CardMini: React.FC<Props> = ({
         />
         <div className={styles.cardTotalPrice}>{totalPriceValue}</div>
       </div>
-      <Button>
+      <Button onClick={handleDelete}>
         <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
       </Button>
     </div>

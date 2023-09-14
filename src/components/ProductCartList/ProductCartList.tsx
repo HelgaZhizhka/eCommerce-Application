@@ -9,26 +9,45 @@ type Props = {
   productsInCart: typeof cartStore.productsInCart;
 };
 
-const ProductCartList: React.FC<Props> = ({ productsInCart }) => (
-  <ul className={styles.root}>
-    {productsInCart.map((product) => {
-      const { key, productName, images, price, currency, isDiscount, priceDiscount, quantity, totalPrice } = product;
-      return (
-        <li className={styles.productItem} key={key}>
-          <CardMini
-            productName={productName}
-            images={images}
-            price={price}
-            currency={currency}
-            isDiscount={isDiscount}
-            priceDiscount={priceDiscount}
-            totalPrice={totalPrice}
-            quantity={quantity}
-          />
-        </li>
-      );
-    })}
-  </ul>
-);
+const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
+  const deleteItemFromCart = (lineItemId: string): void => {
+    cartStore.removeFromCart(lineItemId);
+  };
+
+  return (
+    <ul className={styles.root}>
+      {productsInCart.map((product) => {
+        const {
+          lineItemId,
+          key,
+          productName,
+          images,
+          price,
+          currency,
+          isDiscount,
+          priceDiscount,
+          quantity,
+          totalPrice,
+        } = product;
+        return (
+          <li className={styles.productItem} key={key}>
+            <CardMini
+              lineItemId={lineItemId}
+              productName={productName}
+              images={images}
+              price={price}
+              currency={currency}
+              isDiscount={isDiscount}
+              priceDiscount={priceDiscount}
+              totalPrice={totalPrice}
+              quantity={quantity}
+              onDelete={deleteItemFromCart}
+            />
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
 
 export default observer(ProductCartList);
