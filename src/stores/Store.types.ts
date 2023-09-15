@@ -20,6 +20,8 @@ export type ProductType = {
   variants: ProductVariant[];
   totalPrice?: number;
   quantity?: number;
+  promoPrice?: number;
+  isPromo?: boolean;
 };
 
 export type ProductStoreType = {
