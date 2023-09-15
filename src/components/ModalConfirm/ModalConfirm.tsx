@@ -2,11 +2,11 @@ import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/system';
 
-import { ProductCarousel } from '../ProductCarousel';
-import styles from './Modal.module.scss';
+import styles from './ModalConfirm.module.scss';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -20,13 +20,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 type Props = {
   isOpen: boolean;
   title?: string;
-  images?: string[];
-  thumbs?: string[];
-  activeImageIndex?: number;
+  deleteItemsFromCart: () => void;
   onClose: () => void;
 };
 
-const Modal: React.FC<Props> = ({ isOpen, activeImageIndex = 0, onClose, title, images }) => (
+const ModalConfirm: React.FC<Props> = ({ isOpen, onClose, title, deleteItemsFromCart }) => (
   <Box>
     <BootstrapDialog className={styles.modal} onClose={onClose} open={isOpen}>
       <DialogTitle id="customized-dialog-title">{title}</DialogTitle>
@@ -43,9 +41,10 @@ const Modal: React.FC<Props> = ({ isOpen, activeImageIndex = 0, onClose, title, 
       >
         <CloseIcon />
       </IconButton>
-      {images && <ProductCarousel images={images} activeImageIndex={activeImageIndex} variant={'full'} />}
+      <h4>Are you sure you want to delete all products?</h4>
+      <Button onClick={deleteItemsFromCart}>Delete</Button>
     </BootstrapDialog>
   </Box>
 );
 
-export default Modal;
+export default ModalConfirm;

@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { addItemToCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
+import { addItemToCart, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
 import { ProductType } from './Store.types';
 
 type CartStoreType = {
@@ -54,8 +54,8 @@ const createCartStore = (): CartStoreType => {
     },
 
     async initCart(): Promise<void> {
-      const hasToken = localStorage.getItem('token');
-      if (hasToken) {
+      const hasCartId = localStorage.getItem('cartId');
+      if (hasCartId) {
         try {
           const response = await getActiveCart();
 
@@ -77,8 +77,8 @@ const createCartStore = (): CartStoreType => {
     },
 
     async getCart(): Promise<void> {
-      const hasToken = localStorage.getItem('token');
-      if (hasToken) {
+      const hasCartId = localStorage.getItem('cartId');
+      if (hasCartId) {
         try {
           const response = await getActiveCart();
 
@@ -140,7 +140,7 @@ const createCartStore = (): CartStoreType => {
             store.productsInCart = store.productsInCart.filter((item) => item.lineItemId !== lineItemId);
             store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
             store.totalPrice = +`${response.body.totalPrice.centAmount}`;
-            store.success = 'Product removed  from cart successfully';
+            store.success = 'Product removed from cart successfully';
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
@@ -183,23 +183,18 @@ const createCartStore = (): CartStoreType => {
     },
 
     async clearCart(): Promise<void> {
-      const promises: Promise<void>[] = [];
-
-      store.productsInCart.forEach((product) => {
-        promises.push(store.removeFromCart(product.lineItemId));
-      });
-
       try {
-        await Promise.all(promises);
+        const response = await deleteCart();
         runInAction(() => {
-          store.productsInCart = [];
-          store.totalAmount = 0;
-          store.totalPrice = 0;
-          store.success = 'Cart is cleared';
-        });
-      } catch (error) {
+          if (response.statusCode === 200) {
+            store.success = 'All products removed from cart successfully';
+            store.productsInCart = [];
+            store.totalAmount = 0;
+            store.totalPrice = 0;
+          }})
+      } catch (err) {
         runInAction(() => {
-          store.error = 'Error clearing the cart';
+          store.error = 'Error delete all products from cart';
         });
       }
     },
