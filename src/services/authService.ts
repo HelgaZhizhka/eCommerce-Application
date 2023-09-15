@@ -26,7 +26,7 @@ export const customerLogin = async (email: string, password: string):Promise<Cli
   return response
 };
 
-export const customerSignUp = (
+export const customerSignUp = async (
   values: Record<string, string | number | boolean>
 ): Promise<ClientResponse<CustomerSignInResult>> => {
   const shippingAddress = {
@@ -63,16 +63,13 @@ export const customerSignUp = (
     dateOfBirth: `${values.date}`,
     addresses: [shippingAddress, billingAddress],
     defaultShippingAddress: values.checkedShippingDefault ? 0 : undefined,
-    // shippingAddresses: [0],
     defaultBillingAddress:
       values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault) ? 1 : undefined,
-    // billingAddresses: [1],
   };
+  
+  const existingToken = localStorage.getItem('token');
 
-  // if (values.checkedShippingDefault) requestbody.defaultShippingAddress = 0;
-  // deafultbilling when Use this address for billing is checked
-
-  const newCustomer = apiWithClientCredentialsFlow();
+  const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithClientCredentialsFlow();
 
   const signUpCustomer = newCustomer
     .me()
@@ -81,6 +78,8 @@ export const customerSignUp = (
       body: requestbody,
     })
     .execute();
+
+  await getActiveCart();
 
   return signUpCustomer;
 };
