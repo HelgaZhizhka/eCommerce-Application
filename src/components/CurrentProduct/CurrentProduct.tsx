@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { cartStore, productStore } from '../../stores';
+import { getPriceValue } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -96,8 +97,8 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const isInCart = false;
 
-  const priceValue = price ? (+price / 100).toFixed(2) : undefined;
-  const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
+  const priceValue = getPriceValue(price);
+  const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
 
   let priceComponent = null;
   let bigImages: string[] = [];

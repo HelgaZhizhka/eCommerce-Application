@@ -11,8 +11,8 @@ import styles from './Card.module.scss';
 type Props = {
   productName: string;
   description: string;
-  price: string;
-  priceDiscount?: string;
+  price: number;
+  priceDiscount?: number;
   currency: string;
   images: Image[];
   isDiscount?: boolean;
@@ -44,8 +44,8 @@ const Card: React.FC<Props> = ({
     onAddToCart();
   };
 
-  const priceValue = getPriceValue(+price);
-  const discountPriceValue = priceDiscount ? getPriceValue(+priceDiscount) : undefined;
+  const priceValue = getPriceValue(price);
+  const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
 
   let priceComponent = null;
   const image = images.filter((img) => img.label === 'average')[0]?.url;
@@ -54,15 +54,15 @@ const Card: React.FC<Props> = ({
     priceComponent = (
       <>
         <Price variant="old" currency={currency}>
-          {`${priceValue}`}
+          {priceValue}
         </Price>
         <Price variant="new" currency={currency}>
-          {`${discountPriceValue}`}
+          {discountPriceValue}
         </Price>
       </>
     );
   } else if (priceValue) {
-    priceComponent = <Price currency={currency}>{`${priceDiscount}`}</Price>;
+    priceComponent = <Price currency={currency}>{priceDiscount}</Price>;
   }
 
   return (

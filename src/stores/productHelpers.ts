@@ -12,12 +12,12 @@ export const getFetchedProducts = (fetchedProducts: ProductProjection[]): Produc
     obj.description = `${item.description?.en}`;
 
     if (item.masterVariant.prices?.length) {
-      obj.price = `${item.masterVariant.prices[0]?.value?.centAmount}`;
+      obj.price = item.masterVariant.prices[0]?.value?.centAmount;
       obj.currency = item.masterVariant.prices[0]?.value.currencyCode;
       obj.isDiscount = Boolean(item.masterVariant.prices[0]?.discounted);
       obj.variants = [...item.variants];
 
-      if (obj.isDiscount) obj.priceDiscount = `${item.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+      if (obj.isDiscount) obj.priceDiscount = item.masterVariant.prices[0]?.discounted?.value.centAmount;
     }
 
     if (item.masterVariant.images !== undefined) obj.images = [...item.masterVariant.images];
@@ -56,11 +56,11 @@ export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
   product.variants = [...data.variants];
 
   if (data.masterVariant.prices?.length) {
-    product.price = `${data.masterVariant.prices[0]?.value?.centAmount}`;
+    product.price = data.masterVariant.prices[0]?.value?.centAmount;
     product.currency = data.masterVariant.prices[0]?.value.currencyCode;
     product.isDiscount = Boolean(data.masterVariant.prices[0]?.discounted);
 
-    if (product.isDiscount) product.priceDiscount = `${data.masterVariant.prices[0]?.discounted?.value.centAmount}`;
+    if (product.isDiscount) product.priceDiscount = data.masterVariant.prices[0]?.discounted?.value.centAmount;
   }
 
   if (data.masterVariant.images !== undefined) product.images = [...data.masterVariant.images];
@@ -68,6 +68,6 @@ export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
   return product;
 };
 
-export function getPriceValue(value: number): number | undefined {
-  return value ? +(value / 100).toFixed(2) : undefined;
+export function getPriceValue(value: number): number {
+  return value ? +(value / 100).toFixed(2) : 0;
 }

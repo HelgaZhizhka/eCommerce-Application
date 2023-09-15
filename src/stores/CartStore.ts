@@ -31,7 +31,7 @@ const createCartStore = (): CartStoreType => {
     error: null as null | string,
     success: null as null | string,
 
-    async addToCart(productId: string, quantity?: number, variantId?: number, sku?: string): Promise<void> {
+    async addToCart(productId: string, quantity?: number, variantId?: number): Promise<void> {
       try {
         const response = await addItemToCart(productId, quantity, variantId);
 
@@ -95,14 +95,14 @@ const createCartStore = (): CartStoreType => {
                 obj.productName = `${item.name?.en}`;
 
                 if (item.price) {
-                  obj.price = `${item.price?.value?.centAmount}`;
+                  obj.price = item.price?.value?.centAmount;
                   obj.currency = item.price?.value.currencyCode;
                   obj.isDiscount = Boolean(item.price?.discounted);
-                  obj.totalPrice = `${item.totalPrice.centAmount}`;
-                  obj.quantity = +`${item.quantity}`;
+                  obj.totalPrice = item.totalPrice.centAmount;
+                  obj.quantity = item.quantity;
                   obj.variants.push(item.variant);
 
-                  if (obj.isDiscount) obj.priceDiscount = `${item.price?.discounted?.value.centAmount}`;
+                  if (obj.isDiscount) obj.priceDiscount = item.price?.discounted?.value.centAmount;
                 }
 
                 // if (item.variant.images !== undefined) obj.images = [...item.variant.images];
@@ -165,7 +165,7 @@ const createCartStore = (): CartStoreType => {
               if (item.lineItemId === lineItemId) {
                 const changedItem = item;
                 changedItem.quantity = updatedProduct.quantity;
-                changedItem.totalPrice = `${updatedProduct.totalPrice.centAmount}`;
+                changedItem.totalPrice = updatedProduct.totalPrice.centAmount;
               }
             });
             store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;

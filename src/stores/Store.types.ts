@@ -12,13 +12,13 @@ export type ProductType = {
   slug: string;
   productName: string;
   description: string;
-  price: string;
-  priceDiscount?: string;
+  price: number;
+  priceDiscount?: number;
   currency: string;
   images: Image[];
   isDiscount: boolean;
   variants: ProductVariant[];
-  totalPrice?: string;
+  totalPrice?: number;
   quantity?: number;
 };
 
