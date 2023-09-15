@@ -15,12 +15,15 @@ import { Categories } from '../Categories';
 import { SelectCurrency } from '../SelectCurrency';
 import { InfoPanel } from '../InfoPanel';
 import { cartStore, userStore } from '../../stores';
+import { getPriceValue } from '../../stores/productHelpers';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
   const { loggedIn } = userStore;
-  const { totalAmount } = cartStore;
+  const { totalAmount, totalPrice } = cartStore;
+
+  const totalPriceValue = getPriceValue(totalPrice);
 
   return (
     <header className={styles.root}>
@@ -69,6 +72,7 @@ const Header: React.FC = () => {
                 <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
               </Badge>
             </Link>
+            <span className={styles.totalPriceValue}>{totalPriceValue}</span>
             <SelectCurrency />
           </div>
         </div>

@@ -51,6 +51,11 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const [selectedVariant, setSelectedVariant] = useState<SizeWithVariantId | null>(null);
 
+  const [sizeError, setSizeError] = useState<string | null>(null);
+
+  const minQuantity = 1;
+  const maxQuantity = 10;
+
   const handleClickOpen = (): void => {
     setOpen(true);
   };
@@ -84,12 +89,12 @@ const CurrentProduct: React.FC<Props> = () => {
   let variantsProduct: SizeWithVariantId[] = [];
 
   if (variants && variants.length > 0) {
-    variantsProduct = extractSizesWithVariantId(currentProduct.variants);
+    variantsProduct = extractSizesWithVariantId(variants);
   }
 
   const { addToCart } = cartStore;
 
-  const isInCart = cartStore.isProductInCart(productId);
+  const isInCart = false;
 
   const priceValue = price ? (+price / 100).toFixed(2) : undefined;
   const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
@@ -149,12 +154,32 @@ const CurrentProduct: React.FC<Props> = () => {
     carouselComponent = <img src={holder} alt="Product placeholder" />;
   }
 
-  const handleInputChange = (value: number): void => {
+  const handleInputChange = (inputValue: number): void => {
+    let value = inputValue;
+
+    if (value < minQuantity) {
+      value = minQuantity;
+    } else if (value > maxQuantity) {
+      value = maxQuantity;
+    }
+
     setQuantity(value);
   };
 
   const handleSizeChange = (value: SizeWithVariantId): void => {
     setSelectedVariant({ size: value.size, variantId: value.variantId });
+    setSizeError(null);
+  };
+
+  const handleAddToCart = (): Promise<void> => {
+    if (!selectedVariant && variantsProduct.length > 0) {
+      setSizeError('Please select a size before adding to cart.');
+      return Promise.resolve();
+    }
+
+    setSelectedVariant(null);
+
+    return addToCart(productId, quantity, selectedVariant?.variantId);
   };
 
   return (
@@ -175,15 +200,24 @@ const CurrentProduct: React.FC<Props> = () => {
                   {!isInCart ? (
                     <>
                       {variantsProduct.length > 0 && (
-                        <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        <>
+                          {sizeError && <p className={styles.error}>{sizeError}</p>}
+                          <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        </>
                       )}
-                      <NumberInput value={quantity} onChange={handleInputChange} min={1} label="Quantity:" />
+                      <NumberInput
+                        value={quantity}
+                        onChange={handleInputChange}
+                        min={minQuantity}
+                        max={maxQuantity}
+                        label="Quantity:"
+                      />
                       <Button
                         size="large"
-                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        sx={{ height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
-                        onClick={(): Promise<void> => addToCart(productId, quantity, selectedVariant?.variantId)}
+                        onClick={handleAddToCart}
                       >
                         Add to cart
                       </Button>
@@ -191,7 +225,7 @@ const CurrentProduct: React.FC<Props> = () => {
                   ) : (
                     <Button
                       size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                      sx={{ height: '60px', fontSize: '1.25rem' }}
                       variant="contained"
                       color="primary"
                     >

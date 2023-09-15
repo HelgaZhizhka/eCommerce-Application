@@ -10,15 +10,12 @@ import { RoutePaths } from '../../routes/routes.enum';
 import { Icon } from '../../components/baseComponents/Icon';
 import { IconName } from '../../components/baseComponents/Icon/Icon.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
-import styles from './Cart.module.scss';
 import { PromoCode } from '../../components/baseComponents/PromoCode';
-
-function getPriceValue(value: number): number | undefined {
-  return value ? +(value / 100).toFixed(2) : undefined;
-}
+import { getPriceValue } from '../../stores/productHelpers';
+import styles from './Cart.module.scss';
 
 const Cart: React.FC = () => {
-  const { productsInCart, totalAmount, totalPrice, getCart } = cartStore;
+  const { productsInCart, totalAmount, totalPrice, getCart, clearCart } = cartStore;
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
     { text: 'Cart', path: `${RoutePaths.CART}` },
@@ -42,10 +39,10 @@ const Cart: React.FC = () => {
           <>
             <ProductCartList productsInCart={productsInCart} />
             <div className={styles.footer}>
-              <span className={styles.link}>
+              <Button onClick={clearCart} sx={{ fontSize: '24px' }} color={'error'}>
                 Delete all products{' '}
                 <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
-              </span>
+              </Button>
               <span className={styles.total}>
                 <span>TOTAL:</span>
                 {totalPriceValue}

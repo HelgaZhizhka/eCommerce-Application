@@ -25,7 +25,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
           lineItemId,
           key,
           productName,
-          images,
+          variants,
           price,
           currency,
           isDiscount,
@@ -38,7 +38,8 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
             <CardMini
               lineItemId={lineItemId}
               productName={productName}
-              images={images}
+              images={variants[0].images || []}
+              variant={variants[0]}
               price={price}
               currency={currency}
               isDiscount={isDiscount}

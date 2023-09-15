@@ -44,7 +44,13 @@
 .flex {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 5px;
+
+  .error {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .sale {
@@ -72,4 +78,22 @@
 .footer {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.error {
+  color: var(--state-danger);
+  font-size: toRem(14px);
+}
+
+.oneSize {
+  display: inline-block;
+  min-width: 40px;
+  color: #f2760f;
+  border-radius: 10px;
+  padding: 5px 8px;
+  font-size: toRem(14px);
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid var(--gray);
+  text-align: center;
 }

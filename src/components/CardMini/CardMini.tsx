@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+import { ProductVariant } from '@commercetools/platform-sdk';
 import Button from '@mui/material/Button';
+import { debounce } from '@mui/material';
 
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
-import holder from './images/holder.png';
-import styles from './CardMini.module.scss';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
+import holder from './images/holder.png';
+import styles from './CardMini.module.scss';
+import { getPriceValue } from '../../stores/productHelpers';
 
 type Props = {
   lineItemId: string;
@@ -16,6 +19,7 @@ type Props = {
   price?: string;
   priceDiscount?: string;
   currency?: string;
+  variant?: ProductVariant;
   images: Image[];
   isDiscount?: boolean;
   className?: string;
@@ -25,16 +29,13 @@ type Props = {
   onChangeQuantity: (lineItemId: string, quantity: number) => void;
 };
 
-function getPriceValue(value: string | undefined): string | undefined {
-  return value ? (+value / 100).toFixed(2) : undefined;
-}
-
 const CardMini: React.FC<Props> = ({
   lineItemId,
   productName,
   price,
   priceDiscount,
   currency,
+  variant,
   images,
   isDiscount = false,
   totalPrice,
@@ -48,11 +49,14 @@ const CardMini: React.FC<Props> = ({
     className,
   });
 
+  const minQuantity = 1;
+  const maxQuantity = 10;
+
   const [quantityProduct, setQuantityProduct] = useState<number>(quantity || 1);
 
-  const priceValue = getPriceValue(price);
-  const discountPriceValue = getPriceValue(priceDiscount);
-  const totalPriceValue = getPriceValue(totalPrice);
+  const priceValue = price ? getPriceValue(+price) : undefined;
+  const discountPriceValue = priceDiscount ? getPriceValue(+priceDiscount) : undefined;
+  const totalPriceValue = totalPrice ? getPriceValue(+totalPrice) : undefined;
 
   let priceComponent = null;
   const image = images.filter((img) => img.label === 'average')[0]?.url;
@@ -61,20 +65,39 @@ const CardMini: React.FC<Props> = ({
     priceComponent = (
       <>
         <Price variant="new" currency={currency}>
-          {discountPriceValue}
+          {`${discountPriceValue}`}
         </Price>
         <Price variant="old" currency={currency}>
-          {priceValue}
+          {`${priceValue}`}
         </Price>
       </>
     );
   } else if (priceValue) {
-    priceComponent = <Price currency={currency}>{priceValue}</Price>;
+    priceComponent = <Price currency={currency}>{`${priceValue}`}</Price>;
   }
 
-  const handleInputChange = (value: number): void => {
+  const productColor = variant?.attributes?.find((attr) => attr.name.includes('color'))?.value.label;
+  const productSize = variant?.attributes?.find((attr) => attr.name.includes('size'))?.value.label;
+
+  const debouncedOnChangeQuantity = useCallback(
+    debounce((value: number) => {
+      if (value >= minQuantity && value <= maxQuantity) {
+        onChangeQuantity(lineItemId, value);
+      }
+    }, 500),
+    [lineItemId, minQuantity, maxQuantity, onChangeQuantity]
+  );
+
+  const handleInputChange = (inputValue: number): void => {
+    let value = inputValue;
+
+    if (value < minQuantity) {
+      value = minQuantity;
+    } else if (value > maxQuantity) {
+      value = maxQuantity;
+    }
     setQuantityProduct(value);
-    onChangeQuantity(lineItemId, value);
+    debouncedOnChangeQuantity(value);
   };
 
   const handleDelete = (): void => {
@@ -94,7 +117,11 @@ const CardMini: React.FC<Props> = ({
         </div>
         <div className={styles.cardBody}>
           {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
-          <div className={styles.cardPrice}>{priceComponent}</div>
+          <div className={styles.flex}>
+            {productColor && <span className={`${styles.cardColor} ${styles[productColor]}`}></span>}
+            {productSize && <span className={styles.cardSize}>{productSize}</span>}
+          </div>
+          {priceComponent && <div className={styles.cardPrice}>{priceComponent}</div>}
         </div>
       </div>
       <div className={styles.cardActions}>
@@ -102,8 +129,8 @@ const CardMini: React.FC<Props> = ({
           className={styles.cardQuantity}
           value={quantityProduct}
           onChange={handleInputChange}
-          min={1}
-          max={10}
+          min={minQuantity}
+          max={maxQuantity}
           label="Quantity:"
         />
         <div className={styles.cardTotalPrice}>{totalPriceValue}</div>

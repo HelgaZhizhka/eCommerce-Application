@@ -67,3 +67,7 @@ export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
 
   return product;
 };
+
+export function getPriceValue(value: number): number | undefined {
+  return value ? +(value / 100).toFixed(2) : undefined;
+}

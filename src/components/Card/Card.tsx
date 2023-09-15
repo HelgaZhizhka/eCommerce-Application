@@ -4,6 +4,7 @@ import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generat
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { Price } from '../baseComponents/Price';
+import { getPriceValue } from '../../stores/productHelpers';
 import holder from './images/holder.png';
 import styles from './Card.module.scss';
 
@@ -19,10 +20,6 @@ type Props = {
   className?: string;
   onAddToCart: () => void;
 };
-
-function getPriceValue(value: string | undefined): string | undefined {
-  return value ? (+value / 100).toFixed(2) : undefined;
-}
 
 const Card: React.FC<Props> = ({
   productName,
@@ -47,8 +44,8 @@ const Card: React.FC<Props> = ({
     onAddToCart();
   };
 
-  const priceValue = getPriceValue(price);
-  const discountPriceValue = getPriceValue(priceDiscount);
+  const priceValue = getPriceValue(+price);
+  const discountPriceValue = priceDiscount ? getPriceValue(+priceDiscount) : undefined;
 
   let priceComponent = null;
   const image = images.filter((img) => img.label === 'average')[0]?.url;
@@ -57,15 +54,15 @@ const Card: React.FC<Props> = ({
     priceComponent = (
       <>
         <Price variant="old" currency={currency}>
-          {priceValue}
+          {`${priceValue}`}
         </Price>
         <Price variant="new" currency={currency}>
-          {discountPriceValue}
+          {`${discountPriceValue}`}
         </Price>
       </>
     );
   } else if (priceValue) {
-    priceComponent = <Price currency={currency}>{priceValue}</Price>;
+    priceComponent = <Price currency={currency}>{`${priceDiscount}`}</Price>;
   }
 
   return (
