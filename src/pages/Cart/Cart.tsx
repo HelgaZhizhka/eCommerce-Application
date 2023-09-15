@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -13,6 +13,7 @@ import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { PromoCode } from '../../components/baseComponents/PromoCode';
 import { getPriceValue } from '../../stores/productHelpers';
 import styles from './Cart.module.scss';
+import { ModalConfirm } from '../../components/ModalConfirm';
 
 const Cart: React.FC = () => {
   const { productsInCart, totalAmount, totalPrice, getCart, clearCart } = cartStore;
@@ -25,21 +26,42 @@ const Cart: React.FC = () => {
     getCart();
   }, []);
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const totalPriceValue = getPriceValue(totalPrice);
 
   const handlePromoCode = (code: string): void => {
     console.log('handlePromoCode', code);
   };
 
+  const onCloseModal = (): void => {
+    setIsOpenModal(false);
+  };
+
+  const onOpenModal = (): void => {
+    setIsOpenModal(true);
+  };
+
+  const onDeleteItemsFromCart = (): void => {
+    clearCart();
+    setIsOpenModal(false);
+  };
+
   return (
     <Container maxWidth="xl">
+      <ModalConfirm
+        title={'Delete all'}
+        onClose={onCloseModal}
+        isOpen={isOpenModal}
+        deleteItemsFromCart={onDeleteItemsFromCart}
+      />
       <div className={styles.root}>
         <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
         {totalAmount ? (
           <>
             <ProductCartList productsInCart={productsInCart} />
             <div className={styles.footer}>
-              <Button onClick={clearCart} sx={{ fontSize: '24px' }} color={'error'}>
+              <Button onClick={onOpenModal} sx={{ fontSize: '24px' }} color={'error'}>
                 Delete all products{' '}
                 <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
               </Button>

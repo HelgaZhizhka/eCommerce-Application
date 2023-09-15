@@ -52,10 +52,6 @@ export const addItemToCart = async (productId: string, quantity?: number, varian
     version = localStorage.getItem('cartVersion');
   }
 
-  // const activeCart = await getActiveCart(customer);
-  // const cartId = activeCart.body.id;
-  // const { version } = activeCart.body;
-
   const body: MyCartUpdate = {
     version: +`${version}`,
     actions: [
@@ -106,5 +102,18 @@ export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Pro
   localStorage.setItem('cartId', `${cartId}`);
 
   return response;
+}
 
+export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
+  const customer = apiwithExistingTokenFlow();
+
+  const cartId = localStorage.getItem('cartId');
+  const version = localStorage.getItem('cartVersion');
+
+  const response = await customer.me().carts().withId({ ID: `${cartId}`}).delete({ queryArgs: {version: +`${version}`}}).execute();
+
+  localStorage.removeItem('cartId');
+  localStorage.removeItem('cartVersion');
+
+  return response;
 }
