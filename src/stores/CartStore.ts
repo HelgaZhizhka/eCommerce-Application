@@ -4,7 +4,6 @@ import { LineItem } from '@commercetools/platform-sdk';
 import { addItemToCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
 import { ProductType } from './Store.types';
 
-
 type CartStoreType = {
   productsInCart: ProductType[];
   productsInCartIds: Set<string>;
@@ -17,7 +16,8 @@ type CartStoreType = {
   addToCart: (productId: string, quantity?: number, variantId?: number) => Promise<void>;
   removeFromCart: (lineItemId: string) => Promise<void>;
   changeQuantity: (lineItemId: string, quantity: number) => Promise<void>;
-  isProductInCart: (productId: string) => boolean;
+  isProductInCart: (id: string) => boolean;
+  clearCart: () => Promise<void>;
   clearError: () => void;
   clearSuccess: () => void;
 };
@@ -31,15 +31,14 @@ const createCartStore = (): CartStoreType => {
     error: null as null | string,
     success: null as null | string,
 
-    async addToCart(productId: string, quantity?: number, variantId?: number): Promise<void> {
+    async addToCart(productId: string, quantity?: number, variantId?: number, sku?: string): Promise<void> {
       try {
         const response = await addItemToCart(productId, quantity, variantId);
 
         runInAction(() => {
           if (response.statusCode === 200) {
             store.success = 'Product added to cart successfully';
-            store.productsInCartIds.add(productId);
-            store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
             store.totalPrice = +`${response.body.totalPrice.centAmount}`;
           }
 
@@ -62,8 +61,7 @@ const createCartStore = (): CartStoreType => {
 
           runInAction(() => {
             if (response.statusCode === 200) {
-              response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
-              store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+              store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
               store.totalPrice = +`${response.body.totalPrice.centAmount}`;
             }
             if (response.statusCode === 400) {
@@ -87,12 +85,13 @@ const createCartStore = (): CartStoreType => {
           runInAction(() => {
             if (response.statusCode === 200) {
               const lineItems: LineItem[] = [...response.body.lineItems];
-              store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+              store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
               const products: ProductType[] = lineItems.reduce((acc, item) => {
                 const obj = {} as ProductType;
+                obj.variants = [];
                 obj.lineItemId = `${item.id}`;
                 obj.productId = `${item.productId}`;
-                obj.key = `${item.productKey}`
+                obj.key = `${item.productKey}`;
                 obj.productName = `${item.name?.en}`;
 
                 if (item.price) {
@@ -101,11 +100,12 @@ const createCartStore = (): CartStoreType => {
                   obj.isDiscount = Boolean(item.price?.discounted);
                   obj.totalPrice = `${item.totalPrice.centAmount}`;
                   obj.quantity = +`${item.quantity}`;
+                  obj.variants.push(item.variant);
 
                   if (obj.isDiscount) obj.priceDiscount = `${item.price?.discounted?.value.centAmount}`;
                 }
 
-                if (item.variant.images !== undefined) obj.images = [...item.variant.images];
+                // if (item.variant.images !== undefined) obj.images = [...item.variant.images];
                 acc.push(obj);
 
                 return acc;
@@ -125,8 +125,8 @@ const createCartStore = (): CartStoreType => {
       }
     },
 
-    isProductInCart(productId: string): boolean {
-      return store.productsInCartIds.has(productId);
+    isProductInCart(id: string): boolean {
+      return store.productsInCartIds.has(id);
     },
 
     async removeFromCart(lineItemId: string): Promise<void> {
@@ -137,8 +137,38 @@ const createCartStore = (): CartStoreType => {
         runInAction(() => {
           if (response.statusCode === 200) {
             // response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
-            store.productsInCart = store.productsInCart.filter(item => item.lineItemId !== lineItemId)
-            store.totalAmount = +`${response.body.totalLineItemQuantity}`;
+            store.productsInCart = store.productsInCart.filter((item) => item.lineItemId !== lineItemId);
+            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
+            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+            store.success = 'Product removed  from cart successfully';
+          }
+          if (response.statusCode === 400) {
+            throw new Error('Unexpected error');
+          }
+        });
+      } catch (error) {
+        runInAction(() => {
+          store.error = 'Error remove product from cart';
+        });
+      }
+    },
+
+    async changeQuantity(lineItemId: string, quantity: number): Promise<void> {
+      try {
+        const response = await setLineItemQuantity(lineItemId, quantity);
+
+        runInAction(() => {
+          if (response.statusCode === 200) {
+            const updatedProduct = response.body.lineItems.filter((item) => item.id === lineItemId)[0];
+
+            store.productsInCart.forEach((item) => {
+              if (item.lineItemId === lineItemId) {
+                const changedItem = item;
+                changedItem.quantity = updatedProduct.quantity;
+                changedItem.totalPrice = `${updatedProduct.totalPrice.centAmount}`;
+              }
+            });
+            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
             store.totalPrice = +`${response.body.totalPrice.centAmount}`;
           }
           if (response.statusCode === 400) {
@@ -152,32 +182,24 @@ const createCartStore = (): CartStoreType => {
       }
     },
 
-    async changeQuantity(lineItemId: string, quantity: number): Promise<void> {
+    async clearCart(): Promise<void> {
+      const promises: Promise<void>[] = [];
+
+      store.productsInCart.forEach((product) => {
+        promises.push(store.removeFromCart(product.lineItemId));
+      });
+
       try {
-        const response = await setLineItemQuantity(lineItemId, quantity);
-
+        await Promise.all(promises);
         runInAction(() => {
-          if (response.statusCode === 200) {
-            // response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
-            const updatedProduct = response.body.lineItems.filter((item) => item.id === lineItemId)[0];
-
-            store.productsInCart.forEach(item => {
-              if (item.lineItemId === lineItemId ) {
-                item.quantity = updatedProduct.quantity;
-                item.totalPrice = `${updatedProduct.totalPrice.centAmount}`;
-                
-              }
-            })
-            store.totalAmount = +`${response.body.totalLineItemQuantity}`;
-            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
-          }
-          if (response.statusCode === 400) {
-            throw new Error('Unexpected error');
-          }
+          store.productsInCart = [];
+          store.totalAmount = 0;
+          store.totalPrice = 0;
+          store.success = 'Cart is cleared';
         });
       } catch (error) {
         runInAction(() => {
-          store.error = 'Error get cart';
+          store.error = 'Error clearing the cart';
         });
       }
     },

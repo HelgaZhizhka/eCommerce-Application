@@ -45,12 +45,12 @@
   }
 }
 
-.cardBody{
+.cardBody {
   flex: 1;
 }
 
 .cardTitle {
-  margin: 0 0 15px;
+  margin: 0 0 10px;
   font-weight: 700;
   color: var(--color-text);
 }
@@ -82,6 +82,77 @@
   align-items: center;
 }
 
-.cardQuantity, .cardTotalPrice {
+.cardQuantity,
+.cardTotalPrice {
   padding: 0 15px;
+}
+
+.flex {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cardColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--gray);
+}
+
+.colorSize {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.orange {
+  background: var(--filter-orange);
+}
+
+.green {
+  background: var(--filter-green);
+}
+
+.blue {
+  background: var(--filter-blue);
+}
+
+.black {
+  background: var(--filter-black);
+}
+
+.gray {
+  background: var(--filter-gray);
+}
+
+.brown {
+  background: var(--filter-brown);
+}
+
+.purple {
+  background: var(--filter-purple);
+}
+
+.lightblue {
+  background: var(--filter-lightblue);
+}
+
+.multicolor {
+  background: var(--multicolor);
+}
+
+.cardSize {
+  display: inline-block;
+  min-width: 40px;
+  color: #f2760f;
+  border-radius: 10px;
+  padding: 5px 8px;
+  font-size: toRem(14px);
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid var(--gray);
+  text-align: center;
 }

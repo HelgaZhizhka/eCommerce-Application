@@ -5,7 +5,7 @@ import racon from './images/imgEmptyCart.png';
 import styles from './EmptyCart.module.scss';
 
 const EmptyCart: React.FC = () => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mt: '100px' }}>
+  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
     <img src={racon} alt="racon" />
     <h2 className={styles.title}>Hey,</h2>
     <h2 className={styles.title}>The cart feels light !</h2>
