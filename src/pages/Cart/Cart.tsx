@@ -16,7 +16,7 @@ import styles from './Cart.module.scss';
 import { ModalConfirm } from '../../components/ModalConfirm';
 
 const Cart: React.FC = () => {
-  const { productsInCart, totalAmount, totalPrice, getCart, clearCart } = cartStore;
+  const { productsInCart, totalAmount, totalPrice, getCart, clearCart, addPromoCodeToCart } = cartStore;
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
     { text: 'Cart', path: `${RoutePaths.CART}` },
@@ -31,7 +31,8 @@ const Cart: React.FC = () => {
   const totalPriceValue = getPriceValue(totalPrice);
 
   const handlePromoCode = (code: string): void => {
-    console.log('handlePromoCode', code);
+    // console.log('handlePromoCode', code);
+    addPromoCodeToCart(code);
   };
 
   const onCloseModal = (): void => {

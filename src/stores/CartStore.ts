@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { addItemToCart, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
+import { addItemToCart, addPromoCode, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
 import { ProductType } from './Store.types';
 
 type CartStoreType = {
@@ -17,6 +17,7 @@ type CartStoreType = {
   removeFromCart: (lineItemId: string) => Promise<void>;
   changeQuantity: (lineItemId: string, quantity: number) => Promise<void>;
   isProductInCart: (id: string) => boolean;
+  addPromoCodeToCart: (code: string) => Promise<void>;
   clearCart: () => Promise<void>;
   clearError: () => void;
   clearSuccess: () => void;
@@ -103,6 +104,13 @@ const createCartStore = (): CartStoreType => {
                   obj.variants.push(item.variant);
 
                   if (obj.isDiscount) obj.priceDiscount = `${item.price?.discounted?.value.centAmount}`;
+                }
+
+                if (item.discountedPricePerQuantity.length) {
+                  obj.promoPrice = +`${item.discountedPricePerQuantity[0].discountedPrice.value.centAmount}`;
+                  obj.isPromo = true;
+                  console.log('obj.productName', obj.productName)
+                  console.log('obj.promoPrice', obj.promoPrice)
                 }
 
                 // if (item.variant.images !== undefined) obj.images = [...item.variant.images];
@@ -197,6 +205,25 @@ const createCartStore = (): CartStoreType => {
           store.error = 'Error delete all products from cart';
         });
       }
+    },
+
+    async addPromoCodeToCart(code: string): Promise<void> {
+      try {
+        const response = await addPromoCode(code);
+        console.log('handlePromoCode', code);
+        runInAction(() => {
+          if (response.statusCode === 200) {
+            // store.success = 'All products removed from cart successfully';
+            // store.productsInCart = [];
+            // store.totalAmount = 0;
+            // store.totalPrice = 0;
+          }})
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error adding promocode';
+        });
+      }
+
     },
 
     clearError(): void {

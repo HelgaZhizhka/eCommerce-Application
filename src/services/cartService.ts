@@ -117,3 +117,32 @@ export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
 
   return response;
 }
+
+export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> => {
+
+  const existingToken = localStorage.getItem('token');
+  let cartId = localStorage.getItem('cartId');
+  let version = localStorage.getItem('cartVersion');
+
+  const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
+
+  const body: MyCartUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        action: "addDiscountCode",
+        code
+      }
+    ]
+  }
+
+  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+
+  // cartId = response.body.id;
+  version = `${response.body.version}`;
+
+  localStorage.setItem('cartVersion', `${version}`);
+  // localStorage.setItem('cartId', `${cartId}`);
+
+  return response
+}
