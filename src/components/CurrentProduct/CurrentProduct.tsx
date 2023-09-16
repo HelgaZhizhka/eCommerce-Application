@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { cartStore, productStore } from '../../stores';
+import { getPriceValue } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -96,8 +97,8 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const isInCart = false;
 
-  const priceValue = price ? (+price / 100).toFixed(2) : undefined;
-  const discountPriceValue = priceDiscount ? (+priceDiscount / 100).toFixed(2) : undefined;
+  const priceValue = getPriceValue(price);
+  const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
 
   let priceComponent = null;
   let bigImages: string[] = [];
@@ -247,15 +248,24 @@ const CurrentProduct: React.FC<Props> = () => {
                   {!isInCart ? (
                     <>
                       {variantsProduct.length > 0 && (
-                        <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        <>
+                          {sizeError && <p className={styles.error}>{sizeError}</p>}
+                          <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        </>
                       )}
-                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <NumberInput
+                        value={quantity}
+                        onChange={handleInputChange}
+                        min={minQuantity}
+                        max={maxQuantity}
+                        label="Quantity:"
+                      />
                       <Button
                         size="large"
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
-                        onClick={(): Promise<void> => addToCart(productId, quantity, selectedVariant?.variantId)}
+                        onClick={handleAddToCart}
                       >
                         Add to cart
                       </Button>

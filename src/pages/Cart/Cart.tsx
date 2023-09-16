@@ -11,12 +11,14 @@ import { Icon } from '../../components/baseComponents/Icon';
 import { IconName } from '../../components/baseComponents/Icon/Icon.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { PromoCode } from '../../components/baseComponents/PromoCode';
-import { getPriceValue } from '../../stores/productHelpers';
-import styles from './Cart.module.scss';
 import { ModalConfirm } from '../../components/ModalConfirm';
+import { Price } from '../../components/baseComponents/Price';
+import { getPriceValue } from '../../stores/productHelpers';
+import { currency } from '../../constants';
+import styles from './Cart.module.scss';
 
 const Cart: React.FC = () => {
-  const { productsInCart, totalAmount, totalPrice, getCart, clearCart, addPromoCodeToCart } = cartStore;
+  const { productsInCart, totalAmount, totalPrice, discounts, getCart, clearCart, addPromoCodeToCart } = cartStore;
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
     { text: 'Cart', path: `${RoutePaths.CART}` },
@@ -31,7 +33,6 @@ const Cart: React.FC = () => {
   const totalPriceValue = getPriceValue(totalPrice);
 
   const handlePromoCode = (code: string): void => {
-    // console.log('handlePromoCode', code);
     addPromoCodeToCart(code);
   };
 
@@ -50,31 +51,31 @@ const Cart: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
-      <ModalConfirm
-        title={'Delete all'}
-        onClose={onCloseModal}
-        isOpen={isOpenModal}
-        deleteItemsFromCart={onDeleteItemsFromCart}
-      />
+      <ModalConfirm onClose={onCloseModal} isOpen={isOpenModal} deleteItemsFromCart={onDeleteItemsFromCart} />
       <div className={styles.root}>
         <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
         {totalAmount ? (
           <>
             <ProductCartList productsInCart={productsInCart} />
             <div className={styles.footer}>
-              <Button onClick={onOpenModal} sx={{ fontSize: '24px' }} color={'error'}>
-                Delete all products{' '}
-                <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
+              <Button onClick={onOpenModal} sx={{ fontSize: '24px', p: 0 }} color={'error'}>
+                Delete all products <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
               </Button>
-              <span className={styles.total}>
+              <span className={`${styles.flex} ${styles.totalPrice}}`}>
                 <span>TOTAL:</span>
-                {totalPriceValue}
+                <Price currency={currency.value}>{totalPriceValue}</Price>
               </span>
             </div>
             <div className={styles.footer}>
-              <span>
-                <PromoCode onChange={handlePromoCode} />
-              </span>
+              <PromoCode className={styles.promo} onChange={handlePromoCode} />
+
+              {discounts.length > 0 && (
+                <div className={styles.flex}>
+                  <span>Promo Code:</span>
+                  <span>{discounts[0].discountCodesName}</span>
+                </div>
+              )}
+
               <Button sx={{ fontSize: '1.25rem', width: '300px' }} variant="contained" color="success">
                 <span>Checkout</span>
               </Button>

@@ -8,19 +8,19 @@ import { ExtendedCategory } from './ProductStore.interfaces';
 export type ProductType = {
   lineItemId: string;
   productId: string;
-  key: string;
+  productKey: string;
   slug: string;
   productName: string;
   description: string;
-  price: string;
-  priceDiscount?: string;
+  price: number;
+  priceDiscount?: number;
   currency: string;
   images: Image[];
   isDiscount: boolean;
   variants: ProductVariant[];
-  totalPrice?: string;
+  totalPrice?: number;
   quantity?: number;
-  promoPrice?: number;
+  promoPrices?: number[];
   isPromo?: boolean;
 };
 
@@ -80,4 +80,8 @@ export type CartStoreType = {
   clearSuccess: () => void;
 };
 
-
+export type DiscountCodesType = {
+  discountCodesName: string;
+  discountCodesId: string;
+  discountedAmount: number;
+};

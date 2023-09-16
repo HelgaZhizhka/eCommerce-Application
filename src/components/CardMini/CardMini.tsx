@@ -16,14 +16,14 @@ import { getPriceValue } from '../../stores/productHelpers';
 type Props = {
   lineItemId: string;
   productName: string;
-  price?: string;
-  priceDiscount?: string;
+  price: number;
+  priceDiscount?: number;
   currency?: string;
   variant?: ProductVariant;
   images: Image[];
   isDiscount?: boolean;
   className?: string;
-  totalPrice?: string;
+  totalPrice?: number;
   quantity?: number;
   onDelete: (lineItemId: string) => void;
   onChangeQuantity: (lineItemId: string, quantity: number) => void;
@@ -54,9 +54,9 @@ const CardMini: React.FC<Props> = ({
 
   const [quantityProduct, setQuantityProduct] = useState<number>(quantity || 1);
 
-  const priceValue = price ? getPriceValue(+price) : undefined;
-  const discountPriceValue = priceDiscount ? getPriceValue(+priceDiscount) : undefined;
-  const totalPriceValue = totalPrice ? getPriceValue(+totalPrice) : undefined;
+  const priceValue = getPriceValue(price);
+  const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
+  const totalPriceValue = totalPrice ? getPriceValue(+totalPrice) : 0;
 
   let priceComponent = null;
   const image = images.filter((img) => img.label === 'average')[0]?.url;
@@ -65,15 +65,15 @@ const CardMini: React.FC<Props> = ({
     priceComponent = (
       <>
         <Price variant="new" currency={currency}>
-          {`${discountPriceValue}`}
+          {discountPriceValue}
         </Price>
         <Price variant="old" currency={currency}>
-          {`${priceValue}`}
+          {priceValue}
         </Price>
       </>
     );
   } else if (priceValue) {
-    priceComponent = <Price currency={currency}>{`${priceValue}`}</Price>;
+    priceComponent = <Price currency={currency}>{priceValue}</Price>;
   }
 
   const productColor = variant?.attributes?.find((attr) => attr.name.includes('color'))?.value.label;
@@ -133,10 +133,16 @@ const CardMini: React.FC<Props> = ({
           max={maxQuantity}
           label="Quantity:"
         />
-        <div className={styles.cardTotalPrice}>{totalPriceValue}</div>
+        <div className={styles.cardTotalPrice}>
+          <Price currency={currency}>{totalPriceValue}</Price>
+        </div>
       </div>
-      <Button onClick={handleDelete}>
-        <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon mr-1" />
+      <Button
+        sx={{ p: 0, justifyContent: { xs: 'flex-end', sm: 'center' } }}
+        onClick={handleDelete}
+        className={styles.cardDelete}
+      >
+        <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" className="icon" />
       </Button>
     </div>
   );

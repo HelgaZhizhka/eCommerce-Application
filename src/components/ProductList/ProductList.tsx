@@ -43,11 +43,11 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
   ) : (
     <ul className={`${className} ${styles.root}`}>
       {products.map((product) => {
-        const { key, productName, description, price, priceDiscount, currency, images, isDiscount, productId } =
+        const { productKey, productName, description, price, priceDiscount, currency, images, isDiscount, productId } =
           product;
         return (
-          <li className={styles.productItem} key={key}>
-            <Link to={generateProductPath(categoryId, subcategoryId, key.toString())}>
+          <li className={styles.productItem} key={productKey}>
+            <Link to={generateProductPath(categoryId, subcategoryId, productKey)}>
               <Card
                 productName={productName}
                 description={description}

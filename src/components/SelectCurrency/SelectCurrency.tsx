@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 
-import { currencies } from '../../constants';
+import { currency } from '../../constants';
 import styles from './SelectCurrency.module.scss';
 
 const SelectCurrency: React.FC = () => (
@@ -8,7 +8,7 @@ const SelectCurrency: React.FC = () => (
     <TextField
       select
       label="Select"
-      defaultValue={currencies[0].value}
+      defaultValue={currency.value}
       sx={{ width: '50px' }}
       SelectProps={{
         native: true,
@@ -16,11 +16,7 @@ const SelectCurrency: React.FC = () => (
       helperText=""
       variant="standard"
     >
-      {currencies.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
+      <option value={currency.value}>{currency.label}</option>
     </TextField>
   </div>
 );

@@ -5,14 +5,13 @@ import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 
 import { RoutePaths } from '../../routes/routes.enum';
-import { contacts } from '../../constants';
+import { currency, contacts } from '../../constants';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { Categories } from '../Categories';
-import { SelectCurrency } from '../SelectCurrency';
 import { InfoPanel } from '../InfoPanel';
 import { cartStore, userStore } from '../../stores';
 import { getPriceValue } from '../../stores/productHelpers';
@@ -73,7 +72,7 @@ const Header: React.FC = () => {
               </Badge>
             </Link>
             <span className={styles.totalPriceValue}>{totalPriceValue}</span>
-            <SelectCurrency />
+            <span className={styles.currency}>{currency.value}</span>
           </div>
         </div>
       </Container>

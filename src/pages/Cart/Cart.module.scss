@@ -13,21 +13,34 @@
 }
 
 .footer {
-  display: flex;
-  justify-content: space-between;
   padding: 15px 0;
   align-items: center;
   font-size: toRem(20px);
-  
+
   &:not(:last-child) {
     border-bottom: 1px solid var(--gray);
   }
+
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
-.total {
+.promo {
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    margin: 16px 0;
+  }
+}
+
+.flex {
   display: flex;
   gap: 5px;
-  font-size: toRem(24px);
-  font-weight: 500;
+}
+
+.totalPrice {
+  font-size: toRem(30px);
+  font-weight: 700;
   text-transform: uppercase;
 }

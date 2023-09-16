@@ -23,7 +23,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
       {productsInCart.map((product) => {
         const {
           lineItemId,
-          key,
+          productKey,
           productName,
           variants,
           price,
@@ -34,7 +34,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
           totalPrice,
         } = product;
         return (
-          <li className={styles.productItem} key={key}>
+          <li className={styles.productItem} key={productKey}>
             <CardMini
               lineItemId={lineItemId}
               productName={productName}

@@ -121,7 +121,7 @@ export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
 export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> => {
 
   const existingToken = localStorage.getItem('token');
-  let cartId = localStorage.getItem('cartId');
+  const cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
   const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
