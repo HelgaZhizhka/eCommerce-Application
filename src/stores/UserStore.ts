@@ -14,6 +14,7 @@ import {
   changePassword,
 } from '../services/setCustomersDetails';
 import { myToken } from '../services/BuildClient';
+import { cartStore } from './CartStore';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -55,6 +56,7 @@ const createUserStore = (): UserStoreType => {
             store.userProfile = {
               ...res.body.customer,
             };
+            cartStore.initCart();
           }
 
           if (res.statusCode === 400) {
@@ -82,6 +84,7 @@ const createUserStore = (): UserStoreType => {
             }
 
             store.isRegistration = true;
+            cartStore.initCart();
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
@@ -123,6 +126,7 @@ const createUserStore = (): UserStoreType => {
       store.userData = {};
       store.clearError();
       store.userProfile = {} as Customer;
+      cartStore.resetCart();
     },
 
     setEditMode(isEditMode: boolean): void {
