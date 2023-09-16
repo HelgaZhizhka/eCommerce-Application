@@ -20,7 +20,7 @@ export type ProductType = {
   variants: ProductVariant[];
   totalPrice?: number;
   quantity?: number;
-  promoPrices?: number[];
+  promoPrice?: number;
   isPromo?: boolean;
 };
 
@@ -80,8 +80,9 @@ export type CartStoreType = {
   clearSuccess: () => void;
 };
 
-export type DiscountCodesType = {
-  discountCodesName: string;
-  discountCodesId: string;
+export type DiscountCodeType = {
+  discountCodeName: string;
+  discountCodeId: string;
   discountedAmount: number;
+  discountedAmountCurrency: string;
 };

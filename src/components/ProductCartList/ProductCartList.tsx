@@ -32,6 +32,8 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
           priceDiscount,
           quantity,
           totalPrice,
+          isPromo,
+          promoPrice,
         } = product;
         return (
           <li className={styles.productItem} key={productKey}>
@@ -46,6 +48,8 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
               priceDiscount={priceDiscount}
               totalPrice={totalPrice}
               quantity={quantity}
+              isPromo={isPromo}
+              promoPrice={promoPrice}
               onDelete={deleteItemFromCart}
               onChangeQuantity={onChangeQuantity}
             />

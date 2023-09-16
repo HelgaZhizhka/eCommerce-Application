@@ -6,9 +6,9 @@ import { ProductType } from './Store.types';
 export const getFetchedProducts = (fetchedProducts: ProductProjection[]): ProductType[] => {
   const productsList: ProductType[] = fetchedProducts.reduce((acc, item) => {
     const obj = {} as ProductType;
-    obj.productId = `${item.id}`;
+    obj.productId = item.id;
     obj.productKey = `${item.key}`;
-    obj.productName = `${item.name?.en}`;
+    obj.productName = item.name?.en;
     obj.description = `${item.description?.en}`;
 
     if (item.masterVariant.prices?.length) {
@@ -49,9 +49,9 @@ export const transformFetchedCategories = (fetchedCategories: ExtendedCategory[]
 export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
   const product = {} as ProductType;
   const data = fetchedProduct.masterData?.current;
-  product.productId = `${fetchedProduct.id}`;
+  product.productId = fetchedProduct.id;
   product.productKey = `${fetchedProduct.key}`;
-  product.productName = `${data.name?.en}`;
+  product.productName = data.name?.en;
   product.description = `${data.description?.en}`;
   product.variants = [...data.variants];
 
