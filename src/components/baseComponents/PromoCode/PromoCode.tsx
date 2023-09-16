@@ -10,7 +10,7 @@ type Props = {
 };
 
 const PromoCode: React.FC<Props> = ({ className, onChange }) => {
-  const [code, setCode] = useState<string>('');
+  const [code, setCode] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value);
@@ -18,9 +18,9 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
 
   const handleClick = (): void => {
     if (onChange) {
-      onChange(code);
+      onChange(code.trim());
+      setCode('');
     }
-    setCode('');
   };
 
   return (

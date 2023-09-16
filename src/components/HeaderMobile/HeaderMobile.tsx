@@ -14,10 +14,10 @@ import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
-import { SelectCurrency } from '../SelectCurrency';
 import { NavBarMobile } from '../NavBarMobile';
 import { cartStore, userStore } from '../../stores';
 import { getPriceValue } from '../../stores/productHelpers';
+import { currency } from '../../constants';
 import { Logo } from '../Logo';
 import styles from './HeaderMobile.module.scss';
 
@@ -54,7 +54,7 @@ const HeaderMobile: React.FC = () => {
               </Badge>
             </Link>
             <span className={styles.totalPriceValue}>{totalPriceValue}</span>
-            <SelectCurrency />
+            <span className={styles.currency}>{currency.value}</span>
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
                 <LoginIcon sx={{ ml: '10px' }} fontSize="large" />

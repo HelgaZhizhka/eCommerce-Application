@@ -121,6 +121,15 @@ const SvgSprite: React.FC = () => (
           clipRule="evenodd"
         />
       </symbol>
+      <symbol id="copy" viewBox="0 0 12 16">
+        <rect width="8" height="12" x=".5" y="3.5" stroke="#6A6A6A" rx="1" />
+        <path
+          fill="#6A6A6A"
+          fillRule="evenodd"
+          d="M4.5 1h6c.2761 0 .5.22386.5.5v10c0 .2761-.2239.5-.5.5H10v1h.5c.8284 0 1.5-.6716 1.5-1.5v-10c0-.828427-.6716-1.5-1.5-1.5h-6C3.67157 0 3 .671573 3 1.5V2h1v-.5c0-.27614.22386-.5.5-.5Z"
+          clipRule="evenodd"
+        />
+      </symbol>
     </svg>
   </div>
 );

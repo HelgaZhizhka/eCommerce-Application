@@ -62,7 +62,7 @@ const Card: React.FC<Props> = ({
       </>
     );
   } else if (priceValue) {
-    priceComponent = <Price currency={currency}>{priceDiscount}</Price>;
+    priceComponent = <Price currency={currency}>{priceValue}</Price>;
   }
 
   return (

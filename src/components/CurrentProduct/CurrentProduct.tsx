@@ -248,15 +248,24 @@ const CurrentProduct: React.FC<Props> = () => {
                   {!isInCart ? (
                     <>
                       {variantsProduct.length > 0 && (
-                        <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        <>
+                          {sizeError && <p className={styles.error}>{sizeError}</p>}
+                          <SelectSize options={variantsProduct} onChange={handleSizeChange} />
+                        </>
                       )}
-                      <NumberInput value={1} onChange={handleInputChange} min={0} label="Quantity:" />
+                      <NumberInput
+                        value={quantity}
+                        onChange={handleInputChange}
+                        min={minQuantity}
+                        max={maxQuantity}
+                        label="Quantity:"
+                      />
                       <Button
                         size="large"
                         sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                         variant="contained"
                         color="primary"
-                        onClick={(): Promise<void> => addToCart(productId, quantity, selectedVariant?.variantId)}
+                        onClick={handleAddToCart}
                       >
                         Add to cart
                       </Button>

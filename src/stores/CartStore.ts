@@ -2,11 +2,12 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
 import { addItemToCart, addPromoCode, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
-import { ProductType } from './Store.types';
+import { DiscountCodesType, ProductType } from './Store.types';
 
 type CartStoreType = {
   productsInCart: ProductType[];
   productsInCartIds: Set<string>;
+  discounts: DiscountCodesType[];
   totalAmount: number;
   totalPrice: number;
   error: null | string;
@@ -19,6 +20,7 @@ type CartStoreType = {
   isProductInCart: (id: string) => boolean;
   addPromoCodeToCart: (code: string) => Promise<void>;
   clearCart: () => Promise<void>;
+  deletePromoCodeFromCart: (codeId: string) => Promise<void>;
   clearError: () => void;
   clearSuccess: () => void;
 };
@@ -27,6 +29,7 @@ const createCartStore = (): CartStoreType => {
   const store = {
     productsInCartIds: new Set<string>(),
     productsInCart: [] as ProductType[],
+    discounts: [] as DiscountCodesType[],
     totalAmount: 0,
     totalPrice: 0,
     error: null as null | string,
@@ -56,6 +59,7 @@ const createCartStore = (): CartStoreType => {
 
     async initCart(): Promise<void> {
       const hasCartId = localStorage.getItem('cartId');
+
       if (hasCartId) {
         try {
           const response = await getActiveCart();
@@ -79,6 +83,7 @@ const createCartStore = (): CartStoreType => {
 
     async getCart(): Promise<void> {
       const hasCartId = localStorage.getItem('cartId');
+
       if (hasCartId) {
         try {
           const response = await getActiveCart();
@@ -92,28 +97,27 @@ const createCartStore = (): CartStoreType => {
                 obj.variants = [];
                 obj.lineItemId = `${item.id}`;
                 obj.productId = `${item.productId}`;
-                obj.key = `${item.productKey}`;
+                obj.productKey = `${item.productKey}`;
                 obj.productName = `${item.name?.en}`;
+                obj.variants.push(item.variant);
+                obj.quantity = item.quantity;
 
                 if (item.price) {
                   obj.price = item.price?.value?.centAmount;
                   obj.currency = item.price?.value.currencyCode;
                   obj.isDiscount = Boolean(item.price?.discounted);
                   obj.totalPrice = item.totalPrice.centAmount;
-                  obj.quantity = item.quantity;
-                  obj.variants.push(item.variant);
 
                   if (obj.isDiscount) obj.priceDiscount = item.price?.discounted?.value.centAmount;
                 }
 
                 if (item.discountedPricePerQuantity.length) {
-                  obj.promoPrice = +`${item.discountedPricePerQuantity[0].discountedPrice.value.centAmount}`;
+                  obj.promoPrices = item.discountedPricePerQuantity.map(
+                    (price) => price.discountedPrice.value.centAmount
+                  );
                   obj.isPromo = true;
-                  console.log('obj.productName', obj.productName)
-                  console.log('obj.promoPrice', obj.promoPrice)
                 }
 
-                // if (item.variant.images !== undefined) obj.images = [...item.variant.images];
                 acc.push(obj);
 
                 return acc;
@@ -138,18 +142,17 @@ const createCartStore = (): CartStoreType => {
     },
 
     async removeFromCart(lineItemId: string): Promise<void> {
-      // store.productsInCartIds.delete(productId);
       try {
         const response = await setLineItemQuantity(lineItemId, 0);
 
         runInAction(() => {
           if (response.statusCode === 200) {
-            // response.body.lineItems.forEach((item) => store.productsInCartIds.add(item.productId));
             store.productsInCart = store.productsInCart.filter((item) => item.lineItemId !== lineItemId);
-            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
-            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+            store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
+            store.totalPrice = response.body.totalPrice.centAmount;
             store.success = 'Product removed from cart successfully';
           }
+
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
           }
@@ -176,9 +179,10 @@ const createCartStore = (): CartStoreType => {
                 changedItem.totalPrice = updatedProduct.totalPrice.centAmount;
               }
             });
-            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
-            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+            store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
+            store.totalPrice = response.body.totalPrice.centAmount;
           }
+
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
           }
@@ -193,13 +197,15 @@ const createCartStore = (): CartStoreType => {
     async clearCart(): Promise<void> {
       try {
         const response = await deleteCart();
+
         runInAction(() => {
           if (response.statusCode === 200) {
             store.success = 'All products removed from cart successfully';
             store.productsInCart = [];
             store.totalAmount = 0;
             store.totalPrice = 0;
-          }})
+          }
+        });
       } catch (err) {
         runInAction(() => {
           store.error = 'Error delete all products from cart';
@@ -210,20 +216,40 @@ const createCartStore = (): CartStoreType => {
     async addPromoCodeToCart(code: string): Promise<void> {
       try {
         const response = await addPromoCode(code);
-        console.log('handlePromoCode', code);
         runInAction(() => {
           if (response.statusCode === 200) {
-            // store.success = 'All products removed from cart successfully';
-            // store.productsInCart = [];
-            // store.totalAmount = 0;
-            // store.totalPrice = 0;
-          }})
+            const lineItemsDiscounted: LineItem[] = [...response.body.lineItems].filter(
+              (item) => item.discountedPricePerQuantity
+            );
+
+            const discounts: DiscountCodesType[] = lineItemsDiscounted.reduce((acc, item) => {
+              const obj = {} as DiscountCodesType;
+              obj.discountCodesName = code;
+              obj.discountCodesId = `${item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discount.id}`;
+              obj.discountedAmount =
+                item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discountedAmount.centAmount;
+
+              acc.push(obj);
+
+              return acc;
+            }, [] as DiscountCodesType[]);
+
+            store.discounts = [...discounts];
+
+            store.success = 'Promo code successfully applied';
+          }
+        });
+
+        store.getCart();
       } catch (err) {
         runInAction(() => {
-          store.error = 'Error adding promocode';
+          store.error = 'Error adding promo code';
         });
       }
+    },
 
+    async deletePromoCodeFromCart(codeId: string): Promise<void> {
+      console.log(codeId);
     },
 
     clearError(): void {
