@@ -57,7 +57,6 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
   };
 
   const token = localStorage.getItem('token');
-  // const token = myToken.get().token;
 
   const authorization = `Bearer ${token}`;
   const options: ExistingTokenMiddlewareOptions = {
@@ -99,8 +98,6 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
 
-  // if (myToken.get().token.length) localStorage.setItem('token', myToken.get().token);
-
   return apiRoot;
 }
 
@@ -113,7 +110,6 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
       clientId,
       clientSecret,
     },
-    // tokenCache: myToken,
     scopes,
     fetch,
   };

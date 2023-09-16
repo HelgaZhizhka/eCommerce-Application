@@ -1,12 +1,11 @@
 import { CustomerSignInResult, MyCustomerSignin } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow, myToken } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
 import { getActiveCart } from './cartService';
 
 export const customerLogin = async (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
   const existingToken = localStorage.getItem('token');
-  // const existingToken = myToken.get().token
 
   const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithPasswordFlow(email, password);
 
