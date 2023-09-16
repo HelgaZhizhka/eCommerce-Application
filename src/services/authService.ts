@@ -1,15 +1,16 @@
 import { CustomerSignInResult, MyCustomerSignin } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow, myToken } from './BuildClient';
 import { getActiveCart } from './cartService';
 
 export const customerLogin = async (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
   const existingToken = localStorage.getItem('token');
+  // const existingToken = myToken.get().token
 
   const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithPasswordFlow(email, password);
 
-  const response = newCustomer
+  const response = await newCustomer
   .me()
   .login()
   .post({
@@ -20,8 +21,10 @@ export const customerLogin = async (email: string, password: string):Promise<Cli
   })
   .execute();
 
-  await apiWithPasswordFlow(email, password).me().get().execute();
-  await getActiveCart();
+  if (response.statusCode === 200) {
+    await apiWithPasswordFlow(email, password).me().get().execute();
+    await getActiveCart();
+  };
 
   return response
 };
@@ -66,7 +69,7 @@ export const customerSignUp = async (
     defaultBillingAddress:
       values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault) ? 1 : undefined,
   };
-  
+
   const existingToken = localStorage.getItem('token');
 
   const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithClientCredentialsFlow();
