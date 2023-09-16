@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { addItemToCart, addPromoCode, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
+import { addItemToCart, addPromoCode, deleteCart, getActiveCart, removePromoCode, setLineItemQuantity } from '../services/cartService';
 import { promoCode } from '../constants';
 import { DiscountCodeType, ProductType } from './Store.types';
 import { getCartProducts, getDiscountPromo } from './cartHelpers';
@@ -110,7 +110,6 @@ const createCartStore = (): CartStoreType => {
 
               const discount = getDiscountPromo(lineItemsDiscounted, promoCode, discountId);
 
-
               const products = getCartProducts(lineItems);
 
               store.discountPromo = { ...discount };
@@ -209,15 +208,7 @@ const createCartStore = (): CartStoreType => {
         const response = await addPromoCode(code);
         runInAction(() => {
           if (response.statusCode === 200) {
-            // const discountId = response.body.discountCodes[0].discountCode.id;
-
-            // const lineItems: LineItem[] = [...response.body.lineItems].filter(
-            //   (item) => item.discountedPricePerQuantity
-            // );
-
-            // const discount = getDiscountPromo(lineItems, code, discountId);
             store.getCart();
-
             store.success = 'Promo code successfully applied';
           }
 
@@ -227,13 +218,31 @@ const createCartStore = (): CartStoreType => {
         });
       } catch (err) {
         runInAction(() => {
-          // store.error = 'Error adding promo code';
+          store.error = 'Error adding promo code';
         });
       }
     },
 
     async deletePromoCode(): Promise<void> {
-      console.log('promo');
+      try {
+        const promoCodeId = store.discountPromo.discountCodeId;
+        const response = await removePromoCode(promoCodeId);
+
+        runInAction(() => {
+          if (response.statusCode === 200) {
+            store.getCart();
+            store.success = 'Promo code successfully removed';
+          }
+
+          if (response.statusCode === 400) {
+            throw new Error('Unexpected error');
+          }
+        });
+      } catch (err) {
+        runInAction(() => {
+          store.error = 'Error removing promo code';
+        });
+      }
     },
 
     resetCart(): void {

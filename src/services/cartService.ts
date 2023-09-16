@@ -138,11 +138,38 @@ export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> 
 
   const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
 
-  // cartId = response.body.id;
   version = `${response.body.version}`;
 
   localStorage.setItem('cartVersion', `${version}`);
-  // localStorage.setItem('cartId', `${cartId}`);
 
   return response
+}
+
+export const removePromoCode = async (promoCodeId: string): Promise<ClientResponse<Cart>> => {
+  const cartId = localStorage.getItem('cartId');
+  let version = localStorage.getItem('cartVersion');
+
+  const customer = apiwithExistingTokenFlow();
+
+  const body: MyCartUpdate = {
+    version: +`${version}`,
+    actions: [
+      {
+        action: "removeDiscountCode",
+        discountCode: {
+          typeId: "discount-code",
+          id: `${promoCodeId}`
+        }
+      }
+    ]
+  }
+
+  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+
+  version = `${response.body.version}`;
+
+  localStorage.setItem('cartVersion', `${version}`);
+
+  return response
+
 }
