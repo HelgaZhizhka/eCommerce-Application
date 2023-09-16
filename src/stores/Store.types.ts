@@ -78,6 +78,7 @@ export type CartStoreType = {
   changeQuantity: (productId: string, quantity: number) => void;
   clearError: () => void;
   clearSuccess: () => void;
+  resetCart: () => void;
 };
 
 export type DiscountCodeType = {

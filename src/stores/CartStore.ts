@@ -23,6 +23,7 @@ type CartStoreType = {
   addPromoCodeToCart: (code: string) => Promise<void>;
   clearCart: () => Promise<void>;
   deletePromoCode: () => Promise<void>;
+  resetCart: () => void;
   clearError: () => void;
   clearSuccess: () => void;
 };
