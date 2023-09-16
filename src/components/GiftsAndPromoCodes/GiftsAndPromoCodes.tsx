@@ -43,7 +43,7 @@ const GiftsAndPromoCodes: React.FC = () => {
           </Box>
         </Box>
 
-        <Link to="/category/bags">
+        <Link to="/category/bags/shoppers">
           <Button sx={{ fontSize: '24px', width: '340px' }} variant="contained">
             WANT!
           </Button>

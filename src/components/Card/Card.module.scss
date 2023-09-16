@@ -53,7 +53,23 @@
 }
 
 .cardFooter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
   margin-top: auto;
+}
+
+.error {
+  position: absolute;
+  top: -102%;
+  right: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
 }
 
 .cardButton {
@@ -89,6 +105,10 @@
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.select {
+
 }
 
 @media (hover: hover) {

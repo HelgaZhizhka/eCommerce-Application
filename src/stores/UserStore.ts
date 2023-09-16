@@ -64,7 +64,7 @@ const createUserStore = (): UserStoreType => {
       } catch (err) {
         runInAction(() => {
           store.clearError();
-          store.error = 'Customer account with the given credentials not found.  Log in or use another email address';
+          store.error = 'Customer account with the given credentials not found. Log in or use another email address';
         });
       }
     },
