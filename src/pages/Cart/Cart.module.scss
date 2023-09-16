@@ -28,7 +28,6 @@
 }
 
 .promo {
-
   @include create-mq($grid__bp-md - 1, 'max') {
     margin: 16px 0;
   }
@@ -36,6 +35,7 @@
 
 .flex {
   display: flex;
+  align-items: center;
   gap: 5px;
 }
 
@@ -43,4 +43,20 @@
   font-size: toRem(30px);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.promoCode,
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.promoCode {
+  color: var(--state-primary);
+}
+
+.modalContent {
+  font-size: 1.25rem;
+  text-align: center;
 }

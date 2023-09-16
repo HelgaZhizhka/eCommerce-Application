@@ -16,15 +16,17 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 type Props = {
+  title: string;
+  content?: React.ReactNode;
   isOpen: boolean;
-  deleteItemsFromCart: () => void;
   onClose: () => void;
+  onConfirm?: () => void;
 };
 
-const ModalConfirm: React.FC<Props> = ({ isOpen, onClose, deleteItemsFromCart }) => (
+const ModalConfirm: React.FC<Props> = ({ title, content, isOpen, onClose, onConfirm }) => (
   <BootstrapDialog onClose={onClose} open={isOpen}>
-    <DialogTitle sx={{ mt: 4 }} variant="h5">
-      Are you sure you want to delete all products?
+    <DialogTitle sx={{ mt: 4, textAlign: 'center' }} variant="h5">
+      {title}
     </DialogTitle>
     <IconButton
       aria-label="close"
@@ -39,17 +41,18 @@ const ModalConfirm: React.FC<Props> = ({ isOpen, onClose, deleteItemsFromCart })
     >
       <CloseIcon />
     </IconButton>
+    <Box sx={{ p: 4 }}>{content}</Box>
     <Box sx={{ p: 4, textAlign: 'canter', display: 'flex', gap: '5px' }}>
-      <Button
-        variant="contained"
-        sx={{ fontSize: '24px', display: 'block', margin: 'auto' }}
-        onClick={deleteItemsFromCart}
-      >
-        OK
-      </Button>
-      <Button variant="outlined" sx={{ fontSize: '24px', display: 'block', margin: 'auto' }} onClick={onClose}>
-        Cancel
-      </Button>
+      {onConfirm && (
+        <>
+          <Button variant="contained" sx={{ fontSize: '24px', display: 'block', margin: 'auto' }} onClick={onConfirm}>
+            OK
+          </Button>
+          <Button variant="outlined" sx={{ fontSize: '24px', display: 'block', margin: 'auto' }} onClick={onClose}>
+            Cancel
+          </Button>
+        </>
+      )}
     </Box>
   </BootstrapDialog>
 );

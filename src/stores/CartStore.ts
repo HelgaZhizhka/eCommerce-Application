@@ -2,12 +2,14 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { LineItem } from '@commercetools/platform-sdk';
 
 import { addItemToCart, addPromoCode, deleteCart, getActiveCart, setLineItemQuantity } from '../services/cartService';
-import { DiscountCodesType, ProductType } from './Store.types';
+import { promoCode } from '../constants';
+import { DiscountCodeType, ProductType } from './Store.types';
+import { getCartProducts, getDiscountPromo } from './cartHelpers';
 
 type CartStoreType = {
   productsInCart: ProductType[];
   productsInCartIds: Set<string>;
-  discounts: DiscountCodesType[];
+  discountPromo: DiscountCodeType;
   totalAmount: number;
   totalPrice: number;
   error: null | string;
@@ -20,7 +22,7 @@ type CartStoreType = {
   isProductInCart: (id: string) => boolean;
   addPromoCodeToCart: (code: string) => Promise<void>;
   clearCart: () => Promise<void>;
-  deletePromoCodeFromCart: (codeId: string) => Promise<void>;
+  deletePromoCode: () => Promise<void>;
   clearError: () => void;
   clearSuccess: () => void;
 };
@@ -29,7 +31,7 @@ const createCartStore = (): CartStoreType => {
   const store = {
     productsInCartIds: new Set<string>(),
     productsInCart: [] as ProductType[],
-    discounts: [] as DiscountCodesType[],
+    discountPromo: {} as DiscountCodeType,
     totalAmount: 0,
     totalPrice: 0,
     error: null as null | string,
@@ -42,8 +44,8 @@ const createCartStore = (): CartStoreType => {
         runInAction(() => {
           if (response.statusCode === 200) {
             store.success = 'Product added to cart successfully';
-            store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
-            store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+            store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
+            store.totalPrice = response.body.totalPrice.centAmount;
           }
 
           if (response.statusCode === 400) {
@@ -66,9 +68,10 @@ const createCartStore = (): CartStoreType => {
 
           runInAction(() => {
             if (response.statusCode === 200) {
-              store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
-              store.totalPrice = +`${response.body.totalPrice.centAmount}`;
+              store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
+              store.totalPrice = response.body.totalPrice.centAmount;
             }
+
             if (response.statusCode === 400) {
               throw new Error('Unexpected error');
             }
@@ -91,40 +94,30 @@ const createCartStore = (): CartStoreType => {
           runInAction(() => {
             if (response.statusCode === 200) {
               const lineItems: LineItem[] = [...response.body.lineItems];
-              store.totalAmount = response.body.totalLineItemQuantity ? +`${response.body.totalLineItemQuantity}` : 0;
-              const products: ProductType[] = lineItems.reduce((acc, item) => {
-                const obj = {} as ProductType;
-                obj.variants = [];
-                obj.lineItemId = `${item.id}`;
-                obj.productId = `${item.productId}`;
-                obj.productKey = `${item.productKey}`;
-                obj.productName = `${item.name?.en}`;
-                obj.variants.push(item.variant);
-                obj.quantity = item.quantity;
+              store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
 
-                if (item.price) {
-                  obj.price = item.price?.value?.centAmount;
-                  obj.currency = item.price?.value.currencyCode;
-                  obj.isDiscount = Boolean(item.price?.discounted);
-                  obj.totalPrice = item.totalPrice.centAmount;
+              store.totalPrice = response.body.totalPrice.centAmount;
 
-                  if (obj.isDiscount) obj.priceDiscount = item.price?.discounted?.value.centAmount;
-                }
+              let discountId = '';
 
-                if (item.discountedPricePerQuantity.length) {
-                  obj.promoPrices = item.discountedPricePerQuantity.map(
-                    (price) => price.discountedPrice.value.centAmount
-                  );
-                  obj.isPromo = true;
-                }
+              if (response.body.discountCodes.length > 0) {
+                discountId = response.body.discountCodes[0].discountCode.id;
+              }
 
-                acc.push(obj);
+              const lineItemsDiscounted: LineItem[] = [...response.body.lineItems].filter(
+                (item) => item.discountedPricePerQuantity.length > 0
+              );
 
-                return acc;
-              }, [] as ProductType[]);
+              const discount = getDiscountPromo(lineItemsDiscounted, promoCode, discountId);
+
+
+              const products = getCartProducts(lineItems);
+
+              store.discountPromo = { ...discount };
 
               store.productsInCart = [...products];
             }
+
             if (response.statusCode === 400) {
               throw new Error('Unexpected error');
             }
@@ -200,10 +193,8 @@ const createCartStore = (): CartStoreType => {
 
         runInAction(() => {
           if (response.statusCode === 200) {
+            store.resetCart();
             store.success = 'All products removed from cart successfully';
-            store.productsInCart = [];
-            store.totalAmount = 0;
-            store.totalPrice = 0;
           }
         });
       } catch (err) {
@@ -218,38 +209,38 @@ const createCartStore = (): CartStoreType => {
         const response = await addPromoCode(code);
         runInAction(() => {
           if (response.statusCode === 200) {
-            const lineItemsDiscounted: LineItem[] = [...response.body.lineItems].filter(
-              (item) => item.discountedPricePerQuantity
-            );
+            // const discountId = response.body.discountCodes[0].discountCode.id;
 
-            const discounts: DiscountCodesType[] = lineItemsDiscounted.reduce((acc, item) => {
-              const obj = {} as DiscountCodesType;
-              obj.discountCodesName = code;
-              obj.discountCodesId = `${item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discount.id}`;
-              obj.discountedAmount =
-                item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discountedAmount.centAmount;
+            // const lineItems: LineItem[] = [...response.body.lineItems].filter(
+            //   (item) => item.discountedPricePerQuantity
+            // );
 
-              acc.push(obj);
-
-              return acc;
-            }, [] as DiscountCodesType[]);
-
-            store.discounts = [...discounts];
+            // const discount = getDiscountPromo(lineItems, code, discountId);
+            store.getCart();
 
             store.success = 'Promo code successfully applied';
           }
-        });
 
-        store.getCart();
+          if (response.statusCode === 400) {
+            throw new Error('Unexpected error');
+          }
+        });
       } catch (err) {
         runInAction(() => {
-          store.error = 'Error adding promo code';
+          // store.error = 'Error adding promo code';
         });
       }
     },
 
-    async deletePromoCodeFromCart(codeId: string): Promise<void> {
-      console.log(codeId);
+    async deletePromoCode(): Promise<void> {
+      console.log('promo');
+    },
+
+    resetCart(): void {
+      store.discountPromo = {} as DiscountCodeType;
+      store.productsInCart = [] as ProductType[];
+      store.totalAmount = 0;
+      store.totalPrice = 0;
     },
 
     clearError(): void {

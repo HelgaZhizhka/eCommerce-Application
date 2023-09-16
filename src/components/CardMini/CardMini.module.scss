@@ -52,13 +52,11 @@
   }
 }
 
-.isDiscount {
-  .badge {
-    position: absolute;
-    top: 0;
-    left: 8px;
-    z-index: 1;
-  }
+.badge {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  z-index: 1;
 }
 
 .cardBody {
@@ -76,11 +74,10 @@
   align-items: center;
   gap: 10px;
 
-  @include create-mq($grid__bp-md, 'min') {
+  @include create-mq($grid__bp-sm, 'min') {
     margin-left: auto;
   }
 }
-
 
 .icon {
   margin: auto;
@@ -96,7 +93,7 @@
   display: flex;
   align-items: center;
 
-  @include create-mq($grid__bp-md, 'min') {
+  @include create-mq($grid__bp-sm, 'min') {
     width: 35%;
     margin-left: auto;
     margin-top: 0;

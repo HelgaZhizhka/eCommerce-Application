@@ -20,11 +20,19 @@
     color: var(--light-white);
   }
 
-  &_discount {
+  &_discount, &_promo {
     padding: 5px 10px;
-    background-color: var(--red);
     border-radius: 2px 2px 0 0;
     font-weight: 500;
     color: var(--light-white);
+    
+  }
+  
+  &_discount {
+    background-color: var(--red);
+  }
+
+  &_promo {
+    background-color: var(--purple);
   }
 }

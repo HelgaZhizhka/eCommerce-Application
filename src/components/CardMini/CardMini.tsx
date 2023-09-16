@@ -25,6 +25,8 @@ type Props = {
   className?: string;
   totalPrice?: number;
   quantity?: number;
+  isPromo?: boolean;
+  promoPrice?: number;
   onDelete: (lineItemId: string) => void;
   onChangeQuantity: (lineItemId: string, quantity: number) => void;
 };
@@ -40,6 +42,8 @@ const CardMini: React.FC<Props> = ({
   isDiscount = false,
   totalPrice,
   quantity,
+  isPromo,
+  promoPrice,
   className,
   onDelete,
   onChangeQuantity,
@@ -56,6 +60,7 @@ const CardMini: React.FC<Props> = ({
 
   const priceValue = getPriceValue(price);
   const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
+  const promoPriceValue = promoPrice ? getPriceValue(promoPrice) : 0;
   const totalPriceValue = totalPrice ? getPriceValue(+totalPrice) : 0;
 
   let priceComponent = null;
@@ -66,6 +71,17 @@ const CardMini: React.FC<Props> = ({
       <>
         <Price variant="new" currency={currency}>
           {discountPriceValue}
+        </Price>
+        <Price variant="old" currency={currency}>
+          {priceValue}
+        </Price>
+      </>
+    );
+  } else if (promoPriceValue && isPromo) {
+    priceComponent = (
+      <>
+        <Price variant="new" currency={currency}>
+          {promoPriceValue}
         </Price>
         <Price variant="old" currency={currency}>
           {priceValue}
@@ -108,6 +124,7 @@ const CardMini: React.FC<Props> = ({
     <div className={classes}>
       <div className={styles.cardInfo}>
         {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
+        {isPromo && <span className={`badge badge_promo ${styles.badge}`}>Promo</span>}
         <div className={styles.cardPoster}>
           {image ? (
             <img className={styles.cardImage} src={image} alt={productName} />
