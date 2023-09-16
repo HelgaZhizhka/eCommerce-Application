@@ -1,5 +1,7 @@
 import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { ProductVariant } from '@commercetools/platform-sdk';
 
+import { SizeWithVariantId } from '../components/baseComponents/SelectSize/SelectSize.types';
 import { ExtendedCategory } from './ProductStore.interfaces';
 import { ProductType } from './Store.types';
 
@@ -70,4 +72,19 @@ export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
 
 export function getPriceValue(value: number): number {
   return value ? +(value / 100).toFixed(2) : 0;
+}
+
+export function extractSizesWithVariantId(variants: ProductVariant[]): SizeWithVariantId[] {
+  const sizesMap: Map<string, number> = new Map();
+
+  variants.forEach((variant) => {
+    if (variant.attributes) {
+      const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size-clothes');
+      if (sizeAttribute) {
+        sizesMap.set(sizeAttribute.value.label, variant.id);
+      }
+    }
+  });
+
+  return Array.from(sizesMap.entries()).map(([size, variantId]) => ({ size, variantId }));
 }

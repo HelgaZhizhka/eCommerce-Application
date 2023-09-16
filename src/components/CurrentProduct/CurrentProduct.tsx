@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ProductVariant } from '@commercetools/platform-sdk';
 import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
@@ -8,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { cartStore, productStore } from '../../stores';
-import { getPriceValue } from '../../stores/productHelpers';
+import { extractSizesWithVariantId, getPriceValue } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -21,21 +20,6 @@ import styles from './CurrentProduct.module.scss';
 type Props = {
   className?: string;
 };
-
-function extractSizesWithVariantId(variants: ProductVariant[]): SizeWithVariantId[] {
-  const sizesMap: Map<string, number> = new Map();
-
-  variants.forEach((variant) => {
-    if (variant.attributes) {
-      const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size-clothes');
-      if (sizeAttribute) {
-        sizesMap.set(sizeAttribute.value.label, variant.id);
-      }
-    }
-  });
-
-  return Array.from(sizesMap.entries()).map(([size, variantId]) => ({ size, variantId }));
-}
 
 const CurrentProduct: React.FC<Props> = () => {
   const theme = useTheme();
