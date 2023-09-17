@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { ProductVariant } from '@commercetools/platform-sdk';
 
 import { RoutePaths } from '../../routes/routes.enum';
-import { extractSizesWithVariantId, getPriceValue } from '../../stores/productHelpers';
+import { cartStore } from '../../stores';
+import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
 import { Price } from '../baseComponents/Price';
@@ -17,25 +18,26 @@ import styles from './Card.module.scss';
 
 type Props = {
   categoryId: string;
-  subcategoryId?: string | null;
   productKey: string;
   productId: string;
   productName: string;
   description: string;
   price: number;
-  priceDiscount?: number;
   currency: string;
   images: Image[];
+  priceDiscount?: number;
+  subcategoryId?: string | null;
+  productSku?: string;
   isDiscount?: boolean;
   isInCart?: boolean;
   variants?: ProductVariant[];
   className?: string;
-  onAddToCart: (productId: string, quantity: number, variantId: number) => void;
 };
 
 const Card: React.FC<Props> = ({
   productKey,
   productId,
+  productSku,
   categoryId,
   subcategoryId,
   productName,
@@ -47,13 +49,13 @@ const Card: React.FC<Props> = ({
   isDiscount = false,
   variants,
   className,
-  isInCart,
-  onAddToCart,
 }) => {
   const classes = classNames(styles.root, {
     [styles.isDiscount]: isDiscount,
     className,
   });
+
+  const { addToCart, isProductInCart } = cartStore;
 
   const generateProductPath = (catId: string, subCatId: string | null | undefined, prodKey: string): string => {
     let path = RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', prodKey);
@@ -67,6 +69,22 @@ const Card: React.FC<Props> = ({
 
   const [selectedVariant, setSelectedVariant] = useState<SizeWithVariantId | null>(null);
   const [sizeError, setSizeError] = useState<string | null>(null);
+  const [isInCart, setIsInCart] = useState<boolean>(false);
+
+  useEffect(() => {
+    let initialSku;
+
+    if (variants && variants.length > 1) {
+      initialSku = getSku(variants, variants[0].id);
+    } else {
+      initialSku = productSku;
+    }
+
+    if (initialSku) {
+      const initialIsInCart = isProductInCart(initialSku);
+      setIsInCart(initialIsInCart);
+    }
+  }, []);
 
   let variantsProduct: SizeWithVariantId[] = [];
 
@@ -95,22 +113,41 @@ const Card: React.FC<Props> = ({
     priceComponent = <Price currency={currency}>{priceValue}</Price>;
   }
 
-  const handleAddToCart = (e: React.MouseEvent): void => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!selectedVariant && variantsProduct.length > 0) {
+  const handleAddToCart = async (): Promise<void> => {
+    let sku;
+
+    if (!selectedVariant && variants && variants.length > 1) {
       setSizeError('Please select a size before adding to cart.');
       return;
     }
 
-    setSelectedVariant(null);
+    if (selectedVariant) {
+      sku = getSku(variants, selectedVariant.variantId);
+    } else {
+      sku = productSku;
+    }
 
-    onAddToCart(productId, 1, selectedVariant?.variantId || 0);
+    if (sku) {
+      await addToCart(sku, productId, 1, selectedVariant?.variantId);
+
+      const tempIsInCart = isProductInCart(sku);
+
+      setIsInCart(tempIsInCart);
+    }
+
+    setSelectedVariant(null);
   };
 
   const handleSizeChange = (value: SizeWithVariantId): void => {
     setSelectedVariant({ size: value.size, variantId: value.variantId });
     setSizeError(null);
+
+    const sku = getSku(variants, value.variantId);
+
+    if (sku) {
+      const tempIsInCart = isProductInCart(sku);
+      setIsInCart(tempIsInCart);
+    }
   };
 
   return (
@@ -135,21 +172,25 @@ const Card: React.FC<Props> = ({
         </button>
       </div>
       <div className={styles.cardBody}>
-        {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
-        {description && description !== 'undefined' && (
-          <p
-            className={`text-overflow ${styles.cardDescription}`}
-            dangerouslySetInnerHTML={{ __html: description }}
-          ></p>
-        )}
+        <Link to={generateProductPath(categoryId, subcategoryId, productKey)}>
+          {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
+          {description && description !== 'undefined' && (
+            <p
+              className={`text-overflow ${styles.cardDescription}`}
+              dangerouslySetInnerHTML={{ __html: description }}
+            ></p>
+          )}
+        </Link>
       </div>
       <div className={styles.cardFooter}>
+        {isInCart && <span className={styles.error}>Already in the cart.</span>}
         <div>{priceComponent}</div>
         {variantsProduct.length > 0 && (
           <>
             {sizeError && <span className={styles.error}>{sizeError}</span>}
             <SelectSize
               className={styles.select}
+              value={selectedVariant}
               options={variantsProduct}
               variant={'small'}
               onChange={handleSizeChange}

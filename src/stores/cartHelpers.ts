@@ -1,6 +1,6 @@
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { DiscountCodeType, ProductType } from './Store.types';
+import { ProductType } from './Store.types';
 
 export const getCartProducts = (lineItems: LineItem[]): ProductType[] => {
   const products: ProductType[] = lineItems.reduce((acc, item) => {
@@ -8,7 +8,7 @@ export const getCartProducts = (lineItems: LineItem[]): ProductType[] => {
     obj.variants = [];
     obj.lineItemId = `${item.id}`;
     obj.productId = `${item.productId}`;
-    obj.productKey = `${item.productKey}`;
+    obj.productKey = `${item.variant.key}`;
     obj.productName = `${item.name?.en}`;
     obj.variants.push(item.variant);
     obj.quantity = item.quantity;
@@ -34,16 +34,3 @@ export const getCartProducts = (lineItems: LineItem[]): ProductType[] => {
   return products;
 };
 
-export const getDiscountPromo = (lineItems: LineItem[], code: string, discountId: string): DiscountCodeType => {
-  const discount: DiscountCodeType = lineItems.reduce((acc, item) => {
-    acc.discountCodeName = code;
-    acc.discountCodeId = `${discountId}`;
-    acc.discountedAmount =
-      item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discountedAmount.centAmount;
-    acc.discountedAmountCurrency = item.discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discountedAmount.currencyCode;
-
-    return acc;
-  }, {} as DiscountCodeType);
-
-  return discount;
-};

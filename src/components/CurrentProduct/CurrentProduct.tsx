@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { cartStore, productStore } from '../../stores';
-import { extractSizesWithVariantId, getPriceValue } from '../../stores/productHelpers';
+import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
 import { SelectSize } from '../baseComponents/SelectSize';
@@ -28,6 +28,8 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const { currentProduct, isProductLoading } = productStore;
 
+  const { addToCart, isProductInCart, removeProductFromCart } = cartStore;
+
   const [open, setOpen] = useState(false);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -37,6 +39,8 @@ const CurrentProduct: React.FC<Props> = () => {
   const [selectedVariant, setSelectedVariant] = useState<SizeWithVariantId | null>(null);
 
   const [sizeError, setSizeError] = useState<string | null>(null);
+
+  const [isInCart, setIsInCart] = useState<boolean>(false);
 
   const minQuantity = 1;
   const maxQuantity = 10;
@@ -48,6 +52,21 @@ const CurrentProduct: React.FC<Props> = () => {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    let initialSku;
+
+    if (currentProduct?.variants && currentProduct.variants.length > 1) {
+      initialSku = getSku(currentProduct.variants, currentProduct.variants[0].id);
+    } else {
+      initialSku = currentProduct?.productSku;
+    }
+
+    if (initialSku) {
+      const initialIsInCart = isProductInCart(initialSku);
+      setIsInCart(initialIsInCart);
+    }
+  }, [currentProduct]);
 
   if (isProductLoading) {
     return (
@@ -69,17 +88,13 @@ const CurrentProduct: React.FC<Props> = () => {
     return null;
   }
 
-  const { productId, productName, description, price, priceDiscount, currency, variants } = currentProduct;
+  const { productId, productName, productSku, description, price, priceDiscount, currency, variants } = currentProduct;
 
   let variantsProduct: SizeWithVariantId[] = [];
 
   if (variants && variants.length > 0) {
     variantsProduct = extractSizesWithVariantId(variants);
   }
-
-  const { addToCart } = cartStore;
-
-  const isInCart = false;
 
   const priceValue = getPriceValue(price);
   const discountPriceValue = priceDiscount ? getPriceValue(priceDiscount) : 0;
@@ -154,17 +169,58 @@ const CurrentProduct: React.FC<Props> = () => {
   const handleSizeChange = (value: SizeWithVariantId): void => {
     setSelectedVariant({ size: value.size, variantId: value.variantId });
     setSizeError(null);
+
+    const sku = getSku(variants, value.variantId);
+
+    if (sku) {
+      const tempIsInCart = isProductInCart(sku);
+      setIsInCart(tempIsInCart);
+    }
   };
 
-  const handleAddToCart = (): Promise<void> => {
-    if (!selectedVariant && variantsProduct.length > 0) {
+  const handleAddToCart = async (): Promise<void> => {
+    let sku;
+
+    if (!selectedVariant && variants && variants.length > 1) {
       setSizeError('Please select a size before adding to cart.');
-      return Promise.resolve();
+      return;
+    }
+
+    if (selectedVariant) {
+      sku = getSku(variants, selectedVariant.variantId);
+    } else {
+      sku = productSku;
+    }
+
+    if (sku) {
+      await addToCart(sku, productId, 1, selectedVariant?.variantId);
+
+      const tempIsInCart = isProductInCart(sku);
+
+      setIsInCart(tempIsInCart);
     }
 
     setSelectedVariant(null);
+  };
 
-    return addToCart(productId, quantity, selectedVariant?.variantId);
+  const handleRemoveFromCart = async (): Promise<void> => {
+    let sku;
+
+    if (selectedVariant) {
+      sku = getSku(variants, selectedVariant.variantId);
+    } else {
+      sku = productSku;
+    }
+
+    if (sku) {
+      await removeProductFromCart(sku);
+
+      const tempIsInCart = isProductInCart(sku);
+
+      setIsInCart(tempIsInCart);
+    }
+
+    setSelectedVariant(null);
   };
 
   return (
@@ -182,40 +238,47 @@ const CurrentProduct: React.FC<Props> = () => {
               <div className={styles.footer}>
                 {priceComponent}
                 <div className={styles.flex}>
-                  {!isInCart ? (
+                  {variantsProduct.length > 0 && (
                     <>
-                      {variantsProduct.length > 0 && (
-                        <>
-                          {sizeError && <p className={styles.error}>{sizeError}</p>}
-                          <SelectSize options={variantsProduct} onChange={handleSizeChange} />
-                        </>
-                      )}
-                      <NumberInput
-                        value={quantity}
-                        onChange={handleInputChange}
-                        min={minQuantity}
-                        max={maxQuantity}
-                        label="Quantity:"
+                      {sizeError && <p className={styles.error}>{sizeError}</p>}
+                      <SelectSize
+                        className={styles.select}
+                        value={selectedVariant}
+                        options={variantsProduct}
+                        onChange={handleSizeChange}
                       />
-                      <Button
-                        size="large"
-                        sx={{ height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddToCart}
-                      >
-                        Add to cart
-                      </Button>
                     </>
-                  ) : (
+                  )}
+                  <NumberInput
+                    value={quantity}
+                    onChange={handleInputChange}
+                    min={minQuantity}
+                    max={maxQuantity}
+                    label="Quantity:"
+                  />
+                  {!isInCart ? (
                     <Button
                       size="large"
                       sx={{ height: '60px', fontSize: '1.25rem' }}
                       variant="contained"
                       color="primary"
+                      onClick={handleAddToCart}
                     >
-                      Remove from cart
+                      Add to cart
                     </Button>
+                  ) : (
+                    <>
+                      <span className={styles.error}>Already in the cart.</span>
+                      <Button
+                        size="large"
+                        sx={{ height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleRemoveFromCart}
+                      >
+                        Remove from cart
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
@@ -229,40 +292,47 @@ const CurrentProduct: React.FC<Props> = () => {
               {priceComponent}
               <div className={styles.footer}>
                 <div className={styles.flex}>
-                  {!isInCart ? (
+                  {variantsProduct.length > 0 && (
                     <>
-                      {variantsProduct.length > 0 && (
-                        <>
-                          {sizeError && <p className={styles.error}>{sizeError}</p>}
-                          <SelectSize options={variantsProduct} onChange={handleSizeChange} />
-                        </>
-                      )}
-                      <NumberInput
-                        value={quantity}
-                        onChange={handleInputChange}
-                        min={minQuantity}
-                        max={maxQuantity}
-                        label="Quantity:"
+                      {sizeError && <span className={styles.error}>{sizeError}</span>}
+                      <SelectSize
+                        className={styles.select}
+                        value={selectedVariant}
+                        options={variantsProduct}
+                        onChange={handleSizeChange}
                       />
-                      <Button
-                        size="large"
-                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddToCart}
-                      >
-                        Add to cart
-                      </Button>
                     </>
-                  ) : (
+                  )}
+                  <NumberInput
+                    value={quantity}
+                    onChange={handleInputChange}
+                    min={minQuantity}
+                    max={maxQuantity}
+                    label="Quantity:"
+                  />
+                  {!isInCart ? (
                     <Button
                       size="large"
                       sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
                       variant="contained"
                       color="primary"
+                      onClick={handleAddToCart}
                     >
-                      Remove from cart
+                      Add to cart
                     </Button>
+                  ) : (
+                    <>
+                      <span className={styles.error}>Already in the cart.</span>
+                      <Button
+                        size="large"
+                        sx={{ height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleRemoveFromCart}
+                      >
+                        Remove from cart
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>

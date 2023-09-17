@@ -63,13 +63,14 @@
 
 .error {
   position: absolute;
-  top: -102%;
+  bottom: 100%;
   right: 0;
   padding: 2px 5px;
   background-color: var(--light-white);
   border: 1px solid var(--red);
   border-radius: 5px;
   color: var(--red);
+  z-index: 10;
 }
 
 .cardButton {
@@ -105,10 +106,6 @@
 .disabled {
   opacity: 0.5;
   pointer-events: none;
-}
-
-.select {
-
 }
 
 @media (hover: hover) {

@@ -11,8 +11,6 @@ type Props = {
   onChange?: (type?: string) => void;
 };
 
-// const colorOptionValues = Object.values(ColorOptions);
-// const colorNames = Object.keys(ColorOptions);
 const colorEntries = Object.entries(ColorOptions);
 
 const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {

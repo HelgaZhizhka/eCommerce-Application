@@ -42,15 +42,12 @@
 }
 
 .flex {
+  position: relative;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 5px;
 
-  .error {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
 }
 
 .sale {
@@ -80,11 +77,6 @@
   margin-bottom: 20px;
 }
 
-.error {
-  color: var(--state-danger);
-  font-size: toRem(14px);
-}
-
 .oneSize {
   display: inline-block;
   min-width: 40px;
@@ -96,4 +88,20 @@
   line-height: 1;
   border: 1px solid var(--gray);
   text-align: center;
+}
+
+.select {
+  min-width: 120px;
+}
+
+.error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
+  z-index: 10
 }

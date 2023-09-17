@@ -24,3 +24,14 @@
   height: 20px;
   cursor: pointer;
 }
+
+.error {
+  position: absolute;
+  bottom: -102%;
+  left: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
+}
