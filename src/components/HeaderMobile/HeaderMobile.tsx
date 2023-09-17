@@ -45,12 +45,12 @@ const HeaderMobile: React.FC = () => {
           <div className={`ml-auto ${styles.flex}`}>
             {loggedIn && (
               <Link to={RoutePaths.PROFILE}>
-                <Icon name={IconName.USER} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                <Icon name={IconName.USER} width={30} height={30} color="var(--color-text)" className="icon" />
               </Link>
             )}
-            <Link to={RoutePaths.CART}>
+            <Link className={styles.cartLink} to={RoutePaths.CART}>
               <Badge badgeContent={totalAmount} color="secondary">
-                <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
+                <Icon name={IconName.CART} width={30} height={30} color="var(--color-text)" className="icon" />
               </Badge>
             </Link>
             {totalPriceValue > 0 && (
@@ -62,7 +62,7 @@ const HeaderMobile: React.FC = () => {
 
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
-                <LoginIcon sx={{ ml: '10px' }} fontSize="large" />
+                <LoginIcon sx={{ ml: 1, mr: 1 }} fontSize="large" />
               </Link>
             ) : (
               <Link
