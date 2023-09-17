@@ -34,7 +34,6 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
           productKey,
           productId,
           productName,
-          productSku,
           description,
           price,
           priceDiscount,
@@ -51,7 +50,6 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
               productId={productId}
               productKey={productKey}
               productName={productName}
-              productSku={productSku}
               description={description}
               images={images}
               price={price}

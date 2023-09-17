@@ -27,7 +27,6 @@ type Props = {
   images: Image[];
   priceDiscount?: number;
   subcategoryId?: string | null;
-  productSku?: string;
   isDiscount?: boolean;
   isInCart?: boolean;
   variants?: ProductVariant[];
@@ -37,7 +36,6 @@ type Props = {
 const Card: React.FC<Props> = ({
   productKey,
   productId,
-  productSku,
   categoryId,
   subcategoryId,
   productName,
@@ -137,8 +135,6 @@ const Card: React.FC<Props> = ({
     const tempIsInCart = isProductInCart(sku);
 
     setIsInCart(tempIsInCart);
-
-    // setSelectedVariant(null);
   };
 
   const handleSizeChange = (value: SizeWithVariantId): void => {

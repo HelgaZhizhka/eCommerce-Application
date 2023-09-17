@@ -56,10 +56,8 @@ const CurrentProduct: React.FC<Props> = () => {
   useEffect(() => {
     let initialSku;
 
-    if (currentProduct?.variants && currentProduct.variants.length > 1) {
+    if (currentProduct?.variants && currentProduct.variants.length > 0) {
       initialSku = getSku(currentProduct.variants, currentProduct.variants[0].id);
-    } else {
-      initialSku = currentProduct?.productSku;
     }
 
     if (initialSku) {
@@ -88,7 +86,7 @@ const CurrentProduct: React.FC<Props> = () => {
     return null;
   }
 
-  const { productId, productName, productSku, description, price, priceDiscount, currency, variants } = currentProduct;
+  const { productId, productName, description, price, priceDiscount, currency, variants } = currentProduct;
 
   let variantsProduct: SizeWithVariantId[] = [];
 
@@ -180,27 +178,30 @@ const CurrentProduct: React.FC<Props> = () => {
 
   const handleAddToCart = async (): Promise<void> => {
     let sku;
+    let variantId;
 
-    if (!selectedVariant && variants && variants.length > 1) {
-      setSizeError('Please select a size before adding to cart.');
-      return;
+    if (variants && variants.length > 0) {
+      if (!selectedVariant && variants.length > 1) {
+        setSizeError('Please select a size before adding to cart.');
+        return;
+      }
     }
 
     if (selectedVariant) {
       sku = getSku(variants, selectedVariant.variantId);
+      variantId = selectedVariant.variantId;
     } else {
-      sku = productSku;
+      sku = variants[0].sku;
+      variantId = variants[0].id;
     }
 
-    if (sku) {
-      await addToCart(sku, productId, 1, selectedVariant?.variantId);
+    if (!sku) return;
 
-      const tempIsInCart = isProductInCart(sku);
+    await addToCart(sku, productId, 1, variantId);
 
-      setIsInCart(tempIsInCart);
-    }
+    const tempIsInCart = isProductInCart(sku);
 
-    setSelectedVariant(null);
+    setIsInCart(tempIsInCart);
   };
 
   const handleRemoveFromCart = async (): Promise<void> => {
@@ -209,7 +210,7 @@ const CurrentProduct: React.FC<Props> = () => {
     if (selectedVariant) {
       sku = getSku(variants, selectedVariant.variantId);
     } else {
-      sku = productSku;
+      sku = variants[0].sku;
     }
 
     if (sku) {
@@ -219,8 +220,6 @@ const CurrentProduct: React.FC<Props> = () => {
 
       setIsInCart(tempIsInCart);
     }
-
-    setSelectedVariant(null);
   };
 
   return (
