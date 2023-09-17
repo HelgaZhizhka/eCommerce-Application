@@ -52,7 +52,7 @@ export const info = [
     eagerly anticipate achieving even greater success as we continue to work together in the future.
   </p>`,
     videoSource: './assets/video/vlad.mp4',
-    gitHubLink: 'https://github.com/wellder00/wellder00',
+    gitHubLink: 'https://github.com/wellder00/',
   },
 
   {
