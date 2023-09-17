@@ -25,6 +25,17 @@
 - Husky
 - Jest
 
+## Libraries used:
+- Material UI
+- Classnames
+- Formik
+- Jsdom
+- Mobx
+- React-router-dom
+- Sass
+- Swiper
+- Yup
+
 ### Getting Started with Create React App
 
 This project was bootstrapped with Create React App.
