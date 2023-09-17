@@ -308,6 +308,7 @@ const createCartStore = (): CartStoreType => {
     resetCart(): void {
       store.discountPromo = {} as DiscountCodeType;
       store.productsInCart = [] as ProductType[];
+      store.productsInCartSku = new Set<string>();
       store.totalAmount = 0;
       store.totalPrice = 0;
     },
