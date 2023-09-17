@@ -194,7 +194,11 @@ const createCartStore = (): CartStoreType => {
 
         runInAction(() => {
           if (response.statusCode === 200) {
+            const updatedProduct = store.productsInCart.filter((item) => item.lineItemId === lineItemId)[0];
+            store.productsInCartSku.delete(updatedProduct.variants[0].sku as string);
+
             store.productsInCart = store.productsInCart.filter((item) => item.lineItemId !== lineItemId);
+            
             store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
             store.totalPrice = response.body.totalPrice.centAmount;
             store.success = 'Product removed from cart successfully';
