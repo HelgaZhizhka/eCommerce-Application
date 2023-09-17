@@ -11,6 +11,7 @@
 - User Profile page
 - Basket page
 - About Us page
+- Sale page
 
 ## The technology stack used:
 
