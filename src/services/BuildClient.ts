@@ -23,15 +23,16 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 };
 
 export class MyTokenCache implements TokenCache {
-  public myCache: TokenStore = {
+  private myCache: TokenStore = {
     token: '',
     expirationTime: 0,
     refreshToken: '',
   }
 
   public set(newCache: TokenStore): void {
+    this.clear();
     this.myCache = newCache;
-    localStorage.setItem('token', this.myCache.token)
+    localStorage.setItem('token', this.myCache.token);
    }
 
   public get(): TokenStore {
@@ -97,8 +98,6 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
 
   const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
 
-  localStorage.setItem('token', myToken.myCache.token);
-
   return apiRoot;
 }
 
@@ -111,7 +110,6 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
       clientId,
       clientSecret,
     },
-    // tokenCache: myToken,
     scopes,
     fetch,
   };
