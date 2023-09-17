@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,13 +10,18 @@ import styles from './SelectSize.module.scss';
 
 type Props = {
   options: SizeWithVariantId[];
+  value: SizeWithVariantId | null;
   variant?: string;
   className?: string;
   onChange?: (value: SizeWithVariantId) => void;
 };
 
-const NumberInput: React.FC<Props> = ({ options, onChange, variant, className }) => {
-  const [size, setSize] = useState<SizeWithVariantId | null>(null);
+const SelectSize: React.FC<Props> = ({ value, options, onChange, variant, className }) => {
+  const [size, setSize] = useState<SizeWithVariantId | null>(value);
+
+  useEffect(() => {
+    setSize(value);
+  }, [value]);
 
   const handleChange = (event: SelectChangeEvent): void => {
     const selectedOption = options.find((option) => option.size === event.target.value);
@@ -29,11 +34,15 @@ const NumberInput: React.FC<Props> = ({ options, onChange, variant, className })
     }
   };
 
+  const sizeInput = variant === 'small' ? 'small' : 'normal';
+  const sizeSelect = variant === 'small' ? 'small' : 'medium';
+
   return (
-    <Box className={className} sx={{ minWidth: 120 }}>
+    <Box className={className}>
       <FormControl fullWidth>
-        <InputLabel>Size</InputLabel>
+        <InputLabel size={sizeInput}>Size</InputLabel>
         <Select
+          size={sizeSelect}
           className={variant === 'small' ? styles[variant] : ''}
           value={size?.size || ''}
           label="Size"
@@ -50,4 +59,4 @@ const NumberInput: React.FC<Props> = ({ options, onChange, variant, className })
   );
 };
 
-export default NumberInput;
+export default SelectSize;

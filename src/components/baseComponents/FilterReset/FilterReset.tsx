@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import ClearIcon from '@mui/icons-material/Clear';
 

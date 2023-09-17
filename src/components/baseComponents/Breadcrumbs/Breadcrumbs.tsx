@@ -5,8 +5,8 @@ import { BreadcrumbsItem } from './Breadcrumbs.type';
 import styles from './Breadcrumbs.module.scss';
 
 type Props = {
-  className?: string;
   items: BreadcrumbsItem[];
+  className?: string;
 };
 
 const Breadcrumb: React.FC<Props> = ({ items, className }) => (

@@ -10,6 +10,7 @@ export const getFetchedProducts = (fetchedProducts: ProductProjection[]): Produc
     const obj = {} as ProductType;
     obj.productId = item.id;
     obj.productKey = `${item.key}`;
+    obj.productSku = item.masterVariant.sku;
     obj.productName = item.name?.en;
     obj.description = `${item.description?.en}`;
 
@@ -56,6 +57,7 @@ export const getFetchedProduct = (fetchedProduct: Product): ProductType => {
   product.productName = data.name?.en;
   product.description = `${data.description?.en}`;
   product.variants = [...data.variants];
+  product.productSku = data.masterVariant.sku;
 
   if (data.masterVariant.prices?.length) {
     product.price = data.masterVariant.prices[0]?.value?.centAmount;
@@ -87,4 +89,8 @@ export function extractSizesWithVariantId(variants: ProductVariant[]): SizeWithV
   });
 
   return Array.from(sizesMap.entries()).map(([size, variantId]) => ({ size, variantId }));
+}
+
+export function getSku(variants: ProductVariant[] | undefined, variantId: number): string | undefined {
+  return variants?.filter((variant) => variant.id === variantId)[0].sku;
 }

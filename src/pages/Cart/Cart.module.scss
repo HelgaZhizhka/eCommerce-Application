@@ -3,6 +3,7 @@
 @import '../../styles/abstract/functions';
 
 .root {
+  padding-top: 20px;
   padding-bottom: 60px;
 
   @include create-mq($grid__bp-lg, 'min') {
@@ -59,4 +60,9 @@
 .modalContent {
   font-size: 1.25rem;
   text-align: center;
+
+  p {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
 }

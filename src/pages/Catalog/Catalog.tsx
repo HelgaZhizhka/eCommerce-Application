@@ -18,9 +18,9 @@ import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
 import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
+import { DEFAULT_LIMIT } from '../../constants';
 
 import styles from './Catalog.module.scss';
-import { DEFAULT_LIMIT } from '../../constants';
 
 type Params = {
   categoryId: string;

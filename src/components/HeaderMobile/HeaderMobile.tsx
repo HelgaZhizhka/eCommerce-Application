@@ -53,8 +53,13 @@ const HeaderMobile: React.FC = () => {
                 <Icon name={IconName.CART} width={40} height={40} color="var(--color-text)" className="icon mr-1" />
               </Badge>
             </Link>
-            <span className={styles.totalPriceValue}>{totalPriceValue}</span>
-            <span className={styles.currency}>{currency.value}</span>
+            {totalPriceValue > 0 && (
+              <>
+                <span className={styles.totalPriceValue}>{totalPriceValue}</span>
+                <span className={styles.currency}>{currency.value}</span>
+              </>
+            )}
+
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
                 <LoginIcon sx={{ ml: '10px' }} fontSize="large" />

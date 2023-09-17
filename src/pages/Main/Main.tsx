@@ -7,8 +7,9 @@ import { RegistrationSuccessful } from '../../components/RegistrationSuccessful'
 import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
 import { Categories } from '../../components/Categories';
-import styles from './Main.module.scss';
 import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
+
+import styles from './Main.module.scss';
 
 const Main: React.FC = () => {
   const { isRegistration, resetRegistration } = userStore;

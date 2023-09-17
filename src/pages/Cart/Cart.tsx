@@ -16,6 +16,7 @@ import { ModalConfirm } from '../../components/ModalConfirm';
 import { Price } from '../../components/baseComponents/Price';
 import { getPriceValue } from '../../stores/productHelpers';
 import { currency } from '../../constants';
+
 import styles from './Cart.module.scss';
 
 const Cart: React.FC = () => {
@@ -44,11 +45,11 @@ const Cart: React.FC = () => {
 
   const totalPriceValue = getPriceValue(totalPrice);
 
-  const discountedAmount = getPriceValue(discountPromo.discountedAmount);
-
   const modalCheckoutContent = (
     <div className={styles.modalContent}>
-      And when we finalize the payment system you can even buy these products from us!
+      <p>Expect your favorite products to come to you soon!</p>
+      <p>It will be...</p>
+      <p>When we finalize the payment system.</p>
       <p>Stay with us!</p>
     </div>
   );
@@ -121,14 +122,11 @@ const Cart: React.FC = () => {
             <div className={styles.footer}>
               <PromoCode className={styles.promo} onChange={handlePromoCode} />
 
-              {discountPromo.discountedAmount && (
+              {discountPromo.discountCodeName && (
                 <div className={styles.flex}>
                   <span>Active Promo Code:</span>
                   <span className={styles.promoCode}>{discountPromo.discountCodeName}</span>
-                  <span className={styles.title}>
-                    {discountedAmount} {discountPromo.discountedAmountCurrency}
-                  </span>
-                  <Button onClick={deletePromoCode} sx={{ p: 0 }} color={'error'}>
+                  <Button onClick={deletePromoCode} sx={{ p: 0, minWidth: '30px' }} color={'error'}>
                     <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
                   </Button>
                 </div>

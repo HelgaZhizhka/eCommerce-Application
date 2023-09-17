@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import Box from '@mui/system/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { cartStore, productStore } from '../../stores';
+import { productStore } from '../../stores';
 import { Card } from '../Card';
 import styles from './ProductList.module.scss';
 
@@ -14,11 +14,6 @@ type Props = {
 
 const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) => {
   const { products, isProductsLoading } = productStore;
-  const { addToCart } = cartStore;
-
-  const onAddToCart = (productId: string, quantity: number, variantId: number): void => {
-    addToCart(productId, quantity, variantId);
-  };
 
   return isProductsLoading ? (
     <Box
@@ -39,6 +34,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
           productKey,
           productId,
           productName,
+          productSku,
           description,
           price,
           priceDiscount,
@@ -55,6 +51,7 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
               productId={productId}
               productKey={productKey}
               productName={productName}
+              productSku={productSku}
               description={description}
               images={images}
               price={price}
@@ -62,8 +59,6 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
               currency={currency}
               variants={variants}
               isDiscount={isDiscount}
-              isInCart={cartStore.isProductInCart(productId)}
-              onAddToCart={onAddToCart}
             />
           </li>
         );

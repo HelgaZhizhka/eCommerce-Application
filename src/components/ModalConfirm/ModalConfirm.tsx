@@ -17,8 +17,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 type Props = {
   title: string;
-  content?: React.ReactNode;
   isOpen: boolean;
+  content?: React.ReactNode;
   onClose: () => void;
   onConfirm?: () => void;
 };
@@ -41,7 +41,7 @@ const ModalConfirm: React.FC<Props> = ({ title, content, isOpen, onClose, onConf
     >
       <CloseIcon />
     </IconButton>
-    <Box sx={{ p: 4 }}>{content}</Box>
+    {content && <Box sx={{ p: 4 }}>{content}</Box>}
     <Box sx={{ p: 4, textAlign: 'canter', display: 'flex', gap: '5px' }}>
       {onConfirm && (
         <>

@@ -9,6 +9,7 @@ import fon2Mob from './images/sale2_mob.jpg';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
+import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
 import styles from './Sale.module.scss';
 
 const Sale: React.FC = () => {
@@ -39,6 +40,7 @@ const Sale: React.FC = () => {
             <img className={styles.fon} src={fon2} alt="Drinkware sale" />
           </picture>
         </Link>
+        <GiftsAndPromoCodes />
       </div>
     </Container>
   );
