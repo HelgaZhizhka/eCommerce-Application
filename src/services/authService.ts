@@ -22,7 +22,7 @@ export const customerLogin = async (email: string, password: string):Promise<Cli
 
   if (response.statusCode === 200) {
     await apiWithPasswordFlow(email, password).me().get().execute();
-    await getActiveCart();
+    if (localStorage.getItem('cartId')) await getActiveCart();
   };
 
   return response
@@ -83,7 +83,7 @@ export const customerSignUp = async (
 
   if (signUpCustomer.statusCode === 201) {
     await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
-    await getActiveCart();
+    if (localStorage.getItem('cartId')) await getActiveCart();
   };
 
   return signUpCustomer;
