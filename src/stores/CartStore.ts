@@ -62,6 +62,7 @@ const createCartStore = (): CartStoreType => {
             const products = getCartProducts(lineItems);
 
             store.productsInCart = [...products];
+            
             store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
             store.totalPrice = response.body.totalPrice.centAmount;
             store.success = 'Product added to cart successfully';
