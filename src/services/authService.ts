@@ -73,7 +73,7 @@ export const customerSignUp = async (
 
   const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithClientCredentialsFlow();
 
-  const signUpCustomer = newCustomer
+  const signUpCustomer = await newCustomer
     .me()
     .signup()
     .post({
@@ -81,7 +81,11 @@ export const customerSignUp = async (
     })
     .execute();
 
-  await getActiveCart();
+  // await getActiveCart();
+  if (signUpCustomer.statusCode === 200) {
+    await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
+    await getActiveCart();
+  };
 
   return signUpCustomer;
 };
