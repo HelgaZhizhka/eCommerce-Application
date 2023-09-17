@@ -81,8 +81,7 @@ export const customerSignUp = async (
     })
     .execute();
 
-  // await getActiveCart();
-  if (signUpCustomer.statusCode === 200) {
+  if (signUpCustomer.statusCode === 201) {
     await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
     await getActiveCart();
   };

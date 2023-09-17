@@ -84,7 +84,6 @@ const createUserStore = (): UserStoreType => {
             }
 
             store.isRegistration = true;
-            cartStore.initCart();
           }
           if (response.statusCode === 400) {
             throw new Error('Unexpected error');
