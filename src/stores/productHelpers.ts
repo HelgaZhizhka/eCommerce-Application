@@ -83,6 +83,9 @@ export function extractSizesWithVariantId(variants: ProductVariant[]): SizeWithV
     if (variant.attributes) {
       const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size-clothes');
       if (sizeAttribute) {
+        if (sizeAttribute.value.label === 'one-size') {
+          return;
+        }
         sizesMap.set(sizeAttribute.value.label, variant.id);
       }
     }

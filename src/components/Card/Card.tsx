@@ -27,7 +27,6 @@ type Props = {
   images: Image[];
   priceDiscount?: number;
   subcategoryId?: string | null;
-  productSku?: string;
   isDiscount?: boolean;
   isInCart?: boolean;
   variants?: ProductVariant[];
@@ -37,7 +36,6 @@ type Props = {
 const Card: React.FC<Props> = ({
   productKey,
   productId,
-  productSku,
   categoryId,
   subcategoryId,
   productName,
@@ -74,10 +72,8 @@ const Card: React.FC<Props> = ({
   useEffect(() => {
     let initialSku;
 
-    if (variants && variants.length > 1) {
+    if (variants && variants.length > 0) {
       initialSku = getSku(variants, variants[0].id);
-    } else {
-      initialSku = productSku;
     }
 
     if (initialSku) {
@@ -115,27 +111,30 @@ const Card: React.FC<Props> = ({
 
   const handleAddToCart = async (): Promise<void> => {
     let sku;
+    let variantId;
 
-    if (!selectedVariant && variants && variants.length > 1) {
-      setSizeError('Please select a size before adding to cart.');
-      return;
+    if (variants && variants.length > 0) {
+      if (!selectedVariant && variants.length > 1) {
+        setSizeError('Please select a size before adding to cart.');
+        return;
+      }
+
+      if (selectedVariant) {
+        sku = getSku(variants, selectedVariant.variantId);
+        variantId = selectedVariant.variantId;
+      } else {
+        sku = variants[0].sku;
+        variantId = variants[0].id;
+      }
     }
 
-    if (selectedVariant) {
-      sku = getSku(variants, selectedVariant.variantId);
-    } else {
-      sku = productSku;
-    }
+    if (!sku) return;
 
-    if (sku) {
-      await addToCart(sku, productId, 1, selectedVariant?.variantId);
+    await addToCart(sku, productId, 1, variantId);
 
-      const tempIsInCart = isProductInCart(sku);
+    const tempIsInCart = isProductInCart(sku);
 
-      setIsInCart(tempIsInCart);
-    }
-
-    setSelectedVariant(null);
+    setIsInCart(tempIsInCart);
   };
 
   const handleSizeChange = (value: SizeWithVariantId): void => {

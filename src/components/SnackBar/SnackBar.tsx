@@ -35,20 +35,19 @@ const SnackBar: React.FC = () => {
         </Snackbar>
       )}
 
-      {userSuccess ||
-        (cartSuccess && (
-          <Snackbar
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            open={!!userSuccess || !!cartSuccess}
-            message={userSuccess || cartSuccess}
-            onClose={handleClose}
-            autoHideDuration={4000}
-          >
-            <Alert severity="success" sx={{ fontSize: '24px', fontWeight: '600' }}>
-              {userSuccess || cartSuccess}
-            </Alert>
-          </Snackbar>
-        ))}
+      {(userSuccess || cartSuccess) && (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          open={!!userSuccess || !!cartSuccess}
+          message={userSuccess || cartSuccess}
+          onClose={handleClose}
+          autoHideDuration={4000}
+        >
+          <Alert severity="success" sx={{ fontSize: '24px', fontWeight: '600' }}>
+            {userSuccess || cartSuccess}
+          </Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

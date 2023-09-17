@@ -85,7 +85,7 @@ const AddressAdd: React.FC<Props> = ({ onSaveChange }) => (
           </label>
           <div className={styles.inputContainer}>
             <Field className={styles.field} component={FormikTextField} name="country" select variant="standard">
-              <MenuItem value="UA">UA</MenuItem>
+              <MenuItem value="UA">Ukraine</MenuItem>
               <MenuItem value="EU">European Union</MenuItem>
             </Field>
           </div>
