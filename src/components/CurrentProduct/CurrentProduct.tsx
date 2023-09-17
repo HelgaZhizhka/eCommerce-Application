@@ -56,7 +56,7 @@ const CurrentProduct: React.FC<Props> = () => {
   useEffect(() => {
     let initialSku;
 
-    if (currentProduct?.variants && currentProduct.variants.length > 0) {
+    if (currentProduct?.variants && currentProduct.variants.length > 0 && currentProduct.variants.length < 2) {
       initialSku = getSku(currentProduct.variants, currentProduct.variants[0].id);
     }
 
