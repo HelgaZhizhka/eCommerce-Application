@@ -197,7 +197,7 @@ const CurrentProduct: React.FC<Props> = () => {
 
     if (!sku) return;
 
-    await addToCart(sku, productId, 1, variantId);
+    await addToCart(sku, productId, quantity, variantId);
 
     const tempIsInCart = isProductInCart(sku);
 
@@ -248,23 +248,25 @@ const CurrentProduct: React.FC<Props> = () => {
                       />
                     </>
                   )}
-                  <NumberInput
-                    value={quantity}
-                    onChange={handleInputChange}
-                    min={minQuantity}
-                    max={maxQuantity}
-                    label="Quantity:"
-                  />
                   {!isInCart ? (
-                    <Button
-                      size="large"
-                      sx={{ height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                      onClick={handleAddToCart}
-                    >
-                      Add to cart
-                    </Button>
+                    <>
+                      <NumberInput
+                        value={quantity}
+                        onChange={handleInputChange}
+                        min={minQuantity}
+                        max={maxQuantity}
+                        label="Quantity:"
+                      />
+                      <Button
+                        size="large"
+                        sx={{ height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddToCart}
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <span className={styles.error}>Already in the cart.</span>
@@ -302,23 +304,25 @@ const CurrentProduct: React.FC<Props> = () => {
                       />
                     </>
                   )}
-                  <NumberInput
-                    value={quantity}
-                    onChange={handleInputChange}
-                    min={minQuantity}
-                    max={maxQuantity}
-                    label="Quantity:"
-                  />
                   {!isInCart ? (
-                    <Button
-                      size="large"
-                      sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                      variant="contained"
-                      color="primary"
-                      onClick={handleAddToCart}
-                    >
-                      Add to cart
-                    </Button>
+                    <>
+                      <NumberInput
+                        value={quantity}
+                        onChange={handleInputChange}
+                        min={minQuantity}
+                        max={maxQuantity}
+                        label="Quantity:"
+                      />
+                      <Button
+                        size="large"
+                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddToCart}
+                      >
+                        Add to cart
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <span className={styles.error}>Already in the cart.</span>
