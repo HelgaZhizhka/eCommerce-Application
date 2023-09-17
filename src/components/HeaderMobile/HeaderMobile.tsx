@@ -16,16 +16,12 @@ import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { NavBarMobile } from '../NavBarMobile';
 import { cartStore, userStore } from '../../stores';
-import { getPriceValue } from '../../stores/productHelpers';
-import { currency } from '../../constants';
 import { Logo } from '../Logo';
 import styles from './HeaderMobile.module.scss';
 
 const HeaderMobile: React.FC = () => {
   const { loggedIn } = userStore;
-  const { totalAmount, totalPrice } = cartStore;
-
-  const totalPriceValue = getPriceValue(totalPrice);
+  const { totalAmount } = cartStore;
 
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const toggleNavBar = (): void => {
@@ -53,12 +49,6 @@ const HeaderMobile: React.FC = () => {
                 <Icon name={IconName.CART} width={30} height={30} color="var(--color-text)" className="icon" />
               </Badge>
             </Link>
-            {totalPriceValue > 0 && (
-              <>
-                <span className={styles.totalPriceValue}>{totalPriceValue}</span>
-                <span className={styles.currency}>{currency.value}</span>
-              </>
-            )}
 
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN}>
