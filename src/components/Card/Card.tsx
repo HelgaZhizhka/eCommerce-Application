@@ -72,7 +72,7 @@ const Card: React.FC<Props> = ({
   useEffect(() => {
     let initialSku;
 
-    if (variants && variants.length > 0) {
+    if (variants && variants.length > 0 && variants.length < 2) {
       initialSku = getSku(variants, variants[0].id);
     }
 
