@@ -57,28 +57,25 @@ export const info = [
 
   {
     name: 'Victoria Alekseeva',
-    role: '',
-    age: '',
-    personality: '',
-    presentation: `<p></p>
+    role: 'Commercetools explorer',
+    age: '34',
+    personality: 'keep calm and don\'t panic',
+    presentation: `<p>¡Hola! I'm Victoria, a telecommunications engineer by education who decided to change her profession. </p>
+    <p>In this project, my responsibilities included working with Commercetools:</p>
+    <ul>
+      <li>Organizing the project structure within Commercetools.</li>
+      <li>Populating it with products.</li>
+      <li>Handling API and SDK for data receiving and processing from Commercetools.</li>
+    </ul>
 
-  <ul>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-  </ul>
+    <p>During my learning process, I was incredibly lucky to meet Olga and Vlad. While working on the project, we were always in touch, had daily calls to discuss tasks and issues, and found solutions together. You guys are amazing!</p>
 
-  <p> </p>
+    <p>Vlad, nothing is impossible for you, and your phrases during our calls, "I won't try; I will do it!" were incredibly motivating.</p>
 
-  <p></p>
+    <p>Olga, your support and energy drove our team forward, despite all the challenges and unclear moments during the implementation.</p>
 
-  <p></p>
-
-  <p></p>`,
-    videoSource: '',
+    <p>Thank you for the time we spent together. I hope we'll have the opportunity to work together again in our wonderful team.</p>`,
+    videoSource: './assets/video/vika.mp4',
     gitHubLink: 'https://github.com/VictoriaAlekseeva',
   },
 
