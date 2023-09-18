@@ -81,31 +81,14 @@ export const info = [
 
   {
     name: 'Zhyzhka Olga',
-    role: 'Team Lead',
-    age: 45,
+    role: 'Team Lead / Frontend Developer',
+    age: 46,
     personality: 'always striving for new knowledge and achievements',
-    presentation: `<p></p>
+    presentation: `<p>I'm Olga Zhizhka, 46 years old. I graduated from OGPU with a degree in "Computer Systems and Networks" in 2000. My early career centered around roles as a system administrator and teaching computer courses. After taking a break to focus on family, I decided to dive into web development, embarking on a self-study journey in 2015. For the past 7 years, I've been deeply involved in frontend development,</p>
 
-  <ul>
-    <li></li>
-    <li></li>
-    <li>
-    </li>
-    <li>
-    </li>
-    <li>
-    </li>
-    <li>
-    </li>
-  </ul>
-
-  <p></p>
-
-  <p></p>
-
-  <p></p>
-
-  <p></p>`,
+  <p>In this project, I acted as the team lead. My main responsibilities were design, layout, and developing the logic for React components. We incorporated MobX into the project to centralize component state and data management. One challenge was the store's theme; as our store was based on our team's merchandise idea, it was necessary to create original images to populate the store. As the team lead, my primary challenge was motivating the team, organizing systematic work, ensuring a comfortable process, and regulating the pace of task execution by all team members.</p>
+  <p>Our team followed the Agile methodology and used GitHub Projects for task organization and development process management, Miro for brainstorming and joint meetings, and a Discord channel as our primary workspace and for meetings - one could say we practically lived there throughout the project! During our meetings, we coded, conducted code reviews, discussed tasks, and tested our work. I am grateful to my team; over time, we became very cohesive and managed to structure the process in such a way that any of us could step into another's role if needed. Each one of us delved into each other's tasks but still managed our responsibilities. I appreciate the contribution of every team member; we were able to complete our project primarily due to trust and coordinated teamwork.</p>
+  `,
     videoSource: './assets/video/olga.mp4',
     gitHubLink: 'https://github.com/HelgaZhizhka',
   },
