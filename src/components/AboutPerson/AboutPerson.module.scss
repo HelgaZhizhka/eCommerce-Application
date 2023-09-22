@@ -1,0 +1,27 @@
+.personVideoEven {
+  width: 100%;
+  padding: 10px;
+  transform: rotate(2deg);  
+  box-shadow: 12px 12px 10px #ccc;
+}
+
+.personVideoOdd {
+  width: 100%;
+  padding: 10px;
+  transform: rotate(-2deg);  
+  box-shadow: 12px 12px 10px #ccc;
+}
+
+.name {
+  font-size: 24px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  margin-right: 8px;
+}

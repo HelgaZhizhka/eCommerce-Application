@@ -1,0 +1,37 @@
+@import '../../../styles/abstract/variables';
+@import '../../../styles/abstract/mixins';
+
+.root {
+  display: flex;
+  align-items: center;
+
+  @include create-mq($grid__bp-md, 'min') {
+    position: relative;
+  }
+}
+
+.input {
+  font-size: toRem(20px);
+  width: 100%;
+}
+
+.button {
+  margin-left: 5px;
+}
+
+.clearButton {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.error {
+  position: absolute;
+  bottom: -102%;
+  left: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
+}

@@ -1,0 +1,38 @@
+.badge {
+  display: inline-block;
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+  font-weight: 500;
+
+  &_sm {
+    width: 28px;
+    height: 28px;
+    font-size: 1.25rem;
+  }
+
+  &_primary {
+    background-color: var(--state-primary);
+    color: var(--light-white);
+  }
+
+  &_discount, &_promo {
+    padding: 5px 10px;
+    border-radius: 2px 2px 0 0;
+    font-weight: 500;
+    color: var(--light-white);
+    
+  }
+  
+  &_discount {
+    background-color: var(--red);
+  }
+
+  &_promo {
+    background-color: var(--purple);
+  }
+}

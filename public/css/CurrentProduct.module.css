@@ -1,0 +1,77 @@
+.root {
+  margin-top: 40px;
+}
+@media screen and (min-width: 1024px) {
+  .root {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .root {
+    gap: 120px;
+  }
+}
+
+.title,
+.description,
+.priceNew,
+.priceInfo {
+  margin-bottom: 20px;
+}
+
+.title {
+  margin-top: 0;
+  font-size: 2rem;
+}
+
+.description {
+  margin-bottom: 20px;
+}
+@media screen and (min-width: 1280px) {
+  .description {
+    width: 80%;
+  }
+}
+
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+}
+
+.sale {
+  color: var(--state-danger);
+  font-weight: 500;
+}
+
+.priceInfo {
+  margin-top: 20px;
+}
+
+.priceOld,
+.sale {
+  font-size: 1.875rem;
+}
+
+.priceOld {
+  font-size: 1.5rem;
+}
+
+.priceNew {
+  font-size: 2rem;
+}
+
+.footer {
+  margin-top: 20px;
+}
+@media screen and (max-width: 1023px) {
+  .footer {
+    border-bottom: 1px solid var(--color-text);
+  }
+}/*# sourceMappingURL=CurrentProduct.module.css.map */

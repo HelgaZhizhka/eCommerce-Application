@@ -1,0 +1,28 @@
+.root {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+@media screen and (min-width: 1024px) {
+  .root {
+    position: relative;
+  }
+}
+
+.input {
+  font-size: toRem(20px);
+  width: 100%;
+}
+
+.button {
+  margin-left: 5px;
+}
+
+.clearButton {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}/*# sourceMappingURL=Search.module.css.map */

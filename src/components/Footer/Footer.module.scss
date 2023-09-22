@@ -1,0 +1,86 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  margin-top: auto;
+  padding-top: 20px;
+  background-color: var(--violet);
+  font-size: toRem(20px);
+  color: var(--light-white);
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding-top: 40px;
+  }
+}
+
+.copyright {
+  padding: toRem(12px) 0;
+  font-size: 80%;
+  text-align: center;
+  margin: 0;
+  background-color: var(--black);
+}
+
+.divider {
+  margin: 0 10px;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 10px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    margin-bottom: 36px;
+  }
+}
+
+.link {
+  padding: 0;
+  color: var(--light-white);
+  transition: transform 0.3s ease-in-out;
+
+  &::after {
+    background-color: var(--white);
+  }
+
+  &:hover {
+    color: var(--white);
+  }
+}
+
+.footerRow {
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.footerColumn {
+  @include create-mq($grid__bp-md, 'min') {
+    padding: 0 10px;
+  }
+}
+
+.footerMenu {
+  li {
+    display: block;
+  }
+}
+
+.links {
+  display: flex;
+  margin-top: 1rem;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    margin-bottom: 1rem;
+  }
+}
+
+.divider {
+  margin: 0 10px;
+}
+
+.heading {
+  font-size: toRem(20px);
+}

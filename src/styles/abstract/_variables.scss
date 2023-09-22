@@ -1,0 +1,14 @@
+$grid__bp-xs: 428;
+$grid__bp-sm: 600;
+$grid__bp-md: 1024;
+$grid__bp-lg: 1280;
+$grid__bp-xl: 1440;
+
+$map-grid-props: (
+  '': 0,
+  '-xs': $grid__bp-xs,
+  '-sm': $grid__bp-sm,
+  '-md': $grid__bp-md,
+  '-lg': $grid__bp-lg,
+  '-xl': $grid__bp-xl,
+);

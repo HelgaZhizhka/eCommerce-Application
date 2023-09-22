@@ -1,0 +1,68 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  padding-top: 20px;
+  padding-bottom: 60px;
+
+  @include create-mq($grid__bp-lg, 'min') {
+    padding-top: 50px;
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+.footer {
+  padding: 15px 0;
+  align-items: center;
+  font-size: toRem(20px);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray);
+  }
+
+  @include create-mq($grid__bp-md, 'min') {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.promo {
+  @include create-mq($grid__bp-md - 1, 'max') {
+    margin: 16px 0;
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.totalPrice {
+  font-size: toRem(30px);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.promoCode,
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.promoCode {
+  color: var(--state-primary);
+}
+
+.modalContent {
+  font-size: 1.25rem;
+  text-align: center;
+
+  p {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+}

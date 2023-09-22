@@ -1,0 +1,27 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 45px;
+  font-size: toRem(32px);
+  font-weight: 600;
+  text-align: center;
+
+  span {
+    white-space: nowrap;
+  }
+}
+
+.section {
+  padding-top: 30px;
+  padding-bottom: 50px;
+}

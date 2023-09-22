@@ -1,0 +1,21 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+
+.container {
+  padding-bottom: 60px;
+
+  @include create-mq($grid__bp-md, 'min') {
+    padding-top: 60px;
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+.title {
+  color: var(--red);
+}
+
+.fon {
+  display: block;
+  margin: 0 auto 20px;
+}

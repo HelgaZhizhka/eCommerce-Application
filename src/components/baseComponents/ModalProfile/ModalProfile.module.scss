@@ -1,0 +1,14 @@
+@import '../../../styles/abstract/variables';
+@import '../../../styles/abstract/mixins';
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+
+  @include create-mq($grid__bp-md, 'min') {
+    width: 400px;
+  }
+}

@@ -1,0 +1,24 @@
+.root {
+  position: relative;
+  display: block;
+}
+.horizontal {
+  display: flex;
+  align-items: center;
+  .badge {
+    margin-right: 10px;
+  }
+}
+
+.vertical {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 32px;
+  border-top: var(--state-primary) 1px solid;
+  text-align: center;
+  font-size: toRem(20px);
+
+  .badge {
+    margin: 0 auto 10px;
+  }
+}

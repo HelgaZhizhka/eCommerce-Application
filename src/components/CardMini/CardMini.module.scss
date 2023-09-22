@@ -1,0 +1,176 @@
+@import '../../styles/abstract/variables';
+@import '../../styles/abstract/mixins';
+@import '../../styles/abstract/functions';
+
+.root {
+  position: relative;
+  padding: 15px 0;
+  min-height: 160px;
+  padding-right: 34px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray);
+
+  @include create-mq($grid__bp-sm - 1, 'max') {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-right: 0;
+  }
+}
+
+.cardInfo {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cardPoster {
+  position: relative;
+  width: 120px;
+  margin-right: 25px;
+  background: var(--component-bg);
+  box-shadow: 0 2px 10px 0px rgba(11, 10, 10, 0.08);
+  overflow: hidden;
+
+  @include create-mq($grid__bp-md, 'min') {
+    height: 100%;
+  }
+}
+
+.cardImage {
+  width: 100%;
+  object-fit: cover;
+
+  @include create-mq($grid__bp-md, 'min') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    margin: auto;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  z-index: 1;
+}
+
+.cardBody {
+  flex: 1;
+}
+
+.cardTitle {
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.cardPrice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @include create-mq($grid__bp-sm, 'min') {
+    margin-left: auto;
+  }
+}
+
+.icon {
+  margin: auto;
+}
+
+.cardTotalPrice {
+  font-size: toRem(24px);
+  font-weight: 500;
+}
+
+.cardActions {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+
+  @include create-mq($grid__bp-sm, 'min') {
+    width: 35%;
+    margin-left: auto;
+    margin-top: 0;
+  }
+}
+
+.cardQuantity,
+.cardTotalPrice {
+  padding: 0 15px;
+}
+
+.flex {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cardColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--gray);
+}
+
+.colorSize {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.orange {
+  background: var(--filter-orange);
+}
+
+.green {
+  background: var(--filter-green);
+}
+
+.blue {
+  background: var(--filter-blue);
+}
+
+.black {
+  background: var(--filter-black);
+}
+
+.gray {
+  background: var(--filter-gray);
+}
+
+.brown {
+  background: var(--filter-brown);
+}
+
+.purple {
+  background: var(--filter-purple);
+}
+
+.lightblue {
+  background: var(--filter-lightblue);
+}
+
+.multicolor {
+  background: var(--multicolor);
+}
+
+.cardSize {
+  display: inline-block;
+  min-width: 40px;
+  color: #f2760f;
+  border-radius: 10px;
+  padding: 5px 8px;
+  font-size: toRem(14px);
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid var(--gray);
+  text-align: center;
+}
