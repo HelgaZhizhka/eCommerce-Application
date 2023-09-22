@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -11,7 +11,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Categories } from '../../Categories';
 
 const FilterNestedList: React.FC = () => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
 
   const handleClick = (): void => {
     setOpen(!open);

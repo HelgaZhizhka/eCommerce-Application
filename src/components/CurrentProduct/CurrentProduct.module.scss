@@ -29,7 +29,12 @@
 }
 
 .description {
+  padding-top: 20px;
   margin-bottom: 20px;
+
+  @include create-mq($grid__bp-md - 1, 'max') {
+    border-top: 1px solid var(--color-text);
+  }
 
   @include create-mq($grid__bp-lg, 'min') {
     width: 80%;
@@ -37,9 +42,12 @@
 }
 
 .flex {
+  position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 5px;
+
 }
 
 .sale {
@@ -66,8 +74,34 @@
 
 .footer {
   margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-  @include create-mq($grid__bp-md - 1, 'max') {
-    border-bottom: 1px solid var(--color-text);
-  }
+.oneSize {
+  display: inline-block;
+  min-width: 40px;
+  color: #f2760f;
+  border-radius: 10px;
+  padding: 5px 8px;
+  font-size: toRem(14px);
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid var(--gray);
+  text-align: center;
+}
+
+.select {
+  min-width: 120px;
+}
+
+.error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
+  z-index: 10
 }

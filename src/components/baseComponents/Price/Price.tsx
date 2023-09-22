@@ -4,7 +4,7 @@ import styles from './Price.module.scss';
 import { VARIANT } from './Price.types';
 
 type Props = {
-  children?: string;
+  children?: number;
   className?: string;
   variant?: VARIANT;
   currency?: string;

@@ -11,4 +11,5 @@ export enum IconName {
   FAVORITE = 'favorite',
   EDIT = 'edit',
   DELETE = 'delete',
+  COPY = 'copy',
 }

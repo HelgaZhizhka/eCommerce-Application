@@ -1,12 +1,15 @@
 import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { getActiveCart } from './cartService';
 
-export const customerLogin = (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
-  const customer = apiWithPasswordFlow(email, password);
+export const customerLogin = async (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
+  const existingToken = localStorage.getItem('token');
 
-  const response =  customer
+  const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithPasswordFlow(email, password);
+
+  const response = await newCustomer
   .me()
   .login()
   .post({
@@ -17,10 +20,15 @@ export const customerLogin = (email: string, password: string):Promise<ClientRes
   })
   .execute();
 
+  if (response.statusCode === 200) {
+    await apiWithPasswordFlow(email, password).me().get().execute();
+    if (localStorage.getItem('cartId')) await getActiveCart();
+  };
+
   return response
 };
 
-export const customerSignUp = (
+export const customerSignUp = async (
   values: Record<string, string | number | boolean>
 ): Promise<ClientResponse<CustomerSignInResult>> => {
   const shippingAddress = {
@@ -57,24 +65,26 @@ export const customerSignUp = (
     dateOfBirth: `${values.date}`,
     addresses: [shippingAddress, billingAddress],
     defaultShippingAddress: values.checkedShippingDefault ? 0 : undefined,
-    // shippingAddresses: [0],
     defaultBillingAddress:
       values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault) ? 1 : undefined,
-    // billingAddresses: [1],
   };
 
-  // if (values.checkedShippingDefault) requestbody.defaultShippingAddress = 0;
-  // deafultbilling when Use this address for billing is checked
+  const existingToken = localStorage.getItem('token');
 
-  const newCustomer = apiWithClientCredentialsFlow();
+  const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithClientCredentialsFlow();
 
-  const signUpCustomer = newCustomer
+  const signUpCustomer = await newCustomer
     .me()
     .signup()
     .post({
       body: requestbody,
     })
     .execute();
+
+  if (signUpCustomer.statusCode === 201) {
+    await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
+    if (localStorage.getItem('cartId')) await getActiveCart();
+  };
 
   return signUpCustomer;
 };

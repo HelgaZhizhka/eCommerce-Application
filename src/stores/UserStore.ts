@@ -14,6 +14,7 @@ import {
   changePassword,
 } from '../services/setCustomersDetails';
 import { myToken } from '../services/BuildClient';
+import { cartStore } from './CartStore';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -55,6 +56,7 @@ const createUserStore = (): UserStoreType => {
             store.userProfile = {
               ...res.body.customer,
             };
+            cartStore.initCart();
           }
 
           if (res.statusCode === 400) {
@@ -64,7 +66,7 @@ const createUserStore = (): UserStoreType => {
       } catch (err) {
         runInAction(() => {
           store.clearError();
-          store.error = 'Customer account with the given credentials not found.  Log in or use another email address';
+          store.error = 'Customer account with the given credentials not found. Log in or use another email address';
         });
       }
     },
@@ -115,11 +117,15 @@ const createUserStore = (): UserStoreType => {
     logout(): void {
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('token');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('cartId');
+      localStorage.removeItem('cartVersion');
       myToken.clear();
       store.loggedIn = false;
       store.userData = {};
       store.clearError();
       store.userProfile = {} as Customer;
+      cartStore.resetCart();
     },
 
     setEditMode(isEditMode: boolean): void {
@@ -169,7 +175,7 @@ const createUserStore = (): UserStoreType => {
              store.error = 'Error occurred while removing an address.';
            });
          }
-       
+
       }
 
       if (action === 'changeAddress') {
@@ -200,7 +206,7 @@ const createUserStore = (): UserStoreType => {
             store.error = 'Error occurred while editing an address.';
           });
         }
-       
+
       }
 
       if (action === 'addAddress') {
@@ -227,7 +233,7 @@ const createUserStore = (): UserStoreType => {
             store.error = 'Error occurred while adding an address.';
           });
         }
-       
+
       }
 
       if (action === 'changePersonalData') {

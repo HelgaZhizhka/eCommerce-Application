@@ -1,38 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import TextField from '@mui/material/TextField';
 
 import styles from './NumberInput.module.scss';
 
 type Props = {
-  value?: number;
-  onChange?: (value: number) => void;
-  min?: number;
-  max?: number;
-  label?: string;
+  value: number;
+  min: number;
+  max: number;
+  label: string;
   className?: string;
+  onChange: (value: number) => void;
 };
 
 const NumberInput: React.FC<Props> = ({ value, onChange, min, max, label, className }) => {
-  const [localValue, setLocalValue] = useState(value?.toString() || '');
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setLocalValue(event.target.value);
+    const newValue = parseInt(event.target.value, 10);
 
     if (onChange) {
-      onChange(parseInt(event.target.value, 10));
+      onChange(newValue);
     }
   };
 
   return (
     <TextField
       label={label}
-      sx={{ minWidth: '120px' }}
       type="number"
-      value={localValue}
+      value={value}
       onChange={handleChange}
       variant="outlined"
       className={classNames(styles.root, className)}
+      sx={{ minWidth: '80px', p: '10px' }}
       InputProps={{
         inputProps: {
           min,

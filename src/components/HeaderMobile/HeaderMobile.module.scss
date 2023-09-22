@@ -5,10 +5,6 @@
 .root {
   position: relative;
   font-size: toRem(20px);
-
-  @include create-mq($grid__bp-md - 1, 'max') {
-    padding-bottom: 20px;
-  }
 }
 
 .container {
@@ -49,6 +45,10 @@
 .flex {
   display: flex;
   align-items: center;
+
+  a {
+    font-size: 0;
+  }
 }
 
 .info .badge {
@@ -91,4 +91,17 @@
 
 .end {
   justify-content: flex-end;
+}
+
+.totalPriceValue,
+.currency {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.totalPriceValue {
+  margin-left: 10px;
+}
+.currency {
+  margin-left: 5px;
 }

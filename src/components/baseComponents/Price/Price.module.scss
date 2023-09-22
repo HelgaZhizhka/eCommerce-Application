@@ -3,17 +3,17 @@
 .root {
   display: block;
   font-weight: 500;
-  font-size: toRem(20px);
+  font-size: toRem(18px);
   color: var(--color-text);
 }
 
 .new {
-  font-size: toRem(24px);
+  font-size: toRem(20px);
   color: var(--state-info);
 }
 
 .old {
-  font-size: toRem(12px);
+  font-size: 1rem;
   color: var(--gray);
   text-decoration: line-through;
 }

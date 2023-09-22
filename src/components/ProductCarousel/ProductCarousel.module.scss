@@ -7,11 +7,13 @@
   .wrapImg {
     width: 300px;
     margin: 0 auto;
+    
   }
 
   .wrapImgSecond {
     width: 80px;
     margin-top: 20px;
+    
   }
 
   .img {
@@ -19,6 +21,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    
   }
 }
 
@@ -28,4 +31,5 @@
 
 .grab {
   cursor: grab;
+  text-align: center;
 }

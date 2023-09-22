@@ -53,7 +53,24 @@
 }
 
 .cardFooter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
   margin-top: auto;
+}
+
+.error {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  padding: 2px 5px;
+  background-color: var(--light-white);
+  border: 1px solid var(--red);
+  border-radius: 5px;
+  color: var(--red);
+  z-index: 10;
 }
 
 .cardButton {
@@ -65,9 +82,13 @@
   height: 32px;
   padding: 2px 5px;
   border-radius: 2px;
+  border: 0;
+  box-shadow: none;
   background-color: var(--state-primary);
   transition: background-color var(--transition-duration) var(--transition-function);
   color: var(--light-white);
+  z-index: 10;
+  cursor: pointer;
 }
 
 .cardTitle {
@@ -80,6 +101,11 @@
   margin: 0;
   font-size: toRem(12px);
   color: var(--gray);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 @media (hover: hover) {

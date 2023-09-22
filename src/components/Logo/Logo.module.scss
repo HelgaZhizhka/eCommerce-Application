@@ -3,17 +3,12 @@
 
 .root {
   display: inline-block;
-  width: 90px;
-  height: 20px;
+  width: 100px;
+  height: 24px;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   background-image: url('./images/logo-mob.svg');
-
-  @include create-mq($grid__bp-xs, 'min') {
-    width: 100px;
-    height: 22px;
-  }
 
   @include create-mq($grid__bp-md, 'min') {
     width: 160px;

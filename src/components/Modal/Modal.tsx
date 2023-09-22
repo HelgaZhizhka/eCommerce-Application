@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -7,7 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/system';
 
 import { ProductCarousel } from '../ProductCarousel';
-import styles from './Modal.module.scss';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -22,14 +20,13 @@ type Props = {
   isOpen: boolean;
   title?: string;
   images?: string[];
-  thumbs?: string[];
   activeImageIndex?: number;
   onClose: () => void;
 };
 
 const Modal: React.FC<Props> = ({ isOpen, activeImageIndex = 0, onClose, title, images }) => (
   <Box>
-    <BootstrapDialog className={styles.modal} onClose={onClose} open={isOpen}>
+    <BootstrapDialog onClose={onClose} open={isOpen}>
       <DialogTitle id="customized-dialog-title">{title}</DialogTitle>
       <IconButton
         aria-label="close"

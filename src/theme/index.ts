@@ -12,7 +12,6 @@ const colorBlue = getCSSVariableValue('--blue');
 const colorLightBlue = getCSSVariableValue('--light-blue');
 const stateDanger = getCSSVariableValue('--state-error');
 const stateSuccess = getCSSVariableValue('--state-success');
-const colorPurple = getCSSVariableValue('--purple');
 
 const commonHeadingStyles = {
   letterSpacing: '0.64px',
@@ -110,12 +109,6 @@ const lightTheme = createTheme({
     },
     success: {
       main: stateSuccess,
-    },
-    purple: {
-      main: colorPurple,
-    },
-    blue: {
-      main: colorBlue,
     },
   },
 } as ThemeOptions);

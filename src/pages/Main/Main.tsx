@@ -7,6 +7,8 @@ import { RegistrationSuccessful } from '../../components/RegistrationSuccessful'
 import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
 import { Categories } from '../../components/Categories';
+import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
+
 import styles from './Main.module.scss';
 
 const Main: React.FC = () => {
@@ -44,6 +46,12 @@ const Main: React.FC = () => {
                 Shopping easy with <span>YES CODE!</span>
               </h2>
               <Features />
+            </section>
+          </Container>
+          <Container maxWidth="xl">
+            <section className={styles.section}>
+              <h2 className={styles.title}>Gifts and promo codes</h2>
+              <GiftsAndPromoCodes />
             </section>
           </Container>
           <Container className={styles.container} maxWidth="xl">

@@ -7,7 +7,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { darkTheme, lightTheme } from './theme';
-import { themeStore, productStore } from './stores';
+import { themeStore, productStore, cartStore } from './stores';
 import RoutesConfig from './routes';
 import { SnackBar } from './components/SnackBar';
 import { Header } from './components/Header';
@@ -22,6 +22,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     productStore.fetchCategories();
+    cartStore.initCart();
   }, []);
 
   return (
@@ -44,7 +45,7 @@ const App: React.FC = () => {
         ) : (
           <>
             {!isMobile ? <Header /> : <HeaderMobile />}
-            <Box component="main" sx={{ position: 'relative', flex: '1' }}>
+            <Box component="main" sx={{ position: 'relative', flex: '1', pb: 2 }}>
               <RoutesConfig />
             </Box>
             <Footer />

@@ -88,3 +88,16 @@
     font-size: toRem(24px);
   }
 }
+
+.totalPriceValue,
+.currency {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.totalPriceValue {
+  margin-left: 10px;
+}
+.currency {
+  margin-left: 5px;
+}
