@@ -2,16 +2,7 @@
 
 ## We made this project to sell our own merch.
 
-**_Key pages in the application include:_**
-
-- Login and Registration pages
-- Main page
-- Catalog Product page
-- Detailed Product page
-- User Profile page
-- Basket page
-- About Us page
-- Sale page
+https://yes-code-merch.netlify.app/
 
 ## The technology stack used:
 
@@ -36,6 +27,17 @@
 - Sass
 - Swiper
 - Yup
+
+## Key pages in the application include:
+
+- Login and Registration pages
+- Main page
+- Catalog Product page
+- Detailed Product page
+- User Profile page
+- Basket page
+- About Us page
+- Sale page
 
 ### Getting Started with Create React App
 
