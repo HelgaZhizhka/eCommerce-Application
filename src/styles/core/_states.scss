@@ -1,0 +1,55 @@
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-1 {
+  margin-right: 10px;
+}
+
+.text-inherit {
+  color: inherit;
+}
+
+.text-brand {
+  margin: 0 5px;
+  color: var(--state-primary);
+  border-bottom: 1px solid var(--state-primary);
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  &::after {
+    color: var(--light-white);
+    text-shadow: 1px 1px 1px var(--gray);
+  }
+}
+
+.swiper-scrollbar-drag {
+  background: var(--state-primary) !important;
+}
+
+.text-overflow {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+input[type="search"]::-webkit-search-clear-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type="search"]::-ms-clear {
+  display: none;
+}
+
+
+input[type="search"]::-webkit-search-cancel-button {
+  appearance: none;
+}

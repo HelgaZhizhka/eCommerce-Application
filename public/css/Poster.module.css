@@ -1,0 +1,47 @@
+.root {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, auto));
+  gap: 16px;
+  overflow-x: auto;
+}
+@media screen and (min-width: 1024px) {
+  .root {
+    grid-template-columns: repeat(3, minmax(auto, 200px));
+  }
+}
+
+.item {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+.item:nth-child(1) {
+  background-color: var(--blue);
+}
+.item:nth-child(2) {
+  background-color: var(--green);
+}
+.item:nth-child(3) {
+  background-color: var(--orange);
+}
+.item:nth-child(4) {
+  background-color: var(--orange);
+}
+.item:nth-child(5) {
+  background-color: var(--purple);
+}
+.item:nth-child(6) {
+  background-color: var(--pink);
+}/*# sourceMappingURL=Poster.module.css.map */

@@ -1,0 +1,28 @@
+.root {
+  position: relative;
+  display: block;
+}
+
+.horizontal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.horizontal .badge {
+  margin-right: 10px;
+}
+
+.vertical {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 32px;
+  border-top: var(--state-primary) 1px solid;
+  text-align: center;
+  font-size: toRem(20px);
+}
+.vertical .badge {
+  margin: 0 auto 10px;
+}/*# sourceMappingURL=InfoPanel.module.css.map */

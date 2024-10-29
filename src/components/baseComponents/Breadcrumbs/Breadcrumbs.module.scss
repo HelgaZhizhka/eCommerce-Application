@@ -1,0 +1,20 @@
+.root {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.link {
+  color: inherit;
+  text-transform: capitalize;
+  transition: var(--transition-duration) var(--transition-function);
+
+  &:hover {
+    color: var(--state-primary);
+    text-decoration: underline;
+  }
+
+  &[aria-current='page'] {
+    text-decoration: underline;
+    color: var(--state-primary);
+  }
+}

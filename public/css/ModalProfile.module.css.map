@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/components/baseComponents/ModalProfile/ModalProfile.module.scss","ModalProfile.module.css","../../src/styles/abstract/_mixins.scss"],"names":[],"mappings":"AAGA;EACE,kBAAA;EACA,QAAA;EACA,SAAA;EACA,wCAAA;UAAA,gCAAA;EACA,YAAA;ACFF;ACFI;EFDJ;IAQI,YAAA;ECDF;AACF","file":"ModalProfile.module.css"}

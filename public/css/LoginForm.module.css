@@ -1,0 +1,45 @@
+.lineContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100%;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: var(--gray);
+  top: 50%;
+}
+
+.text {
+  background-color: var(--body-bg);
+  padding: 0 20px;
+  z-index: 1;
+}
+
+.dark {
+  background-color: var(--dark);
+}
+
+.btnLogin {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.error {
+  color: red;
+}
+
+.none {
+  display: none;
+}/*# sourceMappingURL=LoginForm.module.css.map */

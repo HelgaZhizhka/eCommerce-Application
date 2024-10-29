@@ -1,0 +1,11 @@
+.root {
+  position: relative;
+
+  * {
+    user-select: none;
+  }
+}
+
+.small {
+  width: 80px;
+}

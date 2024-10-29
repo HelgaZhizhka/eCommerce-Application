@@ -1,0 +1,33 @@
+@import '../../styles/abstract/functions';
+
+.root {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  padding: 60px 20px 30px;
+  overflow-y: auto;
+  height: var(--app-height);
+  background-color: var(--body-bg);
+  z-index: var(--z-index-navbar);
+}
+
+.link {
+  display: block;
+  font-size: toRem(24px);
+}
+
+.close {
+  top: 30px;
+  right: 20px;
+}
+
+.phone {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: toRem(24px);
+}
+
+.info {
+  margin-top: 30px;
+}
