@@ -6,9 +6,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 0".
 
 ## Checklist
 
-- [ ] **0.1 [HUMAN]** Rotate the Commercetools API client in Merchant Center.
-      New client: minimal scopes (`view_published_products`, me-endpoints).
-      Old clientId/secret revoked. Update Netlify env vars.
+- [x] **0.1 [HUMAN]** ~~Rotate the Commercetools API client.~~ Done 2026-06-11:
+      new SPA-template client (minimal scopes) in project `yes-code-project-0526`,
+      local `.env` switched and verified end-to-end (token OK, 17 categories /
+      110 products / 4 product types, home + catalog render, anonymous cart works).
+      **Remaining human follow-ups:**
+  - [ ] deactivate the old 2023 API client in Merchant Center
+  - [ ] extend validity of discount code `BAGS15-SP` (expired 2026-03-15 —
+        blocks the promo e2e scenario in 0.5)
+  - [ ] update Netlify env vars (can wait until phase 2 BFF)
 - [x] **0.2** ~~Remove `package-lock.json` from `.gitignore`; commit lockfile.~~
       Done 2026-06-10 (`ea86093`): npm lockfile committed, `.nvmrc` → Node 22.
       pnpm deferred to phase 1 (react-scripts 5 has known hoisting issues with pnpm).

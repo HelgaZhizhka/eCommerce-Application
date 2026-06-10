@@ -10,7 +10,8 @@
 - **Next agent tasks:** 0.5 — Playwright e2e suite (7 scenarios); 0.6 —
   characterization tests for cartHelpers/productHelpers/validators
 - **Pending human tasks:**
-  - 0.1 — rotate the Commercetools API client in Merchant Center (blocks phase 2)
+  - deactivate the OLD 2023 API client in Merchant Center (new client live since 2026-06-11)
+  - extend validity of discount code `BAGS15-SP` — expired 2026-03-15, blocks promo e2e
   - push branch + open PR into `develop` to get the first CI run
 
 ## Blockers
