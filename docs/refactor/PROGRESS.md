@@ -5,16 +5,17 @@
 
 ## Current state
 
-- **Phase:** 0 — Safety net & security (not started)
-- **Branch:** `refactor/phase-0-safety-net`
-- **Next action:** 0.1 — rotate the Commercetools API client in Merchant Center
-  (**human task** — agents cannot do this; blocks nothing else, but must happen
-  before phase 2 ships)
-- **First agent task:** 0.2 — commit lockfile / move to pnpm
+- **Phase:** 0 — Safety net & security (in progress: 0.2 ✅, 0.3 ✅, 0.4 committed/awaiting PR run)
+- **Branch:** `refactor/phase-0-safety-net` (not pushed yet)
+- **Next agent tasks:** 0.5 — Playwright e2e suite (7 scenarios); 0.6 —
+  characterization tests for cartHelpers/productHelpers/validators
+- **Pending human tasks:**
+  - 0.1 — rotate the Commercetools API client in Merchant Center (blocks phase 2)
+  - push branch + open PR into `develop` to get the first CI run
 
 ## Blockers
 
-- (none yet)
+- (none)
 
 ## Decisions made
 
