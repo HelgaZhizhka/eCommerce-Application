@@ -3,7 +3,7 @@ import Price from '../components/baseComponents/Price/Price';
 
 describe('Price', () => {
   it('should render the price with the given props', () => {
-    const price = '100';
+    const price = 100;
     const currency = 'USD';
     const className = 'custom-class';
     const variant = 'new';
@@ -14,7 +14,7 @@ describe('Price', () => {
       </Price>
     );
 
-    const priceElement = getByText(price);
+    const priceElement = getByText(String(price));
     expect(priceElement).toBeInTheDocument();
 
     const currencyElement = getByText(currency);
