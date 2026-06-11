@@ -12,8 +12,6 @@
   10 e2e, exit 0 (2026-06-11)
 - **Next:** push + PR → CI green → merge → start phase 1 (CRA → Vite)
 - **Pending human tasks:**
-  - extend validity of discount code `BAGS15-SP` — expired 2026-03-15; then
-    un-fixme `e2e/promo.spec.ts`
   - push branch + open PR into `develop` to get the first CI run
   - (verify with colleague) old 2023 API client deactivated in Merchant Center
 

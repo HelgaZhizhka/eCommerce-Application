@@ -33,8 +33,8 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 0".
   - [x] catalog: category navigation + size filter + reset + pagination
   - [x] product detail page (via cart flow)
   - [x] cart: add / change quantity / remove line item / clear all
-  - [ ] promo code apply / remove — `test.fixme` in `e2e/promo.spec.ts`,
-        BLOCKED on extending `BAGS15-SP` validity (expired 2026-03-15)
+  - [x] promo code apply — enabled 2026-06-11 after `BAGS15-SP` validity was
+        extended in Merchant Center; full suite: 11/11 green
   - [x] profile: view registered data, open edit mode
   - Notes: product-card `<a>` wrappers are layout-invisible to Playwright
     (assert on inner `img`); products API has no stable sort (assert counts,
