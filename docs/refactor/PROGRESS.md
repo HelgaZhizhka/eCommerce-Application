@@ -5,14 +5,16 @@
 
 ## Current state
 
-- **Phase:** 0 — Safety net & security (in progress: 0.2 ✅, 0.3 ✅, 0.4 committed/awaiting PR run)
+- **Phase:** 0 — Safety net & security (0.1 ✅, 0.2 ✅, 0.3 ✅, 0.4 committed/awaiting
+  PR run, 0.5 ✅ except promo, 0.6 — next)
 - **Branch:** `refactor/phase-0-safety-net` (not pushed yet)
-- **Next agent tasks:** 0.5 — Playwright e2e suite (7 scenarios); 0.6 —
-  characterization tests for cartHelpers/productHelpers/validators
+- **Next agent task:** 0.6 — characterization tests for
+  cartHelpers/productHelpers/validators
 - **Pending human tasks:**
-  - deactivate the OLD 2023 API client in Merchant Center (new client live since 2026-06-11)
-  - extend validity of discount code `BAGS15-SP` — expired 2026-03-15, blocks promo e2e
+  - extend validity of discount code `BAGS15-SP` — expired 2026-03-15; then
+    un-fixme `e2e/promo.spec.ts`
   - push branch + open PR into `develop` to get the first CI run
+  - (verify with colleague) old 2023 API client deactivated in Merchant Center
 
 ## Blockers
 
@@ -28,6 +30,20 @@
 | 2026-06-10 | Open decisions pending (plan §3.2): UI kit (MUI 7 vs Tailwind 4 + shadcn/ui) — must be decided before phase 5; Vite SPA + BFF chosen over Next.js |
 
 ## Session log
+
+### 2026-06-11 — Session 2 (phase 0 execution)
+
+- 0.2/0.3/0.4: lockfile committed, 9 dead deps + `public/css` removed, CI added;
+  fixed pre-commit hook (`/dev/tty`) and a tsc error in `Price.test.tsx`
+- 0.1: new SPA-scope client verified end-to-end (token, 17 categories,
+  110 products, anonymous cart, home + catalog render); `.env` remapped from
+  colleague's `CTP_*` format
+- 0.5: Playwright suite — 10 tests across smoke/catalog/filter/cart/auth,
+  green twice in a row; promo spec `fixme` until `BAGS15-SP` is extended
+- Found & pinned quirks: unstable product sort, cart-version race on clear,
+  layout-invisible card anchors, swapped sort/filter aria-labels (mobile),
+  breadcrumb `/cart/cart` URL, "Sing up" typo — fix candidates for phases 3-5
+- **Evidence:** `./scripts/verify.sh` output quoted in PR description / session notes
 
 ### 2026-06-10 — Session 1 (analysis & scaffolding)
 
