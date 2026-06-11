@@ -10,12 +10,12 @@ import {
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
-const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];
-const hostAPI = `${process.env.REACT_APP_API_URL_CLIENT}`;
-const hostAUTH = `${process.env.REACT_APP_AUTH_URL_CLIENT}`;
-const clientId = `${process.env.REACT_APP_CLIENT_ID_CLIENT}`;
-const clientSecret = `${process.env.REACT_APP_CLIENT_SECRET_CLIENT}`;
+const projectKey = `${import.meta.env.VITE_PROJECT_KEY_CLIENT}`;
+const scopes = [`${import.meta.env.VITE_SCOPES_CLIENT}`];
+const hostAPI = `${import.meta.env.VITE_API_URL_CLIENT}`;
+const hostAUTH = `${import.meta.env.VITE_AUTH_URL_CLIENT}`;
+const clientId = `${import.meta.env.VITE_CLIENT_ID_CLIENT}`;
+const clientSecret = `${import.meta.env.VITE_CLIENT_SECRET_CLIENT}`;
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: hostAPI,

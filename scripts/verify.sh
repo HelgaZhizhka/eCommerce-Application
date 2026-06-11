@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Single verification gate. Agents must run this (and quote output)
-# before claiming any task done. Extended as phases land:
-#   phase 0: + playwright e2e
-#   phase 1: switches to vite/vitest/pnpm commands
+# before claiming any task done.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -23,7 +21,7 @@ echo "=== Lint ==="
 npm run eslint
 
 echo "=== Unit tests ==="
-CI=true npm test -- --watchAll=false
+npm test
 
 if [ -d e2e ] || [ -f playwright.config.ts ]; then
   echo "=== E2E (Playwright) ==="

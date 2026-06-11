@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import { Snackbar, Alert } from '@mui/material';
 
 import { cartStore, productStore, userStore } from '../../stores';
 

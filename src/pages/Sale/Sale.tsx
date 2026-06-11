@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 
 import { lightTheme } from '../../theme';
 import fon1 from './images/sale1.jpg';

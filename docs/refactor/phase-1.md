@@ -4,16 +4,26 @@ Goal: same app, living foundation. Plan reference: REFACTORING_PLAN.md §5, "Ф�
 
 ## Checklist
 
-- [ ] **1.1** Vite 7 + `@vitejs/plugin-react`: move `index.html` to root,
-      `REACT_APP_*` → `import.meta.env.VITE_*`, zod-validated env on startup.
-      Remove `react-scripts`, `react-app-env.d.ts`, `.browserslistrc` review.
+- [x] **1.1** Vite + `@vitejs/plugin-react`. Done 2026-06-11: **Vite 7.3.5**
+      (Vite 8.0.x has an open rolldown-optimizer regression breaking
+      emotion/MUI prebundling — vitejs/vite#22499; revisit after upstream fix).
+      `index.html` at root, `REACT_APP_*` → `VITE_*` (typed in `vite-env.d.ts`),
+      react-scripts/react-app-env.d.ts removed, `build.outDir=build` (Netlify).
+      Required along the way: MUI deep imports (`@mui/material/X`,
+      `@mui/system/*`) normalized to barrel imports via codemod (44 files) —
+      mixed deep/barrel entries broke dep-optimizer interop; `define.global`
+      polyfill + browser-build aliases for the deprecated CT SDK (die in
+      phase 2). zod env validation deferred to phase 4 (zod arrives there).
 - [ ] **1.2** TypeScript 5.9: `strict` + `noUncheckedIndexedAccess` +
       `exactOptionalPropertyTypes`, drop `allowJs`, add `@/*` path alias
       (tsconfig + vite resolve). Fix resulting type errors.
 - [ ] **1.3** ESLint 9 flat config + typescript-eslint 8 + Prettier 3.
       Fix husky/lint-staged: must cover `*.ts` AND `*.tsx`.
-- [ ] **1.4** Vitest 3 + RTL: port surviving tests (~11 validator tests).
-      Delete: empty Footer test bodies, byte-identical SignIn/SignUp duplicates.
+- [x] **1.4** Vitest + RTL. Done 2026-06-11: **Vitest 4.1.8** (current major),
+      all 18 suites ported (`jest.*` → `vi.*`, jest-dom v6 vitest build,
+      `classNameStrategy: 'non-scoped'` for legacy CSS-module assertions).
+      Deleted: byte-identical SignIn/SignUp duplicates (real coverage in
+      credentialsValidate.test.ts), 2 empty Footer test bodies → 57 tests green.
 - [ ] **1.5** React 18 → 19: update types, remove `react-dom/test-utils` usage,
       verify mobx-react-lite compatibility (MobX still present until phase 3).
 - [ ] Phase 0 e2e suite green against the Vite build.

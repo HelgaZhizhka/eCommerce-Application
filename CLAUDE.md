@@ -36,10 +36,11 @@ for every agent session.
 ## Verification commands
 
 ```bash
-./scripts/verify.sh        # full gate: install + typecheck + lint + unit (+ e2e when present)
-npx tsc --noEmit           # typecheck only
+./scripts/verify.sh        # full gate: install + typecheck + lint + unit + e2e
+npm run typecheck          # tsc --noEmit
 npm run eslint             # lint only
-CI=true npm test -- --watchAll=false   # unit tests (CRA/Jest until phase 1)
+npm test                   # unit tests (Vitest, single run)
+npx playwright test        # e2e only
 ```
 
 ## Definition of done (per checklist item)

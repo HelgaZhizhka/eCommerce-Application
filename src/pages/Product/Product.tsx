@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 
 import { productStore } from '../../stores';
 import { RoutePaths } from '../../routes/routes.enum';

@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
+import { Chip, Box, styled } from '@mui/material';
 
 import { sizes } from '../../../constants';
 import { productStore } from '../../../stores';

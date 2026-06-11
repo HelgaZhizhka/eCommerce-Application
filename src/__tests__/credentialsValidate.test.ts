@@ -31,8 +31,8 @@ const signUp = (values: Partial<RegistrationFormValues>): Flags =>
 
 describe('sigIn validate (characterization)', () => {
   it('QUIRK: always returns an empty errors object — Formik never sees errors', () => {
-    expect(signInValidate({ email: '', password: '' }, jest.fn())).toEqual({});
-    expect(signInValidate({ email: 'a@b.com', password: 'Abcd1234' }, jest.fn())).toEqual({});
+    expect(signInValidate({ email: '', password: '' }, vi.fn())).toEqual({});
+    expect(signInValidate({ email: 'a@b.com', password: 'Abcd1234' }, vi.fn())).toEqual({});
   });
 
   it('passes a valid email and password with no failing rules', () => {

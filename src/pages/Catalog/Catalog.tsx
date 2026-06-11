@@ -1,10 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { useEffect, useState, MouseEvent } from 'react';
 import { observer } from 'mobx-react-lite';
-import Container from '@mui/material/Container';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { IconButton } from '@mui/material';
+import { Container, useMediaQuery, useTheme, IconButton } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SortIcon from '@mui/icons-material/Sort';
 

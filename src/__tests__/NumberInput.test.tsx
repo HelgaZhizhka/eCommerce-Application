@@ -4,7 +4,7 @@ import NumberInput from '../components/baseComponents/NumberInput/NumberInput';
 describe('NumberInput', () => {
   it('should render the input with the given props', () => {
     const value = 42;
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const min = 0;
     const max = 100;
     const label = 'Number:';

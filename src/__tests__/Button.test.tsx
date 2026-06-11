@@ -8,7 +8,7 @@ test('renders a button with children', () => {
 });
 
 test('calls the onClick function when clicked', () => {
-  const onClickMock = jest.fn();
+  const onClickMock = vi.fn();
   const { getByText } = render(<Button onClick={onClickMock}>Click me</Button>);
   const buttonElement = getByText('Click me');
 
@@ -24,7 +24,7 @@ test('adds the "disabled" class when disabled prop is true', () => {
 });
 
 test('does not call the onClick function when disabled', () => {
-  const onClickMock = jest.fn();
+  const onClickMock = vi.fn();
   const { getByText } = render(
     <Button onClick={onClickMock} disabled>
       Click me

@@ -1,5 +1,4 @@
-import Container from '@mui/material/Container';
-import { Box } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { AboutPerson } from '../../components/AboutPerson';
 
 import logoRs from './image/rs_school_js 1.png';

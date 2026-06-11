@@ -1,4 +1,4 @@
-import { ThemeOptions, createTheme } from '@mui/material/styles';
+import { ThemeOptions, createTheme } from '@mui/material';
 
 const getCSSVariableValue = (name: string): string =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();

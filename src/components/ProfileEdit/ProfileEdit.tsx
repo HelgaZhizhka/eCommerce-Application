@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Address } from '@commercetools/platform-sdk';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 
 import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
 import { ProfileAddress } from '../ProfileAddress';

@@ -1,4 +1,4 @@
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 
 import poster1 from '../../assets/images/fon1.png';
 import LoginForm from '../../components/LoginForm/LoginForm';

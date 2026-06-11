@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 
 import {
   RegistrationForm,

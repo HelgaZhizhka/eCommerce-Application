@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
-import Container from '@mui/material/Container';
+import { Container, IconButton, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import IconButton from '@mui/material/IconButton';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Badge from '@mui/material/Badge';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { IconName } from '../baseComponents/Icon/Icon.enum';

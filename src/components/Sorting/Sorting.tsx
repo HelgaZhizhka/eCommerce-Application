@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Menu } from '@mui/material';
+import { Button, Menu, Box, styled } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { Box, styled } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 

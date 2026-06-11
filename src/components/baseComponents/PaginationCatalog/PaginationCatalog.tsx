@@ -1,5 +1,4 @@
-import Pagination from '@mui/material/Pagination';
-import { Box } from '@mui/material';
+import { Pagination, Box } from '@mui/material';
 
 type Props = {
   handleChange: (page: number) => void;

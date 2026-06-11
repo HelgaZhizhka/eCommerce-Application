@@ -5,13 +5,13 @@
 
 ## Current state
 
-- **Phase:** 0 — Safety net & security: **COMPLETE** (0.1–0.6 ✅)
-- **PR:** #216 `refactor/phase-0-safety-net` → `develop`, CI green
-  (verify job: 1m00s), awaiting review/merge
-- **Final gate:** `./scripts/verify.sh` → install + tsc + lint + 69 unit +
-  11 e2e, exit 0 (2026-06-11)
-- **Next:** merge PR #216 → start phase 1 (CRA → Vite 7, React 19, TS 5.9,
-  ESLint 9, Vitest) on branch `refactor/phase-1-vite`
+- **Phase:** 1 — Build & tooling (phase 0 merged as PR #216)
+- **Branch:** `refactor/phase-1-vite` (not pushed yet)
+- **Done:** 1.1 CRA → Vite 7.3.5 ✅, 1.4 Jest → Vitest 4 ✅ — app renders,
+  all gates green (tsc, lint, 57 unit, build 3.8s, 11/11 e2e)
+- **Next:** 1.2 TS 5.9 strict extras → 1.3 ESLint 9 flat config → 1.5 React 19
+- **Watch:** Vite pinned to major 7 due to vitejs/vite#22499 (Vite 8 rolldown
+  optimizer breaks emotion/MUI); unpin when fixed upstream
 - **Pending human tasks:**
   - push branch + open PR into `develop` to get the first CI run
   - (verify with colleague) old 2023 API client deactivated in Merchant Center

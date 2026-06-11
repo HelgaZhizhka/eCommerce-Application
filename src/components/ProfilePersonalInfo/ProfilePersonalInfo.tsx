@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { Form, Formik } from 'formik';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 
 import { FieldWrapper } from '../baseComponents/FieldWrapper';
 import { validationSchema } from './validate';

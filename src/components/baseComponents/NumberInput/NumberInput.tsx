@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import TextField from '@mui/material/TextField';
+import { TextField } from '@mui/material';
 
 import styles from './NumberInput.module.scss';
 

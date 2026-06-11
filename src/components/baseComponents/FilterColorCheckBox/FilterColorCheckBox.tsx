@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { Button, Box } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
 import { productStore } from '../../../stores';

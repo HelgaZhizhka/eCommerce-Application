@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
 type Props = {

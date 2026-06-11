@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite/dist/index';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 
 import { userStore } from '../../stores';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
