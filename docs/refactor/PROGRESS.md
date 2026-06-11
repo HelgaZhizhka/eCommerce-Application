@@ -5,11 +5,12 @@
 
 ## Current state
 
-- **Phase:** 0 — Safety net & security (0.1 ✅, 0.2 ✅, 0.3 ✅, 0.4 committed/awaiting
-  PR run, 0.5 ✅ except promo, 0.6 — next)
+- **Phase:** 0 — Safety net & security: **agent tasks complete**
+  (0.1 ✅, 0.2 ✅, 0.3 ✅, 0.4 awaiting first PR run, 0.5 ✅ except blocked promo, 0.6 ✅)
 - **Branch:** `refactor/phase-0-safety-net` (not pushed yet)
-- **Next agent task:** 0.6 — characterization tests for
-  cartHelpers/productHelpers/validators
+- **Final gate:** `./scripts/verify.sh` → install + tsc + lint + 69 unit +
+  10 e2e, exit 0 (2026-06-11)
+- **Next:** push + PR → CI green → merge → start phase 1 (CRA → Vite)
 - **Pending human tasks:**
   - extend validity of discount code `BAGS15-SP` — expired 2026-03-15; then
     un-fixme `e2e/promo.spec.ts`

@@ -40,12 +40,17 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 0".
     (assert on inner `img`); products API has no stable sort (assert counts,
     not exact sets); cart clear races on cart version if clicked before the
     page's getCart settles (`networkidle` guard in specs).
-- [ ] **0.6** Characterization unit tests for logic that survives migration:
-  - [ ] `stores/cartHelpers.getCartProducts` (cent amounts, discounts, promo)
-  - [ ] `stores/productHelpers`
-  - [ ] validators in `utils/validate/` — pin current behavior **including known
-        bugs**, marked with `// TODO(refactor): bug pinned intentionally, fix in phase 4`
-- [ ] Update `scripts/verify.sh` to include e2e once 0.5 lands.
+- [x] **0.6** Characterization unit tests. Done 2026-06-11: 27 new tests
+      (`cartHelpers.test.ts`, `productHelpers.test.ts`, `credentialsValidate.test.ts`).
+  - [x] `getCartProducts`: prices/discounts/promo + quirks (missing price drops
+        totalPrice; missing key/name → string "undefined")
+  - [x] `productHelpers`: getPriceValue, extractSizesWithVariantId (dedupe keeps
+        last variant), getSku (BUG pinned: TypeError on unknown id),
+        transformFetchedCategories (orderHint sort + nesting)
+  - [x] `sigIn`/`signUp` validators (previously ZERO coverage): rule flags,
+        always-empty errors object, single-char-password bug — all pinned with
+        `TODO(refactor)` marks for phases 3-4
+- [x] `scripts/verify.sh` includes e2e (auto-detected via playwright.config.ts).
 - [ ] Update `PROGRESS.md`; open PR `refactor/phase-0-safety-net` → `develop`.
 
 ## Exit criteria
