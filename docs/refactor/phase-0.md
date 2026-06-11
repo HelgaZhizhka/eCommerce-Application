@@ -22,9 +22,8 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 0".
       Done 2026-06-10 (`ea86093`): removed 9 packages (the planned 7 + `jsdom` +
       `@types/react-transition-group`, both also unused). Verified: tsc, eslint,
       42/42 unit tests, production build — all green on Node 22.
-- [ ] **0.4** GitHub Actions CI: lint + `tsc --noEmit` + unit tests on PR.
-      Workflow committed (`.github/workflows/ci.yml`); waiting on first PR run
-      to call it done.
+- [x] **0.4** ~~GitHub Actions CI.~~ Done 2026-06-11: first run green on
+      PR #216 (`verify` job: install + tsc + eslint + unit, 1m00s).
 - [x] **0.5** Playwright e2e suite pinning current behavior. Done 2026-06-11:
       10 tests green twice in a row (`npx playwright test`, webServer reuses
       local CRA dev server on :3000).

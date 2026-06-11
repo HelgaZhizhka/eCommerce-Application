@@ -5,12 +5,13 @@
 
 ## Current state
 
-- **Phase:** 0 — Safety net & security: **agent tasks complete**
-  (0.1 ✅, 0.2 ✅, 0.3 ✅, 0.4 awaiting first PR run, 0.5 ✅ except blocked promo, 0.6 ✅)
-- **Branch:** `refactor/phase-0-safety-net` (not pushed yet)
+- **Phase:** 0 — Safety net & security: **COMPLETE** (0.1–0.6 ✅)
+- **PR:** #216 `refactor/phase-0-safety-net` → `develop`, CI green
+  (verify job: 1m00s), awaiting review/merge
 - **Final gate:** `./scripts/verify.sh` → install + tsc + lint + 69 unit +
-  10 e2e, exit 0 (2026-06-11)
-- **Next:** push + PR → CI green → merge → start phase 1 (CRA → Vite)
+  11 e2e, exit 0 (2026-06-11)
+- **Next:** merge PR #216 → start phase 1 (CRA → Vite 7, React 19, TS 5.9,
+  ESLint 9, Vitest) on branch `refactor/phase-1-vite`
 - **Pending human tasks:**
   - push branch + open PR into `develop` to get the first CI run
   - (verify with colleague) old 2023 API client deactivated in Merchant Center
