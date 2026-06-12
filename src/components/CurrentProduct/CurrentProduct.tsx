@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Box, Button, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
-import { cartStore, productStore } from '../../stores';
+import { cartStore } from '../../stores';
+import { ProductType } from '../../stores/Store.types';
 import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';
@@ -15,14 +16,14 @@ import styles from './CurrentProduct.module.scss';
 
 type Props = {
   className?: string;
+  product: ProductType | undefined;
+  isLoading: boolean;
 };
 
-const CurrentProduct: React.FC<Props> = () => {
+const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading }) => {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const { currentProduct, isProductLoading } = productStore;
 
   const { addToCart, isProductInCart, removeProductFromCart } = cartStore;
 
@@ -62,7 +63,7 @@ const CurrentProduct: React.FC<Props> = () => {
     }
   }, [currentProduct]);
 
-  if (isProductLoading) {
+  if (isLoading) {
     return (
       <Box
         sx={{

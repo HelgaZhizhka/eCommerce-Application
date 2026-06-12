@@ -1,27 +1,20 @@
-import { observer } from 'mobx-react-lite';
 import { MenuItem } from '@mui/material';
 
-import { productStore } from '../../../stores';
 import { SortOption } from './SortList.enum';
 
 type Props = {
   className?: string;
+  value: SortOption;
+  onSelect: (sort: SortOption) => void;
   handleMenuItemClick?: (sortOption: SortOption) => void;
-  onChange?: (type?: string) => void;
 };
 
-const SortingList: React.FC<Props> = ({ handleMenuItemClick, onChange }) => {
-  const { sortState, setSortState } = productStore;
-
+const SortingList: React.FC<Props> = ({ value, onSelect, handleMenuItemClick }) => {
   const handleMenuItemClickWrapper = (sortEnumValue: SortOption): void => {
-    setSortState(sortEnumValue);
+    onSelect(sortEnumValue);
 
     if (handleMenuItemClick) {
       handleMenuItemClick(sortEnumValue);
-    }
-
-    if (onChange) {
-      onChange('sort');
     }
   };
 
@@ -33,7 +26,7 @@ const SortingList: React.FC<Props> = ({ handleMenuItemClick, onChange }) => {
           <MenuItem
             sx={{
               width: '100%',
-              backgroundColor: sortEnumValue === sortState ? 'var(--spicy-orange)' : 'transparent',
+              backgroundColor: sortEnumValue === value ? 'var(--spicy-orange)' : 'transparent',
             }}
             key={index}
             onClick={(): void => handleMenuItemClickWrapper(sortEnumValue)}
@@ -46,4 +39,4 @@ const SortingList: React.FC<Props> = ({ handleMenuItemClick, onChange }) => {
   );
 };
 
-export default observer(SortingList);
+export default SortingList;

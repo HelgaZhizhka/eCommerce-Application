@@ -1,14 +1,13 @@
 import { observer } from 'mobx-react-lite';
 import { Snackbar, Alert } from '@mui/material';
 
-import { cartStore, productStore, userStore } from '../../stores';
+import { cartStore, userStore } from '../../stores';
 
 const SnackBar: React.FC = () => {
   const userError = userStore.error;
   const userSuccess = userStore.success;
   const cartSuccess = cartStore.success;
 
-  const productError = productStore.error;
   const cartError = cartStore.error;
 
   const handleClose = (): void => {
@@ -20,16 +19,16 @@ const SnackBar: React.FC = () => {
 
   return (
     <>
-      {(userError || productError || cartError) && (
+      {(userError || cartError) && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!userError || !!productError || !!cartError}
-          message={userError || productError || cartError}
+          open={!!userError || !!cartError}
+          message={userError || cartError}
           onClose={handleClose}
           autoHideDuration={4000}
         >
           <Alert severity="error" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {userError || productError || cartError}
+            {userError || cartError}
           </Alert>
         </Snackbar>
       )}

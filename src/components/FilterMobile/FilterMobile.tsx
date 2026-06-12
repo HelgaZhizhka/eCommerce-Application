@@ -7,22 +7,25 @@ import { FilterPrice } from '../baseComponents/FilterPrice';
 import { FilterReset } from '../baseComponents/FilterReset';
 import styles from './FilterMobile.module.scss';
 
-type Props = {
+import { FilterControlsProps } from '../Filter/Filter';
+
+type Props = FilterControlsProps & {
   anchorElFilter: null | HTMLElement;
-  isFilterSize: boolean;
-  isFilterColor: boolean;
   handleCloseFilter: () => void;
-  onReset: () => void;
-  onChange?: (type?: string) => void;
 };
 
 const FilterMobile: React.FC<Props> = ({
   anchorElFilter,
   isFilterSize,
   isFilterColor,
+  sizes,
+  colors,
+  price,
+  onSizesChange,
+  onColorsChange,
+  onPriceChange,
   handleCloseFilter,
   onReset,
-  onChange,
 }) => {
   const open = Boolean(anchorElFilter);
 
@@ -56,9 +59,9 @@ const FilterMobile: React.FC<Props> = ({
         >
           <CloseIcon />
         </IconButton>
-        {isFilterSize && <FilterChip onChange={onChange} />}
-        {isFilterColor && <FilterColorCheckBox onChange={onChange} />}
-        <FilterPrice onChange={onChange} />
+        {isFilterSize && <FilterChip selected={sizes} onChange={onSizesChange} />}
+        {isFilterColor && <FilterColorCheckBox selected={colors} onChange={onColorsChange} />}
+        <FilterPrice value={price} onChange={onPriceChange} />
         <FilterReset mobile onClick={onReset} />
       </div>
     </Popover>

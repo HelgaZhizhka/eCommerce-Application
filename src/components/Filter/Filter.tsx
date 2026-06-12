@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 
 import { FilterChip } from '../baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../baseComponents/FilterColorCheckBox';
@@ -8,22 +7,41 @@ import { FilterPrice } from '../baseComponents/FilterPrice';
 import { FilterReset } from '../baseComponents/FilterReset';
 import styles from './Filter.module.scss';
 
-type Props = {
-  className?: string;
+export type FilterControlsProps = {
   isFilterSize: boolean;
   isFilterColor: boolean;
+  sizes: string[];
+  colors: string[];
+  price: number[];
+  onSizesChange: (sizes: string[]) => void;
+  onColorsChange: (colors: string[]) => void;
+  onPriceChange: (price: number[]) => void;
   onReset: () => void;
-  onChange?: (type?: string) => void;
 };
 
-const Filter: React.FC<Props> = ({ className, isFilterSize, isFilterColor, onReset, onChange }) => (
+type Props = FilterControlsProps & {
+  className?: string;
+};
+
+const Filter: React.FC<Props> = ({
+  className,
+  isFilterSize,
+  isFilterColor,
+  sizes,
+  colors,
+  price,
+  onSizesChange,
+  onColorsChange,
+  onPriceChange,
+  onReset,
+}) => (
   <Box className={`${className} ${styles.root}`} sx={{ maxWidth: 350, padding: 2, bgcolor: 'var(--component-bg)' }}>
     <FilterNestedList />
-    {isFilterSize && <FilterChip onChange={onChange} />}
-    {isFilterColor && <FilterColorCheckBox onChange={onChange} />}
-    <FilterPrice onChange={onChange} />
+    {isFilterSize && <FilterChip selected={sizes} onChange={onSizesChange} />}
+    {isFilterColor && <FilterColorCheckBox selected={colors} onChange={onColorsChange} />}
+    <FilterPrice value={price} onChange={onPriceChange} />
     <FilterReset onClick={onReset} />
   </Box>
 );
 
-export default observer(Filter);
+export default Filter;

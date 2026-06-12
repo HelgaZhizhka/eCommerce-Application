@@ -1,28 +1,24 @@
-import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import { Slider, Box } from '@mui/material';
 
 import { initialPriceRange } from '../../../constants';
-import { productStore } from '../../../stores';
 import styles from './FilterPrice.module.scss';
 
 const valueText = (value: number): string => `${value}`;
 
 type Props = {
   className?: string;
-  onChange?: (type?: string) => void;
+  value: number[];
+  onChange: (committed: number[]) => void;
 };
 
-const FilterPrice: React.FC<Props> = ({ onChange }) => {
-  const { updateFilterPrice, filterPrice } = productStore;
-  const handleChange = (event: Event, newValue: number | number[]): void => {
-    updateFilterPrice(newValue as number[]);
-  };
+const FilterPrice: React.FC<Props> = ({ value, onChange }) => {
+  // local state while dragging; the URL/query updates on commit only
+  const [draft, setDraft] = useState<number[]>(value);
 
-  const handleChangeCommit = (): void => {
-    if (onChange) {
-      onChange('price');
-    }
-  };
+  useEffect(() => {
+    setDraft(value);
+  }, [value]);
 
   return (
     <div className={styles.root}>
@@ -35,15 +31,15 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
             letterSpacing: '0.4px',
           }}
         >
-          EUR {filterPrice[0]} - {filterPrice[1]}
+          EUR {draft[0]} - {draft[1]}
         </Box>
       </Box>
       <Box style={{ width: '100%' }}>
         <Slider
           getAriaLabel={(): string => 'Price range'}
-          value={filterPrice}
-          onChange={handleChange}
-          onChangeCommitted={handleChangeCommit}
+          value={draft}
+          onChange={(event, newValue): void => setDraft(newValue as number[])}
+          onChangeCommitted={(): void => onChange(draft)}
           valueLabelDisplay="auto"
           getAriaValueText={valueText}
           min={initialPriceRange.min}
@@ -54,4 +50,4 @@ const FilterPrice: React.FC<Props> = ({ onChange }) => {
   );
 };
 
-export default observer(FilterPrice);
+export default FilterPrice;

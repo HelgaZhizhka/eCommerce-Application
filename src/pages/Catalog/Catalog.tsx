@@ -1,6 +1,5 @@
 import { useParams, Navigate } from 'react-router-dom';
-import { useEffect, useState, MouseEvent } from 'react';
-import { observer } from 'mobx-react-lite';
+import { useState, MouseEvent } from 'react';
 import { Container, useMediaQuery, useTheme, IconButton } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SortIcon from '@mui/icons-material/Sort';
@@ -10,12 +9,13 @@ import { RoutePaths } from '../../routes/routes.enum';
 import { Filter } from '../../components/Filter';
 import { Sorting } from '../../components/Sorting';
 import { ProductList } from '../../components/ProductList';
-import { productStore } from '../../stores';
-import { categoryIdByName, useCategoriesQuery } from '../../queries/categories';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
 import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
+import { categoryIdByName, useCategoriesQuery } from '../../queries/categories';
+import { useCatalogParams } from '../../queries/catalogParams';
+import { useCatalogProductsQuery, useCategoryAttributesQuery } from '../../queries/products';
 import { DEFAULT_LIMIT } from '../../constants';
 
 import styles from './Catalog.module.scss';
@@ -26,68 +26,26 @@ type Params = {
 };
 
 const Catalog: React.FC = () => {
-  const {
-    isFilterSize,
-    isFilterColor,
-    totalProducts,
-    currentPage,
-    fetchProductsByCategory,
-    fetchProductsTypeByCategory,
-    getFilteredProducts,
-    fetchSearchProducts,
-    paginationNavigate,
-    setCurrentPage,
-    clearFilterData,
-  } = productStore;
-
   const { categoryId, subcategoryId } = useParams<Params>();
-  const { data: categories } = useCategoriesQuery();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
   const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
-  const getId = (): string | undefined => {
-    if (!categoryId) {
-      return '';
-    }
-
-    const idCategory = subcategoryId || categoryId;
-
-    return categoryIdByName(categories, idCategory);
-  };
-
-  const getProducts = (): void => {
-    if (!categoryId) {
-      return;
-    }
-
-    fetchProductsTypeByCategory(categoryId);
-
-    const id = getId();
-
-    if (id) {
-      fetchProductsByCategory(id);
-    }
-  };
-
-  useEffect(() => {
-    if (!categoryId) {
-      return;
-    }
-
-    setCurrentPage(1);
-    clearFilterData();
-
-    getProducts();
-  }, [categoryId, subcategoryId]);
+  // catalog state lives in the URL; the products query derives from it
+  const params = useCatalogParams();
+  const { data: categories } = useCategoriesQuery();
+  const id = categoryId ? categoryIdByName(categories, subcategoryId ?? categoryId) : undefined;
+  const { data: attributes } = useCategoryAttributesQuery(categoryId);
+  const { data, isFetching } = useCatalogProductsQuery(id, params, attributes);
 
   if (!categoryId) {
     return <Navigate to={RoutePaths.ERROR} />;
   }
 
-  const totalPages = Math.ceil(totalProducts / DEFAULT_LIMIT);
+  const products = data?.products ?? [];
+  const totalPages = Math.ceil((data?.total ?? 0) / DEFAULT_LIMIT);
 
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
@@ -102,50 +60,25 @@ const Catalog: React.FC = () => {
     setAnchorElFilter(event.currentTarget);
   };
 
-  const handleCloseFilter = (): void => {
-    setAnchorElFilter(null);
-  };
-
   const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
     setAnchorElSort(event.currentTarget);
   };
 
-  const handleCloseSort = (): void => {
-    setAnchorElSort(null);
-  };
-
-  const handleFilterChange = (): void => {
-    setCurrentPage(1);
-
-    const id = getId();
-
-    if (id) {
-      getFilteredProducts(id);
-    }
-  };
-
-  const handleResetFilters = (): void => {
-    clearFilterData();
-    setCurrentPage(1);
-    getProducts();
-  };
-
-  const handleSearch = (): void => {
-    setCurrentPage(1);
-    const id = getId();
-
-    if (id) {
-      fetchSearchProducts(id);
-    }
-  };
-
   const handlePaginationChange = (page: number): void => {
-    const id = getId();
+    params.setPage(page);
+    window.scrollTo(0, 0);
+  };
 
-    if (id) {
-      paginationNavigate(page, id);
-      window.scrollTo(0, 0);
-    }
+  const filterControls = {
+    isFilterSize: !!attributes?.sizeAttribute,
+    isFilterColor: !!attributes?.colorAttribute,
+    sizes: params.sizes,
+    colors: params.colors,
+    price: params.price as number[],
+    onSizesChange: params.setSizes,
+    onColorsChange: params.setColors,
+    onPriceChange: (price: number[]): void => params.setPrice([price[0] ?? 0, price[1] ?? 0]),
+    onReset: params.resetFilters,
   };
 
   return (
@@ -153,49 +86,51 @@ const Catalog: React.FC = () => {
       <div className={styles.root}>
         <div className={`${styles.sticky} ${styles.productsPanel}`}>
           <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
-          <Search onChange={handleSearch} className={styles.search} />
+          <Search onSearch={params.setSearch} value={params.search} className={styles.search} />
           {!isMobile ? (
-            <Sorting onChange={handleFilterChange} />
+            <Sorting value={params.sort} onSelect={params.setSort} />
           ) : (
             <div className={styles.actions}>
-              <IconButton aria-label="sort" onClick={handleClickFilter}>
+              <IconButton aria-label="filter" onClick={handleClickFilter}>
                 <FilterListIcon />
               </IconButton>
               <FilterMobile
-                isFilterSize={isFilterSize}
-                isFilterColor={isFilterColor}
+                {...filterControls}
                 anchorElFilter={anchorElFilter}
-                handleCloseFilter={handleCloseFilter}
-                onReset={handleResetFilters}
-                onChange={handleFilterChange}
+                handleCloseFilter={(): void => setAnchorElFilter(null)}
               />
-              <IconButton aria-label="filter" onClick={handleClickSort}>
+              <IconButton aria-label="sort" onClick={handleClickSort}>
                 <SortIcon />
               </IconButton>
-              <SortMobile anchorElSort={anchorElSort} handleCloseSort={handleCloseSort} onChange={handleFilterChange} />
+              <SortMobile
+                anchorElSort={anchorElSort}
+                handleCloseSort={(): void => setAnchorElSort(null)}
+                value={params.sort}
+                onSelect={params.setSort}
+              />
             </div>
           )}
         </div>
         <div className={styles.container}>
           {!isMobile && (
             <aside>
-              <Filter
-                isFilterSize={isFilterSize}
-                isFilterColor={isFilterColor}
-                className={`${styles.sticky} ${styles.filter}`}
-                onReset={handleResetFilters}
-                onChange={handleFilterChange}
-              />
+              <Filter {...filterControls} className={`${styles.sticky} ${styles.filter}`} />
             </aside>
           )}
           <div className={styles.products}>
-            <ProductList className={styles.productsList} categoryId={categoryId} subcategoryId={subcategoryId} />
+            <ProductList
+              className={styles.productsList}
+              categoryId={categoryId}
+              subcategoryId={subcategoryId}
+              products={products}
+              isLoading={isFetching}
+            />
             <div className={styles.pagination}>
               {totalPages > 1 && (
                 <PaginationCatalog
                   handleChange={handlePaginationChange}
                   totalPages={totalPages}
-                  currentPage={currentPage}
+                  currentPage={params.page}
                 />
               )}
             </div>
@@ -206,4 +141,4 @@ const Catalog: React.FC = () => {
   );
 };
 
-export default observer(Catalog);
+export default Catalog;

@@ -1,27 +1,29 @@
+import { useEffect, useState } from 'react';
 import { Input, InputAdornment, Button } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 
-import { productStore } from '../../../stores';
 import { Icon } from '../Icon';
 import { IconName } from '../Icon/Icon.enum';
 import styles from './Search.module.scss';
 
 type Props = {
   className?: string;
-  onChange?: () => void;
+  value: string;
+  onSearch: (text: string) => void;
 };
 
-const Search: React.FC<Props> = ({ className, onChange }) => {
-  const { searchValue, setSearchValue } = productStore;
+const Search: React.FC<Props> = ({ className, value, onSearch }) => {
+  const [text, setText] = useState(value);
+
+  useEffect(() => {
+    setText(value);
+  }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(event.target.value);
+    setText(event.target.value);
   };
 
   const handleClick = (): void => {
-    if (onChange) {
-      onChange();
-    }
+    onSearch(text);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -35,7 +37,7 @@ const Search: React.FC<Props> = ({ className, onChange }) => {
       <Input
         className={styles.input}
         type="search"
-        value={searchValue}
+        value={text}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         startAdornment={
@@ -51,4 +53,4 @@ const Search: React.FC<Props> = ({ className, onChange }) => {
   );
 };
 
-export default observer(Search);
+export default Search;

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 
-import { productStore } from '../../stores';
+import { useProductQuery } from '../../queries/products';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { CurrentProduct } from '../../components/CurrentProduct';
@@ -16,13 +16,7 @@ type Params = {
 
 const Product: React.FC = () => {
   const { categoryId, subcategoryId, productId } = useParams<Params>();
-
-  useEffect(() => {
-    if (!productId) {
-      return;
-    }
-    productStore.fetchProduct(productId);
-  }, [categoryId, subcategoryId, productId]);
+  const { data: product, isFetching } = useProductQuery(productId);
 
   const breadcrumbItems = [{ text: 'Home', path: RoutePaths.MAIN }];
 
@@ -55,7 +49,7 @@ const Product: React.FC = () => {
       <section className={styles.root}>
         <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
 
-        <CurrentProduct />
+        <CurrentProduct product={product} isLoading={isFetching} />
       </section>
     </Container>
   );

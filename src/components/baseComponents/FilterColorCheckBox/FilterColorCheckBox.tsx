@@ -1,34 +1,19 @@
-import { observer } from 'mobx-react-lite';
 import { Button, Box } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { productStore } from '../../../stores';
 import { ColorOptions } from './FilterColor.enum';
 
 type Props = {
   className?: string;
-  onChange?: (type?: string) => void;
+  selected: string[];
+  onChange: (updated: string[]) => void;
 };
 
 const colorEntries = Object.entries(ColorOptions);
 
-const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {
-  const { updateFilterColor, filterColors } = productStore;
-
+const FilterColorCheckBox: React.FC<Props> = ({ selected, onChange }) => {
   const toggleOptions = (color: string): void => {
-    let updatedColors: string[];
-
-    if (filterColors.includes(color)) {
-      updatedColors = filterColors.filter((c) => c !== color);
-    } else {
-      updatedColors = [...filterColors, color];
-    }
-
-    updateFilterColor(updatedColors);
-
-    if (onChange) {
-      onChange();
-    }
+    onChange(selected.includes(color) ? selected.filter((c) => c !== color) : [...selected, color]);
   };
 
   return (
@@ -38,7 +23,7 @@ const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {
         {colorEntries.map(([colorName, colorValue], index) => (
           <Button
             key={index}
-            variant={filterColors.includes(colorName) ? 'contained' : 'outlined'}
+            variant={selected.includes(colorName) ? 'contained' : 'outlined'}
             onClick={(): void => toggleOptions(colorName)}
             sx={{
               borderRadius: '50%',
@@ -61,7 +46,7 @@ const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {
               border: '1px solid grey',
             }}
           >
-            {filterColors.includes(colorName) && <CheckIcon />}
+            {selected.includes(colorName) && <CheckIcon />}
           </Button>
         ))}
       </Box>
@@ -69,4 +54,4 @@ const FilterColorCheckBox: React.FC<Props> = ({ onChange }) => {
   );
 };
 
-export default observer(FilterColorCheckBox);
+export default FilterColorCheckBox;

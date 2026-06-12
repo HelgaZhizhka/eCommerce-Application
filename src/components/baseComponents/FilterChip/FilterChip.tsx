@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite';
 import { Chip, Box, styled } from '@mui/material';
 
 import { sizes } from '../../../constants';
-import { productStore } from '../../../stores';
 
 const CustomChip = styled(Chip)({
   borderRadius: '16px',
@@ -15,20 +13,14 @@ const CustomChip = styled(Chip)({
 
 type Props = {
   className?: string;
-  onChange?: (type?: string) => void;
+  selected: string[];
+  onChange: (updated: string[]) => void;
 };
 
-const FilterChip: React.FC<Props> = ({ onChange }) => {
-  const { updateFilterSize, filterSizes } = productStore;
+const FilterChip: React.FC<Props> = ({ selected, onChange }) => {
   const handleChipClick = (label: string): void => {
-    const isAlreadySelected = filterSizes.includes(label);
-    const updatedSizes = isAlreadySelected ? filterSizes.filter((size) => size !== label) : [...filterSizes, label];
-
-    updateFilterSize(updatedSizes);
-
-    if (onChange) {
-      onChange();
-    }
+    const isAlreadySelected = selected.includes(label);
+    onChange(isAlreadySelected ? selected.filter((size) => size !== label) : [...selected, label]);
   };
 
   return (
@@ -40,7 +32,7 @@ const FilterChip: React.FC<Props> = ({ onChange }) => {
             key={size}
             label={size}
             color="primary"
-            variant={filterSizes.includes(size) ? 'filled' : 'outlined'}
+            variant={selected.includes(size) ? 'filled' : 'outlined'}
             onClick={(): void => handleChipClick(size)}
           />
         ))}
@@ -49,4 +41,4 @@ const FilterChip: React.FC<Props> = ({ onChange }) => {
   );
 };
 
-export default observer(FilterChip);
+export default FilterChip;

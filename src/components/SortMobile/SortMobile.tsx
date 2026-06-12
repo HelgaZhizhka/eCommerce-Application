@@ -2,14 +2,16 @@ import { Box, Popover, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { SortingList } from '../baseComponents/SortingList';
+import { SortOption } from '../baseComponents/SortingList/SortList.enum';
 
 type Props = {
   anchorElSort: null | HTMLElement;
   handleCloseSort: () => void;
-  onChange?: (type?: string) => void;
+  value: SortOption;
+  onSelect: (sort: SortOption) => void;
 };
 
-const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort, onChange }) => {
+const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort, value, onSelect }) => {
   const open = Boolean(anchorElSort);
 
   const handleMenuItemClick = (): void => {
@@ -44,7 +46,7 @@ const SortMobile: React.FC<Props> = ({ anchorElSort, handleCloseSort, onChange }
           <CloseIcon />
         </IconButton>
         <Box sx={{ mt: '30px' }}>
-          <SortingList onChange={onChange} handleMenuItemClick={handleMenuItemClick} />
+          <SortingList value={value} onSelect={onSelect} handleMenuItemClick={handleMenuItemClick} />
         </Box>
       </div>
     </Popover>
