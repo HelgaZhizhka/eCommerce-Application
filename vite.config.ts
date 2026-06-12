@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@': new URL('./src', import.meta.url).pathname,
       // the deprecated SDK's browser-field object remap is not applied to its
       // `module` entry by the dep optimizer, pulling in node-fetch's Node
       // build. Point straight at the browser ESM bundle. Dies in phase 2.

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SwiperOptions } from 'swiper/types/swiper-options';
+import { SwiperOptions } from 'swiper/types';
 import { Navigation, Autoplay, EffectFade, Scrollbar } from 'swiper/modules';
 import { Container, Button } from '@mui/material';
 import 'swiper/css/bundle';

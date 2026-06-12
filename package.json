@@ -23,7 +23,6 @@
     "react-router-dom": "^6.14.2",
     "sass": "^1.64.2",
     "swiper": "^10.1.0",
-    "typescript": "4.9.5",
     "yup": "^1.2.0"
   },
   "devDependencies": {
@@ -47,6 +46,7 @@
     "jsdom": "^29.1.1",
     "lint-staged": "^13.2.3",
     "prettier": "^2.5.1",
+    "typescript": "^5.9.3",
     "vite": "^7.3.5",
     "vitest": "^4.1.8"
   },
