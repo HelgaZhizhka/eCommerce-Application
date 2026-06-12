@@ -7,7 +7,7 @@ describe('ModalProfile', () => {
     const handleCloseModal = vi.fn();
     const onSaveChange = vi.fn();
 
-    const { getByRole, getByText } = render(
+    const { getByRole } = render(
       <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} onSaveChange={onSaveChange} />
     );
 
