@@ -8,7 +8,7 @@ import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
-import { productStore } from '../../stores';
+import { useCategoriesQuery } from '../../queries/categories';
 import { SubCategories } from '../SubCategories';
 import { SIZE, THEME, VARIANT, CategorySlug } from './Categories.types';
 import styles from './Categories.module.scss';
@@ -35,7 +35,7 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
     link: variant !== 'filter',
   });
 
-  const { categories } = productStore;
+  const { data: categories = [] } = useCategoriesQuery();
 
   const enhancedCategories = [
     {

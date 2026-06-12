@@ -11,6 +11,7 @@ import { Filter } from '../../components/Filter';
 import { Sorting } from '../../components/Sorting';
 import { ProductList } from '../../components/ProductList';
 import { productStore } from '../../stores';
+import { categoryIdByName, useCategoriesQuery } from '../../queries/categories';
 import { FilterMobile } from '../../components/FilterMobile';
 import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
@@ -31,7 +32,6 @@ const Catalog: React.FC = () => {
     totalProducts,
     currentPage,
     fetchProductsByCategory,
-    categoryIdByName,
     fetchProductsTypeByCategory,
     getFilteredProducts,
     fetchSearchProducts,
@@ -41,6 +41,7 @@ const Catalog: React.FC = () => {
   } = productStore;
 
   const { categoryId, subcategoryId } = useParams<Params>();
+  const { data: categories } = useCategoriesQuery();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -54,7 +55,7 @@ const Catalog: React.FC = () => {
 
     const idCategory = subcategoryId || categoryId;
 
-    return categoryIdByName(idCategory);
+    return categoryIdByName(categories, idCategory);
   };
 
   const getProducts = (): void => {

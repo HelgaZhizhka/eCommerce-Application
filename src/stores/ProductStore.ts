@@ -2,25 +2,21 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { SortDetails, SortOption } from '../components/baseComponents/SortingList/SortList.enum';
 import {
-  getCategories,
   getProductsByFilter,
   getProductByKey,
   getProductsByCategory,
   getProductsTypeByCategory,
   getSearchProducts,
 } from '../services/productService';
-import { ExtendedCategory } from './ProductStore.interfaces';
 import { initialPriceRange } from '../constants';
-import { getFetchedProduct, getFetchedProducts, transformFetchedCategories } from './productHelpers';
+import { getFetchedProduct, getFetchedProducts } from './productHelpers';
 import { ProductType } from './Store.types';
 
 type ProductStoreType = {
-  isAppLoading: boolean;
   isProductsLoading: boolean;
   isProductLoading: boolean;
   products: ProductType[];
   currentProduct: ProductType | null;
-  categories: ExtendedCategory[];
   error: null | string;
   sortState: SortOption;
   searchValue: string;
@@ -33,11 +29,9 @@ type ProductStoreType = {
   filterPrice: number[];
   currentPage: number;
   totalProducts: number;
-  setLoadingState: (type: 'app' | 'product' | 'products', state: boolean) => void;
+  setLoadingState: (type: 'product' | 'products', state: boolean) => void;
   fetchProduct: (key: string) => Promise<void>;
-  fetchCategories: () => Promise<void>;
   setSortState: (value: SortOption) => void;
-  categoryIdByName: (nameCategory: string) => string | undefined;
   fetchProductsByCategory: (id: string | undefined) => Promise<void>;
   fetchProductsTypeByCategory: (id: string) => Promise<void>;
   fetchSearchProducts(id: string | undefined): Promise<void>;
@@ -55,13 +49,11 @@ type ProductStoreType = {
 
 const createProductStore = (): ProductStoreType => {
   const store = {
-    isAppLoading: false,
     isProductsLoading: false,
     isProductLoading: false,
     searchValue: '',
     products: [] as ProductType[],
     currentProduct: {} as ProductType,
-    categories: [] as ExtendedCategory[],
     error: null as null | string,
     sortState: SortOption.Default,
     isFilterSize: false,
@@ -74,11 +66,8 @@ const createProductStore = (): ProductStoreType => {
     filterColors: [] as string[],
     filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
 
-    setLoadingState(type: 'app' | 'product' | 'products', state: boolean): void {
+    setLoadingState(type: 'product' | 'products', state: boolean): void {
       switch (type) {
-        case 'app':
-          this.isAppLoading = state;
-          break;
         case 'product':
           this.isProductLoading = state;
           break;
@@ -94,44 +83,6 @@ const createProductStore = (): ProductStoreType => {
       runInAction(() => {
         store.sortState = value;
       });
-    },
-
-    async fetchCategories(): Promise<void> {
-      store.setLoadingState('app', true);
-
-      try {
-        const fetchedCategories = await getCategories();
-        const extendedMainCategories = transformFetchedCategories(fetchedCategories);
-
-        runInAction(() => {
-          store.categories = [...extendedMainCategories];
-        });
-      } catch (err) {
-        runInAction(() => {
-          store.error = 'Error fetching categories';
-        });
-      } finally {
-        store.setLoadingState('app', false);
-      }
-    },
-
-    categoryIdByName(nameCategory: string): string | undefined {
-      const mainCategory = store.categories.find((cat) => cat.name.en.toLowerCase() === nameCategory);
-
-      if (mainCategory) {
-        return mainCategory.id;
-      }
-
-      const subCategory = store.categories
-        .map((mainCat) => mainCat.subcategories)
-        .flat()
-        .find((subCat) => subCat?.name.en.toLowerCase() === nameCategory);
-
-      if (subCategory) {
-        return subCategory.id;
-      }
-
-      return undefined;
     },
 
     async fetchProductsTypeByCategory(categoryKey: string): Promise<void> {

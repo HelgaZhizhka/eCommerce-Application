@@ -3,7 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { Box, CssBaseline, ThemeProvider, createTheme, useMediaQuery, CircularProgress } from '@mui/material';
 
 import { darkTheme, lightTheme } from './theme';
-import { themeStore, productStore, cartStore } from './stores';
+import { themeStore, cartStore } from './stores';
+import { useCategoriesQuery } from './queries/categories';
 import RoutesConfig from './routes';
 import { SnackBar } from './components/SnackBar';
 import { Header } from './components/Header';
@@ -14,10 +15,9 @@ const App: React.FC = () => {
   const { darkMode } = themeStore;
   const theme = createTheme(darkMode ? darkTheme : lightTheme);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { isAppLoading } = productStore;
+  const { isLoading: isAppLoading } = useCategoriesQuery();
 
   useEffect(() => {
-    productStore.fetchCategories();
     cartStore.initCart();
   }, []);
 
