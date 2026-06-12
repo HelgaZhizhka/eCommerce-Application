@@ -5,15 +5,20 @@
 
 ## Current state
 
-- **Phase:** 1 — Build & tooling (phase 0 merged as PR #216)
-- **Branch:** `refactor/phase-1-vite` (not pushed yet)
-- **Done:** 1.1 CRA → Vite 7.3.5 ✅, 1.4 Jest → Vitest 4 ✅ — app renders,
-  all gates green (tsc, lint, 57 unit, build 3.8s, 11/11 e2e)
-- **Next:** 1.2 TS 5.9 strict extras → 1.3 ESLint 9 flat config → 1.5 React 19
-- **Watch:** Vite pinned to major 7 due to vitejs/vite#22499 (Vite 8 rolldown
-  optimizer breaks emotion/MUI); unpin when fixed upstream
+- **Phase:** 1 — Build & tooling: **COMPLETE** (1.1–1.5 ✅)
+- **Stack now:** Vite 7.3.5 · React 19.2.7 · TS 5.9.3 (bundler resolution,
+  `@/*` alias) · ESLint 9.39 flat config · Prettier 3 · Vitest 4.1.8
+- **Final gate:** `./scripts/verify.sh` → exit 0 (tsc, eslint 0 errors /
+  19 intentional warnings, 57 unit, build ~3.6s, 11/11 e2e) — 2026-06-12
+- **Next:** PR into `develop` → merge → phase 2 (API layer + BFF:
+  `ts-client` v3, Netlify Functions, secret out of the bundle)
+- **Watch:**
+  - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
+    breaks emotion/MUI prebundling); unpin when fixed upstream
+  - ESLint pinned to major 9 (eslint-plugin-jsx-a11y peers max v9)
+  - `noUncheckedIndexedAccess`/`exactOptionalPropertyTypes` deferred to
+    phase 5 wrap-up (decision in phase-1.md §1.2)
 - **Pending human tasks:**
-  - push branch + open PR into `develop` to get the first CI run
   - (verify with colleague) old 2023 API client deactivated in Merchant Center
 
 ## Blockers
@@ -30,6 +35,19 @@
 | 2026-06-10 | Open decisions pending (plan §3.2): UI kit (MUI 7 vs Tailwind 4 + shadcn/ui) — must be decided before phase 5; Vite SPA + BFF chosen over Next.js |
 
 ## Session log
+
+### 2026-06-12 — Session 4 (phase 1 completion: 1.2, 1.3, 1.5)
+
+- 1.2: TS 5.9.3, bundler resolution, `@/*` alias; extra-strict flags deferred
+  (128 errors in dying code — decision recorded in phase-1.md)
+- 1.3: ESLint 9.39 flat config (airbnb dropped), typescript-eslint 8,
+  react-hooks 7, Prettier 3 + one-time style-only reformat commit;
+  lint-staged finally covers `*.ts`
+- 1.5: React 19.2.7, RTL 16, framer-motion 12, mobx-react-lite 4.1.1;
+  test-utils act() cargo-cult removed; JSX type imports
+- Code review (skill run) before 1.2: approve with notes — Netlify Node
+  confirmed 22 by user; unused user-event removed in 1.5
+- **Evidence:** verify.sh exit 0 quoted in PR description
 
 ### 2026-06-11 — Session 2 (phase 0 execution)
 
