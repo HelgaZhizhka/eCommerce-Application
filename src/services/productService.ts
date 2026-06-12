@@ -1,11 +1,11 @@
-import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Category } from '@commercetools/platform-sdk';
+import { Product, ProductProjection } from '@commercetools/platform-sdk';
 import { AttributeDefinition, ClientResponse } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { DEFAULT_LIMIT } from '../constants';
 
-import { apiWithClientCredentialsFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { apiWithClientCredentialsFlow, apiwithExistingTokenFlow } from './ctClient';
 
 export async function getCategories(): Promise<Category[]> {
   const visitor = apiWithClientCredentialsFlow();

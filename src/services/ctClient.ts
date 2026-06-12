@@ -1,14 +1,13 @@
 import {
   ClientBuilder,
-  type PasswordAuthMiddlewareOptions,
-  type HttpMiddlewareOptions,
   type AuthMiddlewareOptions,
-  TokenCache,
-  TokenStore,
-  AnonymousAuthMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+  type ExistingTokenMiddlewareOptions,
+  type HttpMiddlewareOptions,
+  type PasswordAuthMiddlewareOptions,
+  type TokenCache,
+  type TokenStore,
+} from '@commercetools/ts-client';
+import { createApiBuilderFromCtpClient, type ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
 
 const projectKey = `${import.meta.env.VITE_PROJECT_KEY_CLIENT}`;
 const scopes = [`${import.meta.env.VITE_SCOPES_CLIENT}`];
@@ -19,32 +18,32 @@ const clientSecret = `${import.meta.env.VITE_CLIENT_SECRET_CLIENT}`;
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: hostAPI,
-  fetch,
+  httpClient: fetch,
 };
 
-export class MyTokenCache implements TokenCache {
-  private myCache: TokenStore = {
-    token: '',
-    expirationTime: 0,
-    refreshToken: '',
-  };
+const emptyStore: TokenStore = {
+  token: '',
+  expirationTime: 0,
+  refreshToken: '',
+};
 
-  public set(newCache: TokenStore): void {
-    this.clear();
+// ts-client v4 TokenCache is async; persistence behavior (raw token string in
+// localStorage) is kept identical to the legacy client until phase 2's BFF
+// sub-task replaces token handling entirely.
+export class MyTokenCache implements TokenCache {
+  private myCache: TokenStore = { ...emptyStore };
+
+  public async set(newCache: TokenStore): Promise<void> {
     this.myCache = newCache;
     localStorage.setItem('token', this.myCache.token);
   }
 
-  public get(): TokenStore {
+  public async get(): Promise<TokenStore> {
     return this.myCache;
   }
 
   public clear(): void {
-    this.myCache = {
-      token: '',
-      expirationTime: 0,
-      refreshToken: '',
-    };
+    this.myCache = { ...emptyStore };
     localStorage.removeItem('token');
   }
 }
@@ -52,24 +51,16 @@ export class MyTokenCache implements TokenCache {
 export const myToken = new MyTokenCache();
 
 export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
-  type ExistingTokenMiddlewareOptions = {
-    force?: boolean;
-  };
-
   const token = localStorage.getItem('token');
-
   const authorization = `Bearer ${token}`;
-  const options: ExistingTokenMiddlewareOptions = {
-    force: true,
-  };
+  const options: ExistingTokenMiddlewareOptions = { force: true };
 
   const client = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withExistingTokenFlow(authorization, options)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-  return apiRoot;
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 }
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
@@ -88,17 +79,15 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
     },
     tokenCache: myToken,
     scopes,
-    fetch,
+    httpClient: fetch,
   };
 
-  const ctpClientPassword = new ClientBuilder()
+  const client = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withPasswordFlow(passwordAuthMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpClientPassword).withProjectKey({ projectKey });
-
-  return apiRoot;
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 }
 
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
@@ -110,23 +99,21 @@ export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
       clientSecret,
     },
     scopes,
-    fetch,
+    httpClient: fetch,
   };
 
-  const ctpClientCredentialsFlow = new ClientBuilder()
+  const client = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpClientCredentialsFlow).withProjectKey({ projectKey });
-
-  return apiRoot;
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 }
 
 export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
   myToken.clear();
 
-  const anonymousMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+  const anonymousMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
     credentials: {
@@ -135,15 +122,13 @@ export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
     },
     tokenCache: myToken,
     scopes,
-    fetch,
+    httpClient: fetch,
   };
 
-  const ctpAnonymousMiddlewareOptions = new ClientBuilder()
+  const client = new ClientBuilder()
     .withHttpMiddleware(httpMiddlewareOptions)
     .withAnonymousSessionFlow(anonymousMiddlewareOptions)
     .build();
 
-  const apiRoot = createApiBuilderFromCtpClient(ctpAnonymousMiddlewareOptions).withProjectKey({ projectKey });
-
-  return apiRoot;
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 }

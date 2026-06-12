@@ -1,4 +1,4 @@
-import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Product, ProductProjection } from '@commercetools/platform-sdk';
 import { ProductVariant } from '@commercetools/platform-sdk';
 
 import { SizeWithVariantId } from '../components/baseComponents/SelectSize/SelectSize.types';

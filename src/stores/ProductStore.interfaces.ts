@@ -1,4 +1,4 @@
-import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
+import { Category } from '@commercetools/platform-sdk';
 
 export interface ExtendedCategory extends Category {
   subcategories?: ExtendedCategory[];

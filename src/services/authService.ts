@@ -1,7 +1,7 @@
-import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
+import { MyCustomerDraft } from '@commercetools/platform-sdk';
+import { ClientResponse } from '@commercetools/platform-sdk';
+import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './ctClient';
 import { getActiveCart } from './cartService';
 
 export const customerLogin = async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {

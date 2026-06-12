@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
-import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
+import { Customer } from '@commercetools/platform-sdk';
+import { ClientResponse } from '@commercetools/platform-sdk';
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
@@ -13,7 +13,7 @@ import {
   updatePersonalData,
   changePassword,
 } from '../services/setCustomersDetails';
-import { myToken } from '../services/BuildClient';
+import { myToken } from '../services/ctClient';
 import { cartStore } from './CartStore';
 
 type UserStoreType = {

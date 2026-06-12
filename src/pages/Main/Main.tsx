@@ -16,7 +16,7 @@ const Main: React.FC = () => {
   const [showSuccessful, setShowSuccessful] = useState(false);
 
   useEffect((): (() => void) => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     if (isRegistration) {
       setShowSuccessful(true);

@@ -1,8 +1,8 @@
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { Cart, CartPagedQueryResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
-import { MyCartUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { apiwithAnonymousSessionFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { ClientResponse } from '@commercetools/platform-sdk';
+import { Cart, CartPagedQueryResponse } from '@commercetools/platform-sdk';
+import { MyCartUpdate } from '@commercetools/platform-sdk';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
+import { apiwithAnonymousSessionFlow, apiwithExistingTokenFlow } from './ctClient';
 
 export const createCart = async (): Promise<ClientResponse<Cart>> => {
   const existingToken = localStorage.getItem('token');

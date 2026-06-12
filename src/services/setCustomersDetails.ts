@@ -1,12 +1,9 @@
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import {
-  Customer,
-  MyCustomerChangePassword,
-} from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
+import { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk';
+import { MyCustomerUpdate } from '@commercetools/platform-sdk';
+import { ClientResponse } from '@commercetools/platform-sdk';
 
-import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './ctClient';
 import { customerLogin } from './authService';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
