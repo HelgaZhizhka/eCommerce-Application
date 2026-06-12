@@ -11,14 +11,15 @@ import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { Categories } from '../Categories';
 import { InfoPanel } from '../InfoPanel';
-import { cartStore, userStore } from '../../stores';
+import { userStore } from '../../stores';
+import { useCartQuery } from '../../queries/cart';
 import { getPriceValue } from '../../stores/productHelpers';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
   const { loggedIn } = userStore;
-  const { totalAmount, totalPrice } = cartStore;
+  const { totalAmount, totalPrice } = useCartQuery();
 
   const totalPriceValue = getPriceValue(totalPrice);
 

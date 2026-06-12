@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Box, Button, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
-import { cartStore } from '../../stores';
+import { useCartActions } from '../../queries/cart';
 import { ProductType } from '../../stores/Store.types';
 import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
 import { Price } from '../baseComponents/Price';
@@ -25,7 +25,7 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const { addToCart, isProductInCart, removeProductFromCart } = cartStore;
+  const { addToCart, isProductInCart, removeProductFromCart } = useCartActions();
 
   const [open, setOpen] = useState(false);
 

@@ -5,7 +5,7 @@ import { Image } from '@commercetools/platform-sdk';
 import { ProductVariant } from '@commercetools/platform-sdk';
 
 import { RoutePaths } from '../../routes/routes.enum';
-import { cartStore } from '../../stores';
+import { useCartActions } from '../../queries/cart';
 import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Icon } from '../baseComponents/Icon';
@@ -53,7 +53,7 @@ const Card: React.FC<Props> = ({
     className,
   });
 
-  const { addToCart, isProductInCart } = cartStore;
+  const { addToCart, isProductInCart } = useCartActions();
 
   const generateProductPath = (catId: string, subCatId: string | null | undefined, prodKey: string): string => {
     let path = RoutePaths.PRODUCT.replace(':categoryId', catId).replace(':productId', prodKey);

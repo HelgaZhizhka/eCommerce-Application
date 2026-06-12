@@ -13,13 +13,14 @@ import { Icon } from '../baseComponents/Icon';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { NavBarMobile } from '../NavBarMobile';
-import { cartStore, userStore } from '../../stores';
+import { userStore } from '../../stores';
+import { useCartQuery } from '../../queries/cart';
 import { Logo } from '../Logo';
 import styles from './HeaderMobile.module.scss';
 
 const HeaderMobile: React.FC = () => {
   const { loggedIn } = userStore;
-  const { totalAmount } = cartStore;
+  const { totalAmount } = useCartQuery();
 
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const toggleNavBar = (): void => {

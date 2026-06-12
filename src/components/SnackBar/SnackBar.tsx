@@ -1,48 +1,53 @@
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Snackbar, Alert } from '@mui/material';
 
-import { cartStore, userStore } from '../../stores';
+import { userStore } from '../../stores';
+import { subscribeToToasts, Toast } from '../../queries/notifications';
 
 const SnackBar: React.FC = () => {
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  useEffect(() => subscribeToToasts(setToast), []);
+
   const userError = userStore.error;
   const userSuccess = userStore.success;
-  const cartSuccess = cartStore.success;
 
-  const cartError = cartStore.error;
+  const error = userError ?? (toast?.type === 'error' ? toast.message : null);
+  const success = userSuccess ?? (toast?.type === 'success' ? toast.message : null);
 
   const handleClose = (): void => {
     userStore.clearError();
     userStore.clearSuccess();
-    cartStore.clearError();
-    cartStore.clearSuccess();
+    setToast(null);
   };
 
   return (
     <>
-      {(userError || cartError) && (
+      {error && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!userError || !!cartError}
-          message={userError || cartError}
+          open={!!error}
+          message={error}
           onClose={handleClose}
           autoHideDuration={4000}
         >
           <Alert severity="error" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {userError || cartError}
+            {error}
           </Alert>
         </Snackbar>
       )}
 
-      {(userSuccess || cartSuccess) && (
+      {success && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!userSuccess || !!cartSuccess}
-          message={userSuccess || cartSuccess}
+          open={!!success}
+          message={success}
           onClose={handleClose}
           autoHideDuration={4000}
         >
           <Alert severity="success" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {userSuccess || cartSuccess}
+            {success}
           </Alert>
         </Snackbar>
       )}

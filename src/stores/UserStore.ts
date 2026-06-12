@@ -14,7 +14,8 @@ import {
   changePassword,
 } from '../services/setCustomersDetails';
 import { clearSession, isCustomerSession } from '../services/session';
-import { cartStore } from './CartStore';
+import { queryClient } from '../queries/queryClient';
+import { cartKey } from '../queries/cart';
 
 type UserStoreType = {
   userData: Record<string, string | number | boolean>;
@@ -57,7 +58,7 @@ const createUserStore = (): UserStoreType => {
             store.userProfile = {
               ...res.body.customer,
             };
-            cartStore.initCart();
+            queryClient.invalidateQueries({ queryKey: cartKey });
           }
 
           if (res.statusCode === 400) {
@@ -118,15 +119,12 @@ const createUserStore = (): UserStoreType => {
     },
 
     logout(): void {
-      localStorage.removeItem('cart');
-      localStorage.removeItem('cartId');
-      localStorage.removeItem('cartVersion');
       clearSession();
+      queryClient.setQueryData(cartKey, null);
       store.loggedIn = false;
       store.userData = {};
       store.clearError();
       store.userProfile = {} as Customer;
-      cartStore.resetCart();
     },
 
     setEditMode(isEditMode: boolean): void {
