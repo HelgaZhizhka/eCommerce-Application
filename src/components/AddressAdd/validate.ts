@@ -8,5 +8,5 @@ export const validationSchema = yup.object({
     .string()
     .required('Postal Code is required')
     .matches(/^\d{5}$/, 'Postal Code must be exactly 5 digits'),
-    country: yup.string().required('Country is required'),
+  country: yup.string().required('Country is required'),
 });

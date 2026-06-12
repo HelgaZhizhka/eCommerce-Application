@@ -9,18 +9,18 @@ export const createCart = async (): Promise<ClientResponse<Cart>> => {
 
   const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
 
-  const body =  {
-      "currency" : "EUR"
-  }
+  const body = {
+    currency: 'EUR',
+  };
 
-  const response = await customer.me().carts().post({body}).execute();
+  const response = await customer.me().carts().post({ body }).execute();
   const { version, id } = response.body;
 
   localStorage.setItem('cartVersion', `${version}`);
   localStorage.setItem('cartId', `${id}`);
 
   return response;
-}
+};
 
 export const getActiveCart = async (): Promise<ClientResponse<Cart>> => {
   const customer = apiwithExistingTokenFlow();
@@ -30,16 +30,21 @@ export const getActiveCart = async (): Promise<ClientResponse<Cart>> => {
   localStorage.setItem('cartVersion', `${version}`);
   localStorage.setItem('cartId', `${id}`);
 
-  return activeCart
-}
+  return activeCart;
+};
 
-export const getCarts = async (customer: ByProjectKeyRequestBuilder): Promise<ClientResponse<CartPagedQueryResponse>> => {
+export const getCarts = async (
+  customer: ByProjectKeyRequestBuilder
+): Promise<ClientResponse<CartPagedQueryResponse>> => {
   const cart = await customer.me().carts().get().execute();
   return cart;
-}
+};
 
-export const addItemToCart = async (productId: string, quantity?: number, variantId?: number): Promise<ClientResponse<Cart>> => {
-
+export const addItemToCart = async (
+  productId: string,
+  quantity?: number,
+  variantId?: number
+): Promise<ClientResponse<Cart>> => {
   const existingToken = localStorage.getItem('token');
   let cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
@@ -59,12 +64,17 @@ export const addItemToCart = async (productId: string, quantity?: number, varian
         action: `addLineItem`,
         productId,
         variantId,
-        quantity
-      }
-    ]
-  }
+        quantity,
+      },
+    ],
+  };
 
-  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+  const response = await customer
+    .me()
+    .carts()
+    .withId({ ID: `${cartId}` })
+    .post({ body })
+    .execute();
 
   cartId = response.body.id;
   version = `${response.body.version}`;
@@ -72,11 +82,10 @@ export const addItemToCart = async (productId: string, quantity?: number, varian
   localStorage.setItem('cartVersion', `${version}`);
   localStorage.setItem('cartId', `${cartId}`);
 
-  return response
-}
+  return response;
+};
 
 export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Promise<ClientResponse<Cart>> => {
-
   let cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
@@ -88,12 +97,17 @@ export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Pro
       {
         action: `changeLineItemQuantity`,
         lineItemId,
-        quantity
-      }
-    ]
-  }
+        quantity,
+      },
+    ],
+  };
 
-  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+  const response = await customer
+    .me()
+    .carts()
+    .withId({ ID: `${cartId}` })
+    .post({ body })
+    .execute();
 
   cartId = response.body.id;
   version = `${response.body.version}`;
@@ -102,7 +116,7 @@ export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Pro
   localStorage.setItem('cartId', `${cartId}`);
 
   return response;
-}
+};
 
 export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
   const customer = apiwithExistingTokenFlow();
@@ -110,16 +124,20 @@ export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
   const cartId = localStorage.getItem('cartId');
   const version = localStorage.getItem('cartVersion');
 
-  const response = await customer.me().carts().withId({ ID: `${cartId}`}).delete({ queryArgs: {version: +`${version}`}}).execute();
+  const response = await customer
+    .me()
+    .carts()
+    .withId({ ID: `${cartId}` })
+    .delete({ queryArgs: { version: +`${version}` } })
+    .execute();
 
   localStorage.removeItem('cartId');
   localStorage.removeItem('cartVersion');
 
   return response;
-}
+};
 
 export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> => {
-
   const existingToken = localStorage.getItem('token');
   const cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
@@ -130,20 +148,25 @@ export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> 
     version: +`${version}`,
     actions: [
       {
-        action: "addDiscountCode",
-        code
-      }
-    ]
-  }
+        action: 'addDiscountCode',
+        code,
+      },
+    ],
+  };
 
-  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+  const response = await customer
+    .me()
+    .carts()
+    .withId({ ID: `${cartId}` })
+    .post({ body })
+    .execute();
 
   version = `${response.body.version}`;
 
   localStorage.setItem('cartVersion', `${version}`);
 
-  return response
-}
+  return response;
+};
 
 export const removePromoCode = async (promoCodeId: string): Promise<ClientResponse<Cart>> => {
   const cartId = localStorage.getItem('cartId');
@@ -155,21 +178,25 @@ export const removePromoCode = async (promoCodeId: string): Promise<ClientRespon
     version: +`${version}`,
     actions: [
       {
-        action: "removeDiscountCode",
+        action: 'removeDiscountCode',
         discountCode: {
-          typeId: "discount-code",
-          id: `${promoCodeId}`
-        }
-      }
-    ]
-  }
+          typeId: 'discount-code',
+          id: `${promoCodeId}`,
+        },
+      },
+    ],
+  };
 
-  const response = await customer.me().carts().withId({ ID: `${cartId}`}).post({body}).execute();
+  const response = await customer
+    .me()
+    .carts()
+    .withId({ ID: `${cartId}` })
+    .post({ body })
+    .execute();
 
   version = `${response.body.version}`;
 
   localStorage.setItem('cartVersion', `${version}`);
 
-  return response
-
-}
+  return response;
+};

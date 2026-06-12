@@ -1,11 +1,6 @@
 import { ProductVariant } from '@commercetools/platform-sdk';
 
-import {
-  getPriceValue,
-  extractSizesWithVariantId,
-  getSku,
-  transformFetchedCategories,
-} from '../stores/productHelpers';
+import { getPriceValue, extractSizesWithVariantId, getSku, transformFetchedCategories } from '../stores/productHelpers';
 import { ExtendedCategory } from '../stores/ProductStore.interfaces';
 
 // Characterization tests (phase 0): pin current behavior before phase 3.
@@ -27,7 +22,7 @@ describe('extractSizesWithVariantId (characterization)', () => {
     ({
       id,
       attributes: label ? [{ name: 'size-clothes', value: { label } }] : [],
-    } as unknown as ProductVariant);
+    }) as unknown as ProductVariant;
 
   it('extracts sizes with their variant ids', () => {
     expect(extractSizesWithVariantId([variant(1, 's'), variant(2, 'm')])).toEqual([
@@ -42,9 +37,7 @@ describe('extractSizesWithVariantId (characterization)', () => {
 
   // TODO(refactor): quirk pinned intentionally — revisit in phase 3
   it('QUIRK: duplicate size labels keep the LAST variant id (Map overwrite)', () => {
-    expect(extractSizesWithVariantId([variant(1, 'm'), variant(2, 'm')])).toEqual([
-      { size: 'm', variantId: 2 },
-    ]);
+    expect(extractSizesWithVariantId([variant(1, 'm'), variant(2, 'm')])).toEqual([{ size: 'm', variantId: 2 }]);
   });
 });
 
@@ -71,7 +64,7 @@ describe('transformFetchedCategories (characterization)', () => {
       id,
       orderHint,
       parent: parentId ? { id: parentId, typeId: 'category' } : undefined,
-    } as unknown as ExtendedCategory);
+    }) as unknown as ExtendedCategory;
 
   it('nests subcategories under their parents, both sorted by numeric orderHint', () => {
     const result = transformFetchedCategories([

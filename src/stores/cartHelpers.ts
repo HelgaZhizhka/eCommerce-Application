@@ -33,4 +33,3 @@ export const getCartProducts = (lineItems: LineItem[]): ProductType[] => {
   }, [] as ProductType[]);
   return products;
 };
-

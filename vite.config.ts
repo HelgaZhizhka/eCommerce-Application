@@ -10,8 +10,7 @@ export default defineConfig({
       // the deprecated SDK's browser-field object remap is not applied to its
       // `module` entry by the dep optimizer, pulling in node-fetch's Node
       // build. Point straight at the browser ESM bundle. Dies in phase 2.
-      '@commercetools/sdk-client-v2':
-        '@commercetools/sdk-client-v2/dist/commercetools-sdk-client-v2.browser.esm.js',
+      '@commercetools/sdk-client-v2': '@commercetools/sdk-client-v2/dist/commercetools-sdk-client-v2.browser.esm.js',
       // ...and that browser build still imports bare node-fetch, whose Node
       // entry the optimizer prefers over its string `browser` field
       'node-fetch': 'node-fetch/browser.js',

@@ -18,8 +18,7 @@ const baseLineItem = {
   discountedPricePerQuantity: [],
 };
 
-const asLineItem = (overrides: object): LineItem =>
-  ({ ...baseLineItem, ...overrides } as unknown as LineItem);
+const asLineItem = (overrides: object): LineItem => ({ ...baseLineItem, ...overrides }) as unknown as LineItem;
 
 describe('getCartProducts (characterization)', () => {
   it('maps a regular line item', () => {
@@ -59,9 +58,7 @@ describe('getCartProducts (characterization)', () => {
   it('maps promo discount from discountedPricePerQuantity', () => {
     const [product] = getCartProducts([
       asLineItem({
-        discountedPricePerQuantity: [
-          { quantity: 2, discountedPrice: { value: { centAmount: 595 } } },
-        ],
+        discountedPricePerQuantity: [{ quantity: 2, discountedPrice: { value: { centAmount: 595 } } }],
       }),
     ]);
 
@@ -79,9 +76,7 @@ describe('getCartProducts (characterization)', () => {
   });
 
   it('QUIRK: missing variant key / name become the string "undefined"', () => {
-    const [product] = getCartProducts([
-      asLineItem({ variant: { id: 1, sku: 'X' }, name: undefined }),
-    ]);
+    const [product] = getCartProducts([asLineItem({ variant: { id: 1, sku: 'X' }, name: undefined })]);
 
     expect(product.productKey).toBe('undefined');
     expect(product.productName).toBe('undefined');

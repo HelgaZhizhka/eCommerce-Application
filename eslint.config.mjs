@@ -7,14 +7,7 @@ import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: [
-      'node_modules',
-      'build',
-      'coverage',
-      'test-results',
-      'playwright-report',
-      'public',
-    ],
+    ignores: ['node_modules', 'build', 'coverage', 'test-results', 'playwright-report', 'public'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -41,5 +34,5 @@ export default tseslint.config(
       'jsx-a11y/label-has-associated-control': ['error', { controlComponents: ['Field'] }],
     },
   },
-  prettier,
+  prettier
 );

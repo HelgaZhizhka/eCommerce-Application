@@ -164,6 +164,6 @@ export async function getSearchProducts(
 
 export async function getProductById(productId: string): Promise<ClientResponse<Product>> {
   const customer = apiwithExistingTokenFlow();
-  const response = customer.products().withId({ID: productId}).get().execute();
+  const response = customer.products().withId({ ID: productId }).get().execute();
   return response;
 }

@@ -62,7 +62,7 @@ const createCartStore = (): CartStoreType => {
             const products = getCartProducts(lineItems);
 
             store.productsInCart = [...products];
-            
+
             store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
             store.totalPrice = response.body.totalPrice.centAmount;
             store.success = 'Product added to cart successfully';
@@ -198,7 +198,7 @@ const createCartStore = (): CartStoreType => {
             store.productsInCartSku.delete(updatedProduct.variants[0].sku as string);
 
             store.productsInCart = store.productsInCart.filter((item) => item.lineItemId !== lineItemId);
-            
+
             store.totalAmount = response.body.totalLineItemQuantity ? response.body.totalLineItemQuantity : 0;
             store.totalPrice = response.body.totalPrice.centAmount;
             store.success = 'Product removed from cart successfully';

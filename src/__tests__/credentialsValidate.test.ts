@@ -53,11 +53,9 @@ describe('sigIn validate (characterization)', () => {
   });
 
   it('rejects malformed emails', () => {
-    expect(failing(signIn({ email: 'user@host', password: 'Abcd1234' }), 'email')).toContain(
-      'Invalid email address',
-    );
+    expect(failing(signIn({ email: 'user@host', password: 'Abcd1234' }), 'email')).toContain('Invalid email address');
     expect(failing(signIn({ email: ' a@b.com', password: 'Abcd1234' }), 'email')).toContain(
-      'Email cannot start or end with a space.',
+      'Email cannot start or end with a space.'
     );
   });
 
@@ -72,7 +70,7 @@ describe('sigIn validate (characterization)', () => {
 
   it('flags short passwords', () => {
     expect(failing(signIn({ email: 'a@b.com', password: 'Ab1' }), 'password')).toContain(
-      'Password must be at least 8 characters long.',
+      'Password must be at least 8 characters long.'
     );
   });
 
@@ -94,15 +92,13 @@ describe('signUp validate (characterization)', () => {
   });
 
   it('flags a missing or mismatching password confirmation', () => {
-    expect(
-      failing(signUp({ email: 'a@b.com', password: 'Abcd1234', checkPassword: '' }), 'checkPassword'),
-    ).toEqual(['Password is required', 'Passwords must match']);
+    expect(failing(signUp({ email: 'a@b.com', password: 'Abcd1234', checkPassword: '' }), 'checkPassword')).toEqual([
+      'Password is required',
+      'Passwords must match',
+    ]);
 
     expect(
-      failing(
-        signUp({ email: 'a@b.com', password: 'Abcd1234', checkPassword: 'Abcd1235' }),
-        'checkPassword',
-      ),
+      failing(signUp({ email: 'a@b.com', password: 'Abcd1234', checkPassword: 'Abcd1235' }), 'checkPassword')
     ).toEqual(['Passwords must match']);
   });
 });

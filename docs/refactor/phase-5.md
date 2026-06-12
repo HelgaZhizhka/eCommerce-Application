@@ -26,5 +26,5 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 
 ## Exit criteria
 
-One styling system in the tree; no *Mobile component forks; lazy routes;
+One styling system in the tree; no \*Mobile component forks; lazy routes;
 e2e green; human visual sign-off.

@@ -1,5 +1,8 @@
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
+import {
+  Customer,
+  MyCustomerChangePassword,
+} from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 import { MyCustomerUpdate } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
 import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
 
@@ -11,20 +14,26 @@ const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Cu
   return response.body;
 };
 
-const setDefaultShippingAddress = async (customer: ByProjectKeyRequestBuilder, version: number, id?: string): Promise<ClientResponse<Customer>> => {
+const setDefaultShippingAddress = async (
+  customer: ByProjectKeyRequestBuilder,
+  version: number,
+  id?: string
+): Promise<ClientResponse<Customer>> => {
   let response;
   if (!id) {
-    response = await customer.me().post({
-      body: {
-        version: +`${version}`,
-        actions: [
-          {
-            action: 'setDefaultShippingAddress',
-          }
-        ],
-      }
-     }).execute()
-
+    response = await customer
+      .me()
+      .post({
+        body: {
+          version: +`${version}`,
+          actions: [
+            {
+              action: 'setDefaultShippingAddress',
+            },
+          ],
+        },
+      })
+      .execute();
   } else {
     response = await customer
       .me()
@@ -42,23 +51,29 @@ const setDefaultShippingAddress = async (customer: ByProjectKeyRequestBuilder, v
       .execute();
   }
 
-   return response
+  return response;
+};
 
-}
-
-const setDefaultBillingAddress = async (customer: ByProjectKeyRequestBuilder, version: number, id?: string): Promise<ClientResponse<Customer>> => {
+const setDefaultBillingAddress = async (
+  customer: ByProjectKeyRequestBuilder,
+  version: number,
+  id?: string
+): Promise<ClientResponse<Customer>> => {
   let response;
   if (!id) {
-    response = await customer.me().post({
-    body: {
-      version: +`${version}`,
-      actions: [
-        {
-          action: 'setDefaultBillingAddress',
-        }
-      ],
-    }
-   }).execute()
+    response = await customer
+      .me()
+      .post({
+        body: {
+          version: +`${version}`,
+          actions: [
+            {
+              action: 'setDefaultBillingAddress',
+            },
+          ],
+        },
+      })
+      .execute();
   } else {
     response = await customer
       .me()
@@ -76,44 +91,54 @@ const setDefaultBillingAddress = async (customer: ByProjectKeyRequestBuilder, ve
       .execute();
   }
 
+  return response;
+};
 
-   return response
+const addBillingAddressId = async (
+  customer: ByProjectKeyRequestBuilder,
+  version: number,
+  id: string
+): Promise<ClientResponse<Customer>> => {
+  const response = await customer
+    .me()
+    .post({
+      body: {
+        version: +`${version}`,
+        actions: [
+          {
+            action: 'addBillingAddressId',
+            addressId: `${id}`,
+          },
+        ],
+      },
+    })
+    .execute();
 
-}
+  return response;
+};
 
-const addBillingAddressId = async (customer: ByProjectKeyRequestBuilder, version: number, id: string): Promise<ClientResponse<Customer>> => {
-  const response = await customer.me().post({
-    body: {
-      version: +`${version}`,
-      actions: [
-        {
-          action: 'addBillingAddressId',
-          addressId: `${id}`
-        }
-      ],
-    }
-   }).execute()
+const addShippingAddressId = async (
+  customer: ByProjectKeyRequestBuilder,
+  version: number,
+  id: string
+): Promise<ClientResponse<Customer>> => {
+  const response = await customer
+    .me()
+    .post({
+      body: {
+        version: +`${version}`,
+        actions: [
+          {
+            action: 'addShippingAddressId',
+            addressId: `${id}`,
+          },
+        ],
+      },
+    })
+    .execute();
 
-   return response
-
-}
-
-const addShippingAddressId = async (customer: ByProjectKeyRequestBuilder, version: number, id: string): Promise<ClientResponse<Customer>> => {
-  const response = await customer.me().post({
-    body: {
-      version: +`${version}`,
-      actions: [
-        {
-          action: 'addShippingAddressId',
-          addressId: `${id}`
-        }
-      ],
-    }
-   }).execute()
-
-   return response
-
-}
+  return response;
+};
 
 const setAddressRequest = async (
   customer: ByProjectKeyRequestBuilder,
@@ -149,7 +174,6 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 };
 
 export const getUser = async (): Promise<Customer | null> => {
-
   const customer = apiwithExistingTokenFlow();
 
   const customerProfile = await customer.me().get().execute();
@@ -157,8 +181,9 @@ export const getUser = async (): Promise<Customer | null> => {
   return customerProfile.body;
 };
 
-
-export const removeAddress = async (address: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
+export const removeAddress = async (
+  address: Record<string, string | boolean | number>
+): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
 
   const body: MyCustomerUpdate = {
@@ -166,20 +191,22 @@ export const removeAddress = async (address: Record<string, string | boolean | n
     actions: [
       {
         action: 'removeAddress',
-        addressId: `${address.id}`
-      }
+        addressId: `${address.id}`,
+      },
     ],
   };
 
-  const response = await customer.me().post({ body }).execute()
+  const response = await customer.me().post({ body }).execute();
 
   return response;
-}
+};
 
-export const changeAddress = async (newAddress: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
+export const changeAddress = async (
+  newAddress: Record<string, string | boolean | number>
+): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
 
-  const {city, country, postalCode, streetName, id, version, checkBox, name} = newAddress;
+  const { city, country, postalCode, streetName, id, version, checkBox, name } = newAddress;
 
   const body: MyCustomerUpdate = {
     version: +`${version}`,
@@ -192,8 +219,8 @@ export const changeAddress = async (newAddress: Record<string, string | boolean 
           postalCode: `${postalCode}`,
           city: `${city}`,
           country: `${country}`,
-        }
-      }
+        },
+      },
     ],
   };
 
@@ -205,19 +232,26 @@ export const changeAddress = async (newAddress: Record<string, string | boolean 
 
   const adressid = id as string | undefined;
 
-  if (name === 'Billing') newResponce = checkBox ? await setDefaultBillingAddress(customer, newVersion, adressid) : await setDefaultBillingAddress(customer, newVersion)
-  if (name === 'Shipping') newResponce = checkBox ? await setDefaultShippingAddress(customer, newVersion, adressid) : await setDefaultShippingAddress(customer, newVersion)
+  if (name === 'Billing')
+    newResponce = checkBox
+      ? await setDefaultBillingAddress(customer, newVersion, adressid)
+      : await setDefaultBillingAddress(customer, newVersion);
+  if (name === 'Shipping')
+    newResponce = checkBox
+      ? await setDefaultShippingAddress(customer, newVersion, adressid)
+      : await setDefaultShippingAddress(customer, newVersion);
 
-  return newResponce as ClientResponse<Customer>
-}
+  return newResponce as ClientResponse<Customer>;
+};
 
-
-export const addAddress = async (newAddress: Record<string, string | boolean | number>): Promise<ClientResponse<Customer>> => {
+export const addAddress = async (
+  newAddress: Record<string, string | boolean | number>
+): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
 
   let response: ClientResponse<Customer> | undefined;
 
-  const {address, checkBox, city, country, postalCode, street, version} = newAddress;
+  const { address, checkBox, city, country, postalCode, street, version } = newAddress;
 
   const body: MyCustomerUpdate = {
     version: +`${version}`,
@@ -229,38 +263,38 @@ export const addAddress = async (newAddress: Record<string, string | boolean | n
           postalCode: `${postalCode}`,
           city: `${city}`,
           country: `${country}`,
-        }
-      }
+        },
+      },
     ],
   };
 
-  const responseAddAddress = await customer.me().post({ body }).execute()
+  const responseAddAddress = await customer.me().post({ body }).execute();
 
   const id = responseAddAddress.body.addresses.at(-1)?.id as string;
-  const newVersion = responseAddAddress.body.version
+  const newVersion = responseAddAddress.body.version;
 
-
-  if (address === "Shipping") {
+  if (address === 'Shipping') {
     if (checkBox) {
-      response = await setDefaultShippingAddress(customer, newVersion, id)
+      response = await setDefaultShippingAddress(customer, newVersion, id);
     } else {
-      response = await addShippingAddressId(customer, newVersion, id)
+      response = await addShippingAddressId(customer, newVersion, id);
     }
   }
 
-  if (address === "Billing") {
+  if (address === 'Billing') {
     if (checkBox) {
-      response = await setDefaultBillingAddress(customer, newVersion, id)
+      response = await setDefaultBillingAddress(customer, newVersion, id);
     } else {
-      response = await addBillingAddressId(customer, newVersion, id)
+      response = await addBillingAddressId(customer, newVersion, id);
     }
   }
 
   return response as ClientResponse<Customer>;
-}
+};
 
-export const updatePersonalData = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
-
+export const updatePersonalData = async (
+  userInfo: Record<string, string | number>
+): Promise<ClientResponse<Customer>> => {
   const { firstName, lastName, dateOfBirth, email, version } = userInfo;
 
   const customer = apiwithExistingTokenFlow();
@@ -269,20 +303,20 @@ export const updatePersonalData = async (userInfo: Record<string, string | numbe
     version: +`${version}`,
     actions: [
       {
-        "action": "setFirstName",
-        firstName: `${firstName}`
+        action: 'setFirstName',
+        firstName: `${firstName}`,
       },
       {
-        "action": "setLastName",
-        lastName: `${lastName}`
+        action: 'setLastName',
+        lastName: `${lastName}`,
       },
       {
-        "action": "setDateOfBirth",
-        dateOfBirth: `${dateOfBirth}`
+        action: 'setDateOfBirth',
+        dateOfBirth: `${dateOfBirth}`,
       },
       {
-        "action": "changeEmail",
-        email: `${email}`
+        action: 'changeEmail',
+        email: `${email}`,
       },
     ],
   };
@@ -290,7 +324,7 @@ export const updatePersonalData = async (userInfo: Record<string, string | numbe
   const response = await customer.me().post({ body }).execute();
 
   return response;
-}
+};
 
 export const changePassword = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
   const customer = apiwithExistingTokenFlow();
@@ -299,21 +333,21 @@ export const changePassword = async (userInfo: Record<string, string | number>):
   const body: MyCustomerChangePassword = {
     version: +`${version}`,
     currentPassword: `${currentPassword}`,
-    newPassword: `${newPassword}`
+    newPassword: `${newPassword}`,
   };
 
   const setNewPassword = await customer
     .me()
     .password()
-    .post({body})
+    .post({ body })
     .execute()
-    .then(response => {
+    .then((response) => {
       if (response.statusCode === 200) {
-        const { email } = response.body
+        const { email } = response.body;
         customerLogin(email, `${newPassword}`);
       }
-      return response
-    })
+      return response;
+    });
 
-  return setNewPassword
-}
+  return setNewPassword;
+};

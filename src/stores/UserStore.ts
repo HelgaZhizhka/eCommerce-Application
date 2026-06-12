@@ -153,29 +153,28 @@ const createUserStore = (): UserStoreType => {
       const currentData = { ...data, version: store.userProfile.version };
 
       if (action === 'removeAddress') {
-         try {
-           response = await removeAddress(currentData);
-           body = response.body;
+        try {
+          response = await removeAddress(currentData);
+          body = response.body;
 
-            runInAction(() => {
-              store.clearSuccess();
-              if (response.statusCode === 200) {
-                body = response.body;
-                runInAction(() => {
-                  store.success = 'Address removed successfully';
-                });
-              }
-              if (response.statusCode === 400) {
-                throw new Error('Error occurred while removing an address.');
-              }
-            });
-         } catch (err) {
-           runInAction(() => {
-             store.clearError();
-             store.error = 'Error occurred while removing an address.';
-           });
-         }
-
+          runInAction(() => {
+            store.clearSuccess();
+            if (response.statusCode === 200) {
+              body = response.body;
+              runInAction(() => {
+                store.success = 'Address removed successfully';
+              });
+            }
+            if (response.statusCode === 400) {
+              throw new Error('Error occurred while removing an address.');
+            }
+          });
+        } catch (err) {
+          runInAction(() => {
+            store.clearError();
+            store.error = 'Error occurred while removing an address.';
+          });
+        }
       }
 
       if (action === 'changeAddress') {
@@ -206,7 +205,6 @@ const createUserStore = (): UserStoreType => {
             store.error = 'Error occurred while editing an address.';
           });
         }
-
       }
 
       if (action === 'addAddress') {
@@ -226,14 +224,12 @@ const createUserStore = (): UserStoreType => {
               throw new Error('Error occurred while adding an address.');
             }
           });
-
         } catch (err) {
           runInAction(() => {
             store.clearError();
             store.error = 'Error occurred while adding an address.';
           });
         }
-
       }
 
       if (action === 'changePersonalData') {

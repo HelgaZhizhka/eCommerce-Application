@@ -5,7 +5,7 @@ import {
   type AuthMiddlewareOptions,
   TokenCache,
   TokenStore,
-  AnonymousAuthMiddlewareOptions
+  AnonymousAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -27,17 +27,17 @@ export class MyTokenCache implements TokenCache {
     token: '',
     expirationTime: 0,
     refreshToken: '',
-  }
+  };
 
   public set(newCache: TokenStore): void {
     this.clear();
     this.myCache = newCache;
     localStorage.setItem('token', this.myCache.token);
-   }
+  }
 
   public get(): TokenStore {
-     return this.myCache
-   }
+    return this.myCache;
+  }
 
   public clear(): void {
     this.myCache = {
@@ -68,8 +68,8 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
     .withExistingTokenFlow(authorization, options)
     .build();
 
-    const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-    return apiRoot
+  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+  return apiRoot;
 }
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
@@ -102,7 +102,6 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
 }
 
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
-
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -132,7 +131,7 @@ export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
     projectKey,
     credentials: {
       clientId,
-      clientSecret
+      clientSecret,
     },
     tokenCache: myToken,
     scopes,
