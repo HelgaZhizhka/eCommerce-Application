@@ -1,4 +1,3 @@
-import { act } from 'react-dom/test-utils';
 import { FieldInputthird, RegistrationFormValuesThird } from '../components/RegistrationForm/Registration.interface';
 import { validate } from '../utils/validate/thirdWindow';
 
@@ -16,9 +15,7 @@ describe('Validation Tests', () => {
       streetShipping: '',
     } as RegistrationFormValuesThird;
 
-    act(() => {
-      validate(values, mockUpdateMessage);
-    });
+    validate(values, mockUpdateMessage);
 
     expect(mockUpdateMessage).toHaveBeenCalledWith('streetShipping', 'Street name is required', true);
   });
@@ -28,9 +25,7 @@ describe('Validation Tests', () => {
       cityShipping: '',
     } as RegistrationFormValuesThird;
 
-    act(() => {
-      validate(values, mockUpdateMessage);
-    });
+    validate(values, mockUpdateMessage);
 
     expect(mockUpdateMessage).toHaveBeenCalledWith('cityShipping', 'Street name is required', true);
   });
@@ -40,9 +35,7 @@ describe('Validation Tests', () => {
       cityShipping: '@merica',
     } as RegistrationFormValuesThird;
 
-    act(() => {
-      validate(values, mockUpdateMessage);
-    });
+    validate(values, mockUpdateMessage);
 
     expect(mockUpdateMessage).toHaveBeenCalledWith(
       'cityShipping',
@@ -57,9 +50,7 @@ describe('Validation Tests', () => {
       postalCodeBilling: '',
     } as RegistrationFormValuesThird;
 
-    act(() => {
-      validate(values, mockUpdateMessage);
-    });
+    validate(values, mockUpdateMessage);
 
     expect(mockUpdateMessage).toHaveBeenCalledWith('postalCodeBilling', 'Postal code name is required', true);
     expect(mockUpdateMessage).toHaveBeenCalledWith('postalCodeShipping', 'Postal code name is required', true);
@@ -71,9 +62,7 @@ describe('Validation Tests', () => {
       postalCodeBilling: '2222',
     } as RegistrationFormValuesThird;
 
-    act(() => {
-      validate(values, mockUpdateMessage);
-    });
+    validate(values, mockUpdateMessage);
 
     expect(mockUpdateMessage).toHaveBeenCalledWith(
       'postalCodeBilling',

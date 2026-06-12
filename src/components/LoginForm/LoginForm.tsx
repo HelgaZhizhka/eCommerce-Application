@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';

@@ -23,16 +23,29 @@ Goal: same app, living foundation. Plan reference: REFACTORING_PLAN.md §5, "Ф�
       Enable in phase 5 wrap-up (tracked there) when the surviving code is the
       code we keep. `@/*` alias is infra-only for now — existing relative
       imports are NOT mass-rewritten (churn); new/touched code uses `@/`.
-- [ ] **1.3** ESLint 9 flat config + typescript-eslint 8 + Prettier 3.
-      Fix husky/lint-staged: must cover `*.ts` AND `*.tsx`.
+- [x] **1.3** ESLint 9 flat config + typescript-eslint 8 + Prettier 3.
+      Done 2026-06-12: eslint 9.39 flat config (airbnb dropped — dead upstream;
+      baseline = recommended sets + react/hooks/jsx-a11y + prettier-config).
+      ESLint 10 blocked by eslint-plugin-jsx-a11y peer (max v9) — revisit.
+      Rule-parity decisions commented in eslint.config.mjs: caught errors not
+      flagged (airbnb parity), react-hooks v7 new rules + 2 a11y rules → warn
+      (19 warnings stay visible; owners: phases 3-6). e2e/ + configs now
+      linted. lint-staged covers `*.{ts,tsx}`. Prettier 3: one-time repo
+      reformat as separate style-only commit.
 - [x] **1.4** Vitest + RTL. Done 2026-06-11: **Vitest 4.1.8** (current major),
       all 18 suites ported (`jest.*` → `vi.*`, jest-dom v6 vitest build,
       `classNameStrategy: 'non-scoped'` for legacy CSS-module assertions).
       Deleted: byte-identical SignIn/SignUp duplicates (real coverage in
       credentialsValidate.test.ts), 2 empty Footer test bodies → 57 tests green.
-- [ ] **1.5** React 18 → 19: update types, remove `react-dom/test-utils` usage,
-      verify mobx-react-lite compatibility (MobX still present until phase 3).
-- [ ] Phase 0 e2e suite green against the Vite build.
+- [x] **1.5** React 18 → 19. Done 2026-06-12: react 19.2.7 + types;
+      RTL 13 → 16 (+@testing-library/dom), framer-motion 10 → 12
+      (`as const` for variants literals), mobx-react-lite → 4.1.1,
+      unused @testing-library/user-event dropped (review finding),
+      cargo-cult `act()` from removed react-dom/test-utils deleted
+      (wrapped pure sync calls), `JSX.Element` → explicit
+      `import type { JSX } from 'react'` (React 19 dropped the global).
+      MUI 5.18 / formik-material-ui accept React 19 peers as-is.
+- [x] Phase 0 e2e suite green against the Vite build: 11/11, twice.
 - [ ] Update `PROGRESS.md`; PR into `develop`.
 
 ## Exit criteria

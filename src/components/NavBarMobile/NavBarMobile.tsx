@@ -39,7 +39,7 @@ const variants = {
       ease: 'easeInOut',
     },
   },
-};
+} as const;
 
 const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
   useEffect(() => {
