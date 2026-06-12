@@ -7,7 +7,7 @@ import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['node_modules', 'build', 'coverage', 'test-results', 'playwright-report', 'public'],
+    ignores: ['node_modules', 'build', 'coverage', 'test-results', 'playwright-report', 'public', '.netlify'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

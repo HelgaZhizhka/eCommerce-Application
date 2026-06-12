@@ -2,12 +2,10 @@ import { ClientResponse } from '@commercetools/platform-sdk';
 import { Cart, CartPagedQueryResponse } from '@commercetools/platform-sdk';
 import { MyCartUpdate } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
-import { apiwithAnonymousSessionFlow, apiwithExistingTokenFlow } from './ctClient';
+import { cartApi, sessionApi } from './ctClient';
 
 export const createCart = async (): Promise<ClientResponse<Cart>> => {
-  const existingToken = localStorage.getItem('token');
-
-  const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
+  const customer = cartApi;
 
   const body = {
     currency: 'EUR',
@@ -23,7 +21,7 @@ export const createCart = async (): Promise<ClientResponse<Cart>> => {
 };
 
 export const getActiveCart = async (): Promise<ClientResponse<Cart>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
   const activeCart = await customer.me().activeCart().get().execute();
   const { version, id } = activeCart.body;
 
@@ -45,11 +43,10 @@ export const addItemToCart = async (
   quantity?: number,
   variantId?: number
 ): Promise<ClientResponse<Cart>> => {
-  const existingToken = localStorage.getItem('token');
   let cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
-  const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
+  const customer = cartApi;
 
   if (!cartId) {
     await createCart();
@@ -89,7 +86,7 @@ export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Pro
   let cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const body: MyCartUpdate = {
     version: +`${version}`,
@@ -119,7 +116,7 @@ export const setLineItemQuantity = async (lineItemId: string, quantity = 0): Pro
 };
 
 export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const cartId = localStorage.getItem('cartId');
   const version = localStorage.getItem('cartVersion');
@@ -138,11 +135,10 @@ export const deleteCart = async (): Promise<ClientResponse<Cart>> => {
 };
 
 export const addPromoCode = async (code: string): Promise<ClientResponse<Cart>> => {
-  const existingToken = localStorage.getItem('token');
   const cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
-  const customer = existingToken ? apiwithExistingTokenFlow() : apiwithAnonymousSessionFlow();
+  const customer = cartApi;
 
   const body: MyCartUpdate = {
     version: +`${version}`,
@@ -172,7 +168,7 @@ export const removePromoCode = async (promoCodeId: string): Promise<ClientRespon
   const cartId = localStorage.getItem('cartId');
   let version = localStorage.getItem('cartVersion');
 
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const body: MyCartUpdate = {
     version: +`${version}`,

@@ -1,1 +1,5 @@
-/* /index.html 200
+# Auth BFF (applies in netlify dev too).
+# The SPA fallback (/* → /index.html) is appended to build/_redirects by the
+# build script ONLY — a catch-all here would hijack Vite module URLs under
+# `netlify dev` (it shadows the proxied dev server).
+/api/auth/*  /.netlify/functions/auth-:splat  200

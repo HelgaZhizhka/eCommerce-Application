@@ -1,134 +1,55 @@
 import {
   ClientBuilder,
-  type AuthMiddlewareOptions,
-  type ExistingTokenMiddlewareOptions,
   type HttpMiddlewareOptions,
-  type PasswordAuthMiddlewareOptions,
-  type TokenCache,
-  type TokenStore,
+  type Middleware,
+  type MiddlewareRequest,
+  type Next,
 } from '@commercetools/ts-client';
 import { createApiBuilderFromCtpClient, type ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
 
+import { ensureSessionToken, getSessionToken, getVisitorToken, loginSession } from './session';
+
 const projectKey = `${import.meta.env.VITE_PROJECT_KEY_CLIENT}`;
-const scopes = [`${import.meta.env.VITE_SCOPES_CLIENT}`];
-const hostAPI = `${import.meta.env.VITE_API_URL_CLIENT}`;
-const hostAUTH = `${import.meta.env.VITE_AUTH_URL_CLIENT}`;
-const clientId = `${import.meta.env.VITE_CLIENT_ID_CLIENT}`;
-const clientSecret = `${import.meta.env.VITE_CLIENT_SECRET_CLIENT}`;
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: hostAPI,
+  host: `${import.meta.env.VITE_API_URL_CLIENT}`,
   httpClient: fetch,
 };
 
-const emptyStore: TokenStore = {
-  token: '',
-  expirationTime: 0,
-  refreshToken: '',
+// One client per token source, built once. The middleware resolves the token
+// lazily per request, so expiry/refresh is handled in session.ts alone.
+const authInjector =
+  (getToken: () => Promise<string>): Middleware =>
+  (next: Next) =>
+  async (request: MiddlewareRequest) => {
+    const token = await getToken();
+    return next({
+      ...request,
+      headers: { ...request.headers, Authorization: `Bearer ${token}` },
+    });
+  };
+
+const buildApi = (getToken: () => Promise<string>): ByProjectKeyRequestBuilder => {
+  const client = new ClientBuilder()
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withMiddleware(authInjector(getToken))
+    .build();
+
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
 
-// ts-client v4 TokenCache is async; persistence behavior (raw token string in
-// localStorage) is kept identical to the legacy client until phase 2's BFF
-// sub-task replaces token handling entirely.
-export class MyTokenCache implements TokenCache {
-  private myCache: TokenStore = { ...emptyStore };
+// Catalog browsing: app-level read-only token.
+export const publicApi = buildApi(getVisitorToken);
 
-  public async set(newCache: TokenStore): Promise<void> {
-    this.myCache = newCache;
-    localStorage.setItem('token', this.myCache.token);
-  }
+// Me-endpoints with an existing session (anonymous or customer).
+export const sessionApi = buildApi(getSessionToken);
 
-  public async get(): Promise<TokenStore> {
-    return this.myCache;
-  }
+// Me-cart writes: creates the anonymous session lazily on first use.
+export const cartApi = buildApi(ensureSessionToken);
 
-  public clear(): void {
-    this.myCache = { ...emptyStore };
-    localStorage.removeItem('token');
-  }
-}
-
-export const myToken = new MyTokenCache();
-
-export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
-  const token = localStorage.getItem('token');
-  const authorization = `Bearer ${token}`;
-  const options: ExistingTokenMiddlewareOptions = { force: true };
-
-  const client = new ClientBuilder()
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withExistingTokenFlow(authorization, options)
-    .build();
-
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}
-
-export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
-  myToken.clear();
-
-  const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-    host: hostAUTH,
-    projectKey,
-    credentials: {
-      clientId,
-      clientSecret,
-      user: {
-        username: email,
-        password,
-      },
-    },
-    tokenCache: myToken,
-    scopes,
-    httpClient: fetch,
-  };
-
-  const client = new ClientBuilder()
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withPasswordFlow(passwordAuthMiddlewareOptions)
-    .build();
-
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}
-
-export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
-  const authMiddlewareOptions: AuthMiddlewareOptions = {
-    host: hostAUTH,
-    projectKey,
-    credentials: {
-      clientId,
-      clientSecret,
-    },
-    scopes,
-    httpClient: fetch,
-  };
-
-  const client = new ClientBuilder()
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(authMiddlewareOptions)
-    .build();
-
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}
-
-export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
-  myToken.clear();
-
-  const anonymousMiddlewareOptions: AuthMiddlewareOptions = {
-    host: hostAUTH,
-    projectKey,
-    credentials: {
-      clientId,
-      clientSecret,
-    },
-    tokenCache: myToken,
-    scopes,
-    httpClient: fetch,
-  };
-
-  const client = new ClientBuilder()
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withAnonymousSessionFlow(anonymousMiddlewareOptions)
-    .build();
-
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-}
+// Authenticates against the BFF and returns the session-bound API.
+// Async on purpose: token acquisition is a network call now.
+export const apiWithPasswordFlow = async (email: string, password: string): Promise<ByProjectKeyRequestBuilder> => {
+  await loginSession(email, password);
+  return sessionApi;
+};

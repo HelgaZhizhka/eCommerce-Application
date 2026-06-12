@@ -3,7 +3,7 @@ import { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk'
 import { MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { ClientResponse } from '@commercetools/platform-sdk';
 
-import { apiWithPasswordFlow, apiwithExistingTokenFlow } from './ctClient';
+import { apiWithPasswordFlow, sessionApi } from './ctClient';
 import { customerLogin } from './authService';
 
 const getCustomerInfo = async (customer: ByProjectKeyRequestBuilder): Promise<Customer> => {
@@ -161,7 +161,7 @@ const setAddressRequest = async (
 };
 
 export const setAdress = async (email: string, password: string): Promise<void> => {
-  const customer = apiWithPasswordFlow(email, password);
+  const customer = await apiWithPasswordFlow(email, password);
   try {
     const customerInfo = await getCustomerInfo(customer);
     await setAddressRequest(customer, customerInfo);
@@ -171,7 +171,7 @@ export const setAdress = async (email: string, password: string): Promise<void> 
 };
 
 export const getUser = async (): Promise<Customer | null> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const customerProfile = await customer.me().get().execute();
 
@@ -181,7 +181,7 @@ export const getUser = async (): Promise<Customer | null> => {
 export const removeAddress = async (
   address: Record<string, string | boolean | number>
 ): Promise<ClientResponse<Customer>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const body: MyCustomerUpdate = {
     version: +`${address.version}`,
@@ -201,7 +201,7 @@ export const removeAddress = async (
 export const changeAddress = async (
   newAddress: Record<string, string | boolean | number>
 ): Promise<ClientResponse<Customer>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const { city, country, postalCode, streetName, id, version, checkBox, name } = newAddress;
 
@@ -244,7 +244,7 @@ export const changeAddress = async (
 export const addAddress = async (
   newAddress: Record<string, string | boolean | number>
 ): Promise<ClientResponse<Customer>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   let response: ClientResponse<Customer> | undefined;
 
@@ -294,7 +294,7 @@ export const updatePersonalData = async (
 ): Promise<ClientResponse<Customer>> => {
   const { firstName, lastName, dateOfBirth, email, version } = userInfo;
 
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
 
   const body: MyCustomerUpdate = {
     version: +`${version}`,
@@ -324,7 +324,7 @@ export const updatePersonalData = async (
 };
 
 export const changePassword = async (userInfo: Record<string, string | number>): Promise<ClientResponse<Customer>> => {
-  const customer = apiwithExistingTokenFlow();
+  const customer = sessionApi;
   const { version, currentPassword, newPassword } = userInfo;
 
   const body: MyCustomerChangePassword = {
