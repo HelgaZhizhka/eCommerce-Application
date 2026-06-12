@@ -20,12 +20,13 @@ jobs:
         run: npm ci
 
       - name: Typecheck
-        run: npx tsc --noEmit
+        run: npm run typecheck
 
       - name: Lint
         run: npm run eslint
 
       - name: Unit tests
-        run: npm test -- --watchAll=false
-        env:
-          CI: true
+        run: npm test
+
+      - name: Build
+        run: npm run build

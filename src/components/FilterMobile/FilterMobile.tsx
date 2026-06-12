@@ -1,5 +1,4 @@
-import Popover from '@mui/material/Popover';
-import IconButton from '@mui/material/IconButton';
+import { Popover, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { FilterChip } from '../baseComponents/FilterChip';

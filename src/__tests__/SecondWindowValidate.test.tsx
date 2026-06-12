@@ -7,7 +7,7 @@ describe('Validation Tests', () => {
   let mockUpdateMessage: UpdateMessageFunction;
 
   beforeEach(() => {
-    mockUpdateMessage = jest.fn();
+    mockUpdateMessage = vi.fn();
   });
 
   it('should validate the firstName correctly', () => {

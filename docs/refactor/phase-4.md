@@ -20,8 +20,7 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 4". Bug list: plan §2.4 "Ф�
 - [ ] **4.4** Registration wizard: typed step state machine, local accumulator
       (not global store), single submit mutation. No `setTimeout(signup, 0)` race;
       password never leaves form scope.
-- [ ] **4.5** Typed form→API contract; kill `Record<string, string|boolean|number>`
-      + stringly `action` dispatch (its store half died in phase 3).
+- [ ] **4.5** Typed form→API contract; kill `Record<string, string|boolean|number>` + stringly `action` dispatch (its store half died in phase 3).
 - [ ] Remove `formik`, `yup`, `formik-material-ui` from dependencies.
 - [ ] Un-pin the intentionally-pinned validator bugs from phase 0
       characterization tests; assert correct behavior now.

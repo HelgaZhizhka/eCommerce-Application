@@ -1,6 +1,5 @@
-import Button from '@mui/material/Button';
+import { Button, IconButton } from '@mui/material';
 import { Address } from '@commercetools/platform-sdk';
-import IconButton from '@mui/material/IconButton';
 
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileBox } from '../../components/ProfileBox';

@@ -4,10 +4,10 @@ import ModalProfile from '../components/baseComponents/ModalProfile/ModalProfile
 describe('ModalProfile', () => {
   it('should render the modal with the given props', () => {
     const activeModal = 'address';
-    const handleCloseModal = jest.fn();
-    const onSaveChange = jest.fn();
+    const handleCloseModal = vi.fn();
+    const onSaveChange = vi.fn();
 
-    const { getByRole, getByText } = render(
+    const { getByRole } = render(
       <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} onSaveChange={onSaveChange} />
     );
 

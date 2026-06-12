@@ -1,6 +1,4 @@
-import Box from '@mui/material/Box';
-import Popover from '@mui/material/Popover';
-import IconButton from '@mui/material/IconButton';
+import { Box, Popover, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { SortingList } from '../baseComponents/SortingList';

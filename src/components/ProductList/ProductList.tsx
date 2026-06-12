@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import Box from '@mui/system/Box';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Box, CircularProgress } from '@mui/material';
 
 import { productStore } from '../../stores';
 import { Card } from '../Card';

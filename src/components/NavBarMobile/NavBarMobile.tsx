@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import { IconButton } from '@mui/material';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
@@ -39,7 +39,7 @@ const variants = {
       ease: 'easeInOut',
     },
   },
-};
+} as const;
 
 const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
   useEffect(() => {

@@ -1,6 +1,5 @@
-import Input from '@mui/material/Input';
+import { Input, Button } from '@mui/material';
 import { useState } from 'react';
-import { Button } from '@mui/material';
 
 import { promoCode } from '../../../constants';
 import styles from './PromoCode.module.scss';

@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import Slider from '@mui/material/Slider';
-import Box from '@mui/material/Box';
+import { Slider, Box } from '@mui/material';
 
 import { initialPriceRange } from '../../../constants';
 import { productStore } from '../../../stores';

@@ -10,20 +10,4 @@ describe('Footer component', () => {
       </MemoryRouter>
     );
   });
-
-  it('displays links correctly', () => {
-    render(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>
-    );
-  });
-
-  it('displays footer columns correctly', () => {
-    render(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>
-    );
-  });
 });

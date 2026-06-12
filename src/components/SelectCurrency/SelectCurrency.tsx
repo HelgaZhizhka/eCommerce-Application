@@ -1,4 +1,4 @@
-import TextField from '@mui/material/TextField';
+import { TextField } from '@mui/material';
 
 import { currency } from '../../constants';
 import styles from './SelectCurrency.module.scss';

@@ -74,7 +74,6 @@ const createProductStore = (): ProductStoreType => {
     filterColors: [] as string[],
     filterPrice: [initialPriceRange.min, initialPriceRange.max] as number[],
 
-
     setLoadingState(type: 'app' | 'product' | 'products', state: boolean): void {
       switch (type) {
         case 'app':
@@ -355,7 +354,6 @@ const createProductStore = (): ProductStoreType => {
         store.currentPage = pageNumber;
       });
     },
-
   };
 
   makeAutoObservable(store);

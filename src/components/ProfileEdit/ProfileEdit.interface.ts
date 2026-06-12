@@ -13,5 +13,5 @@ export interface IProfileEdit {
   cityBilling: string;
   postalCodeBilling: string;
   countryBilling: string;
-  checkedBillingDefault: boolean; 
+  checkedBillingDefault: boolean;
 }

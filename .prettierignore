@@ -1,3 +1,5 @@
 /build
 /node_modules
-.eslintrc
+/test-results
+/playwright-report
+package-lock.json

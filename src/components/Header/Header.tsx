@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Badge from '@mui/material/Badge';
+import { Container, Button, Badge } from '@mui/material';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { currency, contacts } from '../../constants';

@@ -2,8 +2,7 @@ import { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
 import { ProductVariant } from '@commercetools/platform-sdk';
-import Button from '@mui/material/Button';
-import { debounce } from '@mui/material';
+import { Button, debounce } from '@mui/material';
 
 import { Price } from '../baseComponents/Price';
 import { NumberInput } from '../baseComponents/NumberInput';

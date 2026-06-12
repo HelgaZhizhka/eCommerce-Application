@@ -1,7 +1,0 @@
-node_modules
-build
-src/setupTests.ts
-src/__tests__
-# e2e (Playwright on ESLint 8 airbnb is noise; linted properly after phase 1 flat-config migration)
-e2e
-playwright.config.ts

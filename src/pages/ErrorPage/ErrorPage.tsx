@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
+import { Container, Button } from '@mui/material';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import image404 from './images/404.png';

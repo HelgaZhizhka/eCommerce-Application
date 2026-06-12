@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useState, useEffect } from 'react';
 import { Button, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';

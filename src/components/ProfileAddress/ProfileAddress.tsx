@@ -1,8 +1,6 @@
-import { Box, Button, MenuItem } from '@mui/material';
+import { Box, Button, MenuItem, styled, FormControlLabel } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import { Checkbox, TextField as FormikTextField } from 'formik-material-ui';
-import { styled } from '@mui/system';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { ReactElement } from 'react';
 
 import styles from './ProfileAddress.module.scss';

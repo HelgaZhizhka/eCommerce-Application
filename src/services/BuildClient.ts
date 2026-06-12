@@ -5,17 +5,17 @@ import {
   type AuthMiddlewareOptions,
   TokenCache,
   TokenStore,
-  AnonymousAuthMiddlewareOptions
+  AnonymousAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-const projectKey = `${process.env.REACT_APP_PROJECT_KEY_CLIENT}`;
-const scopes = [`${process.env.REACT_APP_SCOPES_CLIENT}`];
-const hostAPI = `${process.env.REACT_APP_API_URL_CLIENT}`;
-const hostAUTH = `${process.env.REACT_APP_AUTH_URL_CLIENT}`;
-const clientId = `${process.env.REACT_APP_CLIENT_ID_CLIENT}`;
-const clientSecret = `${process.env.REACT_APP_CLIENT_SECRET_CLIENT}`;
+const projectKey = `${import.meta.env.VITE_PROJECT_KEY_CLIENT}`;
+const scopes = [`${import.meta.env.VITE_SCOPES_CLIENT}`];
+const hostAPI = `${import.meta.env.VITE_API_URL_CLIENT}`;
+const hostAUTH = `${import.meta.env.VITE_AUTH_URL_CLIENT}`;
+const clientId = `${import.meta.env.VITE_CLIENT_ID_CLIENT}`;
+const clientSecret = `${import.meta.env.VITE_CLIENT_SECRET_CLIENT}`;
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: hostAPI,
@@ -27,17 +27,17 @@ export class MyTokenCache implements TokenCache {
     token: '',
     expirationTime: 0,
     refreshToken: '',
-  }
+  };
 
   public set(newCache: TokenStore): void {
     this.clear();
     this.myCache = newCache;
     localStorage.setItem('token', this.myCache.token);
-   }
+  }
 
   public get(): TokenStore {
-     return this.myCache
-   }
+    return this.myCache;
+  }
 
   public clear(): void {
     this.myCache = {
@@ -68,8 +68,8 @@ export function apiwithExistingTokenFlow(): ByProjectKeyRequestBuilder {
     .withExistingTokenFlow(authorization, options)
     .build();
 
-    const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
-    return apiRoot
+  const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
+  return apiRoot;
 }
 
 export function apiWithPasswordFlow(email: string, password: string): ByProjectKeyRequestBuilder {
@@ -102,7 +102,6 @@ export function apiWithPasswordFlow(email: string, password: string): ByProjectK
 }
 
 export function apiWithClientCredentialsFlow(): ByProjectKeyRequestBuilder {
-
   const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: hostAUTH,
     projectKey,
@@ -132,7 +131,7 @@ export function apiwithAnonymousSessionFlow(): ByProjectKeyRequestBuilder {
     projectKey,
     credentials: {
       clientId,
-      clientSecret
+      clientSecret,
     },
     tokenCache: myToken,
     scopes,

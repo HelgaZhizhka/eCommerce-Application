@@ -59,7 +59,7 @@ export const info = [
     name: 'Victoria Alekseeva',
     role: 'Commercetools explorer',
     age: '34',
-    personality: 'keep calm and don\'t panic',
+    personality: "keep calm and don't panic",
     presentation: `<p>¡Hola! I'm Victoria, a telecommunications engineer by education who decided to change her profession. </p>
     <p>In this project, my responsibilities included working with Commercetools:</p>
     <ul>

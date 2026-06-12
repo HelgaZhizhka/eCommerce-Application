@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import Box from '@mui/system/Box';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box, Button, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
 import { cartStore, productStore } from '../../stores';
 import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';

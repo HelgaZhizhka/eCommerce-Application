@@ -4,28 +4,28 @@ import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/sr
 import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
 import { getActiveCart } from './cartService';
 
-export const customerLogin = async (email: string, password: string):Promise<ClientResponse<CustomerSignInResult>> => {
+export const customerLogin = async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
   const existingToken = localStorage.getItem('token');
 
   const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithPasswordFlow(email, password);
 
   const response = await newCustomer
-  .me()
-  .login()
-  .post({
-    body: {
-      email,
-      password,
-    },
-  })
-  .execute();
+    .me()
+    .login()
+    .post({
+      body: {
+        email,
+        password,
+      },
+    })
+    .execute();
 
   if (response.statusCode === 200) {
     await apiWithPasswordFlow(email, password).me().get().execute();
     if (localStorage.getItem('cartId')) await getActiveCart();
-  };
+  }
 
-  return response
+  return response;
 };
 
 export const customerSignUp = async (
@@ -84,7 +84,7 @@ export const customerSignUp = async (
   if (signUpCustomer.statusCode === 201) {
     await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
     if (localStorage.getItem('cartId')) await getActiveCart();
-  };
+  }
 
   return signUpCustomer;
 };

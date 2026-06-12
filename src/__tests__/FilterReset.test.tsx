@@ -3,12 +3,12 @@ import FilterReset from '../components/baseComponents/FilterReset/FilterReset';
 
 describe('FilterReset', () => {
   it('should render the component with the given props', () => {
-    const onClickMock = jest.fn();
+    const onClickMock = vi.fn();
     const { getByText } = render(<FilterReset mobile={true} onClick={onClickMock} />);
     const button = getByText('Reset filters');
     expect(button).toBeInTheDocument();
     expect(button).toHaveStyle('width: 100%');
-    expect(button).toHaveStyle('color: orange');
+    expect(button).toHaveStyle('color: rgb(255, 165, 0)');
     fireEvent.click(button);
     expect(onClickMock).toHaveBeenCalledTimes(1);
   });

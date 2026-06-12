@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import { Container, Typography, List, ListItem } from '@mui/material';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
