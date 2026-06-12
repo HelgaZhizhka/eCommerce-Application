@@ -1,30 +1,26 @@
-import { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
 import { Container } from '@mui/material';
 import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileBox } from '../../components/ProfileBox';
-import { userStore } from '../../stores';
+import { useMeQuery, useUpdateProfileMutation } from '../../queries/customer';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import styles from './Profile.module.scss';
 
 const Profile: React.FC = () => {
-  const { isEditMode, userProfile, getUserProfile, updateUserProfile } = userStore;
+  const { data: userProfile } = useMeQuery();
+  const updateProfile = useUpdateProfileMutation();
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleModeChange = (mode: boolean): void => {
-    userStore.setEditMode(mode);
+    setIsEditMode(mode);
   };
 
   const handleSaveChange = (data: Record<string, string | boolean | number>): void => {
-    const currentData = { ...data };
-    updateUserProfile(currentData);
+    updateProfile.mutate({ ...data });
   };
-
-  useEffect(() => {
-    getUserProfile();
-  }, []);
 
   const {
     firstName,
@@ -100,4 +96,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default observer(Profile);
+export default Profile;
