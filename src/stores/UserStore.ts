@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
+import { makeAutoObservable, runInAction, toJS } from 'mobx';
 import { Customer } from '@commercetools/platform-sdk';
 import { ClientResponse } from '@commercetools/platform-sdk';
 
@@ -13,7 +13,7 @@ import {
   updatePersonalData,
   changePassword,
 } from '../services/setCustomersDetails';
-import { clearSession } from '../services/session';
+import { clearSession, isCustomerSession } from '../services/session';
 import { cartStore } from './CartStore';
 
 type UserStoreType = {
@@ -41,7 +41,8 @@ const createUserStore = (): UserStoreType => {
     userData: {},
     userProfile: {} as Customer,
     isEditMode: false,
-    loggedIn: localStorage.getItem('loggedIn') === 'true',
+    // session validity is the source of truth (2.5) — no separate flag
+    loggedIn: isCustomerSession(),
     isRegistration: false,
     error: null as null | string,
     success: null as null | string,
@@ -117,7 +118,6 @@ const createUserStore = (): UserStoreType => {
     },
 
     logout(): void {
-      localStorage.removeItem('loggedIn');
       localStorage.removeItem('cart');
       localStorage.removeItem('cartId');
       localStorage.removeItem('cartVersion');
@@ -291,13 +291,6 @@ const createUserStore = (): UserStoreType => {
   };
 
   makeAutoObservable(store);
-
-  reaction(
-    () => store.loggedIn,
-    (loggedIn) => {
-      localStorage.setItem('loggedIn', String(loggedIn));
-    }
-  );
 
   return store;
 };

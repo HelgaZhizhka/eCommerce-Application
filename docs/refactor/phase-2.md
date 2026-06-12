@@ -36,9 +36,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 2".
         auth-injecting middleware (`publicApi`/`sessionApi`/`cartApi`) —
         no more client-per-request; `MyTokenCache` and the raw `token`
         localStorage key are gone.
-- [ ] **2.3** Rewrite services as thin typed functions over `apiRoot`
-      (products, categories, cart via me-endpoints, customer). Remove manual
-      `statusCode === 200/400` checks; normalize CT errors into domain errors.
+- [x] **2.3** Done 2026-06-12 (largely achieved by 2.2): services are thin
+      typed functions over the shared clients — no per-call client building,
+      no token plumbing, public SDK types only.
+      **DECISION**: domain-error normalization and the dead
+      `statusCode === 400` branches move to phase 3 — their only consumers
+      are the MobX stores, which phase 3 replaces with TanStack Query
+      (mutations get error handling from the library); normalizing now would
+      be built twice. The three remaining `statusCode === 2xx` guards in
+      services are "on success" semantics, kept as-is.
 - [x] **2.4** Done 2026-06-12 (landed with 2.1): anonymous session is created
       lazily by `ensureSessionToken()` on first cart write — nothing on app
       load; me/login keeps CT's default `MergeWithExistingCustomerCart`;
@@ -46,8 +52,10 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 2".
       new account too. Also fixed en route: post-signup `setAdress` was
       fire-and-forget and lost address links when the tab closed early —
       now awaited before signup reports success.
-- [ ] **2.5** Delete `loggedIn` localStorage flag; session validity is the
-      source of truth for `Secure` routes.
+- [x] **2.5** Done 2026-06-12: `loggedIn` localStorage flag deleted (init,
+      mobx reaction persisting it, logout cleanup). `userStore.loggedIn` is
+      now initialized from `isCustomerSession()` — the stored session is the
+      single source of truth; `Secure` routes consume the same observable.
 - [ ] E2E suite green (auth flows unchanged from user perspective).
 - [ ] Update `PROGRESS.md`; PR into `develop`.
 
