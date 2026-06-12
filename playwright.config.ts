@@ -7,15 +7,15 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    // netlify dev fronts Vite (3000) and the auth BFF functions
+    baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm start',
-    url: 'http://localhost:3000',
+    command: 'npx netlify dev --offline',
+    url: 'http://localhost:8888',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
-    env: { BROWSER: 'none' },
   },
 });

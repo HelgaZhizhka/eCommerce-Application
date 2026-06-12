@@ -1,13 +1,12 @@
-import { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { MyCustomerDraft } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me';
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
-import { apiWithClientCredentialsFlow, apiWithPasswordFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
+import { MyCustomerDraft } from '@commercetools/platform-sdk';
+import { ClientResponse } from '@commercetools/platform-sdk';
+import { apiWithPasswordFlow, cartApi, sessionApi } from './ctClient';
+import { hasSession } from './session';
 import { getActiveCart } from './cartService';
 
 export const customerLogin = async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
-  const existingToken = localStorage.getItem('token');
-
-  const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithPasswordFlow(email, password);
+  const newCustomer = hasSession() ? sessionApi : await apiWithPasswordFlow(email, password);
 
   const response = await newCustomer
     .me()
@@ -21,7 +20,7 @@ export const customerLogin = async (email: string, password: string): Promise<Cl
     .execute();
 
   if (response.statusCode === 200) {
-    await apiWithPasswordFlow(email, password).me().get().execute();
+    await (await apiWithPasswordFlow(email, password)).me().get().execute();
     if (localStorage.getItem('cartId')) await getActiveCart();
   }
 
@@ -69,9 +68,9 @@ export const customerSignUp = async (
       values.checkedBillingDefault || (values.checkedAddBillingForm && values.checkedShippingDefault) ? 1 : undefined,
   };
 
-  const existingToken = localStorage.getItem('token');
-
-  const newCustomer = existingToken ? apiwithExistingTokenFlow() : apiWithClientCredentialsFlow();
+  // me/signup needs a session-bound token; cartApi lazily creates the anonymous
+  // session (and CT then merges the guest cart into the new account)
+  const newCustomer = cartApi;
 
   const signUpCustomer = await newCustomer
     .me()
@@ -82,7 +81,7 @@ export const customerSignUp = async (
     .execute();
 
   if (signUpCustomer.statusCode === 201) {
-    await apiWithPasswordFlow(`${values.email}`, `${values.password}`).me().get().execute();
+    await (await apiWithPasswordFlow(`${values.email}`, `${values.password}`)).me().get().execute();
     if (localStorage.getItem('cartId')) await getActiveCart();
   }
 

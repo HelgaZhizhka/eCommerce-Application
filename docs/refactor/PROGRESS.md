@@ -5,13 +5,20 @@
 
 ## Current state
 
-- **Phase:** 1 — Build & tooling: **COMPLETE** (1.1–1.5 ✅)
-- **Stack now:** Vite 7.3.5 · React 19.2.7 · TS 5.9.3 (bundler resolution,
-  `@/*` alias) · ESLint 9.39 flat config · Prettier 3 · Vitest 4.1.8
-- **Final gate:** `./scripts/verify.sh` → exit 0 (tsc, eslint 0 errors /
-  19 intentional warnings, 57 unit, build ~3.6s, 11/11 e2e) — 2026-06-12
-- **Next:** PR into `develop` → merge → phase 2 (API layer + BFF:
-  `ts-client` v3, Netlify Functions, secret out of the bundle)
+- **Phase:** 2 — API layer & auth: **COMPLETE** (2.1–2.5 ✅) —
+  **secret is out of the bundle**
+- **Stack now:** Vite 7.3.5 · React 19.2.7 · TS 5.9.3 · ESLint 9.39 ·
+  Vitest 4.1.8 · ts-client 4.10 · platform-sdk 8.27 · Netlify Functions BFF
+- **Dev workflow:** `npx netlify dev` (:8888) — vite-only `npm start` has no
+  /api/auth/* anymore
+- **Final gate:** `./scripts/verify.sh` → exit 0 (tsc src+netlify, eslint
+  0 errors, 57 unit, build, 11/11 e2e ×2) — 2026-06-12
+- **Next:** PR into `develop` → merge → phase 3 (MobX → TanStack Query + URL
+  state). NOTE: production still serves the 2023 CRA build — no auto-deploy
+  from develop; after this phase merges, decide deploy branch + trigger
+- **Pending human task (blocks production deploy):** Netlify UI env vars —
+  add CTP_* (5), keep VITE_PROJECT_KEY/API_URL, drop REACT_APP_* (user
+  instructed 2026-06-12)
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream

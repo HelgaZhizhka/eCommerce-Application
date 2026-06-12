@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+import { Image } from '@commercetools/platform-sdk';
 import { ProductVariant } from '@commercetools/platform-sdk';
 import { Button, debounce } from '@mui/material';
 

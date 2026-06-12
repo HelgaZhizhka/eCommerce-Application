@@ -1,5 +1,5 @@
 import { ProductVariant } from '@commercetools/platform-sdk';
-import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+import { Image } from '@commercetools/platform-sdk';
 
 export type ProductType = {
   lineItemId: string;

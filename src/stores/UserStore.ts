@@ -1,6 +1,6 @@
-import { makeAutoObservable, runInAction, reaction, toJS } from 'mobx';
-import { Customer } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
-import { ClientResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/common-types';
+import { makeAutoObservable, runInAction, toJS } from 'mobx';
+import { Customer } from '@commercetools/platform-sdk';
+import { ClientResponse } from '@commercetools/platform-sdk';
 
 import { customerLogin, customerSignUp } from '../services/authService';
 import { RegistrationFormValuesData } from '../components/RegistrationForm/Registration.interface';
@@ -13,7 +13,7 @@ import {
   updatePersonalData,
   changePassword,
 } from '../services/setCustomersDetails';
-import { myToken } from '../services/BuildClient';
+import { clearSession, isCustomerSession } from '../services/session';
 import { cartStore } from './CartStore';
 
 type UserStoreType = {
@@ -41,7 +41,8 @@ const createUserStore = (): UserStoreType => {
     userData: {},
     userProfile: {} as Customer,
     isEditMode: false,
-    loggedIn: localStorage.getItem('loggedIn') === 'true',
+    // session validity is the source of truth (2.5) — no separate flag
+    loggedIn: isCustomerSession(),
     isRegistration: false,
     error: null as null | string,
     success: null as null | string,
@@ -76,13 +77,15 @@ const createUserStore = (): UserStoreType => {
         const data: Partial<RegistrationFormValuesData> = toJS(store.userData);
         const response = await customerSignUp(data);
 
+        if (response.statusCode === 201 && data.email && data.password) {
+          // must complete before success is reported: fire-and-forget here lost
+          // the shipping/billing address links when the tab closed early
+          await setAdress(data.email, data.password);
+        }
+
         runInAction(() => {
           if (response.statusCode === 201) {
             store.loggedIn = true;
-            if (data.email && data.password) {
-              setAdress(data.email, data.password);
-            }
-
             store.isRegistration = true;
           }
           if (response.statusCode === 400) {
@@ -115,12 +118,10 @@ const createUserStore = (): UserStoreType => {
     },
 
     logout(): void {
-      localStorage.removeItem('loggedIn');
-      localStorage.removeItem('token');
       localStorage.removeItem('cart');
       localStorage.removeItem('cartId');
       localStorage.removeItem('cartVersion');
-      myToken.clear();
+      clearSession();
       store.loggedIn = false;
       store.userData = {};
       store.clearError();
@@ -290,13 +291,6 @@ const createUserStore = (): UserStoreType => {
   };
 
   makeAutoObservable(store);
-
-  reaction(
-    () => store.loggedIn,
-    (loggedIn) => {
-      localStorage.setItem('loggedIn', String(loggedIn));
-    }
-  );
 
   return store;
 };

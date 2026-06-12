@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Image } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/common';
+import { Image } from '@commercetools/platform-sdk';
 import { ProductVariant } from '@commercetools/platform-sdk';
 
 import { RoutePaths } from '../../routes/routes.enum';

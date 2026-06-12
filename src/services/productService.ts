@@ -1,20 +1,20 @@
-import { Category } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/category';
-import { Product, ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
+import { Category } from '@commercetools/platform-sdk';
+import { Product, ProductProjection } from '@commercetools/platform-sdk';
 import { AttributeDefinition, ClientResponse } from '@commercetools/platform-sdk';
 
 import { SortObject } from '../components/baseComponents/SortingList/SortList.enum';
 import { DEFAULT_LIMIT } from '../constants';
 
-import { apiWithClientCredentialsFlow, apiwithExistingTokenFlow } from './BuildClient';
+import { publicApi } from './ctClient';
 
 export async function getCategories(): Promise<Category[]> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
   const response = await visitor.categories().get().execute();
   return response.body.results;
 }
 
 export async function getProducts(): Promise<Product[]> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
   const response = await visitor.products().get().execute();
   return response.body.results;
 }
@@ -26,7 +26,7 @@ export async function getProductsByCategory(
   results: ProductProjection[];
   total: number | undefined;
 }> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
   const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const response = await visitor
@@ -49,7 +49,7 @@ export async function getProductsByCategory(
 }
 
 export async function getProductsTypeByCategory(key: string): Promise<AttributeDefinition[] | undefined> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
 
   const response = await visitor
     .productTypes()
@@ -61,7 +61,7 @@ export async function getProductsTypeByCategory(key: string): Promise<AttributeD
 }
 
 export async function getProductByKey(key: string): Promise<Product> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
 
   const response = await visitor
     .products()
@@ -82,7 +82,7 @@ export async function getProductsByFilter(
   results: ProductProjection[];
   total: number | undefined;
 }> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
   const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterProperties: string[] = [`categories.id:subtree("${categoryID}")`];
@@ -136,7 +136,7 @@ export async function getSearchProducts(
   results: ProductProjection[];
   total: number | undefined;
 }> {
-  const visitor = apiWithClientCredentialsFlow();
+  const visitor = publicApi;
   const offset = (currentPage - 1) * DEFAULT_LIMIT;
 
   const filterPropertiesCategoryID = `categories.id:subtree("${categoryID}")`;
@@ -163,7 +163,7 @@ export async function getSearchProducts(
 }
 
 export async function getProductById(productId: string): Promise<ClientResponse<Product>> {
-  const customer = apiwithExistingTokenFlow();
+  const customer = publicApi;
   const response = customer.products().withId({ ID: productId }).get().execute();
   return response;
 }

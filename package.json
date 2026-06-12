@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@commercetools/platform-sdk": "^4.11.0",
-    "@commercetools/sdk-client-v2": "^2.2.0",
+    "@commercetools/platform-sdk": "^8.27.0",
+    "@commercetools/ts-client": "^4.10.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^5.18.0",
@@ -41,6 +41,7 @@
     "husky": "^8.0.3",
     "jsdom": "^29.1.1",
     "lint-staged": "^13.2.3",
+    "netlify-cli": "^26.1.0",
     "prettier": "^3.8.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.61.0",
@@ -50,11 +51,11 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && printf '\\n# SPA fallback (build-only, see public/_redirects)\\n/*  /index.html  200\\n' >> build/_redirects",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p netlify",
     "prettier": "prettier --write .",
     "eslint:fix": "eslint . --fix",
     "eslint": "eslint .",
@@ -67,5 +68,8 @@
       "eslint --cache --fix",
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "@opentelemetry/api": "1.9.1"
   }
 }
