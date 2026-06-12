@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { observer } from 'mobx-react-lite/dist/index';
 import { Container } from '@mui/material';
 
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
 import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
@@ -12,7 +11,8 @@ import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
 import styles from './Main.module.scss';
 
 const Main: React.FC = () => {
-  const { isRegistration, resetRegistration } = userStore;
+  const isRegistration = useAuthStore((state) => state.isRegistration);
+  const resetRegistration = useAuthStore((state) => state.resetRegistration);
   const [showSuccessful, setShowSuccessful] = useState(false);
 
   useEffect((): (() => void) => {
@@ -66,4 +66,4 @@ const Main: React.FC = () => {
   );
 };
 
-export default observer(Main);
+export default Main;

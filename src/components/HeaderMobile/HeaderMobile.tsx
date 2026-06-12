@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
 import { Container, IconButton, Badge } from '@mui/material';
@@ -13,13 +12,14 @@ import { Icon } from '../baseComponents/Icon';
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { NavBarMobile } from '../NavBarMobile';
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 import { useCartQuery } from '../../queries/cart';
 import { Logo } from '../Logo';
 import styles from './HeaderMobile.module.scss';
 
 const HeaderMobile: React.FC = () => {
-  const { loggedIn } = userStore;
+  const loggedIn = useAuthStore((state) => state.loggedIn);
+  const logout = useAuthStore((state) => state.logout);
   const { totalAmount } = useCartQuery();
 
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
@@ -57,7 +57,7 @@ const HeaderMobile: React.FC = () => {
               <Link
                 to={RoutePaths.MAIN}
                 onClick={(): void => {
-                  userStore.logout();
+                  logout();
                 }}
               >
                 <LogoutIcon sx={{ ml: '10px' }} fontSize="large" />
@@ -72,4 +72,4 @@ const HeaderMobile: React.FC = () => {
   );
 };
 
-export default observer(HeaderMobile);
+export default HeaderMobile;

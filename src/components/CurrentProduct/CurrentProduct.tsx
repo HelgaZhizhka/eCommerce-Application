@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Box, Button, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
 import { useCartActions } from '../../queries/cart';
@@ -345,4 +344,4 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
   );
 };
 
-export default observer(CurrentProduct);
+export default CurrentProduct;

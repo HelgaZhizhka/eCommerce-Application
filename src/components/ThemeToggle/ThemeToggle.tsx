@@ -2,13 +2,14 @@ import { IconButton } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-import { themeStore } from '../../stores';
+import { useThemeStore } from '../../stores/theme';
 
 const ThemeToggle: React.FC = () => {
-  const { darkMode } = themeStore;
+  const darkMode = useThemeStore((state) => state.darkMode);
+  const toggleDarkMode = useThemeStore((state) => state.toggleDarkMode);
 
   return (
-    <IconButton sx={{ color: 'primary.main' }} onClick={(): void => themeStore.toggleDarkMode()} color="inherit">
+    <IconButton sx={{ color: 'primary.main' }} onClick={toggleDarkMode} color="inherit">
       {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
     </IconButton>
   );

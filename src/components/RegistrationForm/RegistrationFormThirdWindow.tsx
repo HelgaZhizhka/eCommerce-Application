@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 import { validate } from '../../utils/validate/thirdWindow';
 import { Data } from '../../pages/Registration/Registration.types';
 import { ShowValidate } from '../ShowValidate';
@@ -307,7 +307,7 @@ const RegistrationFormThirdWindow: React.FC<RegistrationProps> = ({ setWindowPag
                 disabled={isSubmitting || !allFieldsValid}
                 onClick={(): void => {
                   submitForm();
-                  setTimeout(() => userStore.signup(), 0);
+                  setTimeout(() => useAuthStore.getState().signup(), 0);
                 }}
               >
                 Sing up

@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react-lite';
 import { Navigate } from 'react-router-dom';
 
-import { userStore } from '../stores';
+import { useAuthStore } from '../stores/authStore';
 import { RoutePaths } from './routes.enum';
 
 type Props = {
@@ -10,7 +9,7 @@ type Props = {
 };
 
 const Secure: React.FC<Props> = ({ children, reverse }) => {
-  const { loggedIn } = userStore;
+  const loggedIn = useAuthStore((state) => state.loggedIn);
 
   if (reverse) {
     if (loggedIn) {
@@ -26,4 +25,4 @@ const Secure: React.FC<Props> = ({ children, reverse }) => {
   return <>{children}</>;
 };
 
-export default observer(Secure);
+export default Secure;

@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -102,4 +101,4 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
   );
 };
 
-export default observer(Categories);
+export default Categories;

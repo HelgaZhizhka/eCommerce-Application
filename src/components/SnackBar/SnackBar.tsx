@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Snackbar, Alert } from '@mui/material';
 
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 import { subscribeToToasts, Toast } from '../../queries/notifications';
 
 const SnackBar: React.FC = () => {
@@ -10,15 +9,17 @@ const SnackBar: React.FC = () => {
 
   useEffect(() => subscribeToToasts(setToast), []);
 
-  const userError = userStore.error;
-  const userSuccess = userStore.success;
+  const userError = useAuthStore((state) => state.error);
+  const userSuccess = useAuthStore((state) => state.success);
+  const clearError = useAuthStore((state) => state.clearError);
+  const clearSuccess = useAuthStore((state) => state.clearSuccess);
 
   const error = userError ?? (toast?.type === 'error' ? toast.message : null);
   const success = userSuccess ?? (toast?.type === 'success' ? toast.message : null);
 
   const handleClose = (): void => {
-    userStore.clearError();
-    userStore.clearSuccess();
+    clearError();
+    clearSuccess();
     setToast(null);
   };
 
@@ -55,4 +56,4 @@ const SnackBar: React.FC = () => {
   );
 };
 
-export default observer(SnackBar);
+export default SnackBar;

@@ -10,7 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { validate } from '../../utils/validate/sigIn';
 import ShowValidate from '../ShowValidate/ShowValidate';
 import { FieldInput } from '../RegistrationForm/Registration.interface';
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 
 import { LoginFormValues } from './LoginForm.interface';
 import styles from './LoginForm.module.scss';
@@ -81,7 +81,7 @@ const LoginForm: React.FC = () => {
       initialValues={initialValues}
       validate={(values): Partial<LoginFormValues> => validate(values, updateMessage)}
       onSubmit={(values, { setSubmitting }): void => {
-        userStore.login(values.email, values.password);
+        useAuthStore.getState().login(values.email, values.password);
         setSubmitting(false);
       }}
     >
