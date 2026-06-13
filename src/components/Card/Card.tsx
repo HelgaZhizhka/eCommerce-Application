@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from '@commercetools/platform-sdk';
@@ -12,9 +11,9 @@ import { Icon } from '../baseComponents/Icon';
 import { Price } from '../baseComponents/Price';
 import { SizeWithVariantId } from '../baseComponents/SelectSize/SelectSize.types';
 import { SelectSize } from '../baseComponents/SelectSize';
+import { cn } from '../../shared/lib/cn';
 
 import holder from './images/holder.png';
-import styles from './Card.module.scss';
 
 type Props = {
   categoryId: string;
@@ -48,12 +47,6 @@ const Card: React.FC<Props> = ({
   variants,
   className,
 }) => {
-  // fixed: `className` was a key (always-truthy literal class), not applied;
-  // the caller's className was silently dropped
-  const classes = classNames(styles.root, className, {
-    [styles.isDiscount]: isDiscount,
-  });
-
   const { addToCart, isProductInCart } = useCartActions();
 
   const generateProductPath = (catId: string, subCatId: string | null | undefined, prodKey: string): string => {
@@ -78,8 +71,7 @@ const Card: React.FC<Props> = ({
     }
 
     if (initialSku) {
-      const initialIsInCart = isProductInCart(initialSku);
-      setIsInCart(initialIsInCart);
+      setIsInCart(isProductInCart(initialSku));
     }
   }, []);
 
@@ -132,10 +124,7 @@ const Card: React.FC<Props> = ({
     if (!sku) return;
 
     await addToCart(sku, productId, 1, variantId);
-
-    const tempIsInCart = isProductInCart(sku);
-
-    setIsInCart(tempIsInCart);
+    setIsInCart(isProductInCart(sku));
   };
 
   const handleSizeChange = (value: SizeWithVariantId): void => {
@@ -143,58 +132,59 @@ const Card: React.FC<Props> = ({
     setSizeError(null);
 
     const sku = getSku(variants, value.variantId);
-
     if (sku) {
-      const tempIsInCart = isProductInCart(sku);
-      setIsInCart(tempIsInCart);
+      setIsInCart(isProductInCart(sku));
     }
   };
 
+  const productPath = generateProductPath(categoryId, subcategoryId, productKey);
+
   return (
-    <div className={classes}>
-      {isDiscount && <span className={`badge badge_discount ${styles.badge}`}>Sale</span>}
-      <div className={styles.cardPoster}>
-        <Link to={generateProductPath(categoryId, subcategoryId, productKey)}>
-          {image ? (
-            <img className={styles.cardImage} src={image} alt={productName} />
-          ) : (
-            <img className={styles.cardImage} src={holder} alt={productName} />
-          )}
+    <div className={cn('group relative flex h-full w-40 flex-col', className)}>
+      {isDiscount && <span className="badge badge_discount absolute left-2 top-0 z-1">Sale</span>}
+      <div className="relative overflow-hidden rounded-sm bg-component pb-[140%] shadow-[0_2px_10px_0_rgba(11,10,10,0.08)]">
+        <Link to={productPath}>
+          <img
+            className="absolute inset-0 m-auto w-[85%] transition-[transform,filter] duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-[0_0_16px_rgba(151,153,153,0.8)]"
+            src={image || holder}
+            alt={productName}
+          />
         </Link>
         <button
-          className={classNames(styles.cardButton, {
-            [styles.disabled]: isInCart,
-          })}
+          type="button"
+          className={cn(
+            'absolute bottom-0 right-0 z-10 block h-8 w-8 rounded-sm bg-primary px-1.5 py-0.5 text-light-white transition-colors group-hover:bg-orange-light',
+            isInCart && 'pointer-events-none opacity-50'
+          )}
           disabled={isInCart}
           onClick={handleAddToCart}
         >
           <Icon name={IconName.CART} width={20} height={20} color="inherit" className="icon mr-1" />
         </button>
       </div>
-      <div className={styles.cardBody}>
-        <Link to={generateProductPath(categoryId, subcategoryId, productKey)}>
-          {productName && <h4 className={`text-overflow ${styles.cardTitle}`}>{productName}</h4>}
+      <div className="py-2">
+        <Link to={productPath}>
+          {productName && <h4 className="text-overflow m-0 font-bold text-content">{productName}</h4>}
           {description && description !== 'undefined' && (
-            <p
-              className={`text-overflow ${styles.cardDescription}`}
-              dangerouslySetInnerHTML={{ __html: description }}
-            ></p>
+            <p className="text-overflow m-0 text-xs text-gray" dangerouslySetInnerHTML={{ __html: description }}></p>
           )}
         </Link>
       </div>
-      <div className={styles.cardFooter}>
-        {isInCart && <span className={styles.error}>Already in the cart.</span>}
+      <div className="relative mt-auto flex items-center justify-between gap-1.5">
+        {isInCart && (
+          <span className="absolute bottom-full right-0 z-10 rounded border border-red bg-light-white px-1.5 py-0.5 text-red">
+            Already in the cart.
+          </span>
+        )}
         <div>{priceComponent}</div>
         {variantsProduct.length > 0 && (
           <>
-            {sizeError && <span className={styles.error}>{sizeError}</span>}
-            <SelectSize
-              className={styles.select}
-              value={selectedVariant}
-              options={variantsProduct}
-              variant={'small'}
-              onChange={handleSizeChange}
-            />
+            {sizeError && (
+              <span className="absolute bottom-full right-0 z-10 rounded border border-red bg-light-white px-1.5 py-0.5 text-red">
+                {sizeError}
+              </span>
+            )}
+            <SelectSize value={selectedVariant} options={variantsProduct} variant="small" onChange={handleSizeChange} />
           </>
         )}
       </div>
