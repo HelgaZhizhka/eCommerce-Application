@@ -79,7 +79,8 @@ const ProfileEdit: React.FC<Props> = ({
             city: address.city || '',
             postalCode: address.postalCode || '',
             country: address.country || '',
-            checkBox: !!defaultShippingAddress,
+            // fixed (4.2): mark THIS address default by id, not "any default exists"
+            checkBox: !!defaultShippingAddress && defaultShippingAddress.id === address.id,
           }}
         />
       ))}
@@ -95,7 +96,8 @@ const ProfileEdit: React.FC<Props> = ({
             city: address.city || '',
             postalCode: address.postalCode || '',
             country: address.country || '',
-            checkBox: !!defaultBillingAddress,
+            // fixed (4.2): mark THIS address default by id, not "any default exists"
+            checkBox: !!defaultBillingAddress && defaultBillingAddress.id === address.id,
           }}
         />
       ))}

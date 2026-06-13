@@ -1,23 +1,25 @@
-import type { JSX } from 'react';
 import classNames from 'classnames';
 
-import { Message } from '../LoginForm/LoginForm';
+import { Rule } from '../../schemas/rules';
 import styles from './ShowValidate.module.scss';
 
-const ShowValidate = ({ validate }: { validate: Message }): JSX.Element => {
-  const conditions = Object.keys(validate);
-  return (
-    <>
-      {conditions.map((condition, index) => (
-        <div
-          className={validate[condition] ? classNames(styles.error) : classNames(styles.none)}
-          key={condition + index}
-        >
-          {condition}
-        </div>
-      ))}
-    </>
-  );
+// Live rule checklist driven by the field value + a rule list. Failing rules
+// are red, passing ones muted — same UX as the legacy updateMessage version,
+// without the per-field useState dictionaries.
+
+type Props = {
+  value: string;
+  rules: Rule[];
 };
+
+const ShowValidate: React.FC<Props> = ({ value, rules }) => (
+  <>
+    {rules.map((rule) => (
+      <div className={rule.test(value) ? classNames(styles.none) : classNames(styles.error)} key={rule.message}>
+        {rule.message}
+      </div>
+    ))}
+  </>
+);
 
 export default ShowValidate;

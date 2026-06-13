@@ -1,15 +1,11 @@
-import { Box, Button, MenuItem, styled, FormControlLabel } from '@mui/material';
-import { Field, Form, Formik } from 'formik';
-import { Checkbox, TextField as FormikTextField } from 'formik-material-ui';
-import { ReactElement } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, Button, MenuItem } from '@mui/material';
 
+import { profileAddressSchema, ProfileAddressValues } from '../../schemas/forms';
+import { countries } from '../../schemas/countries';
+import { RHFTextField, RHFCheckbox } from '../baseComponents/RHFTextField';
 import styles from './ProfileAddress.module.scss';
-import { validationSchema } from './validate';
-
-const CustomCheckbox = styled(Checkbox)(() => ({
-  width: '30px',
-  height: '30px',
-}));
 
 type Props = {
   onSaveChange: (data: Record<string, string | boolean | number>) => void;
@@ -24,74 +20,57 @@ type Props = {
   };
 };
 
-const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => (
-  <Box sx={{ p: '40px 0', borderBottom: '3px solid grey' }}>
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <h3>{initialValues.name} address:</h3>
-      <Button
-        onClick={(): void => onSaveChange({ ...initialValues, action: 'removeAddress' })}
-        sx={{ fontSize: '20px' }}
-      >
-        Delete address
-      </Button>
-    </Box>
+const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => {
+  const { control, handleSubmit, formState } = useForm<ProfileAddressValues>({
+    resolver: zodResolver(profileAddressSchema),
+    mode: 'onChange',
+    defaultValues: initialValues,
+  });
 
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }): void => {
-        onSaveChange({ ...values, action: 'changeAddress' });
-        setSubmitting(false);
-      }}
-    >
-      {({ isValid }): ReactElement => (
-        <Form>
-          <label className={styles.lablelTitle} htmlFor="street">
-            Street
-          </label>
-          <div className={styles.inputContainer}>
-            <Field className={styles.field} component={FormikTextField} name="street" variant="standard" />
-          </div>
-          <label className={styles.lablelTitle} htmlFor="city">
-            City
-          </label>
-          <div className={styles.inputContainer}>
-            <Field className={styles.field} component={FormikTextField} name="city" variant="standard" />
-          </div>
-          <label className={styles.lablelTitle} htmlFor="postalCode">
-            Postal code
-          </label>
-          <div className={styles.inputContainer}>
-            <Field
-              className={styles.field}
-              component={FormikTextField}
-              name="postalCode"
-              type="string"
-              variant="standard"
-            />
-          </div>
-          <label className={styles.lablelTitle} htmlFor="country">
-            Country
-          </label>
-          <div className={styles.inputContainer}>
-            <Field className={styles.field} component={FormikTextField} name="country" select variant="standard">
-              <MenuItem value="UA">Ukraine</MenuItem>
-              <MenuItem value="EU">European Union</MenuItem>
-            </Field>
-          </div>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <FormControlLabel
-              control={<Field type="checkbox" name="checkBox" component={CustomCheckbox} />}
-              label="Use default"
-            />
-            <Button type="submit" disabled={!isValid} sx={{ fontSize: '20px' }}>
-              Change address
-            </Button>
-          </Box>
-        </Form>
-      )}
-    </Formik>
-  </Box>
-);
+  const onSubmit = (values: ProfileAddressValues): void => {
+    onSaveChange({ ...values, action: 'changeAddress' });
+  };
+
+  return (
+    <Box sx={{ p: '40px 0', borderBottom: '3px solid grey' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>{initialValues.name} address:</h3>
+        <Button
+          onClick={(): void => onSaveChange({ ...initialValues, action: 'removeAddress' })}
+          sx={{ fontSize: '20px' }}
+        >
+          Delete address
+        </Button>
+      </Box>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.inputContainer}>
+          <RHFTextField control={control} name="street" label="Street" variant="standard" fullWidth />
+        </div>
+        <div className={styles.inputContainer}>
+          <RHFTextField control={control} name="city" label="City" variant="standard" fullWidth />
+        </div>
+        <div className={styles.inputContainer}>
+          <RHFTextField control={control} name="postalCode" label="Postal code" variant="standard" fullWidth />
+        </div>
+        <div className={styles.inputContainer}>
+          <RHFTextField control={control} name="country" select variant="standard" fullWidth label="Country">
+            {countries.map((c) => (
+              <MenuItem key={c.code} value={c.code}>
+                {c.label}
+              </MenuItem>
+            ))}
+          </RHFTextField>
+        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <RHFCheckbox control={control} name="checkBox" label="Use default" />
+          <Button type="submit" disabled={!formState.isValid} sx={{ fontSize: '20px' }}>
+            Change address
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  );
+};
 
 export default ProfileAddress;

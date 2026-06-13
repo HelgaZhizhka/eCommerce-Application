@@ -14,23 +14,20 @@ import { meKey } from '../queries/customer';
 type AuthState = {
   loggedIn: boolean;
   isRegistration: boolean;
-  userData: Record<string, string | number | boolean>;
   error: string | null;
   success: string | null;
   login: (email: string, password: string) => Promise<void>;
-  signup: () => Promise<void>;
+  signup: (data: Partial<RegistrationFormValuesData>) => Promise<void>;
   logout: () => void;
-  updateUserData: (data: Partial<RegistrationFormValuesData>) => void;
   resetRegistration: () => void;
   clearError: () => void;
   clearSuccess: () => void;
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   // session validity is the source of truth (2.5) — no separate flag
   loggedIn: isCustomerSession(),
   isRegistration: false,
-  userData: {},
   error: null,
   success: null,
 
@@ -52,9 +49,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  signup: async () => {
+  signup: async (data) => {
     try {
-      const data: Partial<RegistrationFormValuesData> = get().userData;
       const response = await customerSignUp(data);
 
       if (response.statusCode === 201 && data.email && data.password) {
@@ -81,10 +77,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     clearSession();
     queryClient.setQueryData(cartKey, null);
     queryClient.setQueryData(meKey, null);
-    set({ loggedIn: false, userData: {}, error: null });
+    set({ loggedIn: false, error: null });
   },
 
-  updateUserData: (data) => set((state) => ({ userData: { ...state.userData, ...data } })),
   resetRegistration: () => set({ isRegistration: false }),
   clearError: () => set({ error: null }),
   clearSuccess: () => set({ success: null }),

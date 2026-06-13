@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Container } from '@mui/material';
 
 import {
@@ -6,42 +6,51 @@ import {
   RegistrationFormSecondWindow,
   RegistrationFormThirdWindow,
 } from '../../components/RegistrationForm';
-
+import { WizardData } from '../../components/RegistrationForm/wizard.types';
+import { AddressesValues, CredentialsValues, PersonalValues } from '../../schemas/forms';
 import { useAuthStore } from '../../stores/authStore';
-import { Data } from './Registration.types';
-import { RegistrationWindows } from './Registration.enum';
 import { Poster } from '../../components/Poster';
 import styles from './Registration.module.scss';
 
+// Typed 3-step state machine. The accumulator (incl. the password) is local
+// state — it never reaches a global store (plan §4.4). Final submit is a
+// single awaited call: no setTimeout(signup, 0) race.
 const Registration: React.FC = () => {
-  const [data, setData] = useState<Data>({});
-  const [windowPage, setWindowPage] = useState(1);
-  let CurrentWindowComponent;
+  const signup = useAuthStore((state) => state.signup);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [data, setData] = useState<WizardData>({});
 
-  switch (windowPage) {
-    case RegistrationWindows.FIRST_WINDOW:
-      CurrentWindowComponent = <RegistrationForm setWindowPage={setWindowPage} setData={setData} userData={data} />;
-      break;
-    case RegistrationWindows.SECOND_WINDOW:
-      CurrentWindowComponent = (
-        <RegistrationFormSecondWindow setWindowPage={setWindowPage} setData={setData} userData={data} />
-      );
-      break;
-    case RegistrationWindows.THIRD_WINDOW:
-      CurrentWindowComponent = <RegistrationFormThirdWindow setWindowPage={setWindowPage} setData={setData} />;
-      break;
-    default:
-      CurrentWindowComponent = null;
-  }
+  const next = (values: WizardData): void => {
+    setData((prev) => ({ ...prev, ...values }));
+    setStep((s) => (s < 3 ? ((s + 1) as 2 | 3) : s));
+  };
 
-  useEffect(() => {
-    useAuthStore.getState().updateUserData(data);
-  }, [data]);
+  const back = (): void => setStep((s) => (s > 1 ? ((s - 1) as 1 | 2) : s));
+
+  const handleFinalSubmit = (values: AddressesValues): void => {
+    void signup({ ...data, ...values });
+  };
 
   return (
     <Container maxWidth="xl">
       <div className={styles.root}>
-        <div className={styles.loginWrap}>{CurrentWindowComponent}</div>
+        <div className={styles.loginWrap}>
+          {step === 1 && <RegistrationForm defaultValues={data as Partial<CredentialsValues>} onSubmit={next} />}
+          {step === 2 && (
+            <RegistrationFormSecondWindow
+              defaultValues={data as Partial<PersonalValues>}
+              onSubmit={next}
+              onBack={back}
+            />
+          )}
+          {step === 3 && (
+            <RegistrationFormThirdWindow
+              defaultValues={data as Partial<AddressesValues>}
+              onSubmit={handleFinalSubmit}
+              onBack={back}
+            />
+          )}
+        </div>
         <div className={styles.posterWrap}>
           <Poster />
         </div>

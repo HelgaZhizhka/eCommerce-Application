@@ -32,9 +32,9 @@ test.describe.serial('registration, logout, login', () => {
     // hides the otherwise-required billing form (rendered by default)
     await page.getByLabel('Use this address for billing').check();
 
-    // NOTE: button label typo "Sing up" is current behavior — pinned on purpose,
-    // fixed in phase 4 (forms rewrite).
-    await page.getByRole('button', { name: 'Sing up' }).click();
+    // "Sing up" typo fixed in phase 4 (forms rewrite); scope to the form —
+    // the header also has a "Sign up" link button
+    await page.getByRole('main').getByRole('button', { name: 'Sign up' }).click();
 
     // logged-in header state is the success signal
     await expect(page.getByRole('button', { name: 'Exit' })).toBeVisible();
