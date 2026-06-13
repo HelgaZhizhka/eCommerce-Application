@@ -5,17 +5,16 @@
 
 ## Current state
 
-- **Phase:** 3 — Server state: **COMPLETE** (3.1–3.6 ✅, phase 2 merged
-  as PR #218) — MobX is gone; ProductStore/CartStore/UserStore deleted
-  (~1,050 lines); catalog state in the URL; cart-version races dead
-- **Stack now:** Vite 7.3.5 · React 19.2.7 · TS 5.9.3 · ESLint 9.39 ·
-  Vitest 4.1.8 · ts-client 4.10 + BFF · TanStack Query 5.101 · Zustand 5
-- **Dev workflow:** `npx netlify dev` (:8888)
+- **Phase:** 4 — Forms: **COMPLETE** (4.1–4.5 ✅, phase 3 merged as PR #219) —
+  Formik/Yup/formik-material-ui removed; ~1,100-line validation machine gone;
+  §2.4 form bug list closed
+- **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
+  react-hook-form 7 + zod 4 · ts-client 4 + BFF
 - **Final gate:** `./scripts/verify.sh` → exit 0 (tsc src+netlify, eslint
-  0 errors / 18 warnings, 57 unit, build, 11/11 e2e ×2) — 2026-06-13
-- **Next:** PR into `develop` → merge → phase 4 (Formik/Yup →
-  react-hook-form + zod). Netlify env vars are configured (2026-06-12);
-  production still serves the 2023 CRA build — deploy decision pending
+  0 errors / 17 warnings, 45 unit, build, 11/11 e2e ×2) — 2026-06-13
+- **Next:** PR into `develop` → merge → phase 5 (UI kit decision MUI 7 vs
+  Tailwind+shadcn, lazy routes, kill *Mobile forks). Netlify env configured;
+  prod still on the 2023 CRA build — deploy decision pending
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -39,6 +38,19 @@
 | 2026-06-10 | Open decisions pending (plan §3.2): UI kit (MUI 7 vs Tailwind 4 + shadcn/ui) — must be decided before phase 5; Vite SPA + BFF chosen over Next.js |
 
 ## Session log
+
+### 2026-06-13 — Session 6 (phase 4: forms, model switched to Opus 4.8)
+
+- zod schema library (fields/forms/countries/rules) as one source of truth
+- RHFTextField/RHFCheckbox adapters; profile forms ported; login + 3-step
+  wizard rewritten (local typed accumulator, no setTimeout race, password
+  out of global store)
+- deleted utils/validate/* + updateMessage machinery + formik FieldWrapper;
+  removed formik/yup/formik-material-ui
+- fixed §2.4 bugs: email mismatch, 1-char password msg, names with '/-,
+  per-country postal, dropped 'EU', ProfileEdit default-address, 'Sing up'
+- phase-0 validator tests → schemas.test.ts (asserts fixed behavior)
+- **Evidence:** verify.sh exit 0; e2e 11/11 ×2
 
 ### 2026-06-13 — Session 5 (phase 3: MobX → TanStack Query)
 
