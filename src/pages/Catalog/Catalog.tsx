@@ -1,24 +1,16 @@
 import { useParams, Navigate } from 'react-router-dom';
-import { useState, MouseEvent } from 'react';
-import { Container, useMediaQuery, useTheme, IconButton } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import SortIcon from '@mui/icons-material/Sort';
 
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Filter } from '../../components/Filter';
 import { Sorting } from '../../components/Sorting';
 import { ProductList } from '../../components/ProductList';
-import { FilterMobile } from '../../components/FilterMobile';
-import { SortMobile } from '../../components/SortMobile';
 import { Search } from '../../components/baseComponents/Search';
 import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
 import { categoryIdByName, useCategoriesQuery } from '../../queries/categories';
 import { useCatalogParams } from '../../queries/catalogParams';
 import { useCatalogProductsQuery, useCategoryAttributesQuery } from '../../queries/products';
 import { DEFAULT_LIMIT } from '../../constants';
-
-import styles from './Catalog.module.scss';
 
 type Params = {
   categoryId: string;
@@ -27,11 +19,6 @@ type Params = {
 
 const Catalog: React.FC = () => {
   const { categoryId, subcategoryId } = useParams<Params>();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const [anchorElFilter, setAnchorElFilter] = useState<null | HTMLElement>(null);
-  const [anchorElSort, setAnchorElSort] = useState<null | HTMLElement>(null);
 
   // catalog state lives in the URL; the products query derives from it
   const params = useCatalogParams();
@@ -56,14 +43,6 @@ const Catalog: React.FC = () => {
     breadcrumbItems.push({ text: subcategoryId, path: `${RoutePaths.MAIN}category/${categoryId}/${subcategoryId}` });
   }
 
-  const handleClickFilter = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElFilter(event.currentTarget);
-  };
-
-  const handleClickSort = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorElSort(event.currentTarget);
-  };
-
   const handlePaginationChange = (page: number): void => {
     params.setPage(page);
     window.scrollTo(0, 0);
@@ -82,62 +61,34 @@ const Catalog: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl">
-      <div className={styles.root}>
-        <div className={`${styles.sticky} ${styles.productsPanel}`}>
-          <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
-          <Search onSearch={params.setSearch} value={params.search} className={styles.search} />
-          {!isMobile ? (
-            <Sorting value={params.sort} onSelect={params.setSort} />
-          ) : (
-            <div className={styles.actions}>
-              <IconButton aria-label="filter" onClick={handleClickFilter}>
-                <FilterListIcon />
-              </IconButton>
-              <FilterMobile
-                {...filterControls}
-                anchorElFilter={anchorElFilter}
-                handleCloseFilter={(): void => setAnchorElFilter(null)}
-              />
-              <IconButton aria-label="sort" onClick={handleClickSort}>
-                <SortIcon />
-              </IconButton>
-              <SortMobile
-                anchorElSort={anchorElSort}
-                handleCloseSort={(): void => setAnchorElSort(null)}
-                value={params.sort}
-                onSelect={params.setSort}
+    <div className="mx-auto max-w-[1536px] px-4">
+      <div className="flex flex-wrap items-center gap-2.5 py-4">
+        <Breadcrumbs items={breadcrumbItems} className="mr-auto" />
+        <Search onSearch={params.setSearch} value={params.search} className="w-full md:w-[400px] lg:w-[560px]" />
+        <Sorting value={params.sort} onSelect={params.setSort} />
+      </div>
+
+      <div className="flex flex-col gap-6 md:flex-row">
+        <Filter {...filterControls} className="md:sticky md:top-4 md:self-start" />
+        <div className="flex-1">
+          <ProductList
+            categoryId={categoryId}
+            subcategoryId={subcategoryId}
+            products={products}
+            isLoading={isFetching}
+          />
+          {totalPages > 1 && (
+            <div className="mt-6 flex justify-center">
+              <PaginationCatalog
+                handleChange={handlePaginationChange}
+                totalPages={totalPages}
+                currentPage={params.page}
               />
             </div>
           )}
-        </div>
-        <div className={styles.container}>
-          {!isMobile && (
-            <aside>
-              <Filter {...filterControls} className={`${styles.sticky} ${styles.filter}`} />
-            </aside>
-          )}
-          <div className={styles.products}>
-            <ProductList
-              className={styles.productsList}
-              categoryId={categoryId}
-              subcategoryId={subcategoryId}
-              products={products}
-              isLoading={isFetching}
-            />
-            <div className={styles.pagination}>
-              {totalPages > 1 && (
-                <PaginationCatalog
-                  handleChange={handlePaginationChange}
-                  totalPages={totalPages}
-                  currentPage={params.page}
-                />
-              )}
-            </div>
-          </div>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
