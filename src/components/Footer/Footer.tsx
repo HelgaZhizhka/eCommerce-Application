@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Typography, List, ListItem } from '@mui/material';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
@@ -10,50 +9,48 @@ import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { Categories } from '../Categories';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { Logo } from '../Logo';
-import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => (
-  <footer className={styles.root}>
-    <Container maxWidth="xl" sx={{ pb: 4 }}>
-      <div className={styles.footerRow}>
-        <div className={styles.footerColumn}>
-          <div className={styles.logo}>
+  <footer className="mt-auto bg-violet text-light-white text-[20px]">
+    <div className="mx-auto max-w-[1536px] px-4 pt-5 pb-8 md:pt-10">
+      <div className="md:flex md:justify-between md:gap-8">
+        <div className="mb-8 md:mb-0">
+          <div className="mb-2.5 block md:mb-9">
             <Logo variant={LogoVariant.WHITE} />
           </div>
-          <h1 className={styles.heading}>YesCode: Merch for True Coders</h1>
+          <h1 className="text-2xl font-black text-white">YesCode: Merch for True Coders</h1>
         </div>
-        <div className={styles.footerColumn}>
-          <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
-            Categories
-          </Typography>
+
+        <div className="mb-8 md:mb-0">
+          <h5 className="mb-2 text-2xl font-black text-white">Categories</h5>
           <Categories />
         </div>
-        <div className={styles.footerColumn}>
-          <Typography variant="h5" component="h5" sx={{ color: 'var(--white)', fontWeight: '900', mb: '8px' }}>
-            Contact Us
-          </Typography>
-          <Link className={`link ${styles.link}`} to={RoutePaths.ABOUT}>
+
+        <div>
+          <h5 className="mb-2 text-2xl font-black text-white">Contact Us</h5>
+          <Link className="link transition-transform hover:text-white" to={RoutePaths.ABOUT}>
             About Us
           </Link>
-          <List>
-            <ListItem sx={{ p: 0, mb: 2 }}>
+          <ul className="mt-2 flex flex-col gap-4">
+            <li>
               <PhoneNumber>(+380) 68 018 45 67</PhoneNumber>
-            </ListItem>
-            <ListItem sx={{ p: 0, mb: 2 }}>
-              <Icon name={IconName.WHATSUP} width={32} height={32} className={'icon mr-1'} />
+            </li>
+            <li className="flex items-center">
+              <Icon name={IconName.WHATSUP} width={32} height={32} className="icon mr-1" />
               <span>{contacts.phone}</span>
-            </ListItem>
-            <ListItem sx={{ p: 0, mb: 2 }}>
-              <Icon name={IconName.EMAIL} width={32} height={32} className={'icon mr-1'} />
+            </li>
+            <li className="flex items-center">
+              <Icon name={IconName.EMAIL} width={32} height={32} className="icon mr-1" />
               <a className="text-inherit" href="mailto:yescode@gmail.com">
                 {contacts.email}
               </a>
-            </ListItem>
-          </List>
+            </li>
+          </ul>
         </div>
       </div>
-    </Container>
-    <p className={styles.copyright}>
+    </div>
+
+    <p className="m-0 bg-black py-3 text-center text-[80%]">
       {'All rights reserved. © '} {new Date().getFullYear()}.
     </p>
   </footer>
