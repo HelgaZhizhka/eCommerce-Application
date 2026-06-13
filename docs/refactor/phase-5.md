@@ -17,14 +17,18 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 ## Checklist
 
 - [x] **5.1/5.2** (in progress, per group) — adopt Tailwind, consolidate styles.
-  Done groups: **Footer**, **Header** (see 5.3), **Card + ProductList**.
-  Remaining: catalog filters/sorting/search/pagination, Cart group
-  (Cart/CardMini/PromoCode/EmptyCart), forms (Login/Registration/Profile +
-  RHFTextField/SelectSize MUI internals), pages (Main/About/Sale/ErrorPage),
-  shared base (Button/Price/Icon/Modal/Breadcrumbs/etc.).
-- [x] **5.3** Header/HeaderMobile merged into one adaptive component (done).
-  Remaining forks to merge: **Filter/FilterMobile**, **Sorting/SortMobile**
-  (+ NavBarMobile review).
+  Done groups: **Footer**, **Header**, **Card + ProductList**, **Catalog shell
+  + adaptive Filter**.
+  Remaining: leaf filter/sort internals still on MUI (FilterChip Chip,
+  FilterColorCheckBox Button, FilterPrice Slider, SortingList MenuItem,
+  Search Input, PaginationCatalog, SelectSize) — come off in the final MUI
+  sweep; Cart group (Cart/CardMini/PromoCode/EmptyCart); forms
+  (Login/Registration/Profile + RHFTextField/SelectSize MUI internals); pages
+  (Main/About/Sale/ErrorPage); shared base (Button/Price/Icon/Modal/Breadcrumbs).
+- [x] **5.3** Forks merged: Header/HeaderMobile ✅, **Filter/FilterMobile ✅**
+  (adaptive Filter: sidebar md+ / Tailwind drawer below), **Sorting/SortMobile ✅**
+  (one MUI dropdown at all widths). Remaining: NavBarMobile review (it's the
+  mobile nav drawer opened by the merged Header — keep or fold in).
 - [x] **5.4** Route-level lazy() + Suspense (done). Skeletons: App still
   unmounts shell on initial categories load — revisit with page skeletons.
 - [x] **5.5** Global ErrorBoundary (done). Remaining: per-page boundaries,
