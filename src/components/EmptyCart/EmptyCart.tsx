@@ -1,21 +1,20 @@
-import { Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import racon from './images/imgEmptyCart.png';
-import styles from './EmptyCart.module.scss';
 
 const EmptyCart: React.FC = () => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+  <div className="flex flex-col items-center justify-center text-center">
     <img src={racon} alt="racon" />
-    <h2 className={styles.title}>Hey,</h2>
-    <h2 className={styles.title}>The cart feels light !</h2>
-    <h4 className={styles.title}>Explore products and add your favorite items</h4>
-    <Link to="/category/clothes/t-shirts">
-      <Button sx={{ fontSize: '24px', width: '340px', m: '34px' }} variant="contained">
-        Explore
-      </Button>
+    <h2 className="m-0 text-content">Hey,</h2>
+    <h2 className="m-0 text-content">The cart feels light !</h2>
+    <h4 className="m-0 text-content">Explore products and add your favorite items</h4>
+    <Link
+      to="/category/clothes/t-shirts"
+      className="m-[34px] w-[340px] rounded bg-primary py-2 text-center text-2xl text-white transition-colors hover:bg-orange-light"
+    >
+      Explore
     </Link>
-  </Box>
+  </div>
 );
 
 export default EmptyCart;

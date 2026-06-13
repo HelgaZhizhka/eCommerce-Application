@@ -1,8 +1,7 @@
-import { Input, Button } from '@mui/material';
 import { useState } from 'react';
 
 import { promoCode } from '../../../constants';
-import styles from './PromoCode.module.scss';
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   className?: string;
@@ -15,12 +14,11 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value);
+    setError(false);
   };
 
   const handleClick = (): void => {
-    if (!code) {
-      return;
-    }
+    if (!code) return;
 
     if (code !== promoCode) {
       setError(true);
@@ -34,12 +32,23 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
   };
 
   return (
-    <div className={`${styles.root} ${className}`}>
-      <Input placeholder="Promo Code" type="text" value={code} onChange={handleChange} />
-      <Button className={styles.button} sx={{ ml: 2 }} variant="contained" onClick={handleClick} disabled={!code}>
+    <div className={cn('flex items-center gap-2', className)}>
+      <input
+        placeholder="Promo Code"
+        type="text"
+        value={code}
+        onChange={handleChange}
+        className="border-b border-gray bg-transparent px-1 py-1 text-content outline-none focus:border-primary"
+      />
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={!code}
+        className="rounded bg-primary px-4 py-1 text-white transition-colors hover:bg-orange-light disabled:opacity-50"
+      >
         Ok
-      </Button>
-      {error && <span className={styles.error}>Invalid promo code</span>}
+      </button>
+      {error && <span className="text-red">Invalid promo code</span>}
     </div>
   );
 };
