@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
-import { themeStore } from '../../stores';
+import { useThemeStore } from '../../stores/theme';
 import styles from './Logo.module.scss';
 import { LogoVariant } from './Logo.enum';
 
@@ -11,7 +10,7 @@ type Props = {
 };
 
 const Logo: React.FC<Props> = ({ variant = LogoVariant.DEFAULT }) => {
-  const { darkMode } = themeStore;
+  const darkMode = useThemeStore((state) => state.darkMode);
 
   const logoClasses = classNames(styles.root, {
     [styles.logoWhite]: variant === LogoVariant.WHITE,
@@ -25,4 +24,4 @@ const Logo: React.FC<Props> = ({ variant = LogoVariant.DEFAULT }) => {
   );
 };
 
-export default observer(Logo);
+export default Logo;

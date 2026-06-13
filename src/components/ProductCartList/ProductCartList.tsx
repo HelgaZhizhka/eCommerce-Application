@@ -1,21 +1,23 @@
-import { observer } from 'mobx-react-lite';
-
-import { cartStore } from '../../stores';
+import { ProductType } from '../../stores/Store.types';
+import { useChangeQuantityMutation, useRemoveLineItemMutation } from '../../queries/cart';
 import { CardMini } from '../CardMini';
 import styles from './ProductCartList.module.scss';
 
 type Props = {
   className?: string;
-  productsInCart: typeof cartStore.productsInCart;
+  productsInCart: ProductType[];
 };
 
 const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
+  const removeLineItem = useRemoveLineItemMutation();
+  const changeQuantity = useChangeQuantityMutation();
+
   const deleteItemFromCart = (lineItemId: string): void => {
-    cartStore.removeFromCart(lineItemId);
+    removeLineItem.mutate(lineItemId);
   };
 
   const onChangeQuantity = (lineItemId: string, quantity: number): void => {
-    cartStore.changeQuantity(lineItemId, quantity);
+    changeQuantity.mutate({ lineItemId, quantity });
   };
 
   return (
@@ -60,4 +62,4 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
   );
 };
 
-export default observer(ProductCartList);
+export default ProductCartList;

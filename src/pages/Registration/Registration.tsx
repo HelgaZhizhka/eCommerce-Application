@@ -7,7 +7,7 @@ import {
   RegistrationFormThirdWindow,
 } from '../../components/RegistrationForm';
 
-import { userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
 import { Data } from './Registration.types';
 import { RegistrationWindows } from './Registration.enum';
 import { Poster } from '../../components/Poster';
@@ -35,7 +35,7 @@ const Registration: React.FC = () => {
   }
 
   useEffect(() => {
-    userStore.updateUserData(data);
+    useAuthStore.getState().updateUserData(data);
   }, [data]);
 
   return (

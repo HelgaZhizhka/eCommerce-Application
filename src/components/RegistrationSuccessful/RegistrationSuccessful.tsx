@@ -1,11 +1,10 @@
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 
-import { themeStore } from '../../stores';
+import { useThemeStore } from '../../stores/theme';
 import styles from './RegistrationSuccessful.module.scss';
 
 const RegistrationSuccessful: React.FC = () => {
-  const { darkMode } = themeStore;
+  const darkMode = useThemeStore((state) => state.darkMode);
 
   const classes = classNames(styles.logo, {
     [styles.dark]: darkMode,
@@ -19,4 +18,4 @@ const RegistrationSuccessful: React.FC = () => {
   );
 };
 
-export default observer(RegistrationSuccessful);
+export default RegistrationSuccessful;

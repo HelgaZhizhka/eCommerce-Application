@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { Container, Button, Badge } from '@mui/material';
 
@@ -11,14 +10,16 @@ import { ThemeToggle } from '../ThemeToggle';
 import { LogoVariant } from '../Logo/Logo.enum';
 import { Categories } from '../Categories';
 import { InfoPanel } from '../InfoPanel';
-import { cartStore, userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
+import { useCartQuery } from '../../queries/cart';
 import { getPriceValue } from '../../stores/productHelpers';
 import { Logo } from '../Logo';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
-  const { loggedIn } = userStore;
-  const { totalAmount, totalPrice } = cartStore;
+  const loggedIn = useAuthStore((state) => state.loggedIn);
+  const logout = useAuthStore((state) => state.logout);
+  const { totalAmount, totalPrice } = useCartQuery();
 
   const totalPriceValue = getPriceValue(totalPrice);
 
@@ -35,7 +36,7 @@ const Header: React.FC = () => {
             <Link
               to={RoutePaths.MAIN}
               onClick={(): void => {
-                userStore.logout();
+                logout();
               }}
             >
               <Button sx={{ fontSize: '1.25rem', ml: '10px' }} variant="outlined" color="primary">
@@ -93,4 +94,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default observer(Header);
+export default Header;

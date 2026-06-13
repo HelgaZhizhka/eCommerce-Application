@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Menu, Box, styled } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { SortingList } from '../baseComponents/SortingList';
-import { productStore } from '../../stores';
+import { SortOption } from '../baseComponents/SortingList/SortList.enum';
 
 const CustomButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
@@ -15,14 +14,13 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 type Props = {
   className?: string;
-  onChange?: (type?: string) => void;
+  value: SortOption;
+  onSelect: (sort: SortOption) => void;
 };
 
-const Sorting: React.FC<Props> = ({ className, onChange }) => {
+const Sorting: React.FC<Props> = ({ className, value, onSelect }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const { sortState } = productStore;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -48,7 +46,7 @@ const Sorting: React.FC<Props> = ({ className, onChange }) => {
         variant="contained"
         color="primary"
       >
-        Sorting by: {sortState}
+        Sorting by: {value}
         {isMenuOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </CustomButton>
       <Menu
@@ -66,10 +64,10 @@ const Sorting: React.FC<Props> = ({ className, onChange }) => {
           horizontal: 'right',
         }}
       >
-        <SortingList onChange={onChange} handleMenuItemClick={handleMenuItemClick} />
+        <SortingList value={value} onSelect={onSelect} handleMenuItemClick={handleMenuItemClick} />
       </Menu>
     </Box>
   );
 };
 
-export default observer(Sorting);
+export default Sorting;

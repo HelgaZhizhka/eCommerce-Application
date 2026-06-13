@@ -3,7 +3,6 @@ import { MyCustomerDraft } from '@commercetools/platform-sdk';
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { apiWithPasswordFlow, cartApi, sessionApi } from './ctClient';
 import { hasSession } from './session';
-import { getActiveCart } from './cartService';
 
 export const customerLogin = async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
   const newCustomer = hasSession() ? sessionApi : await apiWithPasswordFlow(email, password);
@@ -21,7 +20,6 @@ export const customerLogin = async (email: string, password: string): Promise<Cl
 
   if (response.statusCode === 200) {
     await (await apiWithPasswordFlow(email, password)).me().get().execute();
-    if (localStorage.getItem('cartId')) await getActiveCart();
   }
 
   return response;
@@ -82,7 +80,6 @@ export const customerSignUp = async (
 
   if (signUpCustomer.statusCode === 201) {
     await (await apiWithPasswordFlow(`${values.email}`, `${values.password}`)).me().get().execute();
-    if (localStorage.getItem('cartId')) await getActiveCart();
   }
 
   return signUpCustomer;

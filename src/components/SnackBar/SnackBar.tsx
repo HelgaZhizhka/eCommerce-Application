@@ -1,49 +1,54 @@
-import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
-import { cartStore, productStore, userStore } from '../../stores';
+import { useAuthStore } from '../../stores/authStore';
+import { subscribeToToasts, Toast } from '../../queries/notifications';
 
 const SnackBar: React.FC = () => {
-  const userError = userStore.error;
-  const userSuccess = userStore.success;
-  const cartSuccess = cartStore.success;
+  const [toast, setToast] = useState<Toast | null>(null);
 
-  const productError = productStore.error;
-  const cartError = cartStore.error;
+  useEffect(() => subscribeToToasts(setToast), []);
+
+  const userError = useAuthStore((state) => state.error);
+  const userSuccess = useAuthStore((state) => state.success);
+  const clearError = useAuthStore((state) => state.clearError);
+  const clearSuccess = useAuthStore((state) => state.clearSuccess);
+
+  const error = userError ?? (toast?.type === 'error' ? toast.message : null);
+  const success = userSuccess ?? (toast?.type === 'success' ? toast.message : null);
 
   const handleClose = (): void => {
-    userStore.clearError();
-    userStore.clearSuccess();
-    cartStore.clearError();
-    cartStore.clearSuccess();
+    clearError();
+    clearSuccess();
+    setToast(null);
   };
 
   return (
     <>
-      {(userError || productError || cartError) && (
+      {error && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!userError || !!productError || !!cartError}
-          message={userError || productError || cartError}
+          open={!!error}
+          message={error}
           onClose={handleClose}
           autoHideDuration={4000}
         >
           <Alert severity="error" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {userError || productError || cartError}
+            {error}
           </Alert>
         </Snackbar>
       )}
 
-      {(userSuccess || cartSuccess) && (
+      {success && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!userSuccess || !!cartSuccess}
-          message={userSuccess || cartSuccess}
+          open={!!success}
+          message={success}
           onClose={handleClose}
           autoHideDuration={4000}
         >
           <Alert severity="success" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {userSuccess || cartSuccess}
+            {success}
           </Alert>
         </Snackbar>
       )}
@@ -51,4 +56,4 @@ const SnackBar: React.FC = () => {
   );
 };
 
-export default observer(SnackBar);
+export default SnackBar;

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite/dist/index';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
@@ -128,4 +127,4 @@ const RouterConfig: React.FC = () => {
   );
 };
 
-export default observer(RouterConfig);
+export default RouterConfig;

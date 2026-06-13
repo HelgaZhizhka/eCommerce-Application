@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { Container, Button } from '@mui/material';
 
-import { cartStore } from '../../stores';
+import { useApplyPromoMutation, useCartQuery, useClearCartMutation, useRemovePromoMutation } from '../../queries/cart';
 import { ProductCartList } from '../../components/ProductCartList';
 import { EmptyCart } from '../../components/EmptyCart';
 import { RoutePaths } from '../../routes/routes.enum';
@@ -19,24 +18,14 @@ import { currency } from '../../constants';
 import styles from './Cart.module.scss';
 
 const Cart: React.FC = () => {
-  const {
-    productsInCart,
-    totalAmount,
-    totalPrice,
-    discountPromo,
-    getCart,
-    clearCart,
-    addPromoCodeToCart,
-    deletePromoCode,
-  } = cartStore;
+  const { products: productsInCart, totalAmount, totalPrice, discount } = useCartQuery();
+  const clearCart = useClearCartMutation();
+  const applyPromo = useApplyPromoMutation();
+  const removePromo = useRemovePromoMutation();
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
     { text: 'Cart', path: `${RoutePaths.CART}` },
   ];
-
-  useEffect(() => {
-    getCart();
-  }, []);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -63,7 +52,7 @@ const Cart: React.FC = () => {
   );
 
   const handlePromoCode = (code: string): void => {
-    addPromoCodeToCart(code);
+    applyPromo.mutate(code);
   };
 
   const onCloseModal = (): void => {
@@ -75,7 +64,7 @@ const Cart: React.FC = () => {
   };
 
   const onDeleteItemsFromCart = (): void => {
-    clearCart();
+    clearCart.mutate(undefined);
     setIsOpenModal(false);
   };
 
@@ -121,11 +110,15 @@ const Cart: React.FC = () => {
             <div className={styles.footer}>
               <PromoCode className={styles.promo} onChange={handlePromoCode} />
 
-              {discountPromo.discountCodeName && (
+              {discount && (
                 <div className={styles.flex}>
                   <span>Active Promo Code:</span>
-                  <span className={styles.promoCode}>{discountPromo.discountCodeName}</span>
-                  <Button onClick={deletePromoCode} sx={{ p: 0, minWidth: '30px' }} color={'error'}>
+                  <span className={styles.promoCode}>{discount.name}</span>
+                  <Button
+                    onClick={(): void => removePromo.mutate(discount.id)}
+                    sx={{ p: 0, minWidth: '30px' }}
+                    color={'error'}
+                  >
                     <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
                   </Button>
                 </div>
@@ -149,4 +142,4 @@ const Cart: React.FC = () => {
   );
 };
 
-export default observer(Cart);
+export default Cart;

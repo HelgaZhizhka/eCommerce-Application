@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React from 'react';
 import { Box, CssBaseline, ThemeProvider, createTheme, useMediaQuery, CircularProgress } from '@mui/material';
 
 import { darkTheme, lightTheme } from './theme';
-import { themeStore, productStore, cartStore } from './stores';
+import { useThemeStore } from './stores/theme';
+import { useCategoriesQuery } from './queries/categories';
 import RoutesConfig from './routes';
 import { SnackBar } from './components/SnackBar';
 import { Header } from './components/Header';
@@ -11,15 +11,10 @@ import { HeaderMobile } from './components/HeaderMobile';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
-  const { darkMode } = themeStore;
+  const darkMode = useThemeStore((state) => state.darkMode);
   const theme = createTheme(darkMode ? darkTheme : lightTheme);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { isAppLoading } = productStore;
-
-  useEffect(() => {
-    productStore.fetchCategories();
-    cartStore.initCart();
-  }, []);
+  const { isLoading: isAppLoading } = useCategoriesQuery();
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,4 +47,4 @@ const App: React.FC = () => {
   );
 };
 
-export default observer(App);
+export default App;

@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react-lite';
 import { Box, CircularProgress } from '@mui/material';
 
-import { productStore } from '../../stores';
+import { ProductType } from '../../stores/Store.types';
 import { Card } from '../Card';
 import styles from './ProductList.module.scss';
 
@@ -9,12 +8,12 @@ type Props = {
   className?: string;
   categoryId: string;
   subcategoryId?: string | null;
+  products: ProductType[];
+  isLoading: boolean;
 };
 
-const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) => {
-  const { products, isProductsLoading } = productStore;
-
-  return isProductsLoading ? (
+const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId, products, isLoading }) => {
+  return isLoading ? (
     <Box
       sx={{
         width: '100%',
@@ -64,4 +63,4 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId }) 
   );
 };
 
-export default observer(ProductList);
+export default ProductList;
