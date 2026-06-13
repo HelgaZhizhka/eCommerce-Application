@@ -1,183 +1,63 @@
-import type { JSX } from 'react';
-import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
-import { TextField as FormikTextField } from 'formik-material-ui';
 
-import { validate } from '../../utils/validate/secondWindow';
-import { Data } from '../../pages/Registration/Registration.types';
-import { ShowValidate } from '../ShowValidate';
-import { Message, RegistrationFormValuesSecond, FieldInputSecond } from './Registration.interface';
+import { personalSchema, PersonalValues } from '../../schemas/forms';
+import { RHFTextField } from '../baseComponents/RHFTextField';
+import { StepProps } from './wizard.types';
 import styles from './Registration.module.scss';
 
-interface RegistrationProps {
-  setWindowPage: React.Dispatch<React.SetStateAction<number>>;
-  setData: React.Dispatch<React.SetStateAction<Data>>;
-  userData: Record<string, string | number | boolean>;
-}
-
-const RegistrationFormSecondWindow: React.FC<RegistrationProps> = ({ setWindowPage, setData, userData }) => {
-  const initialValues: RegistrationFormValuesSecond = {
-    firstName: typeof userData.firstName === 'string' ? userData.firstName : '',
-    lastName: typeof userData.lastName === 'string' ? userData.lastName : '',
-    date: typeof userData.date === 'string' ? userData.date : '',
-  };
-
-  const [firstNameMessage, setFirstNameMessage] = useState<Message>({});
-  const [lastNameMessage, setLastNameMessage] = useState<Message>({});
-  const [dateMessage, setdateMessage] = useState<Message>({});
-
-  const [inputStartedEmail, setInputStartedEmail] = useState(false);
-  const [inputStartedPassword, setInputStartedPassword] = useState(false);
-  const [inputStartedCheckPassword, setInputStartedCheckPassword] = useState(false);
-  const [allFieldsValid, setAllFieldsValid] = useState(false);
-
-  const updateMessage = (type: FieldInputSecond, key: string, value: boolean): void => {
-    let setter: React.Dispatch<React.SetStateAction<Message>> | null = null;
-
-    switch (type) {
-      case 'firstName':
-        setter = setFirstNameMessage;
-        break;
-      case 'lastName':
-        setter = setLastNameMessage;
-        break;
-      case 'date':
-        setter = setdateMessage;
-        break;
-
-      default:
-        break;
-    }
-    if (setter) {
-      setter((prevMessage) => ({
-        ...prevMessage,
-        [key]: value,
-      }));
-    }
-  };
-
-  const areAllValuesFalse = (obj: Record<string, boolean>): boolean => {
-    if (Object.keys(obj).length === 0) {
-      return false;
-    }
-    return Object.values(obj).every((value) => value === false);
-  };
-
-  useEffect(() => {
-    if (areAllValuesFalse(firstNameMessage) && areAllValuesFalse(lastNameMessage) && areAllValuesFalse(dateMessage)) {
-      setAllFieldsValid(true);
-    } else setAllFieldsValid(false);
-  }, [firstNameMessage, lastNameMessage, dateMessage]);
+const RegistrationFormSecondWindow: React.FC<StepProps<PersonalValues>> = ({ defaultValues, onSubmit, onBack }) => {
+  const { control, handleSubmit, formState } = useForm<PersonalValues>({
+    resolver: zodResolver(personalSchema),
+    mode: 'onChange',
+    defaultValues: { firstName: '', lastName: '', date: '', ...defaultValues },
+  });
 
   return (
-    <>
-      <Formik
-        initialValues={initialValues}
-        validate={(values): Partial<RegistrationFormValuesSecond> => {
-          const errors = validate(values, updateMessage);
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }): void => {
-          setData((prevData) => ({
-            ...prevData,
-            ...values,
-          }));
-          setSubmitting(false);
-        }}
-      >
-        {({ submitForm, isSubmitting }): JSX.Element => (
-          <Form>
-            <div className={styles.inputContainer}>
-              <Field
-                component={FormikTextField}
-                name="firstName"
-                type="text"
-                label="First name"
-                variant="standard"
-                fullWidth
-                onFocus={(): void => setInputStartedEmail(true)}
-              />
-              {inputStartedEmail && <ShowValidate validate={firstNameMessage} />}
-            </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.inputContainer}>
+        <RHFTextField control={control} name="firstName" label="First name" variant="standard" fullWidth />
+      </div>
+      <div className={styles.inputContainer}>
+        <RHFTextField control={control} name="lastName" label="Last name" variant="standard" fullWidth />
+      </div>
+      <div className={styles.inputContainer}>
+        <RHFTextField
+          control={control}
+          name="date"
+          type="date"
+          variant="standard"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+        />
+      </div>
 
-            <div className={styles.inputContainer}>
-              <Field
-                component={FormikTextField}
-                type="text"
-                label="Last name"
-                name="lastName"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                onFocus={(): void => setInputStartedPassword(true)}
-              />
+      <div className={styles.progressContainer}>
+        <div className={styles.progress}></div>
+        <div className={`${styles.progress} ${styles.progressActive}`}></div>
+        <div className={styles.progress}></div>
+      </div>
 
-              {inputStartedPassword && <ShowValidate validate={lastNameMessage} />}
-            </div>
-
-            <div className={styles.inputContainer}>
-              <Field
-                component={FormikTextField}
-                type="date"
-                name="date"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                onFocus={(): void => setInputStartedCheckPassword(true)}
-                inputProps={{
-                  maxLength: 4,
-                }}
-              />
-
-              {inputStartedCheckPassword && <ShowValidate validate={dateMessage} />}
-            </div>
-
-            <div className={styles.progressContainer}>
-              <div className={styles.progress}></div>
-              <div className={`${styles.progress} ${styles.progressActive}`}></div>
-              <div className={styles.progress}></div>
-            </div>
-
-            <div className={styles.btnLogin}>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={isSubmitting || !allFieldsValid}
-                onClick={(): void => {
-                  submitForm();
-                  setWindowPage((prev) => prev + 1);
-                }}
-              >
-                Continue
-              </Button>
-            </div>
-            <Button
-              sx={{ fontSize: '1rem' }}
-              variant="outlined"
-              fullWidth
-              color="primary"
-              onClick={(): void => {
-                setWindowPage((prev) => prev - 1);
-              }}
-            >
-              Back
-            </Button>
-            <div className={styles.lineContainer}>
-              <div className={styles.line}></div>
-              <div className={styles.text}>Or already have an account?</div>
-            </div>
-            <Link to="/login">
-              <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
-                Sign in
-              </Button>
-            </Link>
-          </Form>
-        )}
-      </Formik>
-    </>
+      <div className={styles.btnLogin}>
+        <Button variant="contained" color="primary" fullWidth type="submit" disabled={!formState.isValid}>
+          Continue
+        </Button>
+      </div>
+      <Button sx={{ fontSize: '1rem' }} variant="outlined" fullWidth color="primary" onClick={onBack}>
+        Back
+      </Button>
+      <div className={styles.lineContainer}>
+        <div className={styles.line}></div>
+        <div className={styles.text}>Or already have an account?</div>
+      </div>
+      <Link to="/login">
+        <Button sx={{ fontSize: '1.2rem' }} variant="text" fullWidth color="primary">
+          Sign in
+        </Button>
+      </Link>
+    </form>
   );
 };
 
