@@ -1,0 +1,44 @@
+/* Tailwind 4 entry. Preflight is intentionally omitted while MUI still ships
+ * (it would clobber MUI's CssBaseline); it gets added once MUI is removed.
+ * Design tokens mirror the existing CSS variables (src/styles/core/_variables)
+ * so utilities and the legacy SCSS share one source of truth. */
+@import 'tailwindcss/theme.css';
+@import 'tailwindcss/utilities.css';
+
+/* dark theme is toggled on <body data-theme="dark"> (Zustand themeStore) */
+@custom-variant dark (&:where([data-theme='dark'] *));
+
+@theme {
+  --color-white: #fff;
+  --color-light-white: #f2f2f2;
+  --color-light-blue: #eef7ff;
+  --color-orange: #f2760f;
+  --color-orange-light: #ff9843;
+  --color-blue: #3e17ff;
+  --color-blue-hover: #6146e9;
+  --color-purple: #b62dd3;
+  --color-green: #009444;
+  --color-red: #f61717;
+  --color-pink: #f7527e;
+  --color-violet: #70198f;
+  --color-black: #0b0a0a;
+  --color-dark: #121212;
+  --color-gray: #979999;
+  --color-spicy-orange: #faba86;
+  --color-spicy-orange-active: #cf5f04;
+
+  /* semantic tokens resolve through the runtime CSS vars so dark mode works */
+  --color-body: var(--body-bg);
+  --color-page: var(--page-bg);
+  --color-panel: var(--panel-bg);
+  --color-component: var(--component-bg);
+  --color-content: var(--color-text);
+  --color-primary: var(--state-primary);
+  --color-secondary: var(--state-secondary);
+  --color-success: var(--state-success);
+  --color-error: var(--state-error);
+  --color-danger: var(--state-danger);
+
+  --font-sans: 'Mukta', sans-serif;
+  --radius-DEFAULT: var(--border-radius);
+}

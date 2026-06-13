@@ -5,6 +5,7 @@ import { darkTheme, lightTheme } from './theme';
 import { useThemeStore } from './stores/theme';
 import { useCategoriesQuery } from './queries/categories';
 import RoutesConfig from './routes';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { SnackBar } from './components/SnackBar';
 import { Header } from './components/Header';
 import { HeaderMobile } from './components/HeaderMobile';
@@ -37,7 +38,9 @@ const App: React.FC = () => {
           <>
             {!isMobile ? <Header /> : <HeaderMobile />}
             <Box component="main" sx={{ position: 'relative', flex: '1', pb: 2 }}>
-              <RoutesConfig />
+              <ErrorBoundary>
+                <RoutesConfig />
+              </ErrorBoundary>
             </Box>
             <Footer />
           </>

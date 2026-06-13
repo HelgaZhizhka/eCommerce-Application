@@ -35,7 +35,8 @@
 | 2026-06-10 | Refactor plan written and committed (`REFACTORING_PLAN.md`)                                                                                       |
 | 2026-06-10 | Harness: minimal custom (CLAUDE.md + PROGRESS.md + phase checklists + verify.sh). OpenSpec deferred — reconsider for post-refactor feature work   |
 | 2026-06-10 | Branch-per-phase strategy, PRs into `develop`                                                                                                     |
-| 2026-06-10 | Open decisions pending (plan §3.2): UI kit (MUI 7 vs Tailwind 4 + shadcn/ui) — must be decided before phase 5; Vite SPA + BFF chosen over Next.js |
+| 2026-06-10 | Open decisions pending (plan §3.2): UI kit — decided 2026-06-13; Vite SPA + BFF chosen over Next.js |
+| 2026-06-13 | **UI kit: Tailwind 4 + shadcn/ui** (full restyle; MUI removed). User chose the modern-stack/portfolio path over MUI 7 |
 
 ## Session log
 

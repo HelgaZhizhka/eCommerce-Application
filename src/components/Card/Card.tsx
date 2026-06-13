@@ -48,9 +48,10 @@ const Card: React.FC<Props> = ({
   variants,
   className,
 }) => {
-  const classes = classNames(styles.root, {
+  // fixed: `className` was a key (always-truthy literal class), not applied;
+  // the caller's className was silently dropped
+  const classes = classNames(styles.root, className, {
     [styles.isDiscount]: isDiscount,
-    className,
   });
 
   const { addToCart, isProductInCart } = useCartActions();
