@@ -36,8 +36,8 @@ test.describe.serial('registration, logout, login', () => {
     // the header also has a "Sign up" link button
     await page.getByRole('main').getByRole('button', { name: 'Sign up' }).click();
 
-    // logged-in header state is the success signal
-    await expect(page.getByRole('button', { name: 'Exit' })).toBeVisible();
+    // logged-in header state is the success signal (Exit is a link)
+    await expect(page.getByRole('link', { name: 'Exit' })).toBeVisible();
   });
 
   test('logs out and logs back in with the same credentials', async ({ page }) => {
@@ -45,9 +45,10 @@ test.describe.serial('registration, logout, login', () => {
 
     await page.locator('input[name="email"]').fill(email);
     await page.locator('input[name="password"]').fill(password);
+    // the LoginForm submit is a real button; the header "Sign in" is a link
     await page.getByRole('button', { name: 'Sign in' }).last().click();
 
-    await expect(page.getByRole('button', { name: 'Exit' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Exit' })).toBeVisible();
 
     // profile page is reachable and shows the registered data
     await page.goto('/profile');
@@ -61,7 +62,7 @@ test.describe.serial('registration, logout, login', () => {
     await page.goto('/profile');
 
     // logout returns the guest header
-    await page.getByRole('button', { name: 'Exit' }).click();
-    await expect(page.getByRole('button', { name: 'Sign in' }).first()).toBeVisible();
+    await page.getByRole('link', { name: 'Exit' }).click();
+    await expect(page.getByRole('link', { name: 'Sign in' }).first()).toBeVisible();
   });
 });

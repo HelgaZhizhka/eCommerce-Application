@@ -17,7 +17,8 @@ test('home page renders navigation, hero and footer', async ({ page }) => {
 test('header shows auth controls for guests and cart icon', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('button', { name: 'Sign in' }).first()).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Sign up' }).first()).toBeVisible();
+  // header auth controls are links styled as buttons (corrected a11y semantics)
+  await expect(page.getByRole('link', { name: 'Sign in' }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Sign up' }).first()).toBeVisible();
   await expect(page.locator('a[href="/cart"]').first()).toBeVisible();
 });
