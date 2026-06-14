@@ -5,16 +5,17 @@
 
 ## Current state
 
-- **Phase:** 4 — Forms: **COMPLETE** (4.1–4.5 ✅, phase 3 merged as PR #219) —
-  Formik/Yup/formik-material-ui removed; ~1,100-line validation machine gone;
-  §2.4 form bug list closed
+- **Phase:** 5 — UI (in progress on `refactor/phase-5-ui`, not yet PR'd).
+  Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1,
+  by group with user review. Done: foundation, Footer, Header (forks merged),
+  Card+ProductList, lazy routes, ErrorBoundary, Card bug. MUI still present
+  (removed at phase end). See docs/refactor/phase-5.md for the remaining groups.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
-  react-hook-form 7 + zod 4 · ts-client 4 + BFF
-- **Final gate:** `./scripts/verify.sh` → exit 0 (tsc src+netlify, eslint
-  0 errors / 17 warnings, 45 unit, build, 11/11 e2e ×2) — 2026-06-13
-- **Next:** PR into `develop` → merge → phase 5 (UI kit decision MUI 7 vs
-  Tailwind+shadcn, lazy routes, kill *Mobile forks). Netlify env configured;
-  prod still on the 2023 CRA build — deploy decision pending
+  RHF + zod 4 · ts-client 4 + BFF · Tailwind 4 (alongside MUI, transitional)
+- **Latest gate:** tsc, eslint 0 errors, 45 unit, e2e 11/11 — 2026-06-13
+- **Next:** continue phase-5 groups — catalog filters/sorting (merge
+  Filter/FilterMobile + Sorting/SortMobile forks), then Cart, forms, pages;
+  finally remove MUI + enable Tailwind preflight. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -35,9 +36,22 @@
 | 2026-06-10 | Refactor plan written and committed (`REFACTORING_PLAN.md`)                                                                                       |
 | 2026-06-10 | Harness: minimal custom (CLAUDE.md + PROGRESS.md + phase checklists + verify.sh). OpenSpec deferred — reconsider for post-refactor feature work   |
 | 2026-06-10 | Branch-per-phase strategy, PRs into `develop`                                                                                                     |
-| 2026-06-10 | Open decisions pending (plan §3.2): UI kit (MUI 7 vs Tailwind 4 + shadcn/ui) — must be decided before phase 5; Vite SPA + BFF chosen over Next.js |
+| 2026-06-10 | Open decisions pending (plan §3.2): UI kit — decided 2026-06-13; Vite SPA + BFF chosen over Next.js |
+| 2026-06-13 | **UI kit: Tailwind 4 + shadcn/ui** (full restyle; MUI removed). User chose the modern-stack/portfolio path over MUI 7 |
 
 ## Session log
+
+### 2026-06-13 — Session 7 (phase 5 start: Tailwind foundation + first groups)
+
+- UI decision: Tailwind 4 + shadcn/ui (user). Engine-swap, keep look 1:1,
+  group-by-group with visual review in preview
+- foundation: @tailwindcss/vite, tokens mirror CSS vars, cn() helper
+- structural: lazy routes + Suspense, global ErrorBoundary, Card className bug
+- restyled+verified: Footer; Header (merged Header/HeaderMobile fork, deleted
+  HeaderMobile, removed App useMediaQuery switch); Card + ProductList
+- e2e header-control selectors button→link (corrected a11y semantics)
+- MUI still in tree (removed at phase end); preflight deferred until then
+- **Evidence:** preview screenshots per group; e2e 11/11 after each
 
 ### 2026-06-13 — Session 6 (phase 4: forms, model switched to Opus 4.8)
 

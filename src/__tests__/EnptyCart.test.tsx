@@ -13,8 +13,8 @@ test('renders EmptyCart component', () => {
   const titleElements = screen.getAllByText(/The cart feels light/i);
   expect(titleElements).toHaveLength(1);
 
-  const exploreButton = screen.getByRole('button', { name: /Explore/i });
-  expect(exploreButton).toBeInTheDocument();
+  const exploreLink = screen.getByRole('link', { name: /Explore/i });
+  expect(exploreLink).toBeInTheDocument();
 });
 
 test('renders EmptyCart component with an image', () => {
@@ -35,6 +35,6 @@ test('renders EmptyCart component with a link to /category/clothes/t-shirts', ()
     </MemoryRouter>
   );
 
-  const exploreButton = screen.getByRole('button', { name: /Explore/i });
-  expect(exploreButton.closest('a')).toHaveAttribute('href', '/category/clothes/t-shirts');
+  const exploreLink = screen.getByRole('link', { name: /Explore/i });
+  expect(exploreLink).toHaveAttribute('href', '/category/clothes/t-shirts');
 });

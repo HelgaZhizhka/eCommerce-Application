@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Button } from '@mui/material';
 
 import { useApplyPromoMutation, useCartQuery, useClearCartMutation, useRemovePromoMutation } from '../../queries/cart';
 import { ProductCartList } from '../../components/ProductCartList';
@@ -15,26 +14,24 @@ import { Price } from '../../components/baseComponents/Price';
 import { getPriceValue } from '../../stores/productHelpers';
 import { currency } from '../../constants';
 
-import styles from './Cart.module.scss';
-
 const Cart: React.FC = () => {
   const { products: productsInCart, totalAmount, totalPrice, discount } = useCartQuery();
   const clearCart = useClearCartMutation();
   const applyPromo = useApplyPromoMutation();
   const removePromo = useRemovePromoMutation();
+
   const breadcrumbItems = [
     { text: 'Home', path: RoutePaths.MAIN },
     { text: 'Cart', path: `${RoutePaths.CART}` },
   ];
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-
   const [isOpenModalCheckout, setIsOpenModalCheckout] = useState(false);
 
   const totalPriceValue = getPriceValue(totalPrice);
 
   const modalCheckoutContent = (
-    <div className={styles.modalContent}>
+    <div className="text-center">
       <p>Expect your favorite products to come to you soon!</p>
       <p>It will be...</p>
       <p>When we finalize the payment system.</p>
@@ -43,102 +40,82 @@ const Cart: React.FC = () => {
   );
 
   const modalConfirmContent = (
-    <div className={styles.modalContent}>
+    <div className="text-center">
       Are you sure you want to remove all those products?
       <p>
-        <Link to={RoutePaths.SALE}>Here</Link> is a list of our discounts, you may be interested in it.
+        <Link className="text-primary underline" to={RoutePaths.SALE}>
+          Here
+        </Link>{' '}
+        is a list of our discounts, you may be interested in it.
       </p>
     </div>
   );
 
-  const handlePromoCode = (code: string): void => {
-    applyPromo.mutate(code);
-  };
-
-  const onCloseModal = (): void => {
-    setIsOpenModal(false);
-  };
-
-  const onOpenModal = (): void => {
-    setIsOpenModal(true);
-  };
-
-  const onDeleteItemsFromCart = (): void => {
-    clearCart.mutate(undefined);
-    setIsOpenModal(false);
-  };
-
-  const onCheckoutCart = (): void => {
-    setIsOpenModalCheckout(true);
-  };
-
-  const onCloseModalCheckout = (): void => {
-    setIsOpenModalCheckout(false);
-  };
-
   return (
-    <Container maxWidth="xl">
+    <div className="mx-auto max-w-[1536px] px-4">
       <ModalConfirm
-        title={'Delete all products'}
+        title="Delete all products"
         content={modalConfirmContent}
-        onClose={onCloseModal}
+        onClose={(): void => setIsOpenModal(false)}
         isOpen={isOpenModal}
-        onConfirm={onDeleteItemsFromCart}
+        onConfirm={(): void => {
+          clearCart.mutate(undefined);
+          setIsOpenModal(false);
+        }}
       />
       <ModalConfirm
-        title={'We thank you for your wonderful choice!'}
+        title="We thank you for your wonderful choice!"
         content={modalCheckoutContent}
-        onClose={onCloseModalCheckout}
+        onClose={(): void => setIsOpenModalCheckout(false)}
         isOpen={isOpenModalCheckout}
       />
-      <div className={styles.root}>
-        <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
-        {totalAmount ? (
-          <>
-            <ProductCartList productsInCart={productsInCart} />
-            <div className={styles.footer}>
-              <Button onClick={onOpenModal} sx={{ fontSize: '24px', p: 0 }} color={'error'}>
-                Delete all products <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
-              </Button>
-              <span className={`${styles.flex} ${styles.totalPrice}`}>
-                <span>TOTAL:</span>
-                <Price className={styles.totalPrice} currency={currency.value}>
-                  {totalPriceValue}
-                </Price>
-              </span>
-            </div>
-            <div className={styles.footer}>
-              <PromoCode className={styles.promo} onChange={handlePromoCode} />
 
-              {discount && (
-                <div className={styles.flex}>
-                  <span>Active Promo Code:</span>
-                  <span className={styles.promoCode}>{discount.name}</span>
-                  <Button
-                    onClick={(): void => removePromo.mutate(discount.id)}
-                    sx={{ p: 0, minWidth: '30px' }}
-                    color={'error'}
-                  >
-                    <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
-                  </Button>
-                </div>
-              )}
+      <Breadcrumbs items={breadcrumbItems} className="py-4" />
 
-              <Button
-                onClick={onCheckoutCart}
-                sx={{ fontSize: '1.25rem', width: { md: '300px', xs: 'auto' }, mt: { md: '0', xs: '20px' } }}
-                variant="contained"
-                color="success"
-              >
-                <span>Checkout</span>
-              </Button>
-            </div>
-          </>
-        ) : (
-          <EmptyCart />
-        )}
-      </div>
-    </Container>
+      {totalAmount ? (
+        <>
+          <ProductCartList productsInCart={productsInCart} />
+
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={(): void => setIsOpenModal(true)}
+              className="flex items-center gap-1 text-2xl text-danger"
+            >
+              Delete all products <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
+            </button>
+            <span className="flex items-center gap-2 text-2xl font-semibold">
+              <span>TOTAL:</span>
+              <Price currency={currency.value}>{totalPriceValue}</Price>
+            </span>
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+            <PromoCode onChange={(code): void => applyPromo.mutate(code)} />
+
+            {discount && (
+              <div className="flex items-center gap-2">
+                <span>Active Promo Code:</span>
+                <span className="font-semibold text-primary">{discount.name}</span>
+                <button type="button" onClick={(): void => removePromo.mutate(discount.id)} aria-label="remove promo">
+                  <Icon name={IconName.DELETE} width={30} height={30} color="var(--state-error)" />
+                </button>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={(): void => setIsOpenModalCheckout(true)}
+              className="w-full rounded bg-success px-6 py-2 text-xl text-white transition-opacity hover:opacity-90 md:w-[300px]"
+            >
+              Checkout
+            </button>
+          </div>
+        </>
+      ) : (
+        <EmptyCart />
+      )}
+    </div>
   );
 };
 
