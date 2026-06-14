@@ -9,7 +9,7 @@ const ThemeToggle: React.FC = () => {
   const toggleDarkMode = useThemeStore((state) => state.toggleDarkMode);
 
   return (
-    <IconButton sx={{ color: 'primary.main' }} onClick={toggleDarkMode} color="inherit">
+    <IconButton aria-label="Toggle theme" sx={{ color: 'primary.main' }} onClick={toggleDarkMode} color="inherit">
       {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
     </IconButton>
   );

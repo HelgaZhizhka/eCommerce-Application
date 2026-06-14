@@ -1,6 +1,8 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
+import { RoutePaths } from '../../routes/routes.enum';
+
 // Global error boundary (5.5): catches render-time crashes so a broken page
 // shows a recovery prompt instead of a blank screen.
 
@@ -35,7 +37,7 @@ class ErrorBoundary extends Component<Props, State> {
         >
           <Typography variant="h4">Something went wrong</Typography>
           <Typography color="text.secondary">An unexpected error occurred. Try reloading the page.</Typography>
-          <Button variant="contained" onClick={(): void => window.location.assign('/')}>
+          <Button variant="contained" onClick={(): void => window.location.assign(RoutePaths.MAIN)}>
             Back to home
           </Button>
         </Box>
