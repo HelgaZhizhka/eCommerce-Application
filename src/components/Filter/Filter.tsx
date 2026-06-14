@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -50,6 +50,18 @@ const FilterControls: React.FC<FilterControlsProps & { mobile?: boolean }> = ({
 
 const Filter: React.FC<Props> = ({ className, ...controls }) => {
   const [open, setOpen] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // a11y: Esc closes the drawer; focus moves to the close button on open
+  useEffect(() => {
+    if (!open) return undefined;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return (): void => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   return (
     <>
@@ -65,10 +77,11 @@ const Filter: React.FC<Props> = ({ className, ...controls }) => {
 
       {/* mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-[1000] md:hidden">
+        <div className="fixed inset-0 z-[1000] md:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <div className="absolute inset-0 bg-black/40" onClick={(): void => setOpen(false)} aria-hidden />
           <div className="absolute inset-y-0 left-0 w-[85vw] max-w-sm overflow-y-auto bg-page p-4 shadow-xl">
             <button
+              ref={closeRef}
               type="button"
               aria-label="close"
               onClick={(): void => setOpen(false)}
