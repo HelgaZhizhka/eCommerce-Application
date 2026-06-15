@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { Box, CircularProgress } from '@mui/material';
 
 import { RoutePaths } from './routes.enum';
 import Secure from './Secure';
@@ -20,9 +19,13 @@ const Cart = lazy(() => import('../pages/Cart').then((m) => ({ default: m.Cart }
 const Product = lazy(() => import('../pages/Product').then((m) => ({ default: m.Product })));
 
 const PageFallback: React.FC = () => (
-  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-    <CircularProgress color="secondary" />
-  </Box>
+  <div className="flex min-h-[50vh] items-center justify-center">
+    <div
+      role="status"
+      aria-label="Loading"
+      className="h-10 w-10 animate-spin rounded-full border-4 border-secondary border-t-transparent"
+    />
+  </div>
 );
 
 const RouterConfig: React.FC = () => {

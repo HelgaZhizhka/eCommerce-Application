@@ -5,12 +5,7 @@
   "dependencies": {
     "@commercetools/platform-sdk": "^8.27.0",
     "@commercetools/ts-client": "^4.10.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.4.0",
-    "@mui/icons-material": "^5.18.0",
-    "@mui/material": "^5.18.0",
-    "@mui/system": "^5.18.0",
     "@radix-ui/react-dialog": "^1.1.16",
     "@radix-ui/react-select": "^2.3.0",
     "@radix-ui/react-slider": "^1.4.0",
