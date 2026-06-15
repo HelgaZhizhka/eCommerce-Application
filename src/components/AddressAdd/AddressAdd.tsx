@@ -1,16 +1,22 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, MenuItem } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Plus } from 'lucide-react';
 
 import { addressAddSchema, AddressAddValues } from '../../schemas/forms';
 import { countries } from '../../schemas/countries';
-import { RHFTextField, RHFCheckbox } from '../baseComponents/RHFTextField';
+import { RHFTextField, RHFCheckbox, RHFSelect } from '../baseComponents/RHFTextField';
+import { Button } from '../baseComponents/Button';
 import styles from './AddressAdd.module.scss';
 
 type Props = {
   onSaveChange: (data: Record<string, string | boolean | number>) => void;
 };
+
+const countryOptions = countries.map((c) => ({ value: c.code, label: c.label }));
+const addressTypeOptions = [
+  { value: 'Shipping', label: 'Shipping' },
+  { value: 'Billing', label: 'Billing' },
+];
 
 const AddressAdd: React.FC<Props> = ({ onSaveChange }) => {
   const { control, handleSubmit, formState } = useForm<AddressAddValues>({
@@ -24,45 +30,36 @@ const AddressAdd: React.FC<Props> = ({ onSaveChange }) => {
   };
 
   return (
-    <Box sx={{ p: '30px', borderBottom: '3px solid grey' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div className="border-b-[3px] border-gray p-[30px]">
+      <div className="flex justify-between">
         <h3>Add new address</h3>
-      </Box>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputContainer}>
-          <RHFTextField control={control} name="address" select variant="standard" fullWidth label="Address type">
-            <MenuItem value="Shipping">Shipping</MenuItem>
-            <MenuItem value="Billing">Billing</MenuItem>
-          </RHFTextField>
+          <RHFSelect control={control} name="address" label="Address type" options={addressTypeOptions} />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField control={control} name="street" label="Street" variant="standard" fullWidth />
+          <RHFTextField control={control} name="street" label="Street" />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField control={control} name="city" label="City" variant="standard" fullWidth />
+          <RHFTextField control={control} name="city" label="City" />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField control={control} name="postalCode" label="Postal code" variant="standard" fullWidth />
+          <RHFTextField control={control} name="postalCode" label="Postal code" />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField control={control} name="country" select variant="standard" fullWidth label="Country">
-            {countries.map((c) => (
-              <MenuItem key={c.code} value={c.code}>
-                {c.label}
-              </MenuItem>
-            ))}
-          </RHFTextField>
+          <RHFSelect control={control} name="country" label="Country" options={countryOptions} />
         </div>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className="flex justify-between">
           <RHFCheckbox control={control} name="checkBox" label="Use default" className={styles.nowrap} />
-          <Button className={styles.nowrap} type="submit" disabled={!formState.isValid} sx={{ fontSize: '20px' }}>
+          <Button className={`${styles.nowrap} text-xl`} type="submit" disabled={!formState.isValid}>
             Add address
-            <AddIcon />
+            <Plus size={20} />
           </Button>
-        </Box>
+        </div>
       </form>
-    </Box>
+    </div>
   );
 };
 

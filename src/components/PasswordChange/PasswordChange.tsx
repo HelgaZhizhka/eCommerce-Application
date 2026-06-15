@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button } from '@mui/material';
 
 import { passwordChangeSchema, PasswordChangeValues } from '../../schemas/forms';
 import { RHFTextField } from '../baseComponents/RHFTextField';
+import { Button } from '../baseComponents/Button';
 import styles from './PasswordChange.module.scss';
 
 type Props = {
@@ -22,50 +22,29 @@ const PasswordChange: React.FC<Props> = ({ onSaveChange }) => {
   };
 
   return (
-    <Box sx={{ p: '30px', borderBottom: '3px solid grey' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div className="border-b-[3px] border-gray p-[30px]">
+      <div className="flex justify-between">
         <h3>Change password</h3>
-      </Box>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputContainer}>
-          <RHFTextField
-            control={control}
-            name="currentPassword"
-            label="Current password"
-            password
-            variant="standard"
-            fullWidth
-          />
+          <RHFTextField control={control} name="currentPassword" label="Current password" password />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField
-            control={control}
-            name="newPassword"
-            label="New password"
-            password
-            variant="standard"
-            fullWidth
-          />
+          <RHFTextField control={control} name="newPassword" label="New password" password />
         </div>
         <div className={styles.inputContainer}>
-          <RHFTextField
-            control={control}
-            name="repeatNewPassword"
-            label="Repeat new password"
-            password
-            variant="standard"
-            fullWidth
-          />
+          <RHFTextField control={control} name="repeatNewPassword" label="Repeat new password" password />
         </div>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" type="submit" disabled={!formState.isValid} sx={{ fontSize: '20px' }}>
+        <div className="flex justify-center">
+          <Button variant="contained" type="submit" disabled={!formState.isValid} className="text-xl">
             Save changes
           </Button>
-        </Box>
+        </div>
       </form>
-    </Box>
+    </div>
   );
 };
 

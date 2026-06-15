@@ -1,5 +1,6 @@
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { Checkbox, FormControlLabel } from '@mui/material';
+
+import { cn } from '../../../shared/lib/cn';
 
 type Props<T extends FieldValues> = {
   name: Path<T>;
@@ -13,11 +14,18 @@ const RHFCheckbox = <T extends FieldValues>({ name, control, label, className }:
     name={name}
     control={control}
     render={({ field }) => (
-      <FormControlLabel
-        className={className}
-        control={<Checkbox checked={!!field.value} onChange={(e): void => field.onChange(e.target.checked)} />}
-        label={label}
-      />
+      <label className={cn('inline-flex cursor-pointer items-center gap-2', className)}>
+        <input
+          type="checkbox"
+          checked={!!field.value}
+          onChange={(event): void => field.onChange(event.target.checked)}
+          onBlur={field.onBlur}
+          name={field.name}
+          ref={field.ref}
+          className="h-4 w-4 accent-primary"
+        />
+        {label}
+      </label>
     )}
   />
 );

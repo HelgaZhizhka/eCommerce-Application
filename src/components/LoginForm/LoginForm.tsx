@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { loginSchema, LoginValues } from '../../schemas/forms';
 import { emailRules, passwordRules } from '../../schemas/rules';
 import ShowValidate from '../ShowValidate/ShowValidate';
 import { RHFTextField } from '../baseComponents/RHFTextField';
+import { Button } from '../baseComponents/Button';
 import { useAuthStore } from '../../stores/authStore';
 import styles from './LoginForm.module.scss';
 
@@ -35,9 +35,6 @@ const LoginForm: React.FC = () => {
           control={control}
           name="email"
           label="Email"
-          variant="standard"
-          fullWidth
-          margin="normal"
           onFocus={(): void => setTouched((t) => ({ ...t, email: true }))}
         />
         {touched.email && <ShowValidate value={email} rules={emailRules} />}
@@ -49,16 +46,13 @@ const LoginForm: React.FC = () => {
           name="password"
           label="Password"
           password
-          variant="standard"
-          fullWidth
-          margin="normal"
           onFocus={(): void => setTouched((t) => ({ ...t, password: true }))}
         />
         {touched.password && <ShowValidate value={password} rules={passwordRules} />}
       </div>
 
       <div className={styles.btnLogin}>
-        <Button disabled={!formState.isValid} variant="contained" color="primary" fullWidth type="submit">
+        <Button disabled={!formState.isValid} variant="contained" fullWidth type="submit">
           Sign in
         </Button>
       </div>
@@ -69,7 +63,7 @@ const LoginForm: React.FC = () => {
       </div>
 
       <Link to="/registration">
-        <Button variant="outlined" fullWidth color="primary">
+        <Button variant="outlined" fullWidth>
           Sign up
         </Button>
       </Link>

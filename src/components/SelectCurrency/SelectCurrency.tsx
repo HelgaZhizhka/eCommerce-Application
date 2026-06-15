@@ -1,23 +1,15 @@
-import { TextField } from '@mui/material';
-
 import { currency } from '../../constants';
 import styles from './SelectCurrency.module.scss';
 
 const SelectCurrency: React.FC = () => (
   <div className={styles.root}>
-    <TextField
-      select
-      label="Select"
+    <select
       defaultValue={currency.value}
-      sx={{ width: '50px' }}
-      SelectProps={{
-        native: true,
-      }}
-      helperText=""
-      variant="standard"
+      aria-label="Select currency"
+      className="w-[50px] border-b border-gray bg-transparent outline-none focus:border-primary"
     >
       <option value={currency.value}>{currency.label}</option>
-    </TextField>
+    </select>
   </div>
 );
 
