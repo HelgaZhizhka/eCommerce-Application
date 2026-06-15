@@ -1,18 +1,6 @@
-import { Box, Modal, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-
+import { Dialog, DialogContent, DialogTitle } from '../Dialog';
 import { AddressAdd } from '../../AddressAdd';
 import { PasswordChange } from '../../PasswordChange';
-import styles from './ModalProfile.module.scss';
-
-const style = {
-  bgcolor: 'background.paper' as const,
-  border: '2px solid #000' as const,
-  boxShadow: 24 as const,
-  pt: 2 as const,
-  px: 4 as const,
-  pb: 3 as const,
-};
 
 type Props = {
   activeModal: string | null;
@@ -21,30 +9,18 @@ type Props = {
 };
 
 const ModalProfile: React.FC<Props> = ({ activeModal, handleCloseModal, onSaveChange }) => (
-  <div>
-    <Modal
-      open={!!activeModal}
-      onClose={handleCloseModal}
-      aria-labelledby="parent-modal-title"
-      aria-describedby="parent-modal-description"
-    >
-      <Box className={styles.popup} sx={{ ...style }}>
-        <IconButton
-          aria-label="close"
-          onClick={handleCloseModal}
-          sx={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        {activeModal === 'address' && <AddressAdd onSaveChange={onSaveChange} />}
-        {activeModal === 'password' && <PasswordChange onSaveChange={onSaveChange} />}
-      </Box>
-    </Modal>
-  </div>
+  <Dialog
+    open={!!activeModal}
+    onOpenChange={(open): void => {
+      if (!open) handleCloseModal();
+    }}
+  >
+    <DialogContent className="max-w-[400px] border-2 border-black">
+      <DialogTitle className="sr-only">{activeModal === 'address' ? 'Add address' : 'Change password'}</DialogTitle>
+      {activeModal === 'address' && <AddressAdd onSaveChange={onSaveChange} />}
+      {activeModal === 'password' && <PasswordChange onSaveChange={onSaveChange} />}
+    </DialogContent>
+  </Dialog>
 );
 
 export default ModalProfile;

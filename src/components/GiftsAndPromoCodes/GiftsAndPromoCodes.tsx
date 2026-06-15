@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, IconButton, Tooltip } from '@mui/material';
 
 import { promoCode } from '../../constants';
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
+import { Button } from '../baseComponents/Button';
 import bagsImages from './images/Frame 329.png';
 import styles from './GiftsAndPromoCodes.module.scss';
 
@@ -20,36 +20,40 @@ const GiftsAndPromoCodes: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', gap: '50px', flexWrap: 'wrap' }}>
-      <Box>
+    <div className="flex flex-wrap justify-center gap-[50px]">
+      <div>
         <img src={bagsImages} alt="images some bags" />
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 / 2 }}>
-        <Box>
+      </div>
+      <div className="flex flex-[0.5] flex-col justify-between">
+        <div>
           <p>👜 What we offer:</p>
           <p>🌟 Spacious and comfortable shoppers for your comfort.</p>
           <p>🎨 A variety of designs and colors to highlight your personality.</p>
           <p>♻️ Environmentally friendly and sustainable materials - your contribution to nature conservation.</p>
           <p>💰 Exclusive promo codes for discounts on your chauper purchase!</p>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mb: 2 }}>
+          <div className="mb-4 flex items-center gap-2">
             <span>
               -15% off with promo code <span className={styles.promo}>{promoCode}</span>
             </span>
-            <Tooltip title={copied ? 'Скопировано!' : 'Копировать'}>
-              <IconButton size="large" onClick={handleCopyClick}>
-                <Icon name={IconName.COPY} width={20} height={20} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
+            <button
+              type="button"
+              title={copied ? 'Скопировано!' : 'Копировать'}
+              aria-label="Copy promo code"
+              onClick={handleCopyClick}
+              className="rounded-full p-2 transition-colors hover:bg-black/5"
+            >
+              <Icon name={IconName.COPY} width={20} height={20} />
+            </button>
+          </div>
+        </div>
 
         <Link to="/category/bags/shoppers">
-          <Button sx={{ fontSize: '24px', width: '340px' }} variant="contained">
+          <Button variant="contained" className="w-[340px] text-2xl">
             WANT!
           </Button>
         </Link>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
