@@ -18,13 +18,14 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 
 - [x] **5.1/5.2** (in progress, per group) — adopt Tailwind, consolidate styles.
   Done groups: **Footer**, **Header**, **Card + ProductList**, **Catalog shell
-  + adaptive Filter**.
-  Remaining: leaf filter/sort internals still on MUI (FilterChip Chip,
-  FilterColorCheckBox Button, FilterPrice Slider, SortingList MenuItem,
-  Search Input, PaginationCatalog, SelectSize) — come off in the final MUI
-  sweep; Cart group (Cart/CardMini/PromoCode/EmptyCart); forms
-  (Login/Registration/Profile + RHFTextField/SelectSize MUI internals); pages
-  (Main/About/Sale/ErrorPage); shared base (Button/Price/Icon/Modal/Breadcrumbs).
+  + adaptive Filter** (part 1, merged); **Cart group complete** (Cart page,
+  EmptyCart, PromoCode, **CardMini**); **Login + Registration page shells**
+  (part 2, on `refactor/phase-5-ui-part2`).
+  Remaining: pages Main/About/Sale/ErrorPage/Profile-shell; leaf components
+  still on MUI (FilterChip Chip, FilterColorCheckBox Button, FilterPrice Slider,
+  SortingList/Sorting, Search Input, PaginationCatalog, SelectSize, NumberInput,
+  Price, Icon, Modal, Breadcrumbs, RHFTextField) — come off in the final MUI
+  sweep. Current surface: ~49 files import `@mui`, 43 `*.module.scss` remain.
 - [x] **5.3** Forks merged: Header/HeaderMobile ✅, **Filter/FilterMobile ✅**
   (adaptive Filter: sidebar md+ / Tailwind drawer below), **Sorting/SortMobile ✅**
   (one MUI dropdown at all widths). Remaining: NavBarMobile review (it's the

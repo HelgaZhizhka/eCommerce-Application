@@ -5,17 +5,23 @@
 
 ## Current state
 
-- **Phase:** 5 — UI (in progress on `refactor/phase-5-ui`, not yet PR'd).
-  Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1,
-  by group with user review. Done: foundation, Footer, Header (forks merged),
-  Card+ProductList, lazy routes, ErrorBoundary, Card bug. MUI still present
-  (removed at phase end). See docs/refactor/phase-5.md for the remaining groups.
+- **Phase:** 5 — UI. Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping
+  the look 1:1, by group with user review.
+  - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
+    Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
+    FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
+    shell + EmptyCart + PromoCode, lazy routes, ErrorBoundary, Card bug.
+  - **Part 2 in progress** on `refactor/phase-5-ui-part2` (pushed, not PR'd):
+    CardMini ✅, Login/Registration page shells ✅.
+  - **Remaining:** pages Main/About/Sale/ErrorPage/Profile-shell; leaf
+    components still on MUI (**49 files**) + **43 `*.module.scss`**; then the
+    FINAL sweep — remove `@mui/*`+`@emotion/*`, enable Tailwind preflight,
+    delete `src/styles/**` SCSS, drop `sass`/`classnames`.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
   RHF + zod 4 · ts-client 4 + BFF · Tailwind 4 (alongside MUI, transitional)
 - **Latest gate:** tsc, eslint 0 errors, 45 unit, e2e 11/11 — 2026-06-13
-- **Next:** continue phase-5 groups — catalog filters/sorting (merge
-  Filter/FilterMobile + Sorting/SortMobile forks), then Cart, forms, pages;
-  finally remove MUI + enable Tailwind preflight. Prod still on 2023 CRA build.
+- **Next:** finish phase-5 part 2 pages → final MUI removal → PR part 2 into
+  `develop`. Prod still on 2023 CRA build (deploy decision pending).
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -40,6 +46,20 @@
 | 2026-06-13 | **UI kit: Tailwind 4 + shadcn/ui** (full restyle; MUI removed). User chose the modern-stack/portfolio path over MUI 7 |
 
 ## Session log
+
+### 2026-06-13 — Session 7 cont. (phase 5 part 1 merged, review, part 2 start)
+
+- Cart page shell + EmptyCart + PromoCode → Tailwind; opened PR #221
+  (phase 5 part 1), CI green, **merged**
+- code review of PR #221 via a fresh subagent → "Approve with nits";
+  applied 3 nits (ThemeToggle aria-label, ErrorBoundary RoutePaths.MAIN,
+  Filter drawer Esc/focus/dialog) as PR #222, CI green, **merged**;
+  remaining focus-trap logged in phase-6.4
+- started `refactor/phase-5-ui-part2`: CardMini → Tailwind (color swatches via
+  --filter-* map; dropped MUI Button/debounce, classnames); Login + Registration
+  page shells → Tailwind
+- SESSION_REPORT.md refreshed for the post
+- **Evidence:** verify.sh / e2e 11/11 green per group; PRs #221, #222 merged
 
 ### 2026-06-13 — Session 7 (phase 5 start: Tailwind foundation + first groups)
 

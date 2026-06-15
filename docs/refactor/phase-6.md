@@ -13,11 +13,11 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       phase 0 scenarios to the final UI.
 - [ ] **6.4** A11y pass: form labels/aria, modal focus management, dark theme
       contrast. Specific items from the PR #221 review (phase 5 part 1):
-  - [ ] Filter mobile drawer (`Filter.tsx`): Escape-to-close, focus trap,
-        `role="dialog"`/`aria-modal`, focus return to trigger (closes review #1)
-  - [ ] `ThemeToggle.tsx`: add `aria-label="Toggle theme"` (icon-only button,
-        rendered twice in the merged Header)
-  - [ ] `ErrorBoundary.tsx`: use `RoutePaths.MAIN` instead of hardcoded `'/'`
+  - [~] Filter mobile drawer (`Filter.tsx`): Esc-to-close + focus-to-close-button
+        + `role="dialog"`/`aria-modal` DONE (PR #222); full focus-TRAP and
+        focus-return-to-trigger still TODO here.
+  - [x] `ThemeToggle.tsx`: `aria-label="Toggle theme"` — done early (PR #222)
+  - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
 - [ ] **6.5** Docs: rewrite README (stack, setup, scripts), ADRs for key
       decisions (BFF, TanStack Query, UI kit choice).
 - [ ] Final `PROGRESS.md` update; close the refactor.
