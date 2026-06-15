@@ -9,6 +9,7 @@ import { WizardData } from '../../components/RegistrationForm/wizard.types';
 import { AddressesValues, CredentialsValues, PersonalValues } from '../../schemas/forms';
 import { useAuthStore } from '../../stores/authStore';
 import { Poster } from '../../components/Poster';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 
 // Typed 3-step state machine. The accumulator (incl. the password) is local
 // state — it never reaches a global store (plan §4.4). Final submit is a
@@ -30,7 +31,7 @@ const Registration: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[1536px] px-4">
+    <PageContainer>
       <div className="pt-10 pb-[140px] md:flex md:justify-between md:gap-[5%] md:pt-[60px]">
         <div className="flex-[2]">
           {step === 1 && <RegistrationForm defaultValues={data as Partial<CredentialsValues>} onSubmit={next} />}
@@ -53,7 +54,7 @@ const Registration: React.FC = () => {
           <Poster />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

@@ -12,16 +12,21 @@
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
     shell + EmptyCart + PromoCode, lazy routes, ErrorBoundary, Card bug.
   - **Part 2 in progress** on `refactor/phase-5-ui-part2` (pushed, not PR'd):
-    CardMini ✅, Login/Registration page shells ✅.
-  - **Remaining:** pages Main/About/Sale/ErrorPage/Profile-shell; leaf
-    components still on MUI (**49 files**) + **43 `*.module.scss`**; then the
-    FINAL sweep — remove `@mui/*`+`@emotion/*`, enable Tailwind preflight,
-    delete `src/styles/**` SCSS, drop `sass`/`classnames`.
+    CardMini ✅, Login/Registration shells ✅, **content pages Main/About/Sale/
+    ErrorPage ✅, Profile shell ✅**. Added **`PageContainer`** (one MUI
+    `Container maxWidth="xl"` replacement → `max-w-[1440px] px-4 sm:px-6`;
+    Catalog/Cart/Login/Registration retrofitted). **Aligned Tailwind breakpoints**
+    to the project (sm600/md1024/lg1280/xl1440) so `md:`/`sm:` match the original
+    MUI/SCSS — fixes the merged-part-1 tablet drift (Header now switches at 1024).
+  - **Remaining:** **Product page**; leaf components still on MUI (**44 files**)
+    + **38 `*.module.scss`**; then the FINAL sweep — remove `@mui/*`+`@emotion/*`,
+    enable Tailwind preflight, delete `src/styles/**` SCSS, drop `sass`/`classnames`.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
   RHF + zod 4 · ts-client 4 + BFF · Tailwind 4 (alongside MUI, transitional)
-- **Latest gate:** tsc, eslint 0 errors, 45 unit, e2e 11/11 — 2026-06-13
-- **Next:** finish phase-5 part 2 pages → final MUI removal → PR part 2 into
-  `develop`. Prod still on 2023 CRA build (deploy decision pending).
+- **Latest gate:** tsc, eslint 0 errors, 45 unit, e2e 11/11 — 2026-06-15
+  (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
+- **Next:** Product page → final MUI removal sweep → PR part 2 into `develop`.
+  Prod still on 2023 CRA build (deploy decision pending).
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -46,6 +51,26 @@
 | 2026-06-13 | **UI kit: Tailwind 4 + shadcn/ui** (full restyle; MUI removed). User chose the modern-stack/portfolio path over MUI 7 |
 
 ## Session log
+
+### 2026-06-15 — Session 8 (phase 5 part 2: content pages + breakpoint fix)
+
+- restyled to Tailwind: **Main, About, Sale, ErrorPage, Profile shell**;
+  deleted their 5 `*.module.scss`. 404 glitch keyframes moved into `tailwind.css`
+  (raw `@keyframes` + arbitrary `before:/after:` animation utilities)
+- added **`PageContainer`** (`baseComponents/PageContainer`) as the single MUI
+  `Container maxWidth="xl"` replacement; retrofitted Catalog/Cart/Login/
+  Registration onto it — corrected the earlier `max-w-[1536px]` to the theme's
+  real xl `1440` + MUI gutters `px-4 sm:px-6`
+- **aligned Tailwind breakpoints** to the legacy MUI theme + SCSS grid
+  (`--breakpoint-sm/md/lg/xl = 600/1024/1280/1440`); the prior default-Tailwind
+  breakpoints had shifted every `md:`/`sm:` vs the original (Header was
+  switching desktop/mobile at 768 instead of 1024). User approved the change.
+- surface: `@mui` 49→**44** files, scss 43→**38**; only the **Product** page
+  still imports MUI/scss among pages
+- **Evidence:** typecheck clean; eslint 0 errors (17 pre-existing warnings);
+  unit 45/45; e2e 11/11 (Node 22). Visual proof via throwaway Playwright shots:
+  900px→mobile Header, 1024px→desktop Header (switch restored to 1:1);
+  404/Sale/About render correctly
 
 ### 2026-06-13 — Session 7 cont. (phase 5 part 1 merged, review, part 2 start)
 

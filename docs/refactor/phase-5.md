@@ -19,13 +19,24 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 - [x] **5.1/5.2** (in progress, per group) — adopt Tailwind, consolidate styles.
   Done groups: **Footer**, **Header**, **Card + ProductList**, **Catalog shell
   + adaptive Filter** (part 1, merged); **Cart group complete** (Cart page,
-  EmptyCart, PromoCode, **CardMini**); **Login + Registration page shells**
-  (part 2, on `refactor/phase-5-ui-part2`).
-  Remaining: pages Main/About/Sale/ErrorPage/Profile-shell; leaf components
-  still on MUI (FilterChip Chip, FilterColorCheckBox Button, FilterPrice Slider,
-  SortingList/Sorting, Search Input, PaginationCatalog, SelectSize, NumberInput,
-  Price, Icon, Modal, Breadcrumbs, RHFTextField) — come off in the final MUI
-  sweep. Current surface: ~49 files import `@mui`, 43 `*.module.scss` remain.
+  EmptyCart, PromoCode, **CardMini**); **Login + Registration page shells**;
+  **content pages** Main / About / Sale / ErrorPage (404 glitch keyframes moved
+  into `tailwind.css`) / **Profile shell** (part 2, on `refactor/phase-5-ui-part2`).
+  - **`PageContainer`** added (`baseComponents/PageContainer`): one Tailwind
+    replacement for MUI `<Container maxWidth="xl">` (centered, `max-w-[1440px]`,
+    `px-4 sm:px-6` — the theme's real xl is 1440, not MUI's default 1536).
+    Catalog/Cart/Login/Registration retrofitted onto it (fixes the earlier
+    `1536` drift; removes the duplicated wrapper string).
+  - **Breakpoints aligned** in `tailwind.css` (`--breakpoint-sm/md/lg/xl =
+    600/1024/1280/1440`) to match the legacy MUI theme + SCSS grid, so `md:`/
+    `sm:` mean what `up('md')`/`up('sm')` meant. Verified the Header
+    desktop/mobile switch now flips at exactly 1024 (900px → mobile, 1024px →
+    desktop), restoring 1:1.
+  Remaining: **Product page**; leaf components still on MUI (FilterChip Chip,
+  FilterColorCheckBox Button, FilterPrice Slider, SortingList/Sorting, Search
+  Input, PaginationCatalog, SelectSize, NumberInput, Price, Icon, Modal,
+  Breadcrumbs, RHFTextField) — come off in the final MUI sweep. Current surface:
+  ~44 files import `@mui`, 38 `*.module.scss` remain.
 - [x] **5.3** Forks merged: Header/HeaderMobile ✅, **Filter/FilterMobile ✅**
   (adaptive Filter: sidebar md+ / Tailwind drawer below), **Sorting/SortMobile ✅**
   (one MUI dropdown at all widths). Remaining: NavBarMobile review (it's the
