@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { LogIn, LogOut, Menu } from 'lucide-react';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { currency, contacts } from '../../constants';
@@ -114,7 +112,7 @@ const Header: React.FC = () => {
       <div className="md:hidden">
         <div className="flex items-center px-4 py-3">
           <button type="button" aria-label="menu" onClick={toggleNavBar} className="p-2">
-            <MenuIcon fontSize="large" />
+            <Menu size={32} />
           </button>
           <div className="ml-1">
             <Logo variant={LogoVariant.DEFAULT} />
@@ -130,11 +128,11 @@ const Header: React.FC = () => {
             </Link>
             {!loggedIn ? (
               <Link to={RoutePaths.LOGIN} aria-label="login">
-                <LoginIcon fontSize="large" />
+                <LogIn size={32} />
               </Link>
             ) : (
               <Link to={RoutePaths.MAIN} onClick={logout} aria-label="logout">
-                <LogoutIcon fontSize="large" />
+                <LogOut size={32} />
               </Link>
             )}
             <ThemeToggle />

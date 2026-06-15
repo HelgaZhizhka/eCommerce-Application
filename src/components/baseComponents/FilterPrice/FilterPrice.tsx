@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Slider, Box } from '@mui/material';
+import * as Slider from '@radix-ui/react-slider';
 
 import { initialPriceRange } from '../../../constants';
-import styles from './FilterPrice.module.scss';
-
-const valueText = (value: number): string => `${value}`;
 
 type Props = {
   className?: string;
@@ -21,31 +18,32 @@ const FilterPrice: React.FC<Props> = ({ value, onChange }) => {
   }, [value]);
 
   return (
-    <div className={styles.root}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div className="px-2.5">
+      <div className="flex items-center justify-between">
         <h3>Price</h3>
-        <Box
-          sx={{
-            color: 'var(--basic-gray, #979999)',
-            fontSize: '20px',
-            letterSpacing: '0.4px',
-          }}
-        >
+        <div className="text-xl tracking-[0.4px] text-gray">
           EUR {draft[0]} - {draft[1]}
-        </Box>
-      </Box>
-      <Box style={{ width: '100%' }}>
-        <Slider
-          getAriaLabel={(): string => 'Price range'}
-          value={draft}
-          onChange={(event, newValue): void => setDraft(newValue as number[])}
-          onChangeCommitted={(): void => onChange(draft)}
-          valueLabelDisplay="auto"
-          getAriaValueText={valueText}
-          min={initialPriceRange.min}
-          max={initialPriceRange.max}
-        />
-      </Box>
+        </div>
+      </div>
+      <Slider.Root
+        className="relative flex h-5 w-full touch-none items-center select-none"
+        value={draft}
+        onValueChange={setDraft}
+        onValueCommit={onChange}
+        min={initialPriceRange.min}
+        max={initialPriceRange.max}
+      >
+        <Slider.Track className="relative h-1 grow rounded-full bg-gray/40">
+          <Slider.Range className="absolute h-full rounded-full bg-primary" />
+        </Slider.Track>
+        {draft.map((_, index) => (
+          <Slider.Thumb
+            key={index}
+            aria-label={index === 0 ? 'Minimum price' : 'Maximum price'}
+            className="block h-4 w-4 rounded-full bg-primary shadow outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          />
+        ))}
+      </Slider.Root>
     </div>
   );
 };

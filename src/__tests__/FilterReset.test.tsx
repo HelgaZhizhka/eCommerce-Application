@@ -7,8 +7,7 @@ describe('FilterReset', () => {
     const { getByText } = render(<FilterReset mobile={true} onClick={onClickMock} />);
     const button = getByText('Reset filters');
     expect(button).toBeInTheDocument();
-    expect(button).toHaveStyle('width: 100%');
-    expect(button).toHaveStyle('color: rgb(255, 165, 0)');
+    expect(button).toHaveClass('w-full');
     fireEvent.click(button);
     expect(onClickMock).toHaveBeenCalledTimes(1);
   });

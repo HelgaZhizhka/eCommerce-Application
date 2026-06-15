@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 // Pins the desktop catalog filter: size chips and reset.
-// Size filter = MUI Chip (div) with the size as label; colors are unnamed
-// swatch buttons (a11y gap, pinned as-is).
+// Size filter = toggle button labelled with the size; colors are swatch
+// buttons with the colour name as their aria-label.
 
 const productLinks = 'a[href^="/product/"]';
 const productImages = `${productLinks} img`;
@@ -22,7 +22,7 @@ test('size filter narrows products and reset restores them', async ({ page }) =>
 
   const aside = page.locator('aside');
   await expect(aside.getByRole('heading', { name: 'Size' })).toBeVisible();
-  await aside.locator('.MuiChip-root', { hasText: /^m$/ }).click();
+  await aside.getByRole('button', { name: 'm', exact: true }).click();
 
   // the list empties for a moment while the filtered request is in flight —
   // poll until a non-empty set that differs from the unfiltered one appears

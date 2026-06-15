@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Box, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import { SizeWithVariantId } from './SelectSize.types';
-import styles from './SelectSize.module.scss';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Select';
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   options: SizeWithVariantId[];
@@ -19,39 +19,30 @@ const SelectSize: React.FC<Props> = ({ value, options, onChange, variant, classN
     setSize(value);
   }, [value]);
 
-  const handleChange = (event: SelectChangeEvent): void => {
-    const selectedOption = options.find((option) => option.size === event.target.value);
+  const handleChange = (selected: string): void => {
+    const selectedOption = options.find((option) => option.size === selected);
 
     if (selectedOption) {
       setSize(selectedOption);
-      if (onChange) {
-        onChange(selectedOption);
-      }
+      onChange?.(selectedOption);
     }
   };
 
-  const sizeInput = variant === 'small' ? 'small' : 'normal';
-  const sizeSelect = variant === 'small' ? 'small' : 'medium';
-
   return (
-    <Box className={className}>
-      <FormControl fullWidth>
-        <InputLabel size={sizeInput}>Size</InputLabel>
-        <Select
-          size={sizeSelect}
-          className={variant === 'small' ? styles[variant] : ''}
-          value={size?.size || ''}
-          label="Size"
-          onChange={handleChange}
-        >
+    <div className={className}>
+      <Select value={size?.size ?? ''} onValueChange={handleChange}>
+        <SelectTrigger aria-label="Size" className={cn('select-none', variant === 'small' && 'w-20')}>
+          <SelectValue placeholder="Size" />
+        </SelectTrigger>
+        <SelectContent>
           {options.map((sizeProduct) => (
-            <MenuItem key={sizeProduct.variantId} value={sizeProduct.size}>
+            <SelectItem key={sizeProduct.variantId} value={sizeProduct.size}>
               {sizeProduct.size}
-            </MenuItem>
+            </SelectItem>
           ))}
-        </Select>
-      </FormControl>
-    </Box>
+        </SelectContent>
+      </Select>
+    </div>
   );
 };
 

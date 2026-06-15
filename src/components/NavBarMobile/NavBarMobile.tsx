@@ -1,18 +1,15 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from '@mui/material';
+import { X } from 'lucide-react';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { contacts } from '../../constants';
 import { PhoneNumber } from '../baseComponents/PhoneNumber';
 import { InfoPanel } from '../InfoPanel';
 import { Categories } from '../Categories';
-import styles from './NavBarMobile.module.scss';
 
 type Props = {
-  className?: string;
   onClose: () => void;
   isOpen: boolean;
 };
@@ -56,28 +53,26 @@ const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
 
   return (
     <motion.nav
-      className={styles.root}
+      className="fixed left-0 top-0 z-[var(--z-index-navbar)] h-[var(--app-height)] w-screen overflow-y-auto bg-body px-5 pt-[60px] pb-[30px]"
       initial="initial"
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
       transition={{ duration: 0.5 }}
     >
-      <IconButton
-        className={styles.close}
-        sx={{ position: 'absolute' }}
-        size="large"
-        color="inherit"
+      <button
+        type="button"
         aria-label="close"
         onClick={onClose}
+        className="absolute right-5 top-[30px] inline-flex items-center justify-center rounded-full p-2 transition-colors hover:bg-black/5 dark:hover:bg-white/10"
       >
-        <CloseIcon />
-      </IconButton>
+        <X size={32} />
+      </button>
       <Categories size={'l'} theme={'dark'} variant={'mobile'} onClose={onClose} />
-      <Link className={styles.link} to={RoutePaths.ABOUT} onClick={onClose}>
+      <Link className="block text-2xl" to={RoutePaths.ABOUT} onClick={onClose}>
         About Us
       </Link>
-      <PhoneNumber className={styles.phone}>{contacts.phone}</PhoneNumber>
-      <InfoPanel className={styles.info} variant={'vertical'} onClose={onClose} />
+      <PhoneNumber className="mt-2.5 mb-[30px] text-2xl">{contacts.phone}</PhoneNumber>
+      <InfoPanel className="mt-[30px]" variant={'vertical'} onClose={onClose} />
     </motion.nav>
   );
 };
