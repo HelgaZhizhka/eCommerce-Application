@@ -33,8 +33,19 @@
   legacy SCSS still present (consolidation pending)
 - **Latest gate:** build, tsc, eslint 0 errors, 41 unit, e2e 11/11 — 2026-06-15
   (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
-- **Next:** decide part-2 PR scope (open now w/ MUI-removal vs include SCSS
-  consolidation) → SCSS consolidation + preflight. Prod still on 2023 CRA build.
+- **Part 2 PR:** [#223](https://github.com/HelgaZhizhka/eCommerce-Application/pull/223)
+  (MUI removal) open → `develop`, CI green — ready to merge.
+- **Part B (SCSS consolidation)** in progress on `refactor/phase-5-ui-part3-scss`
+  (branched off part 2; 5 commits): runtime CSS vars → `tailwind.css`; converted
+  form-group + simple utilities + Logo/InfoPanel/Product/ProfileEdit/
+  RegistrationSuccessful/AboutPerson scss → Tailwind (≈18 `*.module.scss` gone).
+  Logo/InfoPanel/AboutPerson live-verified. **Remaining: 10 heavy component scss**
+  (HeroCarousel 447, Categories 195, Header 103, CurrentProduct 106, Registration
+  96, Features/Feature/ProfileView/Poster/ProductCarousel) + global `src/styles`
+  partials → then enable **preflight** (visual re-check) + drop `sass`/`classnames`.
+  Heavy files need per-component preview verification — best done fresh.
+- **Next:** merge #223; continue part B heavy components (preview-driven) →
+  preflight → drop sass/classnames. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
