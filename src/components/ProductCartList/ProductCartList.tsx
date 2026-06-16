@@ -1,7 +1,6 @@
 import { ProductType } from '../../stores/Store.types';
 import { useChangeQuantityMutation, useRemoveLineItemMutation } from '../../queries/cart';
 import { CardMini } from '../CardMini';
-import styles from './ProductCartList.module.scss';
 
 type Props = {
   className?: string;
@@ -21,7 +20,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
   };
 
   return (
-    <ul className={styles.root}>
+    <ul className="m-0 list-none p-0">
       {productsInCart.map((product) => {
         const {
           lineItemId,
@@ -38,7 +37,7 @@ const ProductCartList: React.FC<Props> = ({ productsInCart }) => {
           promoPrice,
         } = product;
         return (
-          <li className={styles.productItem} key={productKey}>
+          <li key={productKey}>
             <CardMini
               lineItemId={lineItemId}
               productName={productName}

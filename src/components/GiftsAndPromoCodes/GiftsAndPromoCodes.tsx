@@ -6,7 +6,6 @@ import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Button } from '../baseComponents/Button';
 import bagsImages from './images/Frame 329.png';
-import styles from './GiftsAndPromoCodes.module.scss';
 
 const GiftsAndPromoCodes: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -33,7 +32,7 @@ const GiftsAndPromoCodes: React.FC = () => {
           <p>💰 Exclusive promo codes for discounts on your chauper purchase!</p>
           <div className="mb-4 flex items-center gap-2">
             <span>
-              -15% off with promo code <span className={styles.promo}>{promoCode}</span>
+              -15% off with promo code <span className="text-lg text-primary">{promoCode}</span>
             </span>
             <button
               type="button"

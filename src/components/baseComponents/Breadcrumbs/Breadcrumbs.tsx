@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { BreadcrumbsItem } from './Breadcrumbs.type';
-import styles from './Breadcrumbs.module.scss';
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   items: BreadcrumbsItem[];
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Breadcrumb: React.FC<Props> = ({ items, className }) => (
-  <nav className={`${styles.root} ${className}`} aria-label="breadcrumb">
+  <nav className={cn('relative mb-5', className)} aria-label="breadcrumb">
     <ol className="flex flex-wrap items-center gap-2">
       {items.map((item, index) => (
         <li key={index} className="flex items-center gap-2">
@@ -19,7 +19,7 @@ const Breadcrumb: React.FC<Props> = ({ items, className }) => (
             </span>
           )}
           <Link
-            className={styles.link}
+            className="capitalize transition-colors hover:text-primary hover:underline aria-[current=page]:text-primary aria-[current=page]:underline"
             to={item.path || '#'}
             aria-current={index === items.length - 1 ? 'page' : undefined}
           >

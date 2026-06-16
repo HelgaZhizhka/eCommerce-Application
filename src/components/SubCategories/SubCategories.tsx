@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { ExtendedCategory } from '../../stores/ProductStore.interfaces';
-import styles from './SubCategories.module.scss';
+import { cn } from '../../shared/lib/cn';
 
 type Props = {
   categoryId: string;
@@ -11,13 +11,12 @@ type Props = {
 };
 
 const SubCategories: React.FC<Props> = ({ categoryId, subcategories, onClose, className }) => (
-  <ul className={`${styles.root} ${className}`}>
+  <ul className={cn('m-0 flex list-none flex-wrap gap-[15px] rounded p-2.5', className)}>
     {subcategories.map((subCategory) => (
-      <li className={styles.item} key={subCategory.id}>
+      <li key={subCategory.id}>
         <Link
-          className={styles.link}
+          className="text-inherit transition-colors hover:text-gray"
           to={`/category/${categoryId}/${subCategory.slug.en}`}
-          color="inherit"
           onClick={onClose ? (): void => onClose() : undefined}
         >
           {subCategory.name.en}
