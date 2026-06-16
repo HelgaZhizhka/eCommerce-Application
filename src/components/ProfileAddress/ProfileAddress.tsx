@@ -5,7 +5,6 @@ import { profileAddressSchema, ProfileAddressValues } from '../../schemas/forms'
 import { countries } from '../../schemas/countries';
 import { RHFTextField, RHFCheckbox, RHFSelect } from '../baseComponents/RHFTextField';
 import { Button } from '../baseComponents/Button';
-import styles from './ProfileAddress.module.scss';
 
 type Props = {
   onSaveChange: (data: Record<string, string | boolean | number>) => void;
@@ -43,16 +42,16 @@ const ProfileAddress: React.FC<Props> = ({ initialValues, onSaveChange }) => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="street" label="Street" />
         </div>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="city" label="City" />
         </div>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="postalCode" label="Postal code" />
         </div>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFSelect control={control} name="country" label="Country" options={countryOptions} />
         </div>
         <div className="flex justify-between">
