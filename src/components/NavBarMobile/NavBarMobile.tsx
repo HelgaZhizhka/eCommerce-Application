@@ -68,7 +68,7 @@ const NavBarMobile: React.FC<Props> = ({ onClose, isOpen }) => {
         <X size={32} />
       </button>
       <Categories size={'l'} theme={'dark'} variant={'mobile'} onClose={onClose} />
-      <Link className="block text-2xl" to={RoutePaths.ABOUT} onClick={onClose}>
+      <Link className="block text-2xl text-content" to={RoutePaths.ABOUT} onClick={onClose}>
         About Us
       </Link>
       <PhoneNumber className="mt-2.5 mb-[30px] text-2xl">{contacts.phone}</PhoneNumber>

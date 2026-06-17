@@ -28,7 +28,7 @@ const Footer: React.FC = () => (
 
         <div>
           <h5 className="mb-2 text-2xl font-black text-white">Contact Us</h5>
-          <Link className="link transition-transform hover:text-white" to={RoutePaths.ABOUT}>
+          <Link className="link text-light-white transition-transform hover:text-white" to={RoutePaths.ABOUT}>
             About Us
           </Link>
           <ul className="mt-2 flex flex-col gap-4">
