@@ -53,17 +53,20 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 - [x] **FINAL (part A — MUI)**: removed `@mui/*` + `@emotion/*` (uninstalled);
       0 `@mui` imports. lucide + Radix + shared primitives in place. Body base
       styles (bg/color/font) reinstated from theme vars after CssBaseline removal.
-- [~] **FINAL (part B — SCSS)**: in progress on `refactor/phase-5-ui-part3-scss`.
-      Done: global CSS vars migrated to `tailwind.css`; ≈18 `*.module.scss`
-      converted (forms, simple utilities, Logo/InfoPanel/Product/ProfileEdit/
-      RegistrationSuccessful/AboutPerson). Remaining: 10 heavy component scss
-      (HeroCarousel/Categories/Header/CurrentProduct/Registration/Features/Feature/
-      ProfileView/Poster/ProductCarousel) + global `src/styles` partials → enable
-      Tailwind preflight (per-page visual re-check) → delete `src/styles/**` →
-      drop `sass` + `classnames`.
-- [~] E2E green (11/11); visual review done for Catalog/Login(±dark)/Product/
-      content pages + Logo/InfoPanel/AboutPerson — full per-page ±theme ±viewport
-      sign-off pending part B heavy components.
+- [~] **FINAL (part B — SCSS)**: on `refactor/phase-5-ui-part3-scss`.
+      Done: global CSS vars migrated to `tailwind.css`; **ALL component
+      `*.module.scss` converted — 0 module.scss left.** Heavy tail converted +
+      live-verified this session (ProductCarousel, Poster, Feature/Features,
+      ProfileView, CurrentProduct, Categories ×5 variants, Registration 3-step,
+      HeroCarousel 3 slides × desktop+mobile); dead `Header.module.scss` removed.
+      Fixed latent `matchMedia` mock gap (modern `useMediaQuery`) → 41/41 unit green.
+      Remaining: global `src/styles` partials (normalize/typography/states/
+      animations/layout + `.link`/`.icon`/`.badge`/`.list`) → enable Tailwind
+      **preflight** (full per-page visual re-check — alters base styles, e.g. `<a>`
+      underlines) → delete `src/styles/**` → drop `sass` + `classnames`.
+- [~] E2E green (11/11), 41/41 unit green; visual review done for Catalog/Login
+      (±dark)/Product/content pages + all converted part-B components
+      (±theme/±viewport). Full per-page ±theme sign-off after preflight is enabled.
 - [x] `PROGRESS.md` updated. Part 2 (MUI removal) merged via **PR #223**;
       part B continues on its own branch → its own PR.
 

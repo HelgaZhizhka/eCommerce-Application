@@ -31,18 +31,22 @@
   (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
 - **Part 2 PR:** [#223](https://github.com/HelgaZhizhka/eCommerce-Application/pull/223)
   (MUI removal) **MERGED** to `develop` 2026-06-17 (CI green).
-- **Part B (SCSS consolidation)** in progress on `refactor/phase-5-ui-part3-scss`
-  (branched off part 2, **pushed to origin**; 6 commits): runtime CSS vars →
-  `tailwind.css`; converted form-group + simple utilities + Logo/InfoPanel/
-  Product/ProfileEdit/RegistrationSuccessful/AboutPerson scss → Tailwind
-  (≈18 `*.module.scss` gone; **27 `.scss` left** = 10 component + global partials).
-  Logo/InfoPanel/AboutPerson live-verified. **Remaining: 10 heavy component scss**
-  (HeroCarousel 447, Categories 195, Header 103, CurrentProduct 106, Registration
-  96, Features/Feature/ProfileView/Poster/ProductCarousel) + global `src/styles`
-  partials → then enable **preflight** (visual re-check) + drop `sass`/`classnames`.
-  Heavy files need per-component preview verification — best done fresh.
-- **Next:** continue part B heavy components (preview-driven) → preflight → drop
-  sass/classnames → open part-B PR. Prod still on 2023 CRA build.
+- **Part B (SCSS consolidation)** on `refactor/phase-5-ui-part3-scss`
+  (branched off part 2, pushed; 13 commits): runtime CSS vars → `tailwind.css`;
+  **ALL component `*.module.scss` now converted to Tailwind — 0 module.scss left.**
+  Heavy tail done this session (each live-verified ±theme ±viewport): ProductCarousel,
+  Poster, Feature/Features, ProfileView, CurrentProduct, Categories (all 5 variants),
+  Registration (3-step wizard), HeroCarousel (3 slides × desktop+mobile); dead
+  `Header.module.scss` removed. Also fixed a latent test regression: `setupTests`
+  `matchMedia` mock lacked `addEventListener` (modern `useMediaQuery`) → Footer.test
+  was red since the part-B Logo conversion; now 41/41 unit green.
+  **Remaining (final teardown):** global `src/styles` partials (normalize/typography/
+  states/animations/layout + `.link`/`.icon`/`.badge`/`.list`) → enable **preflight**
+  (full per-page visual re-check — preflight alters base styles app-wide, e.g. `<a>`
+  underlines) → delete `src/styles/**` → drop `sass` + `classnames`.
+- **Gate green** at this milestone: typecheck + eslint(0 err) + 41 unit + 11 e2e.
+- **Next:** part-B final teardown (global partials + preflight + drop deps) → open
+  part-B PR into `develop`. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
