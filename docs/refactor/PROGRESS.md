@@ -11,11 +11,11 @@
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
     shell + EmptyCart + PromoCode, lazy routes, ErrorBoundary, Card bug.
-  - **Part 2 in progress** on `refactor/phase-5-ui-part2` (pushed through commit
-    dd48678; later commits local, not pushed): content pages + **full MUI removal**.
-    CardMini, Login/Registration, Main/About/Sale/ErrorPage, Profile shell ✅;
-    `PageContainer` (MUI `Container xl` → `max-w-[1440px] px-4 sm:px-6`); Tailwind
-    breakpoints aligned to the project (sm600/md1024/lg1280/xl1440).
+  - **Part 2 MERGED** to `develop` (PR #223, 2026-06-17): content pages +
+    **full MUI removal**. CardMini, Login/Registration, Main/About/Sale/ErrorPage,
+    Profile shell ✅; `PageContainer` (MUI `Container xl` → `max-w-[1440px]
+    px-4 sm:px-6`); Tailwind breakpoints aligned to the project (sm600/md1024/
+    lg1280/xl1440).
   - **MUI REMOVED (2026-06-15):** zero `@mui` imports; uninstalled `@mui/material`,
     `@mui/icons-material`, `@mui/system`, `@emotion/react`, `@emotion/styled`.
     Icons → **lucide-react**; Slider/Select/Dialog → **Radix** (new shared
@@ -23,29 +23,26 @@
     SnackBar → custom toast; `useMediaQuery` hook replaces MUI's. Build/e2e green;
     bundle no longer ships MUI/emotion. Body bg/color/font (was MUI CssBaseline)
     reinstated on `body` via theme vars.
-  - **Remaining (final phase-5 cleanup):** SCSS consolidation — **28 `*.module.scss`**
-    + global `src/styles/**` (which still define the CSS vars Tailwind tokens
-    resolve through) → migrate vars to a surviving CSS, convert layout scss to
-    Tailwind, enable **preflight**, drop `sass`/`classnames`. This is "one styling
-    system" from the exit criteria.
+  - **Remaining (final phase-5 cleanup):** SCSS consolidation — see Part B below.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
   RHF + zod 4 · ts-client 4 + BFF · **Tailwind 4 + lucide + Radix (MUI gone)**;
   legacy SCSS still present (consolidation pending)
-- **Latest gate:** build, tsc, eslint 0 errors, 41 unit, e2e 11/11 — 2026-06-15
+- **Latest gate:** build, tsc, eslint 0 errors, 41 unit, e2e 11/11 — 2026-06-17
   (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
 - **Part 2 PR:** [#223](https://github.com/HelgaZhizhka/eCommerce-Application/pull/223)
-  (MUI removal) open → `develop`, CI green — ready to merge.
+  (MUI removal) **MERGED** to `develop` 2026-06-17 (CI green).
 - **Part B (SCSS consolidation)** in progress on `refactor/phase-5-ui-part3-scss`
-  (branched off part 2; 5 commits): runtime CSS vars → `tailwind.css`; converted
-  form-group + simple utilities + Logo/InfoPanel/Product/ProfileEdit/
-  RegistrationSuccessful/AboutPerson scss → Tailwind (≈18 `*.module.scss` gone).
+  (branched off part 2, **pushed to origin**; 6 commits): runtime CSS vars →
+  `tailwind.css`; converted form-group + simple utilities + Logo/InfoPanel/
+  Product/ProfileEdit/RegistrationSuccessful/AboutPerson scss → Tailwind
+  (≈18 `*.module.scss` gone; **27 `.scss` left** = 10 component + global partials).
   Logo/InfoPanel/AboutPerson live-verified. **Remaining: 10 heavy component scss**
   (HeroCarousel 447, Categories 195, Header 103, CurrentProduct 106, Registration
   96, Features/Feature/ProfileView/Poster/ProductCarousel) + global `src/styles`
   partials → then enable **preflight** (visual re-check) + drop `sass`/`classnames`.
   Heavy files need per-component preview verification — best done fresh.
-- **Next:** merge #223; continue part B heavy components (preview-driven) →
-  preflight → drop sass/classnames. Prod still on 2023 CRA build.
+- **Next:** continue part B heavy components (preview-driven) → preflight → drop
+  sass/classnames → open part-B PR. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -71,6 +68,16 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-17 — Session 8 cont. (merge #223, start SCSS part B)
+
+- **PR #223 (MUI removal) merged to `develop`** (CI green) — develop now MUI-free
+- started **part B (SCSS consolidation)** on `refactor/phase-5-ui-part3-scss`
+  (pushed): CSS vars → `tailwind.css`; ≈18 `*.module.scss` → Tailwind (forms,
+  utilities, Logo/InfoPanel/AboutPerson/Product/ProfileEdit/RegistrationSuccessful)
+- live-verified Logo (responsive + theme), InfoPanel, AboutPerson; gate green/group
+- docs synced (PROGRESS / phase-5 / SESSION_REPORT) to post-merge reality
+- **Remaining:** 10 heavy component scss + global partials → preflight → drop sass
 
 ### 2026-06-15 — Session 8 cont. (MUI removal sweep S1–S9)
 
