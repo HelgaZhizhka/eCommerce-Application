@@ -35,9 +35,9 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
   **MUI fully swept (2026-06-15):** all leaf/page components moved off MUI —
   icons → lucide-react; Slider/Select/Dialog → Radix (new shared `Button`/
   `Select`/`Dialog` primitives, `RHFSelect`, `useMediaQuery`); Product page on
-  `PageContainer`. `@mui/*` + `@emotion/*` uninstalled, **0 `@mui` imports**.
-  Remaining: **28 `*.module.scss`** + global `src/styles/**` (still hold the CSS
-  vars) — converted in the SCSS consolidation step below.
+  `PageContainer`. `@mui/*` + `@emotion/*` uninstalled, **0 `@mui` imports**
+  (merged to `develop` via PR #223). SCSS consolidation in progress on
+  `refactor/phase-5-ui-part3-scss` (≈18 modules done) — see FINAL part B below.
 - [x] **5.3** Forks merged: Header/HeaderMobile ✅, **Filter/FilterMobile ✅**
   (adaptive Filter: sidebar md+ / Tailwind drawer below), **Sorting/SortMobile ✅**
   (one MUI dropdown at all widths). Remaining: NavBarMobile review (it's the
@@ -53,15 +53,19 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 - [x] **FINAL (part A — MUI)**: removed `@mui/*` + `@emotion/*` (uninstalled);
       0 `@mui` imports. lucide + Radix + shared primitives in place. Body base
       styles (bg/color/font) reinstated from theme vars after CssBaseline removal.
-- [ ] **FINAL (part B — SCSS)**: enable Tailwind preflight; migrate the global
-      CSS vars out of `src/styles/core` into a surviving CSS entry; convert the
-      28 remaining `*.module.scss` to Tailwind; delete `src/styles/**`; drop
-      `sass` + `classnames`. (Large; visual re-check per page — preflight changes
-      base element styling.)
+- [~] **FINAL (part B — SCSS)**: in progress on `refactor/phase-5-ui-part3-scss`.
+      Done: global CSS vars migrated to `tailwind.css`; ≈18 `*.module.scss`
+      converted (forms, simple utilities, Logo/InfoPanel/Product/ProfileEdit/
+      RegistrationSuccessful/AboutPerson). Remaining: 10 heavy component scss
+      (HeroCarousel/Categories/Header/CurrentProduct/Registration/Features/Feature/
+      ProfileView/Poster/ProductCarousel) + global `src/styles` partials → enable
+      Tailwind preflight (per-page visual re-check) → delete `src/styles/**` →
+      drop `sass` + `classnames`.
 - [~] E2E green (11/11); visual review done for Catalog/Login(±dark)/Product/
-      content pages — full per-page ±theme ±viewport sign-off pending part B.
-- [x] `PROGRESS.md` updated. PR(s) into `develop` — scope decision pending
-      (MUI-removal now vs bundle with SCSS part B).
+      content pages + Logo/InfoPanel/AboutPerson — full per-page ±theme ±viewport
+      sign-off pending part B heavy components.
+- [x] `PROGRESS.md` updated. Part 2 (MUI removal) merged via **PR #223**;
+      part B continues on its own branch → its own PR.
 
 ## Exit criteria
 
