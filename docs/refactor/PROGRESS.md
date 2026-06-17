@@ -23,30 +23,36 @@
     SnackBar → custom toast; `useMediaQuery` hook replaces MUI's. Build/e2e green;
     bundle no longer ships MUI/emotion. Body bg/color/font (was MUI CssBaseline)
     reinstated on `body` via theme vars.
-  - **Remaining (final phase-5 cleanup):** SCSS consolidation — see Part B below.
+  - **Part B COMPLETE (2026-06-17)** on `refactor/phase-5-ui-part3-scss`: SCSS
+    fully consolidated — **0 `.scss` files in the tree** (only `tailwind.css`);
+    `sass` + `classnames` uninstalled. One styling system. Ready for its own PR.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
-  RHF + zod 4 · ts-client 4 + BFF · **Tailwind 4 + lucide + Radix (MUI gone)**;
-  legacy SCSS still present (consolidation pending)
-- **Latest gate:** build, tsc, eslint 0 errors, 41 unit, e2e 11/11 — 2026-06-17
-  (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
+  RHF + zod 4 · ts-client 4 + BFF · **Tailwind 4 + lucide + Radix (MUI + SCSS gone)**
+- **Latest gate:** production build, tsc, eslint 0 errors, 41 unit, e2e 11/11 —
+  2026-06-17 post part-B teardown (run under Node 22; shell default is Node 16 —
+  `nvm use 22` before verify)
 - **Part 2 PR:** [#223](https://github.com/HelgaZhizhka/eCommerce-Application/pull/223)
   (MUI removal) **MERGED** to `develop` 2026-06-17 (CI green).
-- **Part B (SCSS consolidation)** on `refactor/phase-5-ui-part3-scss`
-  (branched off part 2, pushed; 13 commits): runtime CSS vars → `tailwind.css`;
-  **ALL component `*.module.scss` now converted to Tailwind — 0 module.scss left.**
-  Heavy tail done this session (each live-verified ±theme ±viewport): ProductCarousel,
-  Poster, Feature/Features, ProfileView, CurrentProduct, Categories (all 5 variants),
-  Registration (3-step wizard), HeroCarousel (3 slides × desktop+mobile); dead
-  `Header.module.scss` removed. Also fixed a latent test regression: `setupTests`
-  `matchMedia` mock lacked `addEventListener` (modern `useMediaQuery`) → Footer.test
-  was red since the part-B Logo conversion; now 41/41 unit green.
-  **Remaining (final teardown):** global `src/styles` partials (normalize/typography/
-  states/animations/layout + `.link`/`.icon`/`.badge`/`.list`) → enable **preflight**
-  (full per-page visual re-check — preflight alters base styles app-wide, e.g. `<a>`
-  underlines) → delete `src/styles/**` → drop `sass` + `classnames`.
-- **Gate green** at this milestone: typecheck + eslint(0 err) + 41 unit + 11 e2e.
-- **Next:** part-B final teardown (global partials + preflight + drop deps) → open
-  part-B PR into `develop`. Prod still on 2023 CRA build.
+- **Part B (SCSS consolidation) — DONE** on `refactor/phase-5-ui-part3-scss`
+  (off part 2, pushed): runtime CSS vars → `tailwind.css`; **ALL component
+  `*.module.scss` converted to Tailwind, then global partials folded into
+  `tailwind.css` → 0 `.scss` files left.** Each component live-verified
+  ±theme ±viewport: ProductCarousel, Poster, Feature/Features, ProfileView,
+  CurrentProduct, Categories (5 variants), Registration (3-step), HeroCarousel
+  (3 slides × desktop+mobile); dead `Header.module.scss` removed. Global partials
+  (normalize/body base, `.link`/`.icon`/`.badge`, `.app`, `.text-brand`/
+  `.no-scroll`/`.text-overflow`, swiper overrides, Mukta @import) migrated as plain
+  CSS — base look preserved 1:1; **Tailwind preflight deliberately NOT enabled**
+  (it would reset heading/list/anchor defaults app-wide → not 1:1). `src/styles/**`
+  + `index.scss` deleted; `sass` + `classnames` uninstalled (sass now only a
+  transitive vite dep). Also fixed latent `matchMedia` mock gap (modern
+  `useMediaQuery`) that had made Footer.test red since the Logo conversion.
+- **Latest gate (post-teardown):** production build + typecheck + eslint(0 err)
+  + 41 unit + 11 e2e — all green; base computed styles measured identical to
+  pre-migration (light + dark).
+- **Next:** open the **part-B PR** into `develop` (one styling system; closes
+  phase 5) → then phase 6 (MSW tests, coverage, CI e2e, a11y, README/ADRs,
+  6.6 Dependabot). Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream

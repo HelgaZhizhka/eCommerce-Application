@@ -28,7 +28,7 @@
 | Auth | clientSecret в браузерном бандле | **BFF на Netlify Functions**, секрет на сервере |
 | Тесты | Jest (CRA), ~0% логики | **Vitest 4 + Playwright**, e2e-сетка |
 | Линт | ESLint 8 + airbnb (мёртв) | **ESLint 9 flat config** |
-| UI / стили | SCSS-модули + MUI + sx (3 системы) | **Tailwind 4 + Radix + lucide** (MUI/emotion удалены; чистка legacy SCSS завершается) |
+| UI / стили | SCSS-модули + MUI + sx (3 системы) | **Tailwind 4 + Radix + lucide** (MUI/emotion удалены, legacy SCSS вычищен полностью — одна система стилей) |
 
 ## Объём работы (из git)
 
@@ -40,8 +40,9 @@
   закоммиченных артефактов сборки, дубли компонентов (`HeaderMobile`,
   `FilterMobile`, `SortMobile`)
 
-Сверх того в работе на ветке `refactor/phase-5-ui-part3-scss` (чистка SCSS):
-ещё 6 коммитов, ~18 `*.module.scss` переведены на Tailwind.
+Сверх того на ветке `refactor/phase-5-ui-part3-scss` (чистка SCSS, готова к PR):
+все `*.module.scss` переведены на Tailwind, глобальные partials свёрнуты в
+`tailwind.css` — **0 `.scss` в дереве**, `sass` и `classnames` удалены.
 
 ## Главные результаты
 
@@ -91,8 +92,10 @@
 ## Статус и что дальше
 
 Фазы 0–4 + фаза 5 части 1–2 смержены в `develop` (PR #216–#223) — **MUI удалён
-полностью**. Завершается фаза 5: чистка legacy SCSS на ветке
-`refactor/phase-5-ui-part3-scss` (CSS-переменные → Tailwind-вход + ~18 модулей
-переведены; осталось ~10 тяжёлых компонентов + глобальные partials → Tailwind
-preflight → дроп `sass`/`classnames`). После — фаза 6 (MSW-тесты, покрытие, a11y,
-README/ADR). Прод пока отдаёт сборку 2023 года; решение о деплое — за командой.
+полностью**. Фаза 5 завершена: на ветке `refactor/phase-5-ui-part3-scss` legacy
+SCSS вычищен целиком (все `*.module.scss` → Tailwind, глобальные partials → один
+`tailwind.css`, **0 `.scss`**, `sass`/`classnames` удалены; preflight намеренно не
+включали — иначе сбросились бы базовые стили и вид перестал бы быть 1:1). Ветка
+готова к своему PR в `develop`. После — фаза 6 (MSW-тесты, покрытие, e2e в CI,
+a11y, README/ADR, разбор 6 Dependabot-алертов). Прод пока отдаёт сборку 2023 года;
+решение о деплое — за командой.
