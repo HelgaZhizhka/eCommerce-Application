@@ -20,6 +20,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
   - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
 - [ ] **6.5** Docs: rewrite README (stack, setup, scripts), ADRs for key
       decisions (BFF, TanStack Query, UI kit choice).
+- [ ] **6.6** Dependency security: resolve the 6 open Dependabot alerts on
+      `develop` (snapshot 2026-06-17):
+  - **critical** — `swiper` (runtime dep, HeroCarousel/ProductCarousel): bump to
+    a patched version; smoke-test the carousels after.
+  - **high + low** — `esbuild` (transitive via Vite/Vitest): bump Vite/Vitest or
+    add an `overrides` pin.
+  - **moderate ×3** — `@opentelemetry/core` (already pinned via `overrides`),
+    `micromatch`, `yaml` (transitive, mostly netlify-cli/tooling): bump or pin.
+  - Re-run `npm audit` + `./scripts/verify.sh`; confirm Dependabot clears.
 - [ ] Final `PROGRESS.md` update; close the refactor.
 
 ## Exit criteria
