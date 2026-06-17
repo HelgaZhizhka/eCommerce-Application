@@ -3,7 +3,6 @@ import { Address } from '@commercetools/platform-sdk';
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
 import { Button } from '../baseComponents/Button';
-import styles from './ProfileView.module.scss';
 
 type Props = {
   className?: string;
@@ -18,6 +17,12 @@ type Props = {
   defaultBillingAddress?: Address | null;
 };
 
+const sectionClass = 'relative mb-2.5 mt-[50px]';
+const contentTitleClass = 'mb-2.5 mt-0 flex items-center gap-[5px] text-2xl';
+const labelClass =
+  'inline-block rounded-[44px] border border-primary px-[25px] py-[5px] text-base font-normal text-primary';
+const contentItemClass = 'flex items-center justify-between rounded-[2px] bg-page px-5 py-2.5 text-2xl';
+
 const ProfileView: React.FC<Props> = ({
   onModeChange,
   firstName,
@@ -29,10 +34,10 @@ const ProfileView: React.FC<Props> = ({
   defaultShippingAddress,
   defaultBillingAddress,
 }) => (
-  <div className={styles.root}>
-    <div className={styles.header}>
-      <div className={styles.headerTitle}>
-        <h3 className={styles.title}>
+  <div className="relative">
+    <div className="text-[18px] md:flex md:items-center md:justify-between md:text-2xl">
+      <div>
+        <h3 className="m-0 text-2xl">
           {firstName} {lastName}
         </h3>
         <p>{email}</p>
@@ -48,38 +53,34 @@ const ProfileView: React.FC<Props> = ({
     </div>
 
     {shippingAddresses?.map((address, index) => (
-      <div className={styles.section} key={index}>
-        <h4 className={styles.contentTitle}>
+      <div className={sectionClass} key={index}>
+        <h4 className={contentTitleClass}>
           Shipping address:
           {defaultShippingAddress && defaultShippingAddress.id === address.id ? (
-            <span className={styles.label}>Default</span>
+            <span className={labelClass}>Default</span>
           ) : null}
         </h4>
-        <div className={styles.contentItem}>
-          <p className={styles.contentItemValue}>
-            {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
-          </p>
+        <div className={contentItemClass}>
+          <p>{`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}</p>
           <button type="button" aria-label="edit" onClick={(): void => onModeChange(true)} className="text-content">
-            <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+            <Icon name={IconName.EDIT} width={36} height={36} className="icon text-primary" />
           </button>
         </div>
       </div>
     ))}
 
     {billingAddresses?.map((address, index) => (
-      <div className={styles.section} key={index}>
-        <h4 className={styles.contentTitle}>
+      <div className={sectionClass} key={index}>
+        <h4 className={contentTitleClass}>
           Billing address:
           {defaultBillingAddress && defaultBillingAddress.id === address.id ? (
-            <span className={styles.label}>Default</span>
+            <span className={labelClass}>Default</span>
           ) : null}
         </h4>
-        <div className={styles.contentItem}>
-          <p className={styles.contentItemValue}>
-            {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
-          </p>
+        <div className={contentItemClass}>
+          <p>{`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}</p>
           <button type="button" aria-label="edit" onClick={(): void => onModeChange(true)} className="text-content">
-            <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
+            <Icon name={IconName.EDIT} width={36} height={36} className="icon text-primary" />
           </button>
         </div>
       </div>

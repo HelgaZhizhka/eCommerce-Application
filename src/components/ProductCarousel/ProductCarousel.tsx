@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
 import type { Swiper as SwiperType } from 'swiper';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css/bundle';
 
+import { cn } from '../../shared/lib/cn';
 import { VARIANT } from './ProductCarousel.types';
-import styles from './ProductCarousel.module.scss';
 
 type Props = {
   isZoom?: boolean;
@@ -32,6 +31,7 @@ const ProductCarousel: React.FC<Props> = ({
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
+  const isThumbnails = variant === 'thumbnails';
   const shouldShowNavigation = images.length > 1;
 
   const swiperParamsFirst: SwiperOptions = {
@@ -81,22 +81,29 @@ const ProductCarousel: React.FC<Props> = ({
   };
 
   return (
-    <div className={classNames(styles.root, styles[variant], className)}>
-      <Swiper className={styles.rootFirstSwiper} {...mainSwiperParams}>
+    <div className={className}>
+      <Swiper className={cn(isThumbnails && 'max-w-[500px]')} {...mainSwiperParams}>
         {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <div className={`${styles.wrapImg} ${isZoom ? styles.zoom : styles.grab}`}>
-              <img className={styles.img} src={img} alt="t-Shirt" onClick={(): void => handleImageClick(index)} />
+            <div
+              className={cn(isThumbnails && 'mx-auto w-[300px]', isZoom ? 'cursor-zoom-in' : 'cursor-grab text-center')}
+            >
+              <img
+                className={cn(isThumbnails && 'block h-full w-full object-cover')}
+                src={img}
+                alt="t-Shirt"
+                onClick={(): void => handleImageClick(index)}
+              />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-      <Swiper onSwiper={setThumbsSwiper} className={styles.rootSecondSwiper} {...swiperParamsSecond}>
+      <Swiper onSwiper={setThumbsSwiper} className={cn(isThumbnails && 'max-w-[500px]')} {...swiperParamsSecond}>
         {thumbs &&
           thumbs.map((img, index) => (
             <SwiperSlide key={index}>
-              <div className={styles.wrapImgSecond}>
-                <img className={styles.img} src={img} alt="t-Shirt" />
+              <div className="mt-5 w-20">
+                <img className={cn(isThumbnails && 'block h-full w-full object-cover')} src={img} alt="t-Shirt" />
               </div>
             </SwiperSlide>
           ))}

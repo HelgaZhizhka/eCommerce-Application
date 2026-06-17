@@ -2,10 +2,9 @@ import cardImg1 from './images/card1.png';
 import cardImg2 from './images/card2.png';
 import cardImg3 from './images/card3.png';
 import { Feature } from '../Feature';
-import styles from './Features.module.scss';
 
 const Features: React.FC = () => (
-  <div className={styles.root}>
+  <div className="md:flex md:justify-center md:gap-5">
     <Feature
       image={cardImg1}
       title="Free and Fast delivery"
