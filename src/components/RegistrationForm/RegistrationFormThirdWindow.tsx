@@ -5,8 +5,15 @@ import { addressesSchema, AddressesValues } from '../../schemas/forms';
 import { countries } from '../../schemas/countries';
 import { RHFTextField, RHFCheckbox, RHFSelect } from '../baseComponents/RHFTextField';
 import { Button } from '../baseComponents/Button';
+import { cn } from '../../shared/lib/cn';
 import { StepProps } from './wizard.types';
-import styles from './Registration.module.scss';
+import {
+  btnLoginClass,
+  progressActiveClass,
+  progressActiveStyle,
+  progressClass,
+  progressContainerClass,
+} from './registrationClasses';
 
 const countryOptions = countries.map((c) => ({ value: c.code, label: c.label }));
 
@@ -35,16 +42,16 @@ const RegistrationFormThirdWindow: React.FC<StepProps<AddressesValues>> = ({ def
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3>Shipping address:</h3>
-      <div className={styles.inputContainer}>
+      <div>
         <RHFTextField control={control} name="streetShipping" label="Street" />
       </div>
-      <div className={styles.inputContainer}>
+      <div>
         <RHFTextField control={control} name="cityShipping" label="City" />
       </div>
-      <div className={styles.inputContainer}>
+      <div>
         <RHFSelect control={control} name="countryShipping" label="Country" options={countryOptions} />
       </div>
-      <div className={styles.inputContainer}>
+      <div>
         <RHFTextField control={control} name="postalCodeShipping" label="Postal code" />
       </div>
 
@@ -54,29 +61,29 @@ const RegistrationFormThirdWindow: React.FC<StepProps<AddressesValues>> = ({ def
       {!useShippingForBilling && (
         <>
           <h3>Billing address:</h3>
-          <div className={styles.inputContainer}>
+          <div>
             <RHFTextField control={control} name="streetBilling" label="Street" />
           </div>
-          <div className={styles.inputContainer}>
+          <div>
             <RHFTextField control={control} name="cityBilling" label="City" />
           </div>
-          <div className={styles.inputContainer}>
+          <div>
             <RHFSelect control={control} name="countryBilling" label="Country" options={countryOptions} />
           </div>
-          <div className={styles.inputContainer}>
+          <div>
             <RHFTextField control={control} name="postalCodeBilling" label="Postal code" />
           </div>
           <RHFCheckbox control={control} name="checkedBillingDefault" label="Use default" />
         </>
       )}
 
-      <div className={styles.progressContainer}>
-        <div className={styles.progress}></div>
-        <div className={styles.progress}></div>
-        <div className={`${styles.progress} ${styles.progressActive}`}></div>
+      <div className={progressContainerClass}>
+        <div className={progressClass}></div>
+        <div className={progressClass}></div>
+        <div className={cn(progressClass, progressActiveClass)} style={progressActiveStyle}></div>
       </div>
 
-      <div className={styles.btnLogin}>
+      <div className={btnLoginClass}>
         <Button variant="contained" fullWidth type="submit" disabled={!formState.isValid}>
           Sign up
         </Button>
