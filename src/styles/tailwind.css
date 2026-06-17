@@ -213,6 +213,19 @@ a {
   -webkit-touch-callout: none;
   user-select: none;
 }
+/* Suppress native <a>/<button> chrome that MUI CssBaseline used to reset.
+ * Deliberately bare element selectors (specificity 0,0,1): they beat UA
+ * defaults but LOSE to Tailwind utilities (.underline, .bg-*, .border-*,
+ * specificity 0,1,0), so the shared Button's variants/outlined border and any
+ * explicit underline still win. */
+a {
+  text-decoration: none;
+}
+button {
+  border: 0;
+  background-color: transparent;
+  background-image: none;
+}
 article,
 aside,
 footer,
