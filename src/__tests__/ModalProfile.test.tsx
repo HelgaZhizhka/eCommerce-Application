@@ -11,7 +11,7 @@ describe('ModalProfile', () => {
       <ModalProfile activeModal={activeModal} handleCloseModal={handleCloseModal} onSaveChange={onSaveChange} />
     );
 
-    const modal = getByRole('presentation');
+    const modal = getByRole('dialog');
     expect(modal).toBeInTheDocument();
 
     const closeButton = getByRole('button', { name: 'close' });

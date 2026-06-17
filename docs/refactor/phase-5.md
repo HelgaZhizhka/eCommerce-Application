@@ -18,13 +18,26 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 
 - [x] **5.1/5.2** (in progress, per group) — adopt Tailwind, consolidate styles.
   Done groups: **Footer**, **Header**, **Card + ProductList**, **Catalog shell
-  + adaptive Filter**.
-  Remaining: leaf filter/sort internals still on MUI (FilterChip Chip,
-  FilterColorCheckBox Button, FilterPrice Slider, SortingList MenuItem,
-  Search Input, PaginationCatalog, SelectSize) — come off in the final MUI
-  sweep; Cart group (Cart/CardMini/PromoCode/EmptyCart); forms
-  (Login/Registration/Profile + RHFTextField/SelectSize MUI internals); pages
-  (Main/About/Sale/ErrorPage); shared base (Button/Price/Icon/Modal/Breadcrumbs).
+  + adaptive Filter** (part 1, merged); **Cart group complete** (Cart page,
+  EmptyCart, PromoCode, **CardMini**); **Login + Registration page shells**;
+  **content pages** Main / About / Sale / ErrorPage (404 glitch keyframes moved
+  into `tailwind.css`) / **Profile shell** (part 2, on `refactor/phase-5-ui-part2`).
+  - **`PageContainer`** added (`baseComponents/PageContainer`): one Tailwind
+    replacement for MUI `<Container maxWidth="xl">` (centered, `max-w-[1440px]`,
+    `px-4 sm:px-6` — the theme's real xl is 1440, not MUI's default 1536).
+    Catalog/Cart/Login/Registration retrofitted onto it (fixes the earlier
+    `1536` drift; removes the duplicated wrapper string).
+  - **Breakpoints aligned** in `tailwind.css` (`--breakpoint-sm/md/lg/xl =
+    600/1024/1280/1440`) to match the legacy MUI theme + SCSS grid, so `md:`/
+    `sm:` mean what `up('md')`/`up('sm')` meant. Verified the Header
+    desktop/mobile switch now flips at exactly 1024 (900px → mobile, 1024px →
+    desktop), restoring 1:1.
+  **MUI fully swept (2026-06-15):** all leaf/page components moved off MUI —
+  icons → lucide-react; Slider/Select/Dialog → Radix (new shared `Button`/
+  `Select`/`Dialog` primitives, `RHFSelect`, `useMediaQuery`); Product page on
+  `PageContainer`. `@mui/*` + `@emotion/*` uninstalled, **0 `@mui` imports**.
+  Remaining: **28 `*.module.scss`** + global `src/styles/**` (still hold the CSS
+  vars) — converted in the SCSS consolidation step below.
 - [x] **5.3** Forks merged: Header/HeaderMobile ✅, **Filter/FilterMobile ✅**
   (adaptive Filter: sidebar md+ / Tailwind drawer below), **Sorting/SortMobile ✅**
   (one MUI dropdown at all widths). Remaining: NavBarMobile review (it's the
@@ -37,10 +50,18 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
   (generateProductPath, variant selection) out of Card into entities.
 - [ ] **5.7** Performance: bundle analysis, CT image API (`?format=webp`,
       sizes), hover prefetch for product pages.
-- [ ] **FINAL**: remove MUI (`@mui/*`, `@emotion/*`), enable Tailwind preflight,
-      delete `src/styles/**` SCSS once nothing imports it, drop `sass`/`classnames`.
-- [ ] E2E green; visual review of every page (human, both themes, mobile+desktop).
-- [ ] Update `PROGRESS.md`; PR(s) into `develop` — split by page group if large.
+- [x] **FINAL (part A — MUI)**: removed `@mui/*` + `@emotion/*` (uninstalled);
+      0 `@mui` imports. lucide + Radix + shared primitives in place. Body base
+      styles (bg/color/font) reinstated from theme vars after CssBaseline removal.
+- [ ] **FINAL (part B — SCSS)**: enable Tailwind preflight; migrate the global
+      CSS vars out of `src/styles/core` into a surviving CSS entry; convert the
+      28 remaining `*.module.scss` to Tailwind; delete `src/styles/**`; drop
+      `sass` + `classnames`. (Large; visual re-check per page — preflight changes
+      base element styling.)
+- [~] E2E green (11/11); visual review done for Catalog/Login(±dark)/Product/
+      content pages — full per-page ±theme ±viewport sign-off pending part B.
+- [x] `PROGRESS.md` updated. PR(s) into `develop` — scope decision pending
+      (MUI-removal now vs bundle with SCSS part B).
 
 ## Exit criteria
 

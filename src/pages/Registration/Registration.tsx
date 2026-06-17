@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Container } from '@mui/material';
 
 import {
   RegistrationForm,
@@ -10,7 +9,7 @@ import { WizardData } from '../../components/RegistrationForm/wizard.types';
 import { AddressesValues, CredentialsValues, PersonalValues } from '../../schemas/forms';
 import { useAuthStore } from '../../stores/authStore';
 import { Poster } from '../../components/Poster';
-import styles from './Registration.module.scss';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 
 // Typed 3-step state machine. The accumulator (incl. the password) is local
 // state — it never reaches a global store (plan §4.4). Final submit is a
@@ -32,9 +31,9 @@ const Registration: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl">
-      <div className={styles.root}>
-        <div className={styles.loginWrap}>
+    <PageContainer>
+      <div className="pt-10 pb-[140px] md:flex md:justify-between md:gap-[5%] md:pt-[60px]">
+        <div className="flex-[2]">
           {step === 1 && <RegistrationForm defaultValues={data as Partial<CredentialsValues>} onSubmit={next} />}
           {step === 2 && (
             <RegistrationFormSecondWindow
@@ -51,11 +50,11 @@ const Registration: React.FC = () => {
             />
           )}
         </div>
-        <div className={styles.posterWrap}>
+        <div className="flex-[1.7] max-md:mt-[30px]">
           <Poster />
         </div>
       </div>
-    </Container>
+    </PageContainer>
   );
 };
 

@@ -1,33 +1,29 @@
 import { useState } from 'react';
-import { List, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import { ChevronDown, ChevronUp, Inbox } from 'lucide-react';
 
 import { Categories } from '../../Categories';
 
 const FilterNestedList: React.FC = () => {
   const [open, setOpen] = useState(true);
 
-  const handleClick = (): void => {
-    setOpen(!open);
-  };
-
   return (
-    <List sx={{ borderBottom: '1px solid black' }} component="nav" aria-labelledby="nested-list">
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText sx={{ fontSize: '59px' }} primary="Category" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+    <nav aria-labelledby="nested-list" className="border-b border-black">
+      <button
+        type="button"
+        onClick={(): void => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full items-center gap-4 px-4 py-2 text-left transition-colors hover:bg-black/5"
+      >
+        <Inbox size={24} className="shrink-0" />
+        <span className="grow">Category</span>
+        {open ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+      </button>
+      {open && (
+        <div>
           <Categories theme={'dark'} variant={'filter'} />
-        </List>
-      </Collapse>
-    </List>
+        </div>
+      )}
+    </nav>
   );
 };
 

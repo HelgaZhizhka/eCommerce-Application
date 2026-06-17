@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Container } from '@mui/material';
 
 import { useAuthStore } from '../../stores/authStore';
 import { RegistrationSuccessful } from '../../components/RegistrationSuccessful';
@@ -7,8 +6,10 @@ import { HeroCarousel } from '../../components/HeroCarousel';
 import { Features } from '../../components/Features';
 import { Categories } from '../../components/Categories';
 import { GiftsAndPromoCodes } from '../../components/GiftsAndPromoCodes';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 
-import styles from './Main.module.scss';
+const sectionClass = 'pt-[30px] pb-[50px]';
+const titleClass = 'mt-0 mb-[45px] text-center text-[2rem] font-semibold [&_span]:whitespace-nowrap';
 
 const Main: React.FC = () => {
   const isRegistration = useAuthStore((state) => state.isRegistration);
@@ -40,26 +41,31 @@ const Main: React.FC = () => {
       {!showSuccessful && (
         <>
           <HeroCarousel />
-          <Container maxWidth="xl">
-            <section className={styles.section}>
-              <h2 className={styles.title}>
+          <PageContainer>
+            <section className={sectionClass}>
+              <h2 className={titleClass}>
                 Shopping easy with <span>YES CODE!</span>
               </h2>
               <Features />
             </section>
-          </Container>
-          <Container maxWidth="xl">
-            <section className={styles.section}>
-              <h2 className={styles.title}>Gifts and promo codes</h2>
+          </PageContainer>
+          <PageContainer>
+            <section className={sectionClass}>
+              <h2 className={titleClass}>Gifts and promo codes</h2>
               <GiftsAndPromoCodes />
             </section>
-          </Container>
-          <Container className={styles.container} maxWidth="xl">
-            <section className={styles.section}>
-              <h2 className={styles.title}> Shop by category</h2>
-              <Categories className={styles.categories} size={'l'} theme={'dark'} variant={'rounded'} />
+          </PageContainer>
+          <PageContainer>
+            <section className={sectionClass}>
+              <h2 className={titleClass}> Shop by category</h2>
+              <Categories
+                className="flex flex-wrap justify-center gap-6"
+                size={'l'}
+                theme={'dark'}
+                variant={'rounded'}
+              />
             </section>
-          </Container>
+          </PageContainer>
         </>
       )}
     </>

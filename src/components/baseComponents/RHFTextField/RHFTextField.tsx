@@ -1,54 +1,77 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Eye, EyeOff } from 'lucide-react';
 
-// Single MUI <-> react-hook-form adapter replacing the abandoned
-// formik-material-ui binding. `password` adds the show/hide toggle.
+import { cn } from '../../../shared/lib/cn';
 
+// react-hook-form text input (underline style, mirrors the old MUI "standard"
+// variant). `password` adds the show/hide toggle. The helper line keeps a fixed
+// height so validation messages don't shift layout.
 type Props<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   label?: string;
   password?: boolean;
-} & Omit<TextFieldProps, 'name' | 'error' | 'value' | 'onChange' | 'onBlur' | 'ref'>;
+  type?: string;
+  className?: string;
+  placeholder?: string;
+  autoComplete?: string;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+};
 
 const RHFTextField = <T extends FieldValues>({
   name,
   control,
   label,
   password = false,
-  ...textFieldProps
+  type = 'text',
+  className,
+  placeholder,
+  autoComplete,
+  onFocus,
 }: Props<T>): React.ReactElement => {
   const [show, setShow] = useState(false);
+  const id = useId();
+  const inputType = password ? (show ? 'text' : 'password') : type;
 
   return (
     <Controller
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <TextField
-          {...textFieldProps}
-          {...field}
-          label={label}
-          type={password ? (show ? 'text' : 'password') : textFieldProps.type}
-          error={!!fieldState.error}
-          helperText={fieldState.error?.message ?? ' '}
-          InputProps={
-            password
-              ? {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton aria-label="toggle password visibility" onClick={(): void => setShow((s) => !s)}>
-                        {show ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }
-              : textFieldProps.InputProps
-          }
-        />
+        <div className={cn('w-full', className)}>
+          {label && (
+            <label htmlFor={id} className="mb-1 block text-sm text-gray">
+              {label}
+            </label>
+          )}
+          <div className="relative">
+            <input
+              {...field}
+              id={id}
+              type={inputType}
+              placeholder={placeholder}
+              autoComplete={autoComplete}
+              onFocus={onFocus}
+              value={field.value ?? ''}
+              className={cn(
+                'w-full border-b bg-transparent py-1 pr-9 outline-none transition-colors',
+                fieldState.error ? 'border-red focus:border-red' : 'border-gray focus:border-primary'
+              )}
+            />
+            {password && (
+              <button
+                type="button"
+                aria-label="toggle password visibility"
+                onClick={(): void => setShow((prev) => !prev)}
+                className="absolute top-1/2 right-1 -translate-y-1/2 text-gray"
+              >
+                {show ? <Eye size={20} /> : <EyeOff size={20} />}
+              </button>
+            )}
+          </div>
+          <p className="mt-1 min-h-5 text-xs text-red">{fieldState.error?.message ?? ' '}</p>
+        </div>
       )}
     />
   );

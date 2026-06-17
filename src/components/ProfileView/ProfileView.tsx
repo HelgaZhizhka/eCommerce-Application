@@ -1,8 +1,8 @@
-import { Button, IconButton } from '@mui/material';
 import { Address } from '@commercetools/platform-sdk';
 
 import { Icon } from '../baseComponents/Icon';
 import { IconName } from '../baseComponents/Icon/Icon.enum';
+import { Button } from '../baseComponents/Button';
 import styles from './ProfileView.module.scss';
 
 type Props = {
@@ -40,14 +40,7 @@ const ProfileView: React.FC<Props> = ({
       </div>
       <Button
         variant="outlined"
-        sx={{
-          width: '240px',
-          height: '60px',
-          borderColor: 'orange',
-          color: 'orange',
-          fontSize: '1.2rem',
-          fontWeight: 600,
-        }}
+        className="h-[60px] w-60 border-[orange] text-[1.2rem] font-semibold text-[orange] hover:bg-[orange]/5"
         onClick={(): void => onModeChange(true)}
       >
         Edit profile
@@ -66,9 +59,9 @@ const ProfileView: React.FC<Props> = ({
           <p className={styles.contentItemValue}>
             {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
-          <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
+          <button type="button" aria-label="edit" onClick={(): void => onModeChange(true)} className="text-content">
             <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
-          </IconButton>
+          </button>
         </div>
       </div>
     ))}
@@ -85,9 +78,9 @@ const ProfileView: React.FC<Props> = ({
           <p className={styles.contentItemValue}>
             {`${address.streetName}, ${address.city}, ${address.country}, ${address.postalCode}`}
           </p>
-          <IconButton color="inherit" aria-label="edit" onClick={(): void => onModeChange(true)}>
+          <button type="button" aria-label="edit" onClick={(): void => onModeChange(true)} className="text-content">
             <Icon name={IconName.EDIT} width={36} height={36} className={`icon ${styles.iconEdit}`} />
-          </IconButton>
+          </button>
         </div>
       </div>
     ))}

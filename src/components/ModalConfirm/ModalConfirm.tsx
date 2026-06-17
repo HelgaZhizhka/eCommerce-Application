@@ -1,14 +1,5 @@
-import { styled, Dialog, DialogTitle, IconButton, Button, Box } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(4),
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(4),
-  },
-}));
+import { Dialog, DialogContent, DialogTitle } from '../baseComponents/Dialog';
+import { Button } from '../baseComponents/Button';
 
 type Props = {
   title: string;
@@ -19,37 +10,27 @@ type Props = {
 };
 
 const ModalConfirm: React.FC<Props> = ({ title, content, isOpen, onClose, onConfirm }) => (
-  <BootstrapDialog onClose={onClose} open={isOpen}>
-    <DialogTitle sx={{ mt: 4, textAlign: 'center' }} variant="h5">
-      {title}
-    </DialogTitle>
-    <IconButton
-      aria-label="close"
-      onClick={onClose}
-      sx={{
-        position: 'absolute',
-        right: 8,
-        top: 8,
-        zIndex: 10,
-        color: (theme) => theme.palette.grey[500],
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
-    {content && <Box sx={{ p: 4 }}>{content}</Box>}
-    <Box sx={{ p: 4, textAlign: 'canter', display: 'flex', gap: '5px' }}>
+  <Dialog
+    open={isOpen}
+    onOpenChange={(open): void => {
+      if (!open) onClose();
+    }}
+  >
+    <DialogContent>
+      <DialogTitle className="mt-4 text-center text-2xl">{title}</DialogTitle>
+      {content && <div className="p-4">{content}</div>}
       {onConfirm && (
-        <>
-          <Button variant="contained" sx={{ fontSize: '24px', display: 'block', margin: 'auto' }} onClick={onConfirm}>
+        <div className="flex justify-center gap-2 p-4">
+          <Button variant="contained" className="text-2xl" onClick={onConfirm}>
             OK
           </Button>
-          <Button variant="outlined" sx={{ fontSize: '24px', display: 'block', margin: 'auto' }} onClick={onClose}>
+          <Button variant="outlined" className="text-2xl" onClick={onClose}>
             Cancel
           </Button>
-        </>
+        </div>
       )}
-    </Box>
-  </BootstrapDialog>
+    </DialogContent>
+  </Dialog>
 );
 
 export default ModalConfirm;

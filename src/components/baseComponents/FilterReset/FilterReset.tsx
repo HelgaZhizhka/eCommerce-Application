@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { X } from 'lucide-react';
+
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   mobile?: boolean;
@@ -7,14 +8,17 @@ type Props = {
 };
 
 const FilterReset: React.FC<Props> = ({ mobile, onClick }) => (
-  <Button
-    endIcon={<ClearIcon />}
-    variant="outlined"
+  <button
+    type="button"
     onClick={onClick}
-    sx={{ width: mobile ? '100%' : 'auto', borderColor: 'orange', color: 'orange', mt: 2 }}
+    className={cn(
+      'mt-4 inline-flex items-center justify-center gap-2 rounded border border-[orange] px-4 py-1.5 text-[orange] transition-colors hover:bg-[orange]/10',
+      mobile ? 'w-full' : 'w-auto'
+    )}
   >
     Reset filters
-  </Button>
+    <X size={18} />
+  </button>
 );
 
 export default FilterReset;

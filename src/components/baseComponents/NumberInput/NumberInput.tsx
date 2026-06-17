@@ -1,8 +1,4 @@
-import React from 'react';
-import classNames from 'classnames';
-import { TextField } from '@mui/material';
-
-import styles from './NumberInput.module.scss';
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   value: number;
@@ -15,29 +11,21 @@ type Props = {
 
 const NumberInput: React.FC<Props> = ({ value, onChange, min, max, label, className }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const newValue = parseInt(event.target.value, 10);
-
-    if (onChange) {
-      onChange(newValue);
-    }
+    onChange(parseInt(event.target.value, 10));
   };
 
   return (
-    <TextField
-      label={label}
-      type="number"
-      value={value}
-      onChange={handleChange}
-      variant="outlined"
-      className={classNames(styles.root, className)}
-      sx={{ minWidth: '80px', p: '10px' }}
-      InputProps={{
-        inputProps: {
-          min,
-          max,
-        },
-      }}
-    />
+    <label className={cn('relative inline-flex min-w-[80px] flex-col gap-1 p-2.5', className)}>
+      <span className="text-sm text-gray">{label}</span>
+      <input
+        type="number"
+        value={value}
+        min={min}
+        max={max}
+        onChange={handleChange}
+        className="w-full rounded border border-gray px-3 py-2 outline-none focus:border-primary"
+      />
+    </label>
   );
 };
 

@@ -21,8 +21,6 @@ describe('Price', () => {
     expect(currencyElement).toBeInTheDocument();
 
     const rootElement = container.firstChild;
-    expect(rootElement).toHaveClass('root');
-    expect(rootElement).toHaveClass('new');
     expect(rootElement).toHaveClass(className);
   });
 });

@@ -1,16 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Menu, Box, styled } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-import { SortingList } from '../baseComponents/SortingList';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '../baseComponents/Select';
 import { SortOption } from '../baseComponents/SortingList/SortList.enum';
-
-const CustomButton = styled(Button)(({ theme }) => ({
-  margin: theme.spacing(1),
-  display: 'flex',
-  alignItems: 'center',
-}));
 
 type Props = {
   className?: string;
@@ -18,56 +7,21 @@ type Props = {
   onSelect: (sort: SortOption) => void;
 };
 
-const Sorting: React.FC<Props> = ({ className, value, onSelect }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    setAnchorEl(event.currentTarget);
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleClose = (): void => {
-    setAnchorEl(null);
-    setIsMenuOpen(false);
-  };
-
-  const handleMenuItemClick = (): void => {
-    handleClose();
-  };
-
-  return (
-    <Box className={className}>
-      <CustomButton
-        sx={{ width: '100%' }}
-        aria-controls="dropdown-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        variant="contained"
-        color="primary"
-      >
-        Sorting by: {value}
-        {isMenuOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-      </CustomButton>
-      <Menu
-        id="dropdown-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <SortingList value={value} onSelect={onSelect} handleMenuItemClick={handleMenuItemClick} />
-      </Menu>
-    </Box>
-  );
-};
+const Sorting: React.FC<Props> = ({ className, value, onSelect }) => (
+  <div className={className}>
+    <Select value={value} onValueChange={(sort): void => onSelect(sort as SortOption)}>
+      <SelectTrigger aria-label="Sorting" className="w-full border-primary bg-primary text-white hover:bg-primary/90">
+        <span>Sorting by: {value}</span>
+      </SelectTrigger>
+      <SelectContent>
+        {Object.values(SortOption).map((sort) => (
+          <SelectItem key={sort} value={sort}>
+            {sort}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+);
 
 export default Sorting;

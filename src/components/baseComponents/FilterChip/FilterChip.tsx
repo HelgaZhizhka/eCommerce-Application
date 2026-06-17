@@ -1,15 +1,5 @@
-import { Chip, Box, styled } from '@mui/material';
-
 import { sizes } from '../../../constants';
-
-const CustomChip = styled(Chip)({
-  borderRadius: '16px',
-  padding: '10px',
-  fontSize: '14px',
-  fontWeight: 600,
-  lineHeight: '1.2',
-  border: '1px solid grey',
-});
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   className?: string;
@@ -26,17 +16,24 @@ const FilterChip: React.FC<Props> = ({ selected, onChange }) => {
   return (
     <>
       <h3>Size</h3>
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+      <div className="flex flex-wrap items-center gap-2">
         {sizes.map((size) => (
-          <CustomChip
+          <button
             key={size}
-            label={size}
-            color="primary"
-            variant={selected.includes(size) ? 'filled' : 'outlined'}
+            type="button"
+            aria-pressed={selected.includes(size)}
             onClick={(): void => handleChipClick(size)}
-          />
+            className={cn(
+              'rounded-2xl border px-3 py-1.5 text-sm font-semibold leading-tight transition-colors',
+              selected.includes(size)
+                ? 'border-primary bg-primary text-white'
+                : 'border-gray text-primary hover:bg-primary/5'
+            )}
+          >
+            {size}
+          </button>
         ))}
-      </Box>
+      </div>
     </>
   );
 };

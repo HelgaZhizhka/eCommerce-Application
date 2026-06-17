@@ -1,5 +1,3 @@
-import { lightTheme } from '../../theme';
-
 import styles from './Feature.module.scss';
 
 type Props = {
@@ -13,7 +11,7 @@ const Features: React.FC<Props> = ({ className, image, title, description }) => 
   <div className={`${styles.root} ${className}`}>
     <div className={styles.img}>
       <picture>
-        <source media={`(max-width: ${lightTheme.breakpoints.values.md - 1}px)`} srcSet={image} />
+        <source media="(max-width: 1023px)" srcSet={image} />
         <img src={image} alt={title} />
       </picture>
     </div>

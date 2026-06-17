@@ -7,6 +7,7 @@ import { Sorting } from '../../components/Sorting';
 import { ProductList } from '../../components/ProductList';
 import { Search } from '../../components/baseComponents/Search';
 import { PaginationCatalog } from '../../components/baseComponents/PaginationCatalog';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 import { categoryIdByName, useCategoriesQuery } from '../../queries/categories';
 import { useCatalogParams } from '../../queries/catalogParams';
 import { useCatalogProductsQuery, useCategoryAttributesQuery } from '../../queries/products';
@@ -61,7 +62,7 @@ const Catalog: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[1536px] px-4">
+    <PageContainer>
       <div className="flex flex-wrap items-center gap-2.5 py-4">
         <Breadcrumbs items={breadcrumbItems} className="mr-auto" />
         <Search onSearch={params.setSearch} value={params.search} className="w-full md:w-[400px] lg:w-[560px]" />
@@ -88,7 +89,7 @@ const Catalog: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

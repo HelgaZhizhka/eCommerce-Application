@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import { ListFilter, X } from 'lucide-react';
 
 import { FilterChip } from '../baseComponents/FilterChip';
 import { FilterColorCheckBox } from '../baseComponents/FilterColorCheckBox';
@@ -72,7 +71,7 @@ const Filter: React.FC<Props> = ({ className, ...controls }) => {
 
       {/* mobile trigger */}
       <button type="button" aria-label="filter" onClick={(): void => setOpen(true)} className="md:hidden">
-        <FilterListIcon />
+        <ListFilter />
       </button>
 
       {/* mobile drawer */}
@@ -87,7 +86,7 @@ const Filter: React.FC<Props> = ({ className, ...controls }) => {
               onClick={(): void => setOpen(false)}
               className="absolute right-2 top-2 text-gray"
             >
-              <CloseIcon />
+              <X />
             </button>
             <FilterControls {...controls} mobile />
           </div>

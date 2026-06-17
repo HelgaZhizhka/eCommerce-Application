@@ -1,8 +1,5 @@
 import React from 'react';
-import { Box, CssBaseline, ThemeProvider, createTheme, CircularProgress } from '@mui/material';
 
-import { darkTheme, lightTheme } from './theme';
-import { useThemeStore } from './stores/theme';
 import { useCategoriesQuery } from './queries/categories';
 import RoutesConfig from './routes';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -11,40 +8,33 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
-  const darkMode = useThemeStore((state) => state.darkMode);
-  const theme = createTheme(darkMode ? darkTheme : lightTheme);
   const { isLoading: isAppLoading } = useCategoriesQuery();
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <SnackBar />
       <div className="app">
         {isAppLoading ? (
-          <Box
-            sx={{
-              width: '100%',
-              height: 'var(--app-height)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress />
-          </Box>
+          <div className="flex h-[var(--app-height)] w-full items-center justify-center">
+            <div
+              role="status"
+              aria-label="Loading"
+              className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"
+            />
+          </div>
         ) : (
           <>
             <Header />
-            <Box component="main" sx={{ position: 'relative', flex: '1', pb: 2 }}>
+            <main className="relative flex-1 pb-4">
               <ErrorBoundary>
                 <RoutesConfig />
               </ErrorBoundary>
-            </Box>
+            </main>
             <Footer />
           </>
         )}
       </div>
-    </ThemeProvider>
+    </>
   );
 };
 

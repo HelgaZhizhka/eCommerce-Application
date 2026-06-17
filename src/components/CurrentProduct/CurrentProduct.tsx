@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
+import { useMediaQuery } from '../../shared/lib/useMediaQuery';
+import { Button } from '../baseComponents/Button';
 import { useCartActions } from '../../queries/cart';
 import { ProductType } from '../../stores/Store.types';
 import { extractSizesWithVariantId, getPriceValue, getSku } from '../../stores/productHelpers';
@@ -20,9 +21,7 @@ type Props = {
 };
 
 const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading }) => {
-  const theme = useTheme();
-
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery('(max-width: 1023.95px)');
 
   const { addToCart, isProductInCart, removeProductFromCart } = useCartActions();
 
@@ -64,17 +63,13 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
 
   if (isLoading) {
     return (
-      <Box
-        sx={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress color="secondary" />
-      </Box>
+      <div className="flex h-full w-full items-center justify-center">
+        <div
+          role="status"
+          aria-label="Loading"
+          className="h-10 w-10 animate-spin rounded-full border-4 border-secondary border-t-transparent"
+        />
+      </div>
     );
   }
 
@@ -253,26 +248,14 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
                         max={maxQuantity}
                         label="Quantity:"
                       />
-                      <Button
-                        size="large"
-                        sx={{ height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddToCart}
-                      >
+                      <Button className="h-[60px] text-xl" variant="contained" onClick={handleAddToCart}>
                         Add to cart
                       </Button>
                     </>
                   ) : (
                     <>
                       <span className={styles.error}>Already in the cart.</span>
-                      <Button
-                        size="large"
-                        sx={{ height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleRemoveFromCart}
-                      >
+                      <Button className="h-[60px] text-xl" variant="contained" onClick={handleRemoveFromCart}>
                         Remove from cart
                       </Button>
                     </>
@@ -309,26 +292,14 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
                         max={maxQuantity}
                         label="Quantity:"
                       />
-                      <Button
-                        size="large"
-                        sx={{ minWidth: '300px', height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddToCart}
-                      >
+                      <Button className="h-[60px] min-w-[300px] text-xl" variant="contained" onClick={handleAddToCart}>
                         Add to cart
                       </Button>
                     </>
                   ) : (
                     <>
                       <span className={styles.error}>Already in the cart.</span>
-                      <Button
-                        size="large"
-                        sx={{ height: '60px', fontSize: '1.25rem' }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleRemoveFromCart}
-                      >
+                      <Button className="h-[60px] text-xl" variant="contained" onClick={handleRemoveFromCart}>
                         Remove from cart
                       </Button>
                     </>

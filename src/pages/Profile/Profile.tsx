@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Container } from '@mui/material';
 import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileBox } from '../../components/ProfileBox';
@@ -7,7 +6,7 @@ import { useMeQuery, useUpdateProfileMutation } from '../../queries/customer';
 
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
-import styles from './Profile.module.scss';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 
 const Profile: React.FC = () => {
   const { data: userProfile } = useMeQuery();
@@ -71,9 +70,9 @@ const Profile: React.FC = () => {
   ];
 
   return (
-    <Container maxWidth="xl">
-      <section className={styles.root}>
-        <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
+    <PageContainer>
+      <section className="pt-5 pb-[60px] md:px-20 md:pt-[50px]">
+        <Breadcrumbs items={breadcrumbItems} />
         {preparedAddresses ? (
           <ProfileBox
             editMode={isEditMode}
@@ -92,7 +91,7 @@ const Profile: React.FC = () => {
           <p>Loading...</p>
         )}
       </section>
-    </Container>
+    </PageContainer>
   );
 };
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container } from '@mui/material';
 
 import { useProductQuery } from '../../queries/products';
 import { RoutePaths } from '../../routes/routes.enum';
 import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { CurrentProduct } from '../../components/CurrentProduct';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 import styles from './Product.module.scss';
 
 type Params = {
@@ -45,13 +45,13 @@ const Product: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="xl">
+    <PageContainer>
       <section className={styles.root}>
         <Breadcrumbs items={breadcrumbItems} className={styles.breadcrumb} />
 
         <CurrentProduct product={product} isLoading={isFetching} />
       </section>
-    </Container>
+    </PageContainer>
   );
 };
 

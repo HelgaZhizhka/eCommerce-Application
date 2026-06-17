@@ -6,6 +6,11 @@
 }
 body {
   margin: 0;
+  // background, text colour and font-family were previously applied by MUI's
+  // CssBaseline; now that MUI is gone they come straight from the theme tokens.
+  background-color: var(--body-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
   font-smooth: antialiased; // Smooth the font on the level of the pixel, as opposed to the subpixel
   text-rendering: optimizeLegibility; //should emphasize readability at the expense of rendering speed and geometric accuracy
 }

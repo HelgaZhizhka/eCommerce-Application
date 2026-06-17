@@ -1,5 +1,3 @@
-import { CircularProgress } from '@mui/material';
-
 import { ProductType } from '../../stores/Store.types';
 import { Card } from '../Card';
 import { cn } from '../../shared/lib/cn';
@@ -16,7 +14,11 @@ const ProductList: React.FC<Props> = ({ className, categoryId, subcategoryId, pr
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center py-10">
-        <CircularProgress color="secondary" />
+        <div
+          role="status"
+          aria-label="Loading"
+          className="h-10 w-10 animate-spin rounded-full border-4 border-secondary border-t-transparent"
+        />
       </div>
     );
   }

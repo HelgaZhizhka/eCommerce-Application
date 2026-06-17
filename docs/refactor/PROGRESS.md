@@ -5,17 +5,36 @@
 
 ## Current state
 
-- **Phase:** 5 — UI (in progress on `refactor/phase-5-ui`, not yet PR'd).
-  Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1,
-  by group with user review. Done: foundation, Footer, Header (forks merged),
-  Card+ProductList, lazy routes, ErrorBoundary, Card bug. MUI still present
-  (removed at phase end). See docs/refactor/phase-5.md for the remaining groups.
+- **Phase:** 5 — UI. Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping
+  the look 1:1, by group with user review.
+  - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
+    Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
+    FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
+    shell + EmptyCart + PromoCode, lazy routes, ErrorBoundary, Card bug.
+  - **Part 2 in progress** on `refactor/phase-5-ui-part2` (pushed through commit
+    dd48678; later commits local, not pushed): content pages + **full MUI removal**.
+    CardMini, Login/Registration, Main/About/Sale/ErrorPage, Profile shell ✅;
+    `PageContainer` (MUI `Container xl` → `max-w-[1440px] px-4 sm:px-6`); Tailwind
+    breakpoints aligned to the project (sm600/md1024/lg1280/xl1440).
+  - **MUI REMOVED (2026-06-15):** zero `@mui` imports; uninstalled `@mui/material`,
+    `@mui/icons-material`, `@mui/system`, `@emotion/react`, `@emotion/styled`.
+    Icons → **lucide-react**; Slider/Select/Dialog → **Radix** (new shared
+    `Button`/`Select`/`Dialog` primitives + RHF adapters incl. `RHFSelect`);
+    SnackBar → custom toast; `useMediaQuery` hook replaces MUI's. Build/e2e green;
+    bundle no longer ships MUI/emotion. Body bg/color/font (was MUI CssBaseline)
+    reinstated on `body` via theme vars.
+  - **Remaining (final phase-5 cleanup):** SCSS consolidation — **28 `*.module.scss`**
+    + global `src/styles/**` (which still define the CSS vars Tailwind tokens
+    resolve through) → migrate vars to a surviving CSS, convert layout scss to
+    Tailwind, enable **preflight**, drop `sass`/`classnames`. This is "one styling
+    system" from the exit criteria.
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
-  RHF + zod 4 · ts-client 4 + BFF · Tailwind 4 (alongside MUI, transitional)
-- **Latest gate:** tsc, eslint 0 errors, 45 unit, e2e 11/11 — 2026-06-13
-- **Next:** continue phase-5 groups — catalog filters/sorting (merge
-  Filter/FilterMobile + Sorting/SortMobile forks), then Cart, forms, pages;
-  finally remove MUI + enable Tailwind preflight. Prod still on 2023 CRA build.
+  RHF + zod 4 · ts-client 4 + BFF · **Tailwind 4 + lucide + Radix (MUI gone)**;
+  legacy SCSS still present (consolidation pending)
+- **Latest gate:** build, tsc, eslint 0 errors, 41 unit, e2e 11/11 — 2026-06-15
+  (run under Node 22; shell default is Node 16 — `nvm use 22` before verify)
+- **Next:** decide part-2 PR scope (open now w/ MUI-removal vs include SCSS
+  consolidation) → SCSS consolidation + preflight. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -38,8 +57,59 @@
 | 2026-06-10 | Branch-per-phase strategy, PRs into `develop`                                                                                                     |
 | 2026-06-10 | Open decisions pending (plan §3.2): UI kit — decided 2026-06-13; Vite SPA + BFF chosen over Next.js |
 | 2026-06-13 | **UI kit: Tailwind 4 + shadcn/ui** (full restyle; MUI removed). User chose the modern-stack/portfolio path over MUI 7 |
+| 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-15 — Session 8 cont. (MUI removal sweep S1–S9)
+
+- swept all remaining MUI in 8 groups, gate green per group: ThemeToggle/Header/
+  NavBarMobile, Filter leaves (Radix Slider), catalog controls (Radix Select for
+  Sorting/SelectSize, native pagination/search/number), forms (RHF adapters +
+  shared Button + RHFSelect), Profile, modals (Radix Dialog) + toast, content
+  (HeroCarousel/Categories/Gifts/AboutPerson/CurrentProduct/Breadcrumbs/Product)
+- **MUI + emotion uninstalled**; 0 `@mui` imports; build + e2e green; bundle slimmer
+- new shared primitives: `baseComponents/{Button,Select,Dialog}`, `RHFSelect`,
+  `shared/lib/useMediaQuery`; deleted dead `Button` base + `SortingList`; `src/theme` gone
+- **visual review (live, Node 22)** caught a CssBaseline regression → restored body
+  bg/color/font from theme vars; verified Catalog/Login(±dark)/Product look 1:1
+- e2e selectors updated for engine swap (size chip, pagination, ModalProfile role)
+- **Remaining:** SCSS consolidation + preflight + drop sass/classnames; part-2 PR
+- **Evidence:** commits 3d1ec94/0d7fc02/b741a13/1185e51/a226a7a; gate green each step
+
+### 2026-06-15 — Session 8 (phase 5 part 2: content pages + breakpoint fix)
+
+- restyled to Tailwind: **Main, About, Sale, ErrorPage, Profile shell**;
+  deleted their 5 `*.module.scss`. 404 glitch keyframes moved into `tailwind.css`
+  (raw `@keyframes` + arbitrary `before:/after:` animation utilities)
+- added **`PageContainer`** (`baseComponents/PageContainer`) as the single MUI
+  `Container maxWidth="xl"` replacement; retrofitted Catalog/Cart/Login/
+  Registration onto it — corrected the earlier `max-w-[1536px]` to the theme's
+  real xl `1440` + MUI gutters `px-4 sm:px-6`
+- **aligned Tailwind breakpoints** to the legacy MUI theme + SCSS grid
+  (`--breakpoint-sm/md/lg/xl = 600/1024/1280/1440`); the prior default-Tailwind
+  breakpoints had shifted every `md:`/`sm:` vs the original (Header was
+  switching desktop/mobile at 768 instead of 1024). User approved the change.
+- surface: `@mui` 49→**44** files, scss 43→**38**; only the **Product** page
+  still imports MUI/scss among pages
+- **Evidence:** typecheck clean; eslint 0 errors (17 pre-existing warnings);
+  unit 45/45; e2e 11/11 (Node 22). Visual proof via throwaway Playwright shots:
+  900px→mobile Header, 1024px→desktop Header (switch restored to 1:1);
+  404/Sale/About render correctly
+
+### 2026-06-13 — Session 7 cont. (phase 5 part 1 merged, review, part 2 start)
+
+- Cart page shell + EmptyCart + PromoCode → Tailwind; opened PR #221
+  (phase 5 part 1), CI green, **merged**
+- code review of PR #221 via a fresh subagent → "Approve with nits";
+  applied 3 nits (ThemeToggle aria-label, ErrorBoundary RoutePaths.MAIN,
+  Filter drawer Esc/focus/dialog) as PR #222, CI green, **merged**;
+  remaining focus-trap logged in phase-6.4
+- started `refactor/phase-5-ui-part2`: CardMini → Tailwind (color swatches via
+  --filter-* map; dropped MUI Button/debounce, classnames); Login + Registration
+  page shells → Tailwind
+- SESSION_REPORT.md refreshed for the post
+- **Evidence:** verify.sh / e2e 11/11 green per group; PRs #221, #222 merged
 
 ### 2026-06-13 — Session 7 (phase 5 start: Tailwind foundation + first groups)
 

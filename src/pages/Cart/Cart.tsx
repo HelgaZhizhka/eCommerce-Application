@@ -11,6 +11,7 @@ import { Breadcrumbs } from '../../components/baseComponents/Breadcrumbs';
 import { PromoCode } from '../../components/baseComponents/PromoCode';
 import { ModalConfirm } from '../../components/ModalConfirm';
 import { Price } from '../../components/baseComponents/Price';
+import { PageContainer } from '../../components/baseComponents/PageContainer';
 import { getPriceValue } from '../../stores/productHelpers';
 import { currency } from '../../constants';
 
@@ -52,7 +53,7 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div className="mx-auto max-w-[1536px] px-4">
+    <PageContainer>
       <ModalConfirm
         title="Delete all products"
         content={modalConfirmContent}
@@ -115,7 +116,7 @@ const Cart: React.FC = () => {
       ) : (
         <EmptyCart />
       )}
-    </div>
+    </PageContainer>
   );
 };
 

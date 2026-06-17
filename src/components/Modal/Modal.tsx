@@ -1,16 +1,5 @@
-import { styled, Dialog, DialogTitle, IconButton, Box } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-
+import { Dialog, DialogContent, DialogTitle } from '../baseComponents/Dialog';
 import { ProductCarousel } from '../ProductCarousel';
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(4),
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(4),
-  },
-}));
 
 type Props = {
   isOpen: boolean;
@@ -21,25 +10,17 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = ({ isOpen, activeImageIndex = 0, onClose, title, images }) => (
-  <Box>
-    <BootstrapDialog onClose={onClose} open={isOpen}>
-      <DialogTitle id="customized-dialog-title">{title}</DialogTitle>
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          zIndex: 10,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
+  <Dialog
+    open={isOpen}
+    onOpenChange={(open): void => {
+      if (!open) onClose();
+    }}
+  >
+    <DialogContent className="max-w-2xl">
+      <DialogTitle className="text-xl font-medium">{title}</DialogTitle>
       {images && <ProductCarousel images={images} activeImageIndex={activeImageIndex} variant={'full'} />}
-    </BootstrapDialog>
-  </Box>
+    </DialogContent>
+  </Dialog>
 );
 
 export default Modal;

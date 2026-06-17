@@ -1,5 +1,4 @@
-import { Button, Box } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
+import { Check } from 'lucide-react';
 
 import { ColorOptions } from './FilterColor.enum';
 
@@ -19,37 +18,31 @@ const FilterColorCheckBox: React.FC<Props> = ({ selected, onChange }) => {
   return (
     <>
       <h3>Color</h3>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-        {colorEntries.map(([colorName, colorValue], index) => (
-          <Button
-            key={index}
-            variant={selected.includes(colorName) ? 'contained' : 'outlined'}
-            onClick={(): void => toggleOptions(colorName)}
-            sx={{
-              borderRadius: '50%',
-              minWidth: 0,
-              width: '2.3rem',
-              height: '2.3rem',
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: colorValue,
-              color: colorValue === 'var(--filter-black)' ? 'white' : 'black',
-              '&:hover': {
-                backgroundColor: colorValue,
-              },
-              '&:active': {
-                backgroundColor: colorValue,
-              },
-              backgroundImage: colorValue === 'multicolor' ? 'var(--multicolor)' : 'none',
-              border: '1px solid grey',
-            }}
-          >
-            {selected.includes(colorName) && <CheckIcon />}
-          </Button>
-        ))}
-      </Box>
+      <div className="flex flex-wrap gap-2">
+        {colorEntries.map(([colorName, colorValue]) => {
+          const isMulti = colorValue === 'multicolor';
+          const isSelected = selected.includes(colorName);
+
+          return (
+            <button
+              key={colorName}
+              type="button"
+              aria-label={colorName}
+              aria-pressed={isSelected}
+              onClick={(): void => toggleOptions(colorName)}
+              style={{
+                backgroundColor: isMulti ? undefined : colorValue,
+                backgroundImage: isMulti ? 'var(--multicolor)' : undefined,
+              }}
+              className="flex h-[2.3rem] w-[2.3rem] items-center justify-center rounded-full border border-gray"
+            >
+              {isSelected && (
+                <Check size={20} className={colorValue === 'var(--filter-black)' ? 'text-white' : 'text-black'} />
+              )}
+            </button>
+          );
+        })}
+      </div>
     </>
   );
 };

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { CircleAlert, CircleCheck } from 'lucide-react';
 
 import { useAuthStore } from '../../stores/authStore';
 import { subscribeToToasts, Toast } from '../../queries/notifications';
+import { cn } from '../../shared/lib/cn';
 
 const SnackBar: React.FC = () => {
   const [toast, setToast] = useState<Toast | null>(null);
@@ -17,42 +18,31 @@ const SnackBar: React.FC = () => {
   const error = userError ?? (toast?.type === 'error' ? toast.message : null);
   const success = userSuccess ?? (toast?.type === 'success' ? toast.message : null);
 
-  const handleClose = (): void => {
-    clearError();
-    clearSuccess();
-    setToast(null);
-  };
+  useEffect(() => {
+    if (!error && !success) return undefined;
+
+    const id = setTimeout(() => {
+      clearError();
+      clearSuccess();
+      setToast(null);
+    }, 4000);
+
+    return (): void => clearTimeout(id);
+  }, [error, success, clearError, clearSuccess]);
+
+  if (!error && !success) return null;
 
   return (
-    <>
-      {error && (
-        <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!error}
-          message={error}
-          onClose={handleClose}
-          autoHideDuration={4000}
-        >
-          <Alert severity="error" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {error}
-          </Alert>
-        </Snackbar>
+    <div
+      role="alert"
+      className={cn(
+        'fixed bottom-4 left-4 z-[1400] flex items-center gap-2 rounded px-4 py-3 text-2xl font-semibold text-white shadow-lg',
+        error ? 'bg-error' : 'bg-success'
       )}
-
-      {success && (
-        <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={!!success}
-          message={success}
-          onClose={handleClose}
-          autoHideDuration={4000}
-        >
-          <Alert severity="success" sx={{ fontSize: '24px', fontWeight: '600' }}>
-            {success}
-          </Alert>
-        </Snackbar>
-      )}
-    </>
+    >
+      {error ? <CircleAlert size={28} /> : <CircleCheck size={28} />}
+      {error ?? success}
+    </div>
   );
 };
 

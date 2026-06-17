@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Address } from '@commercetools/platform-sdk';
-import { Button } from '@mui/material';
 
 import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
 import { ProfileAddress } from '../ProfileAddress';
 import { ModalProfile } from '../baseComponents/ModalProfile';
+import { Button } from '../baseComponents/Button';
 import styles from './ProfileEdit.module.scss';
 
 type Props = {
@@ -43,16 +43,7 @@ const ProfileEdit: React.FC<Props> = ({
     <div className={styles.root}>
       <Button
         variant="outlined"
-        sx={{
-          ml: 'auto',
-          mb: '20px',
-          width: '240px',
-          height: '60px',
-          borderColor: 'orange',
-          color: 'orange',
-          fontSize: '1.2rem',
-          fontWeight: 600,
-        }}
+        className="mb-5 ml-auto h-[60px] w-60 border-[orange] text-[1.2rem] font-semibold text-[orange] hover:bg-[orange]/5"
         onClick={(): void => onModeChange(false)}
       >
         Cancel
@@ -103,16 +94,10 @@ const ProfileEdit: React.FC<Props> = ({
       ))}
 
       <div className={styles.buttonWrapper}>
-        <Button
-          sx={{
-            fontSize: '24px',
-          }}
-          variant="contained"
-          onClick={handleOpenAddressModal}
-        >
+        <Button className="text-2xl" variant="contained" onClick={handleOpenAddressModal}>
           Add address
         </Button>
-        <Button onClick={handleOpenPasswordModal} sx={{ fontSize: '24px' }} variant="outlined" color="primary">
+        <Button className="text-2xl" variant="outlined" onClick={handleOpenPasswordModal}>
           Change password
         </Button>
       </div>

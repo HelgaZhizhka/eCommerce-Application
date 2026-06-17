@@ -1,11 +1,6 @@
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import LocalCafeIcon from '@mui/icons-material/LocalCafe';
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import { Coffee, NotebookPen, Shirt, ShoppingBag, TrendingDown, type LucideIcon } from 'lucide-react';
 
 import { useCategoriesQuery } from '../../queries/categories';
 import { SubCategories } from '../SubCategories';
@@ -21,12 +16,12 @@ type Props = {
   onClose?: () => void;
 };
 
-const categoryIcons: Record<CategorySlug, React.ComponentType> = {
-  sale: TrendingDownIcon,
-  clothes: CheckroomIcon,
-  drinkware: LocalCafeIcon,
-  office: EditNoteIcon,
-  bags: ShoppingBagIcon,
+const categoryIcons: Record<CategorySlug, LucideIcon> = {
+  sale: TrendingDown,
+  clothes: Shirt,
+  drinkware: Coffee,
+  office: NotebookPen,
+  bags: ShoppingBag,
 };
 
 const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertical', theme = 'light', onClose }) => {
@@ -55,15 +50,14 @@ const Categories: React.FC<Props> = ({ className, size = 'm', variant = 'vertica
           <li key={category.id} className={styles.menuItem}>
             {variant === 'filter' ? (
               <>
-                <ListItemButton
-                  sx={{ pl: 4 }}
-                  component={Link}
+                <Link
+                  className="flex items-center gap-3 py-2 pl-8 transition-colors hover:bg-black/5"
                   to={category.slug.en === 'sale' ? RoutePaths.SALE : `/category/${category.slug.en}`}
                   onClick={onClose}
                 >
-                  <ListItemIcon>{IconComponent && <IconComponent />}</ListItemIcon>
-                  <ListItemText primary={category.name.en} />
-                </ListItemButton>
+                  {IconComponent && <IconComponent />}
+                  <span>{category.name.en}</span>
+                </Link>
 
                 {category.subcategories && category.subcategories.length > 0 && (
                   <SubCategories
