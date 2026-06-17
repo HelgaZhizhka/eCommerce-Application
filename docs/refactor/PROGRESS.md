@@ -50,9 +50,10 @@
 - **Latest gate (post-teardown):** production build + typecheck + eslint(0 err)
   + 41 unit + 11 e2e — all green; base computed styles measured identical to
   pre-migration (light + dark).
-- **Next:** open the **part-B PR** into `develop` (one styling system; closes
-  phase 5) → then phase 6 (MSW tests, coverage, CI e2e, a11y, README/ADRs,
-  6.6 Dependabot). Prod still on 2023 CRA build.
+- **Part B PR:** [#225](https://github.com/HelgaZhizhka/eCommerce-Application/pull/225)
+  → `develop` (one styling system; closes phase 5) — **OPEN**, awaiting CI/review.
+- **Next:** merge #225 → then phase 6 (MSW tests, coverage, CI e2e, a11y,
+  README/ADRs, 6.6 Dependabot). Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
