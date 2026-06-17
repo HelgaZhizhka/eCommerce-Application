@@ -219,6 +219,7 @@ a {
  * specificity 0,1,0), so the shared Button's variants/outlined border and any
  * explicit underline still win. */
 a {
+  color: inherit;
   text-decoration: none;
 }
 button {
