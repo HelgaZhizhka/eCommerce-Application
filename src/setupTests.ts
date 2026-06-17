@@ -7,7 +7,10 @@ window.matchMedia = vi.fn().mockImplementation((query) => {
     matches: true,
     media: query,
     onchange: null,
-    addListener: vi.fn(),
+    addListener: vi.fn(), // legacy MUI API
     removeListener: vi.fn(),
+    addEventListener: vi.fn(), // modern API used by shared/lib/useMediaQuery
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   };
 });
