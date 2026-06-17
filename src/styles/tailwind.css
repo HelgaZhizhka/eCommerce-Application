@@ -1,7 +1,9 @@
-/* Tailwind 4 entry. Preflight is intentionally omitted while MUI still ships
- * (it would clobber MUI's CssBaseline); it gets added once MUI is removed.
- * Design tokens mirror the existing CSS variables (src/styles/core/_variables)
- * so utilities and the legacy SCSS share one source of truth. */
+/* Tailwind 4 entry — the single styling system. Preflight is intentionally NOT
+ * imported: the app's 1:1 look relies on browser defaults + the normalize block
+ * below (heading sizes, link underlines, list/paragraph margins). The legacy
+ * SCSS partials (normalize/typography/states/layout/components) were folded into
+ * this file when `sass` was dropped; design tokens live in the :root block. */
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;400;500;600;700;800&display=swap');
 @import 'tailwindcss/theme.css';
 @import 'tailwindcss/utilities.css';
 
@@ -168,4 +170,308 @@ body[data-theme='dark'] {
   --nav-color-dark: var(--light-white);
   --nav-color-dark-hover: var(--light-white);
   --component-bg: var(--dark);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Base reset / normalize (was styles/core/_normalize.scss). Kept verbatim so
+ * the app's 1:1 look (box-sizing, body bg/colour/font, heading/list/anchor
+ * defaults) survives without Tailwind preflight. Tailwind utility classes win
+ * over these by specificity (class > element).
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  line-height: 1.15;
+  text-size-adjust: 100%;
+  -webkit-overflow-scrolling: auto;
+  -webkit-touch-callout: none;
+}
+body {
+  margin: 0;
+  background-color: var(--body-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-smooth: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html,
+body {
+  min-height: 100%;
+}
+body * {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-focus-ring-color: rgba(255, 255, 255, 0);
+  outline: none;
+}
+* {
+  box-sizing: border-box;
+}
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+img,
+a {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+figcaption,
+figure,
+main {
+  display: block;
+}
+figure {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+b,
+strong {
+  font-weight: bolder;
+}
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+img,
+picture {
+  max-width: 100%;
+  height: auto;
+  border: 0;
+  vertical-align: bottom;
+}
+video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  line-height: 1.15;
+  margin: 0;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+}
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+button:-moz-focusring,
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+progress {
+  vertical-align: baseline;
+}
+textarea {
+  overflow: auto;
+}
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+details {
+  display: block;
+}
+summary {
+  display: list-item;
+}
+audio,
+video {
+  display: inline-block;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+canvas {
+  display: inline-block;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+[hidden] {
+  display: none;
+}
+::selection {
+  background: var(--state-primary-hover);
+  color: #fff;
+}
+
+/* utility/state helpers (was styles/core/_states.scss; dead .ml-auto/.mr-1/
+ * .text-inherit dropped — Tailwind provides equivalents) */
+.text-brand {
+  margin: 0 5px;
+  color: var(--state-primary);
+  border-bottom: 1px solid var(--state-primary);
+}
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+.text-overflow {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  color: var(--light-white);
+  text-shadow: 1px 1px 1px var(--gray);
+}
+.swiper-scrollbar-drag {
+  background: var(--state-primary) !important;
+}
+input[type='search']::-webkit-search-clear-button {
+  appearance: none;
+  margin: 0;
+}
+input[type='search']::-ms-clear {
+  display: none;
+}
+input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+/* layout (was styles/layout/_layout.scss; dead .page dropped) */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--app-height);
+}
+
+/* components (was styles/components/_icon, _link, _badge; dead .list dropped) */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.link {
+  position: relative;
+  padding: 0 5px;
+  transition: color var(--transition-duration) var(--transition-function);
+}
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: transparent;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+.link:hover::after {
+  transform: scaleX(1);
+}
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  line-height: 1;
+  font-weight: 500;
+}
+.badge_sm {
+  width: 28px;
+  height: 28px;
+  font-size: 1.25rem;
+}
+.badge_primary {
+  background-color: var(--state-primary);
+  color: var(--light-white);
+}
+.badge_discount,
+.badge_promo {
+  padding: 5px 10px;
+  border-radius: 2px 2px 0 0;
+  font-weight: 500;
+  color: var(--light-white);
+}
+.badge_discount {
+  background-color: var(--red);
+}
+.badge_promo {
+  background-color: var(--purple);
 }
