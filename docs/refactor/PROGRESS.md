@@ -5,8 +5,9 @@
 
 ## Current state
 
-- **Phase:** 5 — UI. Decision: **Tailwind 4 + shadcn/ui**, engine-swap keeping
-  the look 1:1, by group with user review.
+- **Phase:** 5 — UI **COMPLETE** (all parts merged to `develop`). Decision:
+  **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1, by group with
+  user review. **Next phase: 6 (quality consolidation).**
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -23,9 +24,9 @@
     SnackBar → custom toast; `useMediaQuery` hook replaces MUI's. Build/e2e green;
     bundle no longer ships MUI/emotion. Body bg/color/font (was MUI CssBaseline)
     reinstated on `body` via theme vars.
-  - **Part B COMPLETE (2026-06-17)** on `refactor/phase-5-ui-part3-scss`: SCSS
-    fully consolidated — **0 `.scss` files in the tree** (only `tailwind.css`);
-    `sass` + `classnames` uninstalled. One styling system. Ready for its own PR.
+  - **Part B MERGED** to `develop` (PR #225, 2026-06-18): SCSS fully consolidated
+    — **0 `.scss` files in the tree** (only `tailwind.css`); `sass` + `classnames`
+    uninstalled. One styling system. **Phase 5 exit criteria met.**
 - **Stack now:** Vite 7 · React 19 · TS 5.9 · TanStack Query 5 · Zustand 5 ·
   RHF + zod 4 · ts-client 4 + BFF · **Tailwind 4 + lucide + Radix (MUI + SCSS gone)**
 - **Latest gate:** production build, tsc, eslint 0 errors, 41 unit, e2e 11/11 —
@@ -51,9 +52,12 @@
   + 41 unit + 11 e2e — all green; base computed styles measured identical to
   pre-migration (light + dark).
 - **Part B PR:** [#225](https://github.com/HelgaZhizhka/eCommerce-Application/pull/225)
-  → `develop` (one styling system; closes phase 5) — **OPEN**, awaiting CI/review.
-- **Next:** merge #225 → then phase 6 (MSW tests, coverage, CI e2e, a11y,
-  README/ADRs, 6.6 Dependabot). Prod still on 2023 CRA build.
+  → `develop` **MERGED 2026-06-18** (CI `verify` green). Reviewed by a fresh-context
+  subagent (precedent: #221) → 1 must-fix (Categories hover-underline colour lost to
+  `.link::after` source-order tie) fixed before merge; rest approved.
+- **Next:** **Phase 6** (quality consolidation) — MSW integration tests, coverage
+  thresholds, Playwright in CI, a11y pass (incl. Filter focus-trap), README/ADRs,
+  **6.6 resolve 6 Dependabot alerts**. Prod still on 2023 CRA build.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -79,6 +83,24 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-18 — Session 9 (phase 5 part B finished + merged; phase 5 CLOSED)
+
+- converted the heavy-tail component scss to Tailwind (ProductCarousel, Poster,
+  Feature/Features, ProfileView, CurrentProduct, **Categories** ×5 variants,
+  **Registration** 3-step, **HeroCarousel** 3 slides × desktop+mobile); removed dead
+  `Header.module.scss`. Each live-verified ±theme/±viewport.
+- folded global `src/styles` partials into `tailwind.css`; deleted `src/styles/**`
+  + `index.scss`; uninstalled `sass` + `classnames` → **0 `.scss` in tree**.
+  Preflight left OFF (not 1:1); MUI-style base resets added instead.
+- fixed latent `matchMedia` mock gap (modern `useMediaQuery`) → 41/41 unit green.
+- **user visual review caught leaked UA defaults** (button border, anchor underline,
+  UA-blue links, About Us colour) → fixed via bare-element resets + `a{color:inherit}`
+  + explicit nav-link colours. Confirmed in live preview.
+- **code-review subagent** on PR #225 → 1 must-fix (Categories hover-underline colour
+  lost on a `.link::after` source-order tie) → fixed; rest approved.
+- **PR #225 MERGED to `develop`** (CI green). Phase 5 done — one styling system.
+- **Next:** Phase 6 (MSW tests, coverage, CI e2e, a11y, README/ADRs, 6.6 Dependabot).
 
 ### 2026-06-17 — Session 8 cont. (merge #223, start SCSS part B)
 
