@@ -9,8 +9,22 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       (catalog+filters, cart flows, auth flow).
 - [ ] **6.2** Vitest coverage thresholds for `entities/*` and `shared/api`
       (target: 80%).
-- [ ] **6.3** Playwright in CI against Netlify preview deploys; refresh
-      phase 0 scenarios to the final UI.
+- [~] **6.3** Playwright in CI (2026-06-18). Added an `e2e` job to `ci.yml` that
+      boots the full app (`netlify dev` → Vite + auth BFF) and runs Playwright
+      against the real Commercetools project. **Dormant until configured** (guarded
+      by `vars.RUN_E2E`), so it never reds a PR before the env exists. One-time
+      repo setup (Settings → Secrets and variables → Actions):
+  - **Variables:** `RUN_E2E=true`, `VITE_PROJECT_KEY_CLIENT`, `VITE_API_URL_CLIENT`
+  - **Secrets:** `CTP_PROJECT_KEY`, `CTP_CLIENT_ID`, `CTP_CLIENT_SECRET`,
+    `CTP_AUTH_URL`, `CTP_SCOPES` (use the minimal-scope SPA client)
+
+      Chose this (run in CI) over the "against a Netlify preview deploy" variant
+      because `deployment_status`-triggered workflows only run from the **default
+      branch**; with `develop` as the working branch (merged to `main` only at the
+      end), the preview approach would stay dormant during phase-6 dev. Note: the
+      registration scenario creates a real customer in CT on each run (unique
+      email) — inherent to e2e-against-real-CT. Phase 0 scenarios already track the
+      final UI (kept green throughout phase 5).
 - [~] **6.4** A11y pass. Specific items from the PR #221 review (phase 5 part 1):
   - [x] Filter mobile drawer (`Filter.tsx`): Esc-to-close + focus-to-close-button
         + `role="dialog"`/`aria-modal` (PR #222), and now **full focus-TRAP**

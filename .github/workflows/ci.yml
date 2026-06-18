@@ -30,3 +30,38 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  # E2E against the full app (Vite + auth BFF) booted by `netlify dev`, hitting
+  # the real Commercetools project. Dormant until configured — to enable, in the
+  # repo settings add:
+  #   • Variables:  RUN_E2E=true, VITE_PROJECT_KEY_CLIENT, VITE_API_URL_CLIENT
+  #   • Secrets:    CTP_PROJECT_KEY, CTP_CLIENT_ID, CTP_CLIENT_SECRET,
+  #                 CTP_AUTH_URL, CTP_SCOPES
+  # (use a minimal-scope "SPA" CT client). See docs/refactor/phase-6.md §6.3.
+  e2e:
+    if: ${{ vars.RUN_E2E == 'true' && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E (Playwright)
+        run: npx playwright test
+        env:
+          VITE_PROJECT_KEY_CLIENT: ${{ vars.VITE_PROJECT_KEY_CLIENT }}
+          VITE_API_URL_CLIENT: ${{ vars.VITE_API_URL_CLIENT }}
+          CTP_PROJECT_KEY: ${{ secrets.CTP_PROJECT_KEY }}
+          CTP_CLIENT_ID: ${{ secrets.CTP_CLIENT_ID }}
+          CTP_CLIENT_SECRET: ${{ secrets.CTP_CLIENT_SECRET }}
+          CTP_AUTH_URL: ${{ secrets.CTP_AUTH_URL }}
+          CTP_SCOPES: ${{ secrets.CTP_SCOPES }}
