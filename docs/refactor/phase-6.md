@@ -18,8 +18,10 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         focus-return-to-trigger still TODO here.
   - [x] `ThemeToggle.tsx`: `aria-label="Toggle theme"` — done early (PR #222)
   - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
-- [ ] **6.5** Docs: rewrite README (stack, setup, scripts), ADRs for key
-      decisions (BFF, TanStack Query, UI kit choice).
+- [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
+      scripts/structure; dropped the stale CRA/MUI/MobX boilerplate). ADRs added in
+      `docs/adr/`: 0001 BFF auth, 0002 TanStack Query + Zustand, 0003 Tailwind +
+      Radix + lucide.
 - [~] **6.6** Dependency security (2026-06-18): `npm audit` went from
       **1 critical + 14 moderate + 5 low → 9 low** (all one dev-only advisory).
   - [x] **critical** `swiper` (runtime, HeroCarousel/ProductCarousel): bumped

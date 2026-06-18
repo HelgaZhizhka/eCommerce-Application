@@ -1,98 +1,112 @@
-# eCommerce-Application
+# YES CODE — eCommerce SPA
 
-## We made this project to sell our own merch.
+Single-page storefront for a merch shop, backed by [Commercetools](https://commercetools.com/).
+Originally an RS School 2023 project, migrated to a modern stack (see
+[`docs/refactor/`](docs/refactor/)).
 
-https://yes-code-merch.netlify.app/
+**Live:** https://yes-code-merch.netlify.app/
 
-## The technology stack used:
+## Stack
 
-- GitHub
-- GitHub Projects
-- CommerceTools
-- Webpack
-- React
-- TypeScript
-- ESLint
-- Prettier
-- Husky
-- Jest
+| Area        | Tech                                                                 |
+| ----------- | -------------------------------------------------------------------- |
+| Build       | **Vite 7**                                                           |
+| UI          | **React 19** · **TypeScript 5.9** (strict)                           |
+| Server state| **TanStack Query 5**                                                 |
+| Client state| **Zustand 5** (theme, auth)                                          |
+| Forms       | **react-hook-form** + **zod 4**                                      |
+| Commerce SDK| **@commercetools/ts-client v4** + a small **BFF** (Netlify Functions)|
+| Styling     | **Tailwind CSS 4** + **Radix UI** primitives + **lucide-react** icons|
+| Carousels   | **Swiper**                                                           |
+| Routing     | **react-router-dom 6** (route-level code splitting)                  |
+| Tests       | **Vitest** (unit) · **Playwright** (e2e)                             |
+| Tooling     | **ESLint 9** (flat config) · Prettier · Husky + lint-staged          |
 
-## Libraries used:
+## Architecture
 
-- Material UI
-- Classnames
-- Formik
-- Jsdom
-- Mobx
-- React-router-dom
-- Sass
-- Swiper
-- Yup
+The browser bundle never holds the Commercetools client secret. Auth/token
+exchange runs server-side in **Netlify Functions** (`netlify/functions/*`, the
+"BFF"); the SPA talks to those functions and to the CT API with the resulting
+token. See [ADR-0001](docs/adr/0001-bff-for-commercetools-auth.md).
 
-## Key pages in the application include:
+```
+src/
+  pages/        route screens (lazy-loaded)
+  components/   UI components + baseComponents/ (shared primitives, RHF adapters)
+  queries/      TanStack Query hooks (catalog, cart, categories, auth)
+  stores/       Zustand stores + cart/product helpers
+  schemas/      zod form schemas + validation rules
+  shared/       cross-cutting libs (cn, useMediaQuery, …)
+  services/     CT client setup
+  styles/       tailwind.css (the single styling entry)
+netlify/
+  functions/    auth BFF (anonymous / login / logout / refresh / visitor)
+```
 
-- Login and Registration pages
-- Main page
-- Catalog Product page
-- Detailed Product page
-- User Profile page
-- Basket page
-- About Us page
-- Sale page
+## Prerequisites
 
-### Getting Started with Create React App
+- **Node 22** (see `.nvmrc` — `nvm use`)
+- A Commercetools project + an API client (Merchant Center → Settings →
+  Developer settings; use a **Mobile & single-page application** template client)
 
-This project was bootstrapped with Create React App.
+## Setup
 
-### Available Scripts
+```bash
+nvm use            # Node 22
+npm ci
+cp .env.example .env   # then fill in the values
+```
 
-In the project directory, you can run:
+`.env` keys are documented in [`.env.example`](.env.example):
+- **Browser** (`VITE_*`) — project key + region API host. No secrets.
+- **Server-side** (`CTP_*`) — client id/secret/scopes, used only by the Netlify
+  Functions. Locally `netlify dev` injects them; in production set them in the
+  Netlify UI. **Never commit `.env`.**
 
-### npm start
+## Run locally
 
-Runs the app in the development mode.
-Open http://localhost:3000 to view it in the browser.
+```bash
+npx netlify dev        # full app incl. the auth BFF — http://localhost:8888
+# or, frontend only (auth/BFF won't work):
+npm run dev            # http://localhost:3000
+```
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+## Scripts
 
-### npm test
+| Script              | What it does                                  |
+| ------------------- | --------------------------------------------- |
+| `npm run dev`       | Vite dev server (frontend only)               |
+| `npm run build`     | Production build → `build/` (+ SPA redirect)  |
+| `npm run preview`   | Serve the production build locally            |
+| `npm test`          | Unit tests (Vitest, single run)               |
+| `npm run test:watch`| Unit tests in watch mode                      |
+| `npm run typecheck` | `tsc --noEmit` (app + `netlify/`)             |
+| `npm run eslint`    | Lint · `npm run eslint:fix` to autofix        |
+| `npm run prettier`  | Format the repo                               |
+| `npx playwright test` | End-to-end tests                            |
 
-Launches the test runner in the interactive watch mode.
-See the section about running tests for more information.
+## Testing
 
-### npm run build
+- **Unit** — Vitest (`npm test`).
+- **E2E** — Playwright (`npx playwright test`); the config boots `netlify dev`
+  on port 8888 as the test server.
+- **Full gate** — [`./scripts/verify.sh`](scripts/verify.sh) runs install +
+  typecheck + lint + unit + e2e. CI (`.github/workflows/ci.yml`) runs the same
+  minus e2e on every PR and push to `develop`/`main`.
 
-Builds the app for production to the build folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Deployment
 
-The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
+Hosted on **Netlify**. The build command is `npm run build` (publish dir
+`build/`); the auth BFF deploys alongside as Netlify Functions. Set the `CTP_*`
+environment variables in the Netlify site settings.
 
-See the section about deployment for more information.
+## Documentation
 
-### npm run eject
+- [`docs/refactor/`](docs/refactor/) — the migration plan, per-phase checklists,
+  and progress log.
+- [`docs/adr/`](docs/adr/) — architecture decision records (BFF, TanStack Query,
+  UI kit).
 
-Note: this is a one-way operation. Once you eject, you can’t go back!
+## Pages
 
-If you aren’t satisfied with the build tool and configuration choices, you can eject at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except eject will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use eject. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-### npm run eslint
-
-Launches a static code analysis tool to detect problematic templates in interactive view mode.
-
-### npm run prettier
-
-Launches a code formatting tool that aims to use hard-coded rules for program layout in interactive viewing mode.
-
-### npm run prepare
-
-Runs the commit checking tool in the interactive browsing log.
-
-### npm run eslint:fix
-
-Starts the error correction tool in the interactive browsing log.
+Login · Registration · Main · Catalog · Product · Profile · Basket · About Us · Sale
