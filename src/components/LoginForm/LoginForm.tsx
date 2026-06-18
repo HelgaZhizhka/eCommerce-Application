@@ -9,7 +9,6 @@ import ShowValidate from '../ShowValidate/ShowValidate';
 import { RHFTextField } from '../baseComponents/RHFTextField';
 import { Button } from '../baseComponents/Button';
 import { useAuthStore } from '../../stores/authStore';
-import styles from './LoginForm.module.scss';
 
 const LoginForm: React.FC = () => {
   const login = useAuthStore((state) => state.login);
@@ -30,7 +29,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.inputContainer}>
+      <div>
         <RHFTextField
           control={control}
           name="email"
@@ -40,7 +39,7 @@ const LoginForm: React.FC = () => {
         {touched.email && <ShowValidate value={email} rules={emailRules} />}
       </div>
 
-      <div className={styles.inputContainer}>
+      <div>
         <RHFTextField
           control={control}
           name="password"
@@ -51,15 +50,15 @@ const LoginForm: React.FC = () => {
         {touched.password && <ShowValidate value={password} rules={passwordRules} />}
       </div>
 
-      <div className={styles.btnLogin}>
+      <div className="my-4">
         <Button disabled={!formState.isValid} variant="contained" fullWidth type="submit">
           Sign in
         </Button>
       </div>
 
-      <div className={styles.lineContainer}>
-        <div className={styles.line}></div>
-        <div className={styles.text}>or</div>
+      <div className="relative mb-4 flex h-full items-center justify-center">
+        <div className="absolute top-1/2 h-px w-full bg-gray"></div>
+        <div className="z-[1] bg-body px-5">or</div>
       </div>
 
       <Link to="/registration">

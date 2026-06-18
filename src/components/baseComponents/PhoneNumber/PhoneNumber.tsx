@@ -1,6 +1,6 @@
 import { Icon } from '../Icon';
 import { IconName } from '../Icon/Icon.enum';
-import styles from './PhoneNumber.module.scss';
+import { cn } from '../../../shared/lib/cn';
 
 type Props = {
   children?: string;
@@ -11,8 +11,8 @@ const PhoneNumber: React.FC<Props> = ({ children, className }) => {
   const cleanedPhoneNumber = children?.replace(/[^\d+]/g, '');
 
   return (
-    <span className={`${className} ${styles.root}`}>
-      <Icon name={IconName.PHONE} width={32} height={32} className={`icon ${styles.icon}`} />
+    <span className={cn('flex items-center', className)}>
+      <Icon name={IconName.PHONE} width={32} height={32} className="icon mr-[5px]" />
       <a className="text-inherit" href={`tel: ${cleanedPhoneNumber}`}>
         {children}
       </a>

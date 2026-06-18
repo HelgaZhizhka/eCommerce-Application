@@ -53,17 +53,20 @@ code splitting. Plan reference: REFACTORING_PLAN.md §5, "Фаза 5".
 - [x] **FINAL (part A — MUI)**: removed `@mui/*` + `@emotion/*` (uninstalled);
       0 `@mui` imports. lucide + Radix + shared primitives in place. Body base
       styles (bg/color/font) reinstated from theme vars after CssBaseline removal.
-- [~] **FINAL (part B — SCSS)**: in progress on `refactor/phase-5-ui-part3-scss`.
-      Done: global CSS vars migrated to `tailwind.css`; ≈18 `*.module.scss`
-      converted (forms, simple utilities, Logo/InfoPanel/Product/ProfileEdit/
-      RegistrationSuccessful/AboutPerson). Remaining: 10 heavy component scss
-      (HeroCarousel/Categories/Header/CurrentProduct/Registration/Features/Feature/
-      ProfileView/Poster/ProductCarousel) + global `src/styles` partials → enable
-      Tailwind preflight (per-page visual re-check) → delete `src/styles/**` →
-      drop `sass` + `classnames`.
-- [~] E2E green (11/11); visual review done for Catalog/Login(±dark)/Product/
-      content pages + Logo/InfoPanel/AboutPerson — full per-page ±theme ±viewport
-      sign-off pending part B heavy components.
+- [x] **FINAL (part B — SCSS): DONE** on `refactor/phase-5-ui-part3-scss`.
+      ALL component `*.module.scss` converted to Tailwind (ProductCarousel, Poster,
+      Feature/Features, ProfileView, CurrentProduct, Categories ×5 variants,
+      Registration 3-step, HeroCarousel 3 slides × desktop+mobile; dead
+      `Header.module.scss` removed) + global partials folded into `tailwind.css`
+      as plain CSS (normalize/body base, `.link`/`.icon`/`.badge`, `.app`, swiper
+      overrides, Mukta @import). **0 `.scss` files left**; `src/styles/**` +
+      `index.scss` deleted; `sass` + `classnames` uninstalled. Tailwind **preflight
+      deliberately NOT enabled** (would reset heading/list/anchor defaults app-wide
+      → not 1:1); base look preserved via the normalize block. Fixed latent
+      `matchMedia` mock gap → 41/41 unit green.
+- [x] E2E green (11/11), 41/41 unit green, production build green; base computed
+      styles measured identical to pre-migration (light + dark); every part-B
+      component live-verified ±theme/±viewport. **One styling system in the tree.**
 - [x] `PROGRESS.md` updated. Part 2 (MUI removal) merged via **PR #223**;
       part B continues on its own branch → its own PR.
 

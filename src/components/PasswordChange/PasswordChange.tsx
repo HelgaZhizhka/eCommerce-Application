@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordChangeSchema, PasswordChangeValues } from '../../schemas/forms';
 import { RHFTextField } from '../baseComponents/RHFTextField';
 import { Button } from '../baseComponents/Button';
-import styles from './PasswordChange.module.scss';
 
 type Props = {
   onSaveChange: (data: Record<string, string | boolean | number>) => void;
@@ -28,13 +27,13 @@ const PasswordChange: React.FC<Props> = ({ onSaveChange }) => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="currentPassword" label="Current password" password />
         </div>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="newPassword" label="New password" password />
         </div>
-        <div className={styles.inputContainer}>
+        <div className="mb-5 flex">
           <RHFTextField control={control} name="repeatNewPassword" label="Repeat new password" password />
         </div>
 

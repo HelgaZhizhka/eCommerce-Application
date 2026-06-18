@@ -5,7 +5,6 @@ import { ProfilePersonalInfo } from '../ProfilePersonalInfo';
 import { ProfileAddress } from '../ProfileAddress';
 import { ModalProfile } from '../baseComponents/ModalProfile';
 import { Button } from '../baseComponents/Button';
-import styles from './ProfileEdit.module.scss';
 
 type Props = {
   className?: string;
@@ -40,7 +39,7 @@ const ProfileEdit: React.FC<Props> = ({
   const handleCloseModal = (): void => setActiveModal(null);
 
   return (
-    <div className={styles.root}>
+    <div className="flex w-full flex-col items-center justify-center">
       <Button
         variant="outlined"
         className="mb-5 ml-auto h-[60px] w-60 border-[orange] text-[1.2rem] font-semibold text-[orange] hover:bg-[orange]/5"
@@ -93,7 +92,7 @@ const ProfileEdit: React.FC<Props> = ({
         />
       ))}
 
-      <div className={styles.buttonWrapper}>
+      <div className="mt-10 flex flex-col justify-center gap-5 self-center md:flex-row">
         <Button className="text-2xl" variant="contained" onClick={handleOpenAddressModal}>
           Add address
         </Button>

@@ -1,8 +1,7 @@
 import { currency } from '../../constants';
-import styles from './SelectCurrency.module.scss';
 
 const SelectCurrency: React.FC = () => (
-  <div className={styles.root}>
+  <div className="flex items-end">
     <select
       defaultValue={currency.value}
       aria-label="Select currency"

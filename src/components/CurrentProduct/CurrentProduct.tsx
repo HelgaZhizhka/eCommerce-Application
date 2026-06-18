@@ -12,13 +12,21 @@ import { SizeWithVariantId } from '../baseComponents/SelectSize/SelectSize.types
 import { ProductCarousel } from '../ProductCarousel';
 import { Modal } from '../Modal';
 import holder from './images/holder.png';
-import styles from './CurrentProduct.module.scss';
 
 type Props = {
   className?: string;
   product: ProductType | undefined;
   isLoading: boolean;
 };
+
+const rootClass = 'mt-10 md:grid md:grid-cols-[1fr_2fr] md:gap-10 lg:gap-[120px]';
+const titleClass = 'mb-5 mt-0 text-[2rem]';
+const descriptionClass = 'mb-5 pt-5 max-md:border-t max-md:border-content lg:w-4/5';
+const footerClass = 'my-5';
+const flexClass = 'relative flex flex-wrap items-center gap-[5px]';
+const saleClass = 'text-[30px] font-medium text-danger';
+const selectClass = 'min-w-[120px]';
+const errorClass = 'absolute left-0 top-full z-10 rounded border border-red bg-light-white px-[5px] py-0.5 text-red';
 
 const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading }) => {
   const isMobile = useMediaQuery('(max-width: 1023.95px)');
@@ -96,20 +104,20 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
   if (priceDiscount && discountPriceValue) {
     priceComponent = (
       <>
-        <span className={styles.flex}>
-          <Price className={styles.priceOld} variant="old" currency={currency}>
+        <span className={flexClass}>
+          <Price className="text-[24px]" variant="old" currency={currency}>
             {priceValue}
           </Price>
-          <span className={styles.sale}>Sale!</span>
+          <span className={saleClass}>Sale!</span>
         </span>
-        <Price className={styles.priceNew} variant="new" currency={currency}>
+        <Price className="mb-5 text-[2rem]" variant="new" currency={currency}>
           {discountPriceValue}
         </Price>
       </>
     );
   } else if (priceValue) {
     priceComponent = (
-      <Price className={styles.priceInfo} currency={currency}>
+      <Price className="mb-5 mt-5" currency={currency}>
         {priceValue}
       </Price>
     );
@@ -128,7 +136,6 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
   if (smallImages.length > 0) {
     carouselComponent = (
       <ProductCarousel
-        className={styles.carousel}
         images={averageImages}
         thumbs={smallImages}
         variant={'thumbnails'}
@@ -218,21 +225,21 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
       {bigImages?.length > 0 && (
         <Modal images={bigImages} activeImageIndex={activeImageIndex} isOpen={open} onClose={handleClose} />
       )}
-      <div className={styles.root}>
+      <div className={rootClass}>
         {!isMobile ? (
           <>
             {carouselComponent}
-            <div className={styles.column}>
-              <h2 className={styles.title}>{productName}</h2>
-              <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
-              <div className={styles.footer}>
+            <div>
+              <h2 className={titleClass}>{productName}</h2>
+              <p className={descriptionClass} dangerouslySetInnerHTML={{ __html: description }}></p>
+              <div className={footerClass}>
                 {priceComponent}
-                <div className={styles.flex}>
+                <div className={flexClass}>
                   {variantsProduct.length > 0 && (
                     <>
-                      {sizeError && <p className={styles.error}>{sizeError}</p>}
+                      {sizeError && <p className={errorClass}>{sizeError}</p>}
                       <SelectSize
-                        className={styles.select}
+                        className={selectClass}
                         value={selectedVariant}
                         options={variantsProduct}
                         onChange={handleSizeChange}
@@ -254,7 +261,7 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
                     </>
                   ) : (
                     <>
-                      <span className={styles.error}>Already in the cart.</span>
+                      <span className={errorClass}>Already in the cart.</span>
                       <Button className="h-[60px] text-xl" variant="contained" onClick={handleRemoveFromCart}>
                         Remove from cart
                       </Button>
@@ -266,17 +273,17 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
           </>
         ) : (
           <>
-            <h2 className={styles.title}>{productName}</h2>
+            <h2 className={titleClass}>{productName}</h2>
             {carouselComponent}
-            <div className={styles.footer}>
+            <div className={footerClass}>
               {priceComponent}
-              <div className={styles.footer}>
-                <div className={styles.flex}>
+              <div className={footerClass}>
+                <div className={flexClass}>
                   {variantsProduct.length > 0 && (
                     <>
-                      {sizeError && <span className={styles.error}>{sizeError}</span>}
+                      {sizeError && <span className={errorClass}>{sizeError}</span>}
                       <SelectSize
-                        className={styles.select}
+                        className={selectClass}
                         value={selectedVariant}
                         options={variantsProduct}
                         onChange={handleSizeChange}
@@ -298,7 +305,7 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
                     </>
                   ) : (
                     <>
-                      <span className={styles.error}>Already in the cart.</span>
+                      <span className={errorClass}>Already in the cart.</span>
                       <Button className="h-[60px] text-xl" variant="contained" onClick={handleRemoveFromCart}>
                         Remove from cart
                       </Button>
@@ -307,7 +314,7 @@ const CurrentProduct: React.FC<Props> = ({ product: currentProduct, isLoading })
                 </div>
               </div>
             </div>
-            <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
+            <p className={descriptionClass} dangerouslySetInnerHTML={{ __html: description }}></p>
           </>
         )}
       </div>

@@ -1,7 +1,9 @@
-/* Tailwind 4 entry. Preflight is intentionally omitted while MUI still ships
- * (it would clobber MUI's CssBaseline); it gets added once MUI is removed.
- * Design tokens mirror the existing CSS variables (src/styles/core/_variables)
- * so utilities and the legacy SCSS share one source of truth. */
+/* Tailwind 4 entry — the single styling system. Preflight is intentionally NOT
+ * imported: the app's 1:1 look relies on browser defaults + the normalize block
+ * below (heading sizes, link underlines, list/paragraph margins). The legacy
+ * SCSS partials (normalize/typography/states/layout/components) were folded into
+ * this file when `sass` was dropped; design tokens live in the :root block. */
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;400;500;600;700;800&display=swap');
 @import 'tailwindcss/theme.css';
 @import 'tailwindcss/utilities.css';
 
@@ -91,4 +93,402 @@
   35% {
     clip-path: polygon(0 85%, 100% 85%, 100% 90%, 0 90%);
   }
+}
+
+/* Runtime design tokens (migrated from styles/core/_variables.scss — they were
+ * already plain CSS custom properties). The @theme block above resolves its
+ * semantic colours through these, and dark mode swaps them on the body. */
+:root {
+  --app-height: 100vh;
+  --white: #fff;
+  --light-white: #f2f2f2;
+  --light-blue: #eef7ff;
+  --orange: #f2760f;
+  --orange-light: #ff9843;
+  --blue: #3e17ff;
+  --blue-hover: #6146e9;
+  --purple: #b62dd3;
+  --green: #009444;
+  --red: #f61717;
+  --pink: #f7527e;
+  --violet: #70198f;
+  --black: #0b0a0a;
+  --dark: #121212;
+  --spicy-orange: #faba86;
+  --spicy-orange-active: #cf5f04;
+  --light-gray: #f4f4f4;
+
+  --filter-white: #fafafa;
+  --filter-red: #dd504c;
+  --filter-orange: #df8c51;
+  --filter-green: #44822b;
+  --filter-blue: #42a2b9;
+  --filter-black: #0b0a0a;
+  --filter-gray: #bababa;
+  --filter-brown: #7b4a37;
+  --filter-purple: #925e8d;
+  --filter-lightblue: #3ce7eb;
+
+  --state-primary: var(--orange);
+  --state-primary-hover: var(--orange-light);
+  --state-secondary: var(--green);
+  --state-success: var(--green);
+  --state-info: var(--blue);
+  --state-warning: var(--orange);
+  --state-error: var(--pink);
+  --state-danger: var(--red);
+
+  --gray: #979999;
+
+  --multicolor: linear-gradient(45deg, #d80b0b, #ff8009, #ffdd00, #5ccd3e, #6dc7f7, #0c5ed9, #2723fc);
+
+  --body-bg: var(--white);
+  --nav-bg: var(--black);
+  --nav-color-light: var(--light-white);
+  --nav-color-light-hover: var(--white);
+  --nav-color-dark: var(--black);
+  --nav-color-dark-hover: var(--dark);
+  --color-text: var(--black);
+  --component-bg: var(--light-gray);
+  --panel-bg: var(--light-blue);
+  --page-bg: var(--light-white);
+  --font-family: 'Mukta', sans-serif;
+
+  --transition-duration: 0.35s;
+  --transition-function: cubic-bezier(0.5, 0, 0.5, 1);
+
+  --z-index-1: 1;
+  --z-index-navbar: 999;
+  --border-radius: 5px;
+}
+
+body[data-theme='dark'] {
+  --body-bg: var(--dark);
+  --panel-bg: rgba(255, 255, 255, 0.08);
+  --page-bg: var(--black);
+  --color-text: var(--light-white);
+  --nav-color-dark: var(--light-white);
+  --nav-color-dark-hover: var(--light-white);
+  --component-bg: var(--dark);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Base reset / normalize (was styles/core/_normalize.scss). Kept verbatim so
+ * the app's 1:1 look (box-sizing, body bg/colour/font, heading/list/anchor
+ * defaults) survives without Tailwind preflight. Tailwind utility classes win
+ * over these by specificity (class > element).
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  line-height: 1.15;
+  text-size-adjust: 100%;
+  -webkit-overflow-scrolling: auto;
+  -webkit-touch-callout: none;
+}
+body {
+  margin: 0;
+  background-color: var(--body-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-smooth: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html,
+body {
+  min-height: 100%;
+}
+body * {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-focus-ring-color: rgba(255, 255, 255, 0);
+  outline: none;
+}
+* {
+  box-sizing: border-box;
+}
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+img,
+a {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+/* Suppress native <a>/<button> chrome that MUI CssBaseline used to reset.
+ * Deliberately bare element selectors (specificity 0,0,1): they beat UA
+ * defaults but LOSE to Tailwind utilities (.underline, .bg-*, .border-*,
+ * specificity 0,1,0), so the shared Button's variants/outlined border and any
+ * explicit underline still win. */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  border: 0;
+  background-color: transparent;
+  background-image: none;
+}
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+figcaption,
+figure,
+main {
+  display: block;
+}
+figure {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+b,
+strong {
+  font-weight: bolder;
+}
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+img,
+picture {
+  max-width: 100%;
+  height: auto;
+  border: 0;
+  vertical-align: bottom;
+}
+video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  line-height: 1.15;
+  margin: 0;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+}
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+button:-moz-focusring,
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+progress {
+  vertical-align: baseline;
+}
+textarea {
+  overflow: auto;
+}
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+details {
+  display: block;
+}
+summary {
+  display: list-item;
+}
+audio,
+video {
+  display: inline-block;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+canvas {
+  display: inline-block;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+[hidden] {
+  display: none;
+}
+::selection {
+  background: var(--state-primary-hover);
+  color: #fff;
+}
+
+/* utility/state helpers (was styles/core/_states.scss; dead .ml-auto/.mr-1/
+ * .text-inherit dropped — Tailwind provides equivalents) */
+.text-brand {
+  margin: 0 5px;
+  color: var(--state-primary);
+  border-bottom: 1px solid var(--state-primary);
+}
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+.text-overflow {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  color: var(--light-white);
+  text-shadow: 1px 1px 1px var(--gray);
+}
+.swiper-scrollbar-drag {
+  background: var(--state-primary) !important;
+}
+input[type='search']::-webkit-search-clear-button {
+  appearance: none;
+  margin: 0;
+}
+input[type='search']::-ms-clear {
+  display: none;
+}
+input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+/* layout (was styles/layout/_layout.scss; dead .page dropped) */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--app-height);
+}
+
+/* components (was styles/components/_icon, _link, _badge; dead .list dropped) */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.link {
+  position: relative;
+  padding: 0 5px;
+  transition: color var(--transition-duration) var(--transition-function);
+}
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  /* colour comes from a per-use `after:bg-*` utility (e.g. Categories nav links).
+   * No explicit `transparent` here: it's the initial value anyway, and declaring
+   * it would tie on specificity with those utilities and win on source order,
+   * hiding the underline (the line stays hidden at rest via scaleX(0)). */
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+.link:hover::after {
+  transform: scaleX(1);
+}
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  line-height: 1;
+  font-weight: 500;
+}
+.badge_sm {
+  width: 28px;
+  height: 28px;
+  font-size: 1.25rem;
+}
+.badge_primary {
+  background-color: var(--state-primary);
+  color: var(--light-white);
+}
+.badge_discount,
+.badge_promo {
+  padding: 5px 10px;
+  border-radius: 2px 2px 0 0;
+  font-weight: 500;
+  color: var(--light-white);
+}
+.badge_discount {
+  background-color: var(--red);
+}
+.badge_promo {
+  background-color: var(--purple);
 }

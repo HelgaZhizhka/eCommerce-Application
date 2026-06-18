@@ -2,7 +2,6 @@ import { Address } from '@commercetools/platform-sdk';
 
 import { ProfileView } from '../ProfileView';
 import ProfileEdit from '../ProfileEdit/ProfileEdit';
-import styles from './ProfileBox.module.scss';
 
 type Props = {
   className?: string;
@@ -32,7 +31,7 @@ const ProfileBox: React.FC<Props> = ({
   defaultShippingAddress,
   defaultBillingAddress,
 }) => (
-  <div className={styles.root}>
+  <div className="sm:p-5 lg:px-20 lg:pt-[50px] lg:pb-[60px]">
     {!editMode ? (
       <ProfileView
         onModeChange={onModeChange}

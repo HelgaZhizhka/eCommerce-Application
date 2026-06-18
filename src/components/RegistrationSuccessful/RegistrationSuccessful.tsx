@@ -1,19 +1,18 @@
-import classNames from 'classnames';
-
 import { useThemeStore } from '../../stores/theme';
-import styles from './RegistrationSuccessful.module.scss';
+import logo from './images/logo.svg';
+import logoLight from './images/logoLight.svg';
 
 const RegistrationSuccessful: React.FC = () => {
   const darkMode = useThemeStore((state) => state.darkMode);
 
-  const classes = classNames(styles.logo, {
-    [styles.dark]: darkMode,
-  });
-
   return (
-    <div className={styles.root}>
+    <div className="mt-5 mb-[50px] flex flex-col items-center justify-center">
       <h2>Thank you! Registration was successful!</h2>
-      <span className={classes}></span>
+      <img
+        src={darkMode ? logoLight : logo}
+        alt="YesCode"
+        className="inline-block h-[122px] w-[300px] object-contain object-center"
+      />
     </div>
   );
 };

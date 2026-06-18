@@ -99,7 +99,10 @@ const Header: React.FC = () => {
           <div className="mx-auto flex w-full max-w-[1536px] items-center px-4">
             <Categories size="l" variant="horizontal" />
             <div className="ml-auto flex items-center">
-              <Link className="mx-4 text-2xl transition-colors hover:text-orange-light" to={RoutePaths.ABOUT}>
+              <Link
+                className="mx-4 text-2xl text-light-white transition-colors hover:text-orange-light"
+                to={RoutePaths.ABOUT}
+              >
                 About Us
               </Link>
               <ThemeToggle />
