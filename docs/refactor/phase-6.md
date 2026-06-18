@@ -11,13 +11,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       (target: 80%).
 - [ ] **6.3** Playwright in CI against Netlify preview deploys; refresh
       phase 0 scenarios to the final UI.
-- [ ] **6.4** A11y pass: form labels/aria, modal focus management, dark theme
-      contrast. Specific items from the PR #221 review (phase 5 part 1):
-  - [~] Filter mobile drawer (`Filter.tsx`): Esc-to-close + focus-to-close-button
-        + `role="dialog"`/`aria-modal` DONE (PR #222); full focus-TRAP and
-        focus-return-to-trigger still TODO here.
+- [~] **6.4** A11y pass. Specific items from the PR #221 review (phase 5 part 1):
+  - [x] Filter mobile drawer (`Filter.tsx`): Esc-to-close + focus-to-close-button
+        + `role="dialog"`/`aria-modal` (PR #222), and now **full focus-TRAP**
+        (Tab/Shift+Tab wrap inside) + **focus-return-to-trigger** on close
+        (2026-06-18) — verified live: 21 focusables trapped, focus returns to the
+        filter trigger.
   - [x] `ThemeToggle.tsx`: `aria-label="Toggle theme"` — done early (PR #222)
   - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
+  - [ ] Remaining: broad form labels/aria audit + dark-theme contrast pass.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
       scripts/structure; dropped the stale CRA/MUI/MobX boilerplate). ADRs added in
       `docs/adr/`: 0001 BFF auth, 0002 TanStack Query + Zustand, 0003 Tailwind +
