@@ -20,15 +20,21 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
   - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
 - [ ] **6.5** Docs: rewrite README (stack, setup, scripts), ADRs for key
       decisions (BFF, TanStack Query, UI kit choice).
-- [ ] **6.6** Dependency security: resolve the 6 open Dependabot alerts on
-      `develop` (snapshot 2026-06-17):
-  - **critical** — `swiper` (runtime dep, HeroCarousel/ProductCarousel): bump to
-    a patched version; smoke-test the carousels after.
-  - **high + low** — `esbuild` (transitive via Vite/Vitest): bump Vite/Vitest or
-    add an `overrides` pin.
-  - **moderate ×3** — `@opentelemetry/core` (already pinned via `overrides`),
-    `micromatch`, `yaml` (transitive, mostly netlify-cli/tooling): bump or pin.
-  - Re-run `npm audit` + `./scripts/verify.sh`; confirm Dependabot clears.
+- [~] **6.6** Dependency security (2026-06-18): `npm audit` went from
+      **1 critical + 14 moderate + 5 low → 9 low** (all one dev-only advisory).
+  - [x] **critical** `swiper` (runtime, HeroCarousel/ProductCarousel): bumped
+        `^10.1.0` → **`^12.2.0`** (2-major). typecheck/build/41 unit/11 e2e green;
+        both carousels visually verified (hero autoplay + product thumbnails),
+        look/behaviour 1:1.
+  - [x] **moderate** `@opentelemetry/core`, `micromatch`, `yaml`: cleared via
+        `overrides` (`@opentelemetry/core ^2.8.0`, `micromatch ^4.0.8`, `yaml ^2.8.3`).
+  - [~] **low** `esbuild` (9×, transitive via netlify-cli internals + Vite): NOT
+        patched. Accepted residual risk — advisory is a **Windows-only dev-server
+        file-read**, build-time only, **not in the production bundle**; we build on
+        Linux/Netlify. A global `esbuild` override risks breaking Vite 7/Vitest 4
+        (tightly version-coupled), and `netlify-cli@26` already pins its own copies.
+        Revisit when Vite/netlify-cli bump esbuild upstream.
+  - Verify on GitHub that Dependabot's tracked alerts clear after merge.
 - [ ] Final `PROGRESS.md` update; close the refactor.
 
 ## Exit criteria
