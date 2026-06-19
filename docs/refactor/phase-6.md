@@ -18,8 +18,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       (visitor memo, lazy anon, refresh/expiry, login/signup request shaping).
       Note: CT error responses must carry a populated `errors[]` — the SDK reads
       `errors[0].code` and an empty array drops it into the network-error path.
-- [ ] **6.2** Vitest coverage thresholds for `entities/*` and `shared/api`
-      (target: 80%).
+- [x] **6.2** Vitest coverage thresholds (2026-06-19). The plan's `entities/*` +
+      `shared/api` map to this project's **`src/services/**` + `src/queries/**`**;
+      v8 coverage is scoped to those in `vite.config` with enforced thresholds
+      **statements 80 / lines 80 / functions 80 / branches 70**. Actuals well
+      above: **stmts 92.6 · lines 93.8 · funcs 89.3 · branch 78.1** (98 tests).
+      Added profile (`setCustomersDetails` + `queries/customer`) and the
+      remaining cart hooks/pure-helper tests to clear the bar. New script
+      `test:coverage` (`vitest run --coverage`) wired into `scripts/verify.sh`
+      and the CI `verify` job, so a drop below threshold fails the build.
 - [~] **6.3** Playwright in CI (2026-06-18). Runs e2e **against the Netlify deploy
       preview** — `.github/workflows/e2e.yml` triggers on `deployment_status` and
       points Playwright at the deploy's `target_url` (`playwright.config.ts` reads

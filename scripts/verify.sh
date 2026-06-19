@@ -20,8 +20,8 @@ npx tsc --noEmit
 echo "=== Lint ==="
 npm run eslint
 
-echo "=== Unit tests ==="
-npm test
+echo "=== Unit tests + coverage ==="
+npm run test:coverage
 
 if [ -d e2e ] || [ -f playwright.config.ts ]; then
   echo "=== E2E (Playwright) ==="
