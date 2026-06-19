@@ -3,12 +3,12 @@ name: E2E
 # Runs Playwright against the Netlify deploy that just went live, using its URL —
 # no Commercetools env/secrets in GitHub (the preview already has them on Netlify).
 #
-# NOTE: `deployment_status`-triggered workflows only run from the repository's
-# DEFAULT branch. With `main` as default and `develop` as the working branch,
-# this activates once it lands on `main` (the final merge) and for `main` PRs.
-# During day-to-day `develop` work, e2e runs locally (./scripts/verify.sh) and
-# the CI `verify` job (build/lint/typecheck/unit) covers each PR.
-# Requires Netlify Deploy Previews to be enabled for the repo.
+# NOTE: `deployment_status`-triggered workflows only run when this file is on the
+# repository's DEFAULT branch (`main`). Netlify is configured with Production =
+# `main`, Branch deploys = `develop`, and Deploy Previews for PRs — so PRs into
+# `develop` and pushes to `develop`/`main` all emit a `deployment_status` this
+# reacts to. Until this file is on `main` it stays dormant (develop PRs are still
+# covered locally + by the CI `verify` job).
 on:
   deployment_status:
 
@@ -18,7 +18,11 @@ jobs:
     if: ${{ github.event.deployment_status.state == 'success' && github.event.deployment_status.target_url != '' }}
     runs-on: ubuntu-latest
     steps:
+      # check out the exact commit that was deployed (carries the matching
+      # playwright.config); for deployment_status the SHA is on the deployment.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
 
       - uses: actions/setup-node@v4
         with:
