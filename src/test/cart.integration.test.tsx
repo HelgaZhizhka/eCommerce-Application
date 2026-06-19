@@ -5,7 +5,17 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 
 import { createCart, deleteCart, getActiveCart, updateCart } from '../services/cartService';
-import { cartKey, useAddToCartMutation, useApplyPromoMutation, useClearCartMutation } from '../queries/cart';
+import {
+  cartKey,
+  useAddToCartMutation,
+  useApplyPromoMutation,
+  useCartActions,
+  useCartQuery,
+  useChangeQuantityMutation,
+  useClearCartMutation,
+  useRemoveLineItemMutation,
+  useRemovePromoMutation,
+} from '../queries/cart';
 import { CT } from './handlers';
 import { server, recordRequests } from './server';
 import { createTestQueryClient } from './utils';
@@ -129,5 +139,72 @@ describe('cart mutations (TanStack Query cache)', () => {
     const body = (await updateCall!.clone().json()) as { actions: { action: string; code?: string }[] };
     expect(body.actions[0]).toEqual({ action: 'addDiscountCode', code: 'BAGS15-SP' });
     expect(queryClient.getQueryData(cartKey)).toMatchObject({ version: 3 });
+  });
+
+  it('useCartQuery derives products, totals and discount from the active cart', async () => {
+    seedSession();
+    const { result } = renderWithClient(() => useCartQuery());
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.products).toHaveLength(1);
+    expect(result.current.totalAmount).toBe(2);
+    expect(result.current.totalPrice).toBe(4000);
+  });
+
+  it('change-quantity sends a changeLineItemQuantity action for the cached cart', async () => {
+    seedSession();
+    const { queryClient, result } = renderWithClient(() => useChangeQuantityMutation());
+    queryClient.setQueryData(cartKey, cartWithItem); // mutationFn no-ops without a cached cart
+
+    const calls = recordRequests();
+    await result.current.mutateAsync({ lineItemId: 'line-1', quantity: 5 });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const update = calls.find((c) => c.method === 'POST' && /\/me\/carts\/cart-1$/.test(new URL(c.url).pathname));
+    const body = (await update!.clone().json()) as { actions: { action: string; quantity: number }[] };
+    expect(body.actions[0]).toMatchObject({ action: 'changeLineItemQuantity', quantity: 5 });
+  });
+
+  it('remove-line-item sets the quantity to zero', async () => {
+    seedSession();
+    const { queryClient, result } = renderWithClient(() => useRemoveLineItemMutation());
+    queryClient.setQueryData(cartKey, cartWithItem);
+
+    const calls = recordRequests();
+    await result.current.mutateAsync('line-1');
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const update = calls.find((c) => c.method === 'POST' && /\/me\/carts\/cart-1$/.test(new URL(c.url).pathname));
+    const body = (await update!.clone().json()) as { actions: { action: string; quantity: number }[] };
+    expect(body.actions[0]).toMatchObject({ action: 'changeLineItemQuantity', lineItemId: 'line-1', quantity: 0 });
+  });
+
+  it('remove-promo sends a removeDiscountCode action', async () => {
+    seedSession();
+    const { queryClient, result } = renderWithClient(() => useRemovePromoMutation());
+    queryClient.setQueryData(cartKey, cartWithItem);
+
+    const calls = recordRequests();
+    await result.current.mutateAsync('disc-1');
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const update = calls.find((c) => c.method === 'POST' && /\/me\/carts\/cart-1$/.test(new URL(c.url).pathname));
+    const body = (await update!.clone().json()) as { actions: { action: string; discountCode: unknown }[] };
+    expect(body.actions[0]).toMatchObject({
+      action: 'removeDiscountCode',
+      discountCode: { typeId: 'discount-code', id: 'disc-1' },
+    });
+  });
+
+  it('useCartActions reports cart membership by sku and removes by sku', async () => {
+    seedSession();
+    const { queryClient, result } = renderWithClient(() => useCartActions());
+    queryClient.setQueryData(cartKey, cartWithItem);
+    await waitFor(() => expect(result.current.isProductInCart('RED-TEE-1')).toBe(true));
+
+    expect(result.current.isProductInCart('NOPE')).toBe(false);
+    const calls = recordRequests();
+    await result.current.removeProductFromCart('RED-TEE-1');
+    expect(calls.some((c) => c.method === 'POST' && /\/me\/carts\/cart-1$/.test(new URL(c.url).pathname))).toBe(true);
   });
 });

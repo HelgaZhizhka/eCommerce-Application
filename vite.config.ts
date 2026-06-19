@@ -31,5 +31,19 @@ export default defineConfig({
       VITE_PROJECT_KEY_CLIENT: 'test-project',
       VITE_API_URL_CLIENT: 'https://api.commercetools.test',
     },
+    // 6.2: enforce coverage on the API layer (the plan's `entities/*` +
+    // `shared/api` map to this project's services/* + queries/*). Runs only
+    // under --coverage (npm run test:coverage); fails the run below threshold.
+    coverage: {
+      provider: 'v8',
+      include: ['src/services/**', 'src/queries/**'],
+      reporter: ['text', 'text-summary'],
+      thresholds: {
+        statements: 80,
+        branches: 70,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 });

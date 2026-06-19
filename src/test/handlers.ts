@@ -39,6 +39,9 @@ export const handlers = [
   http.get(`${CT}/product-types/:seg`, () => HttpResponse.json(productTypeResponse)),
 
   http.get(`${CT}/me`, () => HttpResponse.json(meCustomer)),
+  // profile updates post update-actions to /me (version bumps each write)
+  http.post(`${CT}/me`, () => HttpResponse.json({ ...meCustomer, version: meCustomer.version + 1 })),
+  http.post(`${CT}/me/password`, () => HttpResponse.json({ ...meCustomer, version: meCustomer.version + 1 })),
   http.post(`${CT}/me/login`, () => HttpResponse.json(customerSignInResult(), { status: 200 })),
   http.post(`${CT}/me/signup`, () => HttpResponse.json(customerSignInResult(), { status: 201 })),
 

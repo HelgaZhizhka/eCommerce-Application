@@ -5,12 +5,12 @@
 
 ## Current state
 
-- **Phase:** 6 — **quality consolidation, in progress.** Merged to `develop`:
-  **6.3** (Playwright in CI vs Netlify preview), **6.4** Filter focus-trap,
-  **6.5** README + ADRs, **6.6** dependency security. **6.1** MSW integration
-  tests done (PR open). Pending: **6.2** coverage thresholds, **6.4** remainder
-  (form aria + contrast). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix,
-  engine-swap keeping the look 1:1, all parts merged.
+- **Phase:** 6 — **quality consolidation, nearly done.** Merged to `develop`:
+  **6.1** MSW integration tests, **6.3** (Playwright in CI vs Netlify preview),
+  **6.4** Filter focus-trap, **6.5** README + ADRs, **6.6** dependency security.
+  **6.2** coverage thresholds done (PR open). Pending: **6.4** remainder (form
+  aria + dark-theme contrast), final close. Phase 5 (UI) **COMPLETE** — Tailwind
+  4 + Radix, engine-swap keeping the look 1:1, all parts merged.
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -87,6 +87,24 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-19 — Session 12 (phase 6.2 — coverage thresholds)
+
+- scoped **v8 coverage to the API layer** (`src/services/**` + `src/queries/**`
+  — the project's real `entities`/`shared/api`) in `vite.config`, with enforced
+  thresholds **80/80/80/70** (stmts/lines/funcs/branch).
+- raised coverage to clear it: profile suite (`setCustomersDetails` all exports
+  + branches, `queries/customer` hooks) and the remaining cart hooks
+  (`useCartQuery`, change-qty/remove-line-item/remove-promo, `useCartActions`)
+  + pure-helper units (`categoryIdByName`, `catalogParams`, `notifications`,
+  `queryClient`). **+28 tests → 98 total**, all green.
+- actuals: **stmts 92.6 · branch 78.1 · funcs 89.3 · lines 93.8**.
+- new `test:coverage` script wired into `scripts/verify.sh` + CI `verify` job
+  (replaces the plain `npm test` step) — below-threshold now fails the build.
+  Installed `@vitest/coverage-v8`.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 98
+  unit/integration + coverage thresholds met · 11 e2e (Node 22).
+- **Next:** 6.4 remainder (form labels/aria audit + dark-theme contrast), close.
 
 ### 2026-06-19 — Session 11 (phase 6.1 — MSW 2 + integration tests)
 
