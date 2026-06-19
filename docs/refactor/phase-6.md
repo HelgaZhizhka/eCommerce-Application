@@ -50,7 +50,28 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         filter trigger.
   - [x] `ThemeToggle.tsx`: `aria-label="Toggle theme"` — done early (PR #222)
   - [x] `ErrorBoundary.tsx`: uses `RoutePaths.MAIN` — done early (PR #222)
-  - [ ] Remaining: broad form labels/aria audit + dark-theme contrast pass.
+  - [x] Form labels/aria audit (2026-06-19, no visual change): `RHFTextField`
+        + `RHFSelect` now set `aria-invalid` and link the helper text via
+        `aria-describedby`; `RHFSelect`'s visible label is tied to the trigger
+        with `aria-labelledby` (was a bare `<span>`); `Search` and `PromoCode`
+        inputs gained accessible names (`aria-label`) and `PromoCode`'s error is
+        an `aria-describedby` `role="alert"`. Verified live: login fields expose
+        Email/Password names + `aria-invalid`. Filter/catalog controls already
+        had names (`Size`, `Sorting`, per-colour `aria-label`, `aria-pressed`),
+        as did `SelectCurrency` and the password toggle.
+  - [~] Dark-theme contrast — **measured, documented, colours left unchanged**
+        (1:1-look constraint; user decision 2026-06-19). WCAG AA findings:
+        - **Input text renders black** (`#000`) in dark mode → ratio ~1.12 on
+          `#121212` (login/registration/search/promo/profile). Root cause:
+          Tailwind preflight is intentionally OFF, so `<input>` keeps the UA
+          default `color` instead of inheriting the theme's light text. **Most
+          impactful**; typed text is barely legible in dark mode.
+        - **White on primary orange** (`#f2760f`) buttons → ratio ~2.85 (below
+          AA 4.5); theme-independent, affects all primary CTAs.
+        - Passing (for reference): body/price text 16.7, gray labels 6.5,
+          orange links 6.6, red breadcrumb 4.8.
+        - Fixing either means changing token colours (deviates from 1:1) — left
+          for a follow-up if accessibility is prioritised over the exact look.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
       scripts/structure; dropped the stale CRA/MUI/MobX boilerplate). ADRs added in
       `docs/adr/`: 0001 BFF auth, 0002 TanStack Query + Zustand, 0003 Tailwind +

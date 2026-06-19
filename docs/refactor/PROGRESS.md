@@ -5,12 +5,13 @@
 
 ## Current state
 
-- **Phase:** 6 — **quality consolidation, nearly done.** Merged to `develop`:
-  **6.1** MSW integration tests, **6.3** (Playwright in CI vs Netlify preview),
-  **6.4** Filter focus-trap, **6.5** README + ADRs, **6.6** dependency security.
-  **6.2** coverage thresholds done (PR open). Pending: **6.4** remainder (form
-  aria + dark-theme contrast), final close. Phase 5 (UI) **COMPLETE** — Tailwind
-  4 + Radix, engine-swap keeping the look 1:1, all parts merged.
+- **Phase:** 6 — **quality consolidation, wrapping up.** Merged to `develop`:
+  **6.1** MSW integration tests, **6.2** coverage thresholds, **6.3** Playwright
+  in CI (preview), **6.4** Filter focus-trap, **6.5** README + ADRs, **6.6**
+  dependency security. **6.4 form labels/aria done (PR open); dark-theme contrast
+  measured + documented, colours left 1:1 per user decision.** Remaining: final
+  close (PROGRESS wrap-up). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix,
+  engine-swap keeping the look 1:1, all parts merged.
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -87,6 +88,23 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-19 — Session 13 (phase 6.4 — form a11y + dark-theme contrast audit)
+
+- **form labels/aria (no visual change):** `RHFTextField` + `RHFSelect` set
+  `aria-invalid` and link helper text via `aria-describedby`; `RHFSelect` label
+  tied to the trigger with `aria-labelledby`; `Search`/`PromoCode` inputs got
+  accessible names, `PromoCode` error is `role="alert"`. Verified live on /login
+  (Email/Password names + `aria-invalid`). Filter/catalog/currency controls
+  already had names.
+- **dark-theme contrast: measured + documented, colours unchanged** (user chose
+  audit-only to keep the look 1:1). Findings logged in phase-6.md: input text
+  renders black (~1.12 on #121212 — preflight-off, inputs don't inherit theme
+  colour) and white-on-primary-orange CTAs (~2.85). Both need token-colour
+  changes to fix → deferred as a look-vs-a11y decision.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 98
+  unit/integration + coverage · 11 e2e.
+- **Next:** final PROGRESS wrap-up / close the refactor.
 
 ### 2026-06-19 — Session 12 (phase 6.2 — coverage thresholds)
 
