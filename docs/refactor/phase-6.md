@@ -42,7 +42,7 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
   - Note: the registration scenario creates a real CT customer per run (unique
     email) — inherent to e2e-against-real-CT. Phase 0 scenarios already track the
     final UI (kept green through phase 5).
-- [~] **6.4** A11y pass. Specific items from the PR #221 review (phase 5 part 1):
+- [x] **6.4** A11y pass. Specific items from the PR #221 review (phase 5 part 1):
   - [x] Filter mobile drawer (`Filter.tsx`): Esc-to-close + focus-to-close-button
         + `role="dialog"`/`aria-modal` (PR #222), and now **full focus-TRAP**
         (Tab/Shift+Tab wrap inside) + **focus-return-to-trigger** on close
@@ -59,19 +59,23 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         Email/Password names + `aria-invalid`. Filter/catalog controls already
         had names (`Size`, `Sorting`, per-colour `aria-label`, `aria-pressed`),
         as did `SelectCurrency` and the password toggle.
-  - [~] Dark-theme contrast — **measured, documented, colours left unchanged**
-        (1:1-look constraint; user decision 2026-06-19). WCAG AA findings:
-        - **Input text renders black** (`#000`) in dark mode → ratio ~1.12 on
-          `#121212` (login/registration/search/promo/profile). Root cause:
-          Tailwind preflight is intentionally OFF, so `<input>` keeps the UA
-          default `color` instead of inheriting the theme's light text. **Most
-          impactful**; typed text is barely legible in dark mode.
+  - [x] Dark-theme contrast — measured; the one real bug fixed, the rest
+        documented and left 1:1 (user decision 2026-06-19). WCAG AA findings:
+        - **Input text rendered black in dark mode** → ratio ~1.12 on `#121212`
+          (login/registration/search/promo/profile). Root cause: preflight is
+          off, so `<input>` kept the UA default `color` instead of inheriting
+          the theme text. **FIXED** by `input, optgroup, select, textarea {
+          color: inherit }` in `tailwind.css` — light theme unchanged (text was
+          already dark), dark theme now light/readable (~16.7). Verified live in
+          both themes (screenshots).
         - **White on primary orange** (`#f2760f`) buttons → ratio ~2.85 (below
-          AA 4.5); theme-independent, affects all primary CTAs.
-        - Passing (for reference): body/price text 16.7, gray labels 6.5,
-          orange links 6.6, red breadcrumb 4.8.
-        - Fixing either means changing token colours (deviates from 1:1) — left
-          for a follow-up if accessibility is prioritised over the exact look.
+          AA 4.5); theme-independent, affects all primary CTAs. **Left as-is** —
+          fixing it changes the brand colour (deviates from 1:1); deferred as a
+          look-vs-a11y decision.
+        - Pre-existing, also left 1:1: some headings use a fixed dark colour and
+          are low-contrast on the dark theme (same token-colour tradeoff).
+        - Passing (reference): body/price 16.7, gray labels 6.5, orange links
+          6.6, red breadcrumb 4.8.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
       scripts/structure; dropped the stale CRA/MUI/MobX boilerplate). ADRs added in
       `docs/adr/`: 0001 BFF auth, 0002 TanStack Query + Zustand, 0003 Tailwind +
@@ -91,7 +95,8 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         (tightly version-coupled), and `netlify-cli@26` already pins its own copies.
         Revisit when Vite/netlify-cli bump esbuild upstream.
   - Verify on GitHub that Dependabot's tracked alerts clear after merge.
-- [ ] Final `PROGRESS.md` update; close the refactor.
+- [x] Final `PROGRESS.md` update; close the refactor (2026-06-19). All of phase
+      6 merged to `develop`; refactor summary recorded in PROGRESS.md.
 
 ## Exit criteria
 

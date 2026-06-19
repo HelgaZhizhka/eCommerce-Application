@@ -309,6 +309,15 @@ textarea {
   line-height: 1.15;
   margin: 0;
 }
+/* Form fields inherit the theme text colour instead of the UA default (black).
+   Preflight is off, so without this typed text stays black and is unreadable on
+   the dark theme; light theme is unaffected (its text is already dark). */
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+}
 button,
 select {
   text-transform: none;
