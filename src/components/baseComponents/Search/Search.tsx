@@ -46,6 +46,7 @@ const Search: React.FC<Props> = ({ className, value, onSearch }) => {
           value={text}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          aria-label="Search products"
           className="w-full border-b border-gray bg-transparent py-1 pl-9 text-xl outline-none focus:border-primary"
         />
       </div>
