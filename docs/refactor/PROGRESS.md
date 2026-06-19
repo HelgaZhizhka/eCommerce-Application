@@ -7,10 +7,10 @@
 
 - **Phase:** 6 — **quality consolidation, in progress.** Merged to `develop`:
   **6.3** (Playwright in CI vs Netlify preview), **6.4** Filter focus-trap,
-  **6.5** README + ADRs, **6.6** dependency security. Pending: **6.1** MSW
-  integration tests, **6.2** coverage thresholds, **6.4** remainder (form aria +
-  contrast). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
-  the look 1:1, all parts merged.
+  **6.5** README + ADRs, **6.6** dependency security. **6.1** MSW integration
+  tests done (PR open). Pending: **6.2** coverage thresholds, **6.4** remainder
+  (form aria + contrast). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix,
+  engine-swap keeping the look 1:1, all parts merged.
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -87,6 +87,31 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-19 — Session 11 (phase 6.1 — MSW 2 + integration tests)
+
+- added **MSW 2** (`msw@^2`) + a shared harness in `src/test/`: `server.ts`
+  (setupServer + `recordRequests` helper), `handlers.ts` (BFF `/api/auth/*` +
+  CT endpoints), `fixtures.ts` (minimal CT payloads shaped to the transforms),
+  `utils.tsx` (per-test QueryClient wrapper, retries off).
+- wired MSW into `setupTests.ts` with **`server.listen()` at setup-file eval
+  time** (not in `beforeAll`) — the CT SDK captures `httpClient: fetch` once at
+  module load, so MSW must patch `globalThis.fetch` before `ctClient` imports.
+  `onUnhandledRequest: 'error'`; `afterEach` resets handlers + event listeners.
+- `vite.config` `test.env` pins a non-secret CT host/projectKey so handler URLs
+  match the SDK in CI (no `.env` there).
+- **29 integration tests** (all green): catalog+filters (subtree/attribute/price/
+  sort/search/pagination query-arg construction + `select` transforms, service +
+  hook level), cart (active-cart 200/404→null/throw, create/update/delete,
+  mutation cache writes), auth (visitor memo, lazy anon, refresh/expiry/drop,
+  login + signup request shaping). Total unit+integration **70/70**.
+- landmine found: the CT SDK reads `errors[0].code` on an error body — an empty
+  `errors: []` throws and is reported as a network error (`statusCode 0`); mocks
+  for error responses must include a populated `errors[]`.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 70
+  unit/integration · 11 e2e (Node 22, vs local `netlify dev`).
+- **Next:** 6.2 (coverage thresholds for `services/*` + `queries/*`, ~80%),
+  6.4 remainder (form aria + contrast), close.
 
 ### 2026-06-19 — Session 10 (phase 6.3 e2e merged; route scroll-restoration fix)
 

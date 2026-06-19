@@ -5,8 +5,19 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
 
 ## Checklist
 
-- [ ] **6.1** MSW 2 mocks for CT API; integration tests for features
-      (catalog+filters, cart flows, auth flow).
+- [x] **6.1** MSW 2 mocks for CT API; integration tests for features (2026-06-19).
+      Shared harness in `src/test/` (`server.ts` + `handlers.ts` + `fixtures.ts` +
+      `utils.tsx`); MSW intercepts the BFF (`/api/auth/*`) **and** the CT SDK's
+      `fetch` — `server.listen()` runs at setup-file eval so it patches
+      `globalThis.fetch` before `ctClient` captures it; `vite.config` `test.env`
+      pins a deterministic CT host so handler URLs match the SDK in CI. **29 new
+      tests** across catalog+filters (request query-arg construction: subtree
+      filter, attribute filters, price cents, sort mapping, search `text.en`,
+      pagination offset + `select` transforms), cart flows (active-cart
+      200/404→null/throw, create/update/delete, mutation cache writes), and auth
+      (visitor memo, lazy anon, refresh/expiry, login/signup request shaping).
+      Note: CT error responses must carry a populated `errors[]` — the SDK reads
+      `errors[0].code` and an empty array drops it into the network-error path.
 - [ ] **6.2** Vitest coverage thresholds for `entities/*` and `shared/api`
       (target: 80%).
 - [~] **6.3** Playwright in CI (2026-06-18). Runs e2e **against the Netlify deploy
