@@ -5,9 +5,12 @@
 
 ## Current state
 
-- **Phase:** 5 — UI **COMPLETE** (all parts merged to `develop`). Decision:
-  **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1, by group with
-  user review. **Next phase: 6 (quality consolidation).**
+- **Phase:** 6 — **quality consolidation, in progress.** Merged to `develop`:
+  **6.3** (Playwright in CI vs Netlify preview), **6.4** Filter focus-trap,
+  **6.5** README + ADRs, **6.6** dependency security. Pending: **6.1** MSW
+  integration tests, **6.2** coverage thresholds, **6.4** remainder (form aria +
+  contrast). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
+  the look 1:1, all parts merged.
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -55,9 +58,10 @@
   → `develop` **MERGED 2026-06-18** (CI `verify` green). Reviewed by a fresh-context
   subagent (precedent: #221) → 1 must-fix (Categories hover-underline colour lost to
   `.link::after` source-order tie) fixed before merge; rest approved.
-- **Next:** **Phase 6** (quality consolidation) — MSW integration tests, coverage
-  thresholds, Playwright in CI, a11y pass (incl. Filter focus-trap), README/ADRs,
-  **6.6 resolve 6 Dependabot alerts**. Prod still on 2023 CRA build.
+- **Next:** **6.1** MSW integration tests (catalog+filters, cart, auth) → **6.2**
+  coverage thresholds (80% for `entities/*` + `shared/api`) → **6.4** remainder
+  (form labels/aria audit + dark-theme contrast pass) → final close. Prod still on
+  2023 CRA build; the e2e CI job activates at the final `develop`→`main` merge.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -83,6 +87,26 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-19 — Session 10 (phase 6.3 e2e merged; route scroll-restoration fix)
+
+- **6.3 Playwright-in-CI MERGED to `develop`** (PR #231): `.github/workflows/e2e.yml`
+  runs against the Netlify deploy preview via `deployment_status` → `target_url`;
+  **no CT secrets in GitHub**. `playwright.config.ts` reads `PLAYWRIGHT_BASE_URL`
+  and skips the local server when set. Validated against a real deploy preview
+  (11/11) and again locally (11/11). Dormant until it lands on `main` (the final
+  merge) — `deployment_status` workflows only run from the default branch.
+- **Bug fix — "page renders from the bottom" on navigation** (`src/routes/index.tsx`):
+  (1) scroll reset moved `useEffect` → **`useLayoutEffect`** so a tall/cached page
+  is never painted at the previous scroll offset and then snapped to the top;
+  (2) `AnimatePresence` → **`mode="wait"`** so the exiting route fully leaves before
+  the next mounts — no two route subtrees stacked in normal flow. Verified live:
+  before the fix `main` briefly held **2** route children mid-transition; after,
+  it stays **1** and `window.scrollY` is **0** from the first frame across
+  catalog→about, about→catalog, catalog→product, and category→category jumps.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · unit
+  41/41 · e2e 11/11 (Node 22, vs local `netlify dev`).
+- **Next:** 6.1 (MSW integration tests), 6.2 (coverage), 6.4 remainder, close.
 
 ### 2026-06-18 — Session 9 (phase 5 part B finished + merged; phase 5 CLOSED)
 
