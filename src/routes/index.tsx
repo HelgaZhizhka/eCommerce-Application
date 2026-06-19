@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useLayoutEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
@@ -31,7 +31,11 @@ const PageFallback: React.FC = () => (
 const RouterConfig: React.FC = () => {
   const location = useLocation();
 
-  useEffect(() => {
+  // Reset scroll on route change BEFORE the browser paints the new page —
+  // useLayoutEffect (not useEffect) so a tall/cached page is never painted once
+  // at the previous scroll offset and then snapped to the top (the "renders from
+  // the bottom" flash). Hash links keep their smooth scroll-into-view.
+  useLayoutEffect(() => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
@@ -46,7 +50,7 @@ const RouterConfig: React.FC = () => {
 
   return (
     <Suspense fallback={<PageFallback />}>
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
             path={RoutePaths.MAIN}
