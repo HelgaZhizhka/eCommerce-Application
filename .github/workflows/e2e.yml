@@ -1,0 +1,41 @@
+name: E2E
+
+# Runs Playwright against the Netlify deploy that just went live, using its URL —
+# no Commercetools env/secrets in GitHub (the preview already has them on Netlify).
+#
+# NOTE: `deployment_status`-triggered workflows only run when this file is on the
+# repository's DEFAULT branch (`main`). Netlify is configured with Production =
+# `main`, Branch deploys = `develop`, and Deploy Previews for PRs — so PRs into
+# `develop` and pushes to `develop`/`main` all emit a `deployment_status` this
+# reacts to. Until this file is on `main` it stays dormant (develop PRs are still
+# covered locally + by the CI `verify` job).
+on:
+  deployment_status:
+
+jobs:
+  e2e:
+    # only after a Netlify deploy succeeds; target_url is that deploy's URL
+    if: ${{ github.event.deployment_status.state == 'success' && github.event.deployment_status.target_url != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      # check out the exact commit that was deployed (carries the matching
+      # playwright.config); for deployment_status the SHA is on the deployment.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E (Playwright) against the deployed URL
+        run: npx playwright test
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.target_url }}
