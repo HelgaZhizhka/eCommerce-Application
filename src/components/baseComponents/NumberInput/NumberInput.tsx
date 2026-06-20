@@ -23,7 +23,7 @@ const NumberInput: React.FC<Props> = ({ value, onChange, min, max, label, classN
         min={min}
         max={max}
         onChange={handleChange}
-        className="w-full rounded border border-gray px-3 py-2 outline-none focus:border-primary"
+        className="w-full rounded border border-gray bg-transparent px-3 py-2 outline-none focus:border-primary"
       />
     </label>
   );

@@ -5,9 +5,32 @@
 
 ## Current state
 
-- **Phase:** 5 — UI **COMPLETE** (all parts merged to `develop`). Decision:
-  **Tailwind 4 + shadcn/ui**, engine-swap keeping the look 1:1, by group with
-  user review. **Next phase: 6 (quality consolidation).**
+- **Phase:** 6 — **COMPLETE.** All items merged to `develop`: **6.1** MSW
+  integration tests, **6.2** coverage thresholds (80/70, enforced in CI),
+  **6.3** Playwright in CI (Netlify preview), **6.4** a11y (Filter focus-trap +
+  form labels/aria + dark-theme contrast: input-text bug fixed, rest documented
+  1:1), **6.5** README + ADRs, **6.6** dependency security. **The 7-phase
+  refactor (0→6) is done on `develop`; awaiting the final `develop`→`main`
+  merge.** Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
+  the look 1:1, all parts merged.
+- **Post-close dark-theme polish (2026-06-20, PRs #237–#241):** the live review
+  surfaced a family of preflight-off bugs — form fields, buttons (and their
+  icons, e.g. the mobile menu), product titles/prices and component backgrounds
+  rendered with light-theme colours in dark mode. Root causes fixed: `color:
+  inherit` on inputs+buttons, `bg-transparent` on `NumberInput`, and re-pointing
+  the flattened semantic `@theme` tokens (`--color-content/page/component/panel/
+  body`) in the dark block. Also: stripped native `appearance:textfield` insets
+  from inputs (Search/RHFTextField/PromoCode), matched the Search button height,
+  and recoloured the slider arrows from Swiper-blue to white. Light theme
+  unchanged; dark-theme sweep across all pages = 0 dark-on-dark.
+- **Refactor outcome (0→6):** CRA→Vite 7 · React 18→19 · TS 4.9→5.9 strict ·
+  MobX→TanStack Query 5 + Zustand · Formik/Yup→RHF + zod 4 · `sdk-client-v2`→
+  `@commercetools/ts-client` v4 **+ BFF (Netlify Functions)** so the
+  clientSecret left the browser bundle · Jest/CRA→Vitest 4 + MSW 2 (98
+  unit/integration) + Playwright (11 e2e, in CI) · ESLint 8 airbnb→ESLint 9 flat ·
+  MUI 7 + SCSS → **Tailwind 4 + Radix + lucide** (one styling system, look 1:1).
+  Coverage thresholds enforced on `services/*` + `queries/*`. **Prod is still on
+  the 2023 CRA build until `main` is deployed.**
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -55,9 +78,10 @@
   → `develop` **MERGED 2026-06-18** (CI `verify` green). Reviewed by a fresh-context
   subagent (precedent: #221) → 1 must-fix (Categories hover-underline colour lost to
   `.link::after` source-order tie) fixed before merge; rest approved.
-- **Next:** **Phase 6** (quality consolidation) — MSW integration tests, coverage
-  thresholds, Playwright in CI, a11y pass (incl. Filter focus-trap), README/ADRs,
-  **6.6 resolve 6 Dependabot alerts**. Prod still on 2023 CRA build.
+- **Next:** **6.1** MSW integration tests (catalog+filters, cart, auth) → **6.2**
+  coverage thresholds (80% for `entities/*` + `shared/api`) → **6.4** remainder
+  (form labels/aria audit + dark-theme contrast pass) → final close. Prod still on
+  2023 CRA build; the e2e CI job activates at the final `develop`→`main` merge.
 - **Watch:**
   - Vite pinned to major 7 (vitejs/vite#22499 — Vite 8 rolldown optimizer
     breaks emotion/MUI prebundling); unpin when fixed upstream
@@ -83,6 +107,120 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-20 — Session 15 (post-close dark-theme polish + final docs)
+
+- live dark-theme review surfaced a family of preflight-off colour bugs; fixed
+  across PRs **#237–#241** (all into `develop`, each gate-green):
+  - **#237** `input { color: inherit }` — typed text was black, invisible on dark.
+  - **#238** the **semantic `@theme` token** bug — Tailwind v4 flattened
+    `--color-content/page/component/panel/body` to light values at build, so
+    `text-content`/`bg-*` ignored the dark override (product titles/prices
+    near-black). Re-pointed them in `body[data-theme='dark']`. + Search input
+    native inset border + Search button height.
+  - **#239** same inset-border fix for login/registration/profile `RHFTextField`.
+  - **#240** `button { color: inherit }` — icon-only buttons (mobile menu) had
+    black icons on dark. Dark sweep across all pages → 0 dark-on-dark.
+  - **#241** PromoCode inset border; `NumberInput` `bg-transparent` (qty digit
+    was light-on-white); slider arrows recoloured Swiper-blue → white.
+- light theme verified unchanged throughout (1:1); docs (PROGRESS / phase-6 /
+  SESSION_REPORT) brought to final state.
+- **Refactor COMPLETE on `develop`.** Only remaining step: the human-owned
+  `develop`→`main` merge (activates the deploy-preview e2e workflow + ships prod).
+
+### 2026-06-19 — Session 14 (phase 6 CLOSED — input-contrast fix + refactor wrap-up)
+
+- **fixed the dark-theme input bug** found in the 6.4 audit: `input, optgroup,
+  select, textarea { color: inherit }` in `tailwind.css` so fields follow the
+  theme text colour. Verified live in **both** themes (screenshots): light
+  unchanged (dark text on white), dark now readable (`#f2f2f2`, ~16.7). The
+  white-on-orange CTA contrast and a couple of fixed-colour headings are left
+  1:1 and documented (token-colour change deferred).
+- **closed the refactor:** phase 6 fully merged to `develop`; PROGRESS "Current
+  state" now records the 0→6 outcome. Only the final `develop`→`main` merge
+  remains (prod still on the 2023 CRA build until then).
+- **Gate:** typecheck clean · eslint 0 errors · 98 unit/integration + coverage ·
+  11 e2e.
+
+### 2026-06-19 — Session 13 (phase 6.4 — form a11y + dark-theme contrast audit)
+
+- **form labels/aria (no visual change):** `RHFTextField` + `RHFSelect` set
+  `aria-invalid` and link helper text via `aria-describedby`; `RHFSelect` label
+  tied to the trigger with `aria-labelledby`; `Search`/`PromoCode` inputs got
+  accessible names, `PromoCode` error is `role="alert"`. Verified live on /login
+  (Email/Password names + `aria-invalid`). Filter/catalog/currency controls
+  already had names.
+- **dark-theme contrast: measured + documented, colours unchanged** (user chose
+  audit-only to keep the look 1:1). Findings logged in phase-6.md: input text
+  renders black (~1.12 on #121212 — preflight-off, inputs don't inherit theme
+  colour) and white-on-primary-orange CTAs (~2.85). Both need token-colour
+  changes to fix → deferred as a look-vs-a11y decision.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 98
+  unit/integration + coverage · 11 e2e.
+- **Next:** final PROGRESS wrap-up / close the refactor.
+
+### 2026-06-19 — Session 12 (phase 6.2 — coverage thresholds)
+
+- scoped **v8 coverage to the API layer** (`src/services/**` + `src/queries/**`
+  — the project's real `entities`/`shared/api`) in `vite.config`, with enforced
+  thresholds **80/80/80/70** (stmts/lines/funcs/branch).
+- raised coverage to clear it: profile suite (`setCustomersDetails` all exports
+  + branches, `queries/customer` hooks) and the remaining cart hooks
+  (`useCartQuery`, change-qty/remove-line-item/remove-promo, `useCartActions`)
+  + pure-helper units (`categoryIdByName`, `catalogParams`, `notifications`,
+  `queryClient`). **+28 tests → 98 total**, all green.
+- actuals: **stmts 92.6 · branch 78.1 · funcs 89.3 · lines 93.8**.
+- new `test:coverage` script wired into `scripts/verify.sh` + CI `verify` job
+  (replaces the plain `npm test` step) — below-threshold now fails the build.
+  Installed `@vitest/coverage-v8`.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 98
+  unit/integration + coverage thresholds met · 11 e2e (Node 22).
+- **Next:** 6.4 remainder (form labels/aria audit + dark-theme contrast), close.
+
+### 2026-06-19 — Session 11 (phase 6.1 — MSW 2 + integration tests)
+
+- added **MSW 2** (`msw@^2`) + a shared harness in `src/test/`: `server.ts`
+  (setupServer + `recordRequests` helper), `handlers.ts` (BFF `/api/auth/*` +
+  CT endpoints), `fixtures.ts` (minimal CT payloads shaped to the transforms),
+  `utils.tsx` (per-test QueryClient wrapper, retries off).
+- wired MSW into `setupTests.ts` with **`server.listen()` at setup-file eval
+  time** (not in `beforeAll`) — the CT SDK captures `httpClient: fetch` once at
+  module load, so MSW must patch `globalThis.fetch` before `ctClient` imports.
+  `onUnhandledRequest: 'error'`; `afterEach` resets handlers + event listeners.
+- `vite.config` `test.env` pins a non-secret CT host/projectKey so handler URLs
+  match the SDK in CI (no `.env` there).
+- **29 integration tests** (all green): catalog+filters (subtree/attribute/price/
+  sort/search/pagination query-arg construction + `select` transforms, service +
+  hook level), cart (active-cart 200/404→null/throw, create/update/delete,
+  mutation cache writes), auth (visitor memo, lazy anon, refresh/expiry/drop,
+  login + signup request shaping). Total unit+integration **70/70**.
+- landmine found: the CT SDK reads `errors[0].code` on an error body — an empty
+  `errors: []` throws and is reported as a network error (`statusCode 0`); mocks
+  for error responses must include a populated `errors[]`.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · 70
+  unit/integration · 11 e2e (Node 22, vs local `netlify dev`).
+- **Next:** 6.2 (coverage thresholds for `services/*` + `queries/*`, ~80%),
+  6.4 remainder (form aria + contrast), close.
+
+### 2026-06-19 — Session 10 (phase 6.3 e2e merged; route scroll-restoration fix)
+
+- **6.3 Playwright-in-CI MERGED to `develop`** (PR #231): `.github/workflows/e2e.yml`
+  runs against the Netlify deploy preview via `deployment_status` → `target_url`;
+  **no CT secrets in GitHub**. `playwright.config.ts` reads `PLAYWRIGHT_BASE_URL`
+  and skips the local server when set. Validated against a real deploy preview
+  (11/11) and again locally (11/11). Dormant until it lands on `main` (the final
+  merge) — `deployment_status` workflows only run from the default branch.
+- **Bug fix — "page renders from the bottom" on navigation** (`src/routes/index.tsx`):
+  (1) scroll reset moved `useEffect` → **`useLayoutEffect`** so a tall/cached page
+  is never painted at the previous scroll offset and then snapped to the top;
+  (2) `AnimatePresence` → **`mode="wait"`** so the exiting route fully leaves before
+  the next mounts — no two route subtrees stacked in normal flow. Verified live:
+  before the fix `main` briefly held **2** route children mid-transition; after,
+  it stays **1** and `window.scrollY` is **0** from the first frame across
+  catalog→about, about→catalog, catalog→product, and category→category jumps.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) · unit
+  41/41 · e2e 11/11 (Node 22, vs local `netlify dev`).
+- **Next:** 6.1 (MSW integration tests), 6.2 (coverage), 6.4 remainder, close.
 
 ### 2026-06-18 — Session 9 (phase 5 part B finished + merged; phase 5 CLOSED)
 

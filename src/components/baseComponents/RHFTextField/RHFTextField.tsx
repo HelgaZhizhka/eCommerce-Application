@@ -32,6 +32,7 @@ const RHFTextField = <T extends FieldValues>({
 }: Props<T>): React.ReactElement => {
   const [show, setShow] = useState(false);
   const id = useId();
+  const errorId = useId();
   const inputType = password ? (show ? 'text' : 'password') : type;
 
   return (
@@ -54,8 +55,11 @@ const RHFTextField = <T extends FieldValues>({
               autoComplete={autoComplete}
               onFocus={onFocus}
               value={field.value ?? ''}
+              aria-label={label ? undefined : placeholder}
+              aria-invalid={!!fieldState.error}
+              aria-describedby={fieldState.error ? errorId : undefined}
               className={cn(
-                'w-full border-b bg-transparent py-1 pr-9 outline-none transition-colors',
+                'w-full appearance-none rounded-none border-0 border-b bg-transparent py-1 pr-9 outline-none transition-colors',
                 fieldState.error ? 'border-red focus:border-red' : 'border-gray focus:border-primary'
               )}
             />
@@ -70,7 +74,9 @@ const RHFTextField = <T extends FieldValues>({
               </button>
             )}
           </div>
-          <p className="mt-1 min-h-5 text-xs text-red">{fieldState.error?.message ?? ' '}</p>
+          <p id={errorId} className="mt-1 min-h-5 text-xs text-red">
+            {fieldState.error?.message ?? ' '}
+          </p>
         </div>
       )}
     />

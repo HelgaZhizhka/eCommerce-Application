@@ -170,6 +170,16 @@ body[data-theme='dark'] {
   --nav-color-dark: var(--light-white);
   --nav-color-dark-hover: var(--light-white);
   --component-bg: var(--dark);
+
+  /* Tailwind v4 flattens the semantic @theme tokens (--color-content/page/…) to
+   * their light values at build time, so the `var(--…-bg)` indirection above does
+   * NOT reach the bg-page / text-content utilities. Re-point them here so dark
+   * mode applies to those classes (text-content was rendering near-black). */
+  --color-body: var(--dark);
+  --color-page: var(--black);
+  --color-component: var(--dark);
+  --color-panel: rgba(255, 255, 255, 0.08);
+  --color-content: var(--light-white);
 }
 
 /* ───────────────────────────────────────────────────────────────────────────
@@ -309,6 +319,18 @@ textarea {
   line-height: 1.15;
   margin: 0;
 }
+/* Form fields and buttons inherit the theme text colour instead of the UA
+   default (black). Preflight is off, so without this their text/icons stay black
+   and are invisible on the dark theme (e.g. the mobile menu icon); light theme
+   is unaffected (its text is already dark), and buttons that set an explicit
+   colour utility — text-white/text-primary — still win over this. */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+}
 button,
 select {
   text-transform: none;
@@ -409,9 +431,16 @@ svg:not(:root) {
   overflow: hidden;
   -webkit-line-clamp: 2;
 }
+/* Swiper navigation arrows: override Swiper's default blue theme colour
+   (--swiper-theme-color #007aff) with white + a soft shadow so they read on any
+   slide background. The colour is on the button element, not ::after. */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--light-white);
+  --swiper-navigation-color: var(--light-white);
+}
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  color: var(--light-white);
   text-shadow: 1px 1px 1px var(--gray);
 }
 .swiper-scrollbar-drag {

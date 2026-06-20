@@ -32,7 +32,7 @@ const Search: React.FC<Props> = ({ className, value, onSearch }) => {
   };
 
   return (
-    <div className={cn('flex items-center md:relative', className)}>
+    <div className={cn('flex items-stretch md:relative', className)}>
       <div className="relative flex w-full items-center">
         <Icon
           name={IconName.SEARCH}
@@ -46,13 +46,14 @@ const Search: React.FC<Props> = ({ className, value, onSearch }) => {
           value={text}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className="w-full border-b border-gray bg-transparent py-1 pl-9 text-xl outline-none focus:border-primary"
+          aria-label="Search products"
+          className="w-full appearance-none rounded-none border-0 border-b border-gray bg-transparent py-1 pl-9 text-xl outline-none focus:border-primary"
         />
       </div>
       <button
         type="button"
         onClick={handleClick}
-        className="ml-4 shrink-0 rounded bg-primary px-4 py-1.5 text-white transition-colors hover:bg-primary/85"
+        className="ml-4 flex shrink-0 items-center justify-center rounded bg-primary px-4 text-white transition-colors hover:bg-primary/85"
       >
         Search
       </button>

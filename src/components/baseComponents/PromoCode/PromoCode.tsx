@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import { promoCode } from '../../../constants';
 import { cn } from '../../../shared/lib/cn';
@@ -11,6 +11,7 @@ type Props = {
 const PromoCode: React.FC<Props> = ({ className, onChange }) => {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
+  const errorId = useId();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value);
@@ -38,7 +39,10 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
         type="text"
         value={code}
         onChange={handleChange}
-        className="border-b border-gray bg-transparent px-1 py-1 text-content outline-none focus:border-primary"
+        aria-label="Promo code"
+        aria-invalid={error}
+        aria-describedby={error ? errorId : undefined}
+        className="appearance-none rounded-none border-0 border-b border-gray bg-transparent px-1 py-1 text-content outline-none focus:border-primary"
       />
       <button
         type="button"
@@ -48,7 +52,11 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
       >
         Ok
       </button>
-      {error && <span className="text-red">Invalid promo code</span>}
+      {error && (
+        <span id={errorId} role="alert" className="text-red">
+          Invalid promo code
+        </span>
+      )}
     </div>
   );
 };
