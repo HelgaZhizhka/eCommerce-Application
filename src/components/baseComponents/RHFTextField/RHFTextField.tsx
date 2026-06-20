@@ -59,7 +59,7 @@ const RHFTextField = <T extends FieldValues>({
               aria-invalid={!!fieldState.error}
               aria-describedby={fieldState.error ? errorId : undefined}
               className={cn(
-                'w-full border-b bg-transparent py-1 pr-9 outline-none transition-colors',
+                'w-full appearance-none rounded-none border-0 border-b bg-transparent py-1 pr-9 outline-none transition-colors',
                 fieldState.error ? 'border-red focus:border-red' : 'border-gray focus:border-primary'
               )}
             />
