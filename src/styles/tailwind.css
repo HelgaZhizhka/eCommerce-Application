@@ -319,9 +319,12 @@ textarea {
   line-height: 1.15;
   margin: 0;
 }
-/* Form fields inherit the theme text colour instead of the UA default (black).
-   Preflight is off, so without this typed text stays black and is unreadable on
-   the dark theme; light theme is unaffected (its text is already dark). */
+/* Form fields and buttons inherit the theme text colour instead of the UA
+   default (black). Preflight is off, so without this their text/icons stay black
+   and are invisible on the dark theme (e.g. the mobile menu icon); light theme
+   is unaffected (its text is already dark), and buttons that set an explicit
+   colour utility — text-white/text-primary — still win over this. */
+button,
 input,
 optgroup,
 select,

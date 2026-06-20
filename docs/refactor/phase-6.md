@@ -80,8 +80,15 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
           Re-pointed those tokens in the `body[data-theme='dark']` block; light
           theme unchanged, dark now readable (~16.7). Verified both themes.
         - Also fixed: the Search input showed the native `appearance: textfield`
-          inset border (`appearance-none` + `border-0 border-b`) and the Search
+          inset border (`appearance-none` + `border-0 border-b`); the same applied
+          to the login/registration/profile `RHFTextField` inputs; the Search
           button now matches the input height.
+        - Also fixed: icon-only **buttons** (e.g. the mobile menu/burger) showed
+          black icons on the dark theme — buttons kept the UA default `color`
+          (preflight off). Extended the `color: inherit` reset to `button` so
+          their `currentColor` icons follow the theme (utilities like `text-white`
+          still win). Dark-theme sweep across home/catalog/product/cart/
+          registration/about/sale: 0 dark-on-dark elements remaining.
         - Passing (reference): body/price 16.7, gray labels 6.5, orange links
           6.6, red breadcrumb 4.8.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
