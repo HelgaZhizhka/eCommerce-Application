@@ -34,11 +34,18 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       Commercetools env/secrets in GitHub** — the preview already has them on
       Netlify. **No repo setup required** beyond having Netlify Deploy Previews
       enabled (default for a Netlify-connected repo).
-  - Caveat: `deployment_status` workflows only run from the **default branch**, so
-    this activates once it lands on `main` (the final merge) and for `main` PRs.
-    During `develop` work, e2e runs locally (`./scripts/verify.sh`) and the CI
-    `verify` job covers each PR. Chose this over running the app in CI to avoid
-    duplicating the CT secret into GitHub Actions.
+  - **Reality after the `develop`→`main` cutover (2026-06-20):** the workflow does
+    **not** auto-fire. This Netlify site reports deploys as commit **`status`**
+    events (context `netlify/yes-code-merch/deploy-preview`, with `target_url`),
+    **not** GitHub `deployment_status` / Deployment objects — so an `on:
+    deployment_status` workflow stays dormant here. Verified: the GitHub
+    Deployments API has no recent entries, and no `e2e.yml` run fired after the
+    prod merge. **Decision (user, 2026-06-20): keep e2e local** — it's validated
+    via `./scripts/verify.sh` / `npx playwright test` (11/11 against the real
+    preview), and the per-PR CI `verify` job covers types/lint/unit/build.
+    `e2e.yml` is left in place but inert; to actually wire it up later, switch it
+    to `on: status` (guard on the Netlify context + `state == 'success'`, point
+    Playwright at `github.event.target_url`) and let it reach the default branch.
   - Note: the registration scenario creates a real CT customer per run (unique
     email) — inherent to e2e-against-real-CT. Phase 0 scenarios already track the
     final UI (kept green through phase 5).
