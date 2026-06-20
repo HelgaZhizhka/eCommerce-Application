@@ -3,12 +3,15 @@ name: E2E
 # Runs Playwright against the Netlify deploy that just went live, using its URL —
 # no Commercetools env/secrets in GitHub (the preview already has them on Netlify).
 #
-# NOTE: `deployment_status`-triggered workflows only run when this file is on the
-# repository's DEFAULT branch (`main`). Netlify is configured with Production =
-# `main`, Branch deploys = `develop`, and Deploy Previews for PRs — so PRs into
-# `develop` and pushes to `develop`/`main` all emit a `deployment_status` this
-# reacts to. Until this file is on `main` it stays dormant (develop PRs are still
-# covered locally + by the CI `verify` job).
+# ⚠️ DORMANT (verified 2026-06-20, after the develop→main cutover): this Netlify
+# site reports deploys as commit `status` events (context
+# `netlify/yes-code-merch/deploy-preview`, with target_url), NOT GitHub
+# `deployment_status` / Deployment objects — so this `on: deployment_status`
+# workflow never fires here. By project decision e2e stays LOCAL
+# (`./scripts/verify.sh` / `npx playwright test`, validated 11/11 against the real
+# preview); the per-PR CI `verify` job covers types/lint/unit/build. To wire this
+# up later: switch to `on: status`, guard on the Netlify context +
+# `state == 'success'`, and point Playwright at `github.event.target_url`.
 on:
   deployment_status:
 
