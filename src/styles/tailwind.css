@@ -431,9 +431,16 @@ svg:not(:root) {
   overflow: hidden;
   -webkit-line-clamp: 2;
 }
+/* Swiper navigation arrows: override Swiper's default blue theme colour
+   (--swiper-theme-color #007aff) with white + a soft shadow so they read on any
+   slide background. The colour is on the button element, not ::after. */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--light-white);
+  --swiper-navigation-color: var(--light-white);
+}
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  color: var(--light-white);
   text-shadow: 1px 1px 1px var(--gray);
 }
 .swiper-scrollbar-drag {

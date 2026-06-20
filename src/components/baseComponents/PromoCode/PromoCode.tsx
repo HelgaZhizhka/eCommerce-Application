@@ -42,7 +42,7 @@ const PromoCode: React.FC<Props> = ({ className, onChange }) => {
         aria-label="Promo code"
         aria-invalid={error}
         aria-describedby={error ? errorId : undefined}
-        className="border-b border-gray bg-transparent px-1 py-1 text-content outline-none focus:border-primary"
+        className="appearance-none rounded-none border-0 border-b border-gray bg-transparent px-1 py-1 text-content outline-none focus:border-primary"
       />
       <button
         type="button"
