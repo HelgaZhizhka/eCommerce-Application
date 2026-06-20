@@ -5,13 +5,22 @@
 
 ## Current state
 
-- **Phase:** 6 — **quality consolidation, wrapping up.** Merged to `develop`:
-  **6.1** MSW integration tests, **6.2** coverage thresholds, **6.3** Playwright
-  in CI (preview), **6.4** Filter focus-trap, **6.5** README + ADRs, **6.6**
-  dependency security. **6.4 form labels/aria done (PR open); dark-theme contrast
-  measured + documented, colours left 1:1 per user decision.** Remaining: final
-  close (PROGRESS wrap-up). Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix,
-  engine-swap keeping the look 1:1, all parts merged.
+- **Phase:** 6 — **COMPLETE.** All items merged to `develop`: **6.1** MSW
+  integration tests, **6.2** coverage thresholds (80/70, enforced in CI),
+  **6.3** Playwright in CI (Netlify preview), **6.4** a11y (Filter focus-trap +
+  form labels/aria + dark-theme contrast: input-text bug fixed, rest documented
+  1:1), **6.5** README + ADRs, **6.6** dependency security. **The 7-phase
+  refactor (0→6) is done on `develop`; awaiting the final `develop`→`main`
+  merge.** Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
+  the look 1:1, all parts merged.
+- **Refactor outcome (0→6):** CRA→Vite 7 · React 18→19 · TS 4.9→5.9 strict ·
+  MobX→TanStack Query 5 + Zustand · Formik/Yup→RHF + zod 4 · `sdk-client-v2`→
+  `@commercetools/ts-client` v4 **+ BFF (Netlify Functions)** so the
+  clientSecret left the browser bundle · Jest/CRA→Vitest 3 + MSW 2 (98
+  unit/integration) + Playwright (11 e2e, in CI) · ESLint 8 airbnb→ESLint 9 flat ·
+  MUI 7 + SCSS → **Tailwind 4 + Radix + lucide** (one styling system, look 1:1).
+  Coverage thresholds enforced on `services/*` + `queries/*`. **Prod is still on
+  the 2023 CRA build until `main` is deployed.**
   - **Part 1 MERGED** to `develop` (PR #221) + a11y nits (PR #222): foundation,
     Footer, Header (forks merged), Card+ProductList, adaptive Filter (Filter/
     FilterMobile + Sorting/SortMobile forks gone), Catalog shell, Cart page
@@ -88,6 +97,20 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-19 — Session 14 (phase 6 CLOSED — input-contrast fix + refactor wrap-up)
+
+- **fixed the dark-theme input bug** found in the 6.4 audit: `input, optgroup,
+  select, textarea { color: inherit }` in `tailwind.css` so fields follow the
+  theme text colour. Verified live in **both** themes (screenshots): light
+  unchanged (dark text on white), dark now readable (`#f2f2f2`, ~16.7). The
+  white-on-orange CTA contrast and a couple of fixed-colour headings are left
+  1:1 and documented (token-colour change deferred).
+- **closed the refactor:** phase 6 fully merged to `develop`; PROGRESS "Current
+  state" now records the 0→6 outcome. Only the final `develop`→`main` merge
+  remains (prod still on the 2023 CRA build until then).
+- **Gate:** typecheck clean · eslint 0 errors · 98 unit/integration + coverage ·
+  11 e2e.
 
 ### 2026-06-19 — Session 13 (phase 6.4 — form a11y + dark-theme contrast audit)
 
