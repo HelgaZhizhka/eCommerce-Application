@@ -89,6 +89,11 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
           their `currentColor` icons follow the theme (utilities like `text-white`
           still win). Dark-theme sweep across home/catalog/product/cart/
           registration/about/sale: 0 dark-on-dark elements remaining.
+        - Also fixed (#241): PromoCode (cart) inset border; `NumberInput` (product
+          quantity) given `bg-transparent` — it kept the UA white field bg, so the
+          inherited light digit was invisible on dark; slider/navigation arrows
+          recoloured from Swiper's default blue (`--swiper-theme-color #007aff`) to
+          white via `--swiper-navigation-color`.
         - Passing (reference): body/price 16.7, gray labels 6.5, orange links
           6.6, red breadcrumb 4.8.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/

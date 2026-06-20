@@ -13,10 +13,20 @@
   refactor (0→6) is done on `develop`; awaiting the final `develop`→`main`
   merge.** Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
   the look 1:1, all parts merged.
+- **Post-close dark-theme polish (2026-06-20, PRs #237–#241):** the live review
+  surfaced a family of preflight-off bugs — form fields, buttons (and their
+  icons, e.g. the mobile menu), product titles/prices and component backgrounds
+  rendered with light-theme colours in dark mode. Root causes fixed: `color:
+  inherit` on inputs+buttons, `bg-transparent` on `NumberInput`, and re-pointing
+  the flattened semantic `@theme` tokens (`--color-content/page/component/panel/
+  body`) in the dark block. Also: stripped native `appearance:textfield` insets
+  from inputs (Search/RHFTextField/PromoCode), matched the Search button height,
+  and recoloured the slider arrows from Swiper-blue to white. Light theme
+  unchanged; dark-theme sweep across all pages = 0 dark-on-dark.
 - **Refactor outcome (0→6):** CRA→Vite 7 · React 18→19 · TS 4.9→5.9 strict ·
   MobX→TanStack Query 5 + Zustand · Formik/Yup→RHF + zod 4 · `sdk-client-v2`→
   `@commercetools/ts-client` v4 **+ BFF (Netlify Functions)** so the
-  clientSecret left the browser bundle · Jest/CRA→Vitest 3 + MSW 2 (98
+  clientSecret left the browser bundle · Jest/CRA→Vitest 4 + MSW 2 (98
   unit/integration) + Playwright (11 e2e, in CI) · ESLint 8 airbnb→ESLint 9 flat ·
   MUI 7 + SCSS → **Tailwind 4 + Radix + lucide** (one styling system, look 1:1).
   Coverage thresholds enforced on `services/*` + `queries/*`. **Prod is still on
@@ -97,6 +107,26 @@
 | 2026-06-15 | Icons → **lucide-react**; interactive primitives → **hybrid Radix** (Slider/Dialog/Select) + native (checkbox/pagination/toast). Brand GitHub icon inlined (lucide dropped brand marks) |
 
 ## Session log
+
+### 2026-06-20 — Session 15 (post-close dark-theme polish + final docs)
+
+- live dark-theme review surfaced a family of preflight-off colour bugs; fixed
+  across PRs **#237–#241** (all into `develop`, each gate-green):
+  - **#237** `input { color: inherit }` — typed text was black, invisible on dark.
+  - **#238** the **semantic `@theme` token** bug — Tailwind v4 flattened
+    `--color-content/page/component/panel/body` to light values at build, so
+    `text-content`/`bg-*` ignored the dark override (product titles/prices
+    near-black). Re-pointed them in `body[data-theme='dark']`. + Search input
+    native inset border + Search button height.
+  - **#239** same inset-border fix for login/registration/profile `RHFTextField`.
+  - **#240** `button { color: inherit }` — icon-only buttons (mobile menu) had
+    black icons on dark. Dark sweep across all pages → 0 dark-on-dark.
+  - **#241** PromoCode inset border; `NumberInput` `bg-transparent` (qty digit
+    was light-on-white); slider arrows recoloured Swiper-blue → white.
+- light theme verified unchanged throughout (1:1); docs (PROGRESS / phase-6 /
+  SESSION_REPORT) brought to final state.
+- **Refactor COMPLETE on `develop`.** Only remaining step: the human-owned
+  `develop`→`main` merge (activates the deploy-preview e2e workflow + ships prod).
 
 ### 2026-06-19 — Session 14 (phase 6 CLOSED — input-contrast fix + refactor wrap-up)
 
