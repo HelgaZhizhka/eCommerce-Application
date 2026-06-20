@@ -170,6 +170,16 @@ body[data-theme='dark'] {
   --nav-color-dark: var(--light-white);
   --nav-color-dark-hover: var(--light-white);
   --component-bg: var(--dark);
+
+  /* Tailwind v4 flattens the semantic @theme tokens (--color-content/page/…) to
+   * their light values at build time, so the `var(--…-bg)` indirection above does
+   * NOT reach the bg-page / text-content utilities. Re-point them here so dark
+   * mode applies to those classes (text-content was rendering near-black). */
+  --color-body: var(--dark);
+  --color-page: var(--black);
+  --color-component: var(--dark);
+  --color-panel: rgba(255, 255, 255, 0.08);
+  --color-content: var(--light-white);
 }
 
 /* ───────────────────────────────────────────────────────────────────────────

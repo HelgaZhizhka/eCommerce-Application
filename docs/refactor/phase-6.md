@@ -72,8 +72,16 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
           AA 4.5); theme-independent, affects all primary CTAs. **Left as-is** —
           fixing it changes the brand colour (deviates from 1:1); deferred as a
           look-vs-a11y decision.
-        - Pre-existing, also left 1:1: some headings use a fixed dark colour and
-          are low-contrast on the dark theme (same token-colour tradeoff).
+        - **FIXED (follow-up)**: dark-theme `text-content` (headings, product
+          titles, prices) rendered near-black — not a colour choice but a
+          Tailwind v4 bug: the semantic `@theme` tokens (`--color-content/page/
+          component/panel/body`) were flattened to their light values at build
+          time, so `bg-*`/`text-content` utilities ignored the dark override.
+          Re-pointed those tokens in the `body[data-theme='dark']` block; light
+          theme unchanged, dark now readable (~16.7). Verified both themes.
+        - Also fixed: the Search input showed the native `appearance: textfield`
+          inset border (`appearance-none` + `border-0 border-b`) and the Search
+          button now matches the input height.
         - Passing (reference): body/price 16.7, gray labels 6.5, orange links
           6.6, red breadcrumb 4.8.
 - [x] **6.5** Docs (2026-06-18): README rewritten (real stack/architecture/setup/
