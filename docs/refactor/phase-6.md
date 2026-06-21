@@ -115,6 +115,14 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         look/behaviour 1:1.
   - [x] **moderate** `@opentelemetry/core`, `micromatch`, `yaml`: cleared via
         `overrides` (`@opentelemetry/core ^2.8.0`, `micromatch ^4.0.8`, `yaml ^2.8.3`).
+  - [x] **high (post-refactor, 2026-06-21)** — Dependabot flagged two **dev-only,
+        transitive** highs after a fresh advisory batch: `undici` (≤7.27.2, via
+        **jsdom** = the Vitest DOM env) and `http-proxy-middleware` (3.0.4–3.0.6,
+        via **netlify-cli** = local dev / e2e). Neither is in the production
+        bundle. Cleared via `overrides` (`undici ^7.28.0` — stays in jsdom's `^7`
+        line; `http-proxy-middleware ^3.0.7` — satisfies netlify-cli's `^3.0.5`).
+        `npm audit`: 2 high → **0 high**; 98 unit + 11 e2e green (e2e exercises
+        `netlify dev`, confirming the proxy bump is safe).
   - [~] **low** `esbuild` (9×, transitive via netlify-cli internals + Vite): NOT
         patched. Accepted residual risk — advisory is a **Windows-only dev-server
         file-read**, build-time only, **not in the production bundle**; we build on
