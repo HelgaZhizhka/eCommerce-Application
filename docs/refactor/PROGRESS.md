@@ -9,10 +9,11 @@
   integration tests, **6.2** coverage thresholds (80/70, enforced in CI),
   **6.3** Playwright in CI (Netlify preview), **6.4** a11y (Filter focus-trap +
   form labels/aria + dark-theme contrast: input-text bug fixed, rest documented
-  1:1), **6.5** README + ADRs, **6.6** dependency security. **The 7-phase
-  refactor (0→6) is done on `develop`; awaiting the final `develop`→`main`
-  merge.** Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping
-  the look 1:1, all parts merged.
+  1:1), **6.5** README + ADRs, **6.6** dependency security. **SHIPPED: the 7-phase
+  refactor (0→6) is merged `develop`→`main` (PR #243, 2026-06-20) and live in
+  prod — `yes-code-merch.netlify.app` now serves the Vite build (was CRA).**
+  Phase 5 (UI) **COMPLETE** — Tailwind 4 + Radix, engine-swap keeping the look
+  1:1, all parts merged.
 - **Post-close dark-theme polish (2026-06-20, PRs #237–#241):** the live review
   surfaced a family of preflight-off bugs — form fields, buttons (and their
   icons, e.g. the mobile menu), product titles/prices and component backgrounds
@@ -125,8 +126,15 @@
     was light-on-white); slider arrows recoloured Swiper-blue → white.
 - light theme verified unchanged throughout (1:1); docs (PROGRESS / phase-6 /
   SESSION_REPORT) brought to final state.
-- **Refactor COMPLETE on `develop`.** Only remaining step: the human-owned
-  `develop`→`main` merge (activates the deploy-preview e2e workflow + ships prod).
+- **SHIPPED:** merged `develop`→`main` (PR #243). Prod now serves the Vite build
+  (verified `/assets/index-*.js`, was CRA `/static/js`). CI `verify` green on the
+  `main` push. `develop` kept as the working branch.
+- **e2e CI finding:** the 6.3 `e2e.yml` (`on: deployment_status`) does **not**
+  auto-fire — this Netlify site emits commit `status` events, not GitHub
+  Deployments (verified: empty Deployments API, no e2e run post-merge). Per user
+  decision e2e stays local (verify.sh, 11/11 vs preview); workflow left in place
+  but documented as dormant (see phase-6.md 6.3). One-line `on: status` switch
+  would activate it later.
 
 ### 2026-06-19 — Session 14 (phase 6 CLOSED — input-contrast fix + refactor wrap-up)
 

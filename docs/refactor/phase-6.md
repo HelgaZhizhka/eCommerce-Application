@@ -34,11 +34,18 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
       Commercetools env/secrets in GitHub** — the preview already has them on
       Netlify. **No repo setup required** beyond having Netlify Deploy Previews
       enabled (default for a Netlify-connected repo).
-  - Caveat: `deployment_status` workflows only run from the **default branch**, so
-    this activates once it lands on `main` (the final merge) and for `main` PRs.
-    During `develop` work, e2e runs locally (`./scripts/verify.sh`) and the CI
-    `verify` job covers each PR. Chose this over running the app in CI to avoid
-    duplicating the CT secret into GitHub Actions.
+  - **Reality after the `develop`→`main` cutover (2026-06-20):** the workflow does
+    **not** auto-fire. This Netlify site reports deploys as commit **`status`**
+    events (context `netlify/yes-code-merch/deploy-preview`, with `target_url`),
+    **not** GitHub `deployment_status` / Deployment objects — so an `on:
+    deployment_status` workflow stays dormant here. Verified: the GitHub
+    Deployments API has no recent entries, and no `e2e.yml` run fired after the
+    prod merge. **Decision (user, 2026-06-20): keep e2e local** — it's validated
+    via `./scripts/verify.sh` / `npx playwright test` (11/11 against the real
+    preview), and the per-PR CI `verify` job covers types/lint/unit/build.
+    `e2e.yml` is left in place but inert; to actually wire it up later, switch it
+    to `on: status` (guard on the Netlify context + `state == 'success'`, point
+    Playwright at `github.event.target_url`) and let it reach the default branch.
   - Note: the registration scenario creates a real CT customer per run (unique
     email) — inherent to e2e-against-real-CT. Phase 0 scenarios already track the
     final UI (kept green through phase 5).
@@ -108,6 +115,14 @@ Plan reference: REFACTORING_PLAN.md §5, "Фаза 6".
         look/behaviour 1:1.
   - [x] **moderate** `@opentelemetry/core`, `micromatch`, `yaml`: cleared via
         `overrides` (`@opentelemetry/core ^2.8.0`, `micromatch ^4.0.8`, `yaml ^2.8.3`).
+  - [x] **high (post-refactor, 2026-06-21)** — Dependabot flagged two **dev-only,
+        transitive** highs after a fresh advisory batch: `undici` (≤7.27.2, via
+        **jsdom** = the Vitest DOM env) and `http-proxy-middleware` (3.0.4–3.0.6,
+        via **netlify-cli** = local dev / e2e). Neither is in the production
+        bundle. Cleared via `overrides` (`undici ^7.28.0` — stays in jsdom's `^7`
+        line; `http-proxy-middleware ^3.0.7` — satisfies netlify-cli's `^3.0.5`).
+        `npm audit`: 2 high → **0 high**; 98 unit + 11 e2e green (e2e exercises
+        `netlify dev`, confirming the proxy bump is safe).
   - [~] **low** `esbuild` (9×, transitive via netlify-cli internals + Vite): NOT
         patched. Accepted residual risk — advisory is a **Windows-only dev-server
         file-read**, build-time only, **not in the production bundle**; we build on
