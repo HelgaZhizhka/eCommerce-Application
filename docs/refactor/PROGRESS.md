@@ -109,6 +109,28 @@
 
 ## Session log
 
+### 2026-07-09 — Session 16 (graceful degradation: dead backend must not blank the site)
+
+- **Diagnosed the "infinite loader"** seen when the CT trial expired: not BFF —
+  a feedback loop. App gated its whole shell on the categories query's
+  `isLoading` while the header menus inside the shell observe the same query;
+  mounting them re-fetches an errored (data-less) query, flipping the gate back
+  to loading, which unmounts the shell → mount→refetch→unmount forever
+  (~40 req/s storm; verified: without React the same failure rejects exactly
+  once). `refetchOnMount: false` does NOT help — data-less queries fetch on
+  observer mount regardless (verified empirically, so it was not added).
+- **Fix:** derived boot latch in `App.tsx` — spinner only until the first fetch
+  settles (`isLoading && errorUpdateCount === 0`; the count persists across
+  refetches, so the shell never unmounts again). Global `QueryCache.onError` in
+  `queryClient.ts` surfaces query failures through the existing toast bus
+  (deduped, 5s window) — e.g. "The trial of project … has expired" now shows as
+  an error toast while the site keeps working.
+- **Tests:** `src/test/degradation.integration.test.tsx` — full `<App/>` render
+  with the BFF returning 400: shell renders and stays (bounded ≤3 boot attempts,
+  was unbounded), outage toast fires via the real queryClient, toast dedupe.
+- **Gate:** typecheck clean · eslint 0 errors (17 pre-existing warnings) ·
+  101 unit/integration + coverage · 11 e2e (Node 22, vs local `netlify dev`).
+
 ### 2026-06-20 — Session 15 (post-close dark-theme polish + final docs)
 
 - live dark-theme review surfaced a family of preflight-off colour bugs; fixed
